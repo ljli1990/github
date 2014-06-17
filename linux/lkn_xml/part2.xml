@@ -1,0 +1,10 @@
+<part id="linuxkian-PART-II" label="II">
+<title>Major Customizations</title>
+<partintro>
+<para>This part explains the most common customizations that Linux users perform, and useful combinations of options to customize.</para>
+<para><link linkend="linuxkian-CHP-7">Chapter 7, <citation>Customizing a Kernel</citation></link></para>
+<para><link linkend="linuxkian-CHP-8">Chapter 8, <citation>Kernel Configuration Recipes</citation></link></para>
+</partintro>
+&ch07;
+&ch08;
+</part>

@@ -1,0 +1,221 @@
+<chapter id="linuxkian-CHP-2" label="2">
+<title>Requirements for Building and Using the Kernel</title>
+<para>This chapter describes the programs you need to configure a kernel, build it, and successfully boot it. It's a smart idea to consult the file <emphasis>Documentation/Changes</emphasis> to verify the specific version number you should have of each tool described in this chapter. This chapter was based on the 2.6.18 kernel, and describes the versions of tools 
+<indexterm id="IDX-CHP-2-0005"><primary>building the kernel</primary><secondary>tools</secondary></indexterm> 
+ that work with that kernel. If you are using a different kernel, please verify that you have the required versions as specified in this file, or things might not work properly and it can be very hard to determine what went wrong.</para>
+<sect1 id="linuxkian-CHP-2-SECT-1" label="2.1">
+<title>Tools to Build the Kernel</title>
+<indexterm id="IDX-CHP-2-0006"><primary>tools</primary><secondary>building the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0007"><primary>gcc compiler</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0008"><primary>compiler (gcc)</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0009"><primary>C compiler, gcc</primary></indexterm> 
+
+<para>Most Linux distributions offer an installation option to install a range of kernel hacking packages. If your distribution offers this option, it is easiest to install this instead of trying to track down all of the individual programs that are needed for this task.</para>
+<para>Only three packages that are needed in order to successfully build a kernel: a compiler, 
+<indexterm id="IDX-CHP-2-0010"><primary>building the kernel</primary><secondary>tools</secondary><tertiary>compiler</tertiary></indexterm> 
+ a linker, and a <emphasis>make</emphasis> utility. This section describes the contents of each package.</para>
+<sect2 id="linuxkian-CHP-2-SECT-1.1" label="2.1.1">
+<title>Compiler</title>
+<para>The Linux kernel is written in the C programming language, with a small amount of assembly language in some places. To build the kernel, the gcc C compiler must be used. Most Linux distributions have a package entitiled <emphasis>gcc</emphasis> that should be installed. If you wish to download the compiler and build it yourself, you can find it at <systemitem role="url">http://gcc.gnu.org</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 3.2 version of <emphasis>gcc</emphasis> is the oldest that can properly build a working kernel. Be warned that getting the most recent <emphasis>gcc</emphasis> version is not always a good idea. Some of the newest <emphasis>gcc</emphasis> releases don't build the kernel properly, so unless you wish to help debug compiler bugs, it is not recommended that you try them out.</para>
+<para>To determine which version of <emphasis>gcc</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>gcc --version</userinput>
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-2-SECT-1.2" label="2.1.2">
+<title>Linker</title>
+<indexterm id="IDX-CHP-2-0011"><primary>using the kernel, tools for</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0012"><primary>tools</primary><secondary>to use the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0013"><primary>make utility</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0014"><primary>linking source files (binutils)</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0015"><primary>building the kernel</primary><secondary>tools</secondary><tertiary>linker</tertiary></indexterm> 
+
+<para>The C compiler, <emphasis>gcc</emphasis>, does not do all of the compiling on its own. It needs an additional set of tools known as <emphasis>binutils</emphasis> 
+<indexterm id="IDX-CHP-2-0016"><primary>binutils</primary></indexterm> 
+ to do the linking and assembling of source files. The <emphasis>binutils</emphasis> package also contains useful utilities that can manipulate object files in lots of useful ways, such as to view the contents of a library.</para>
+<para><emphasis>binutils</emphasis> can usually be found in a distribution package called (not surprisingly) <emphasis>binutils</emphasis>. If you wish to download and install the package yourself, you can find it at <systemitem role="url">http://www.gnu.org/software/binutils</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 2.12 release of <emphasis>binutils</emphasis> is the oldest that can successfully link the kernel. To determine which version of <emphasis>binutils</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>ld -v</userinput>
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-2-SECT-1.3" label="2.1.3">
+<title>make</title>
+ 
+<indexterm id="IDX-CHP-2-0017"><primary>building the kernel</primary><secondary>tools</secondary><tertiary>make</tertiary></indexterm> 
+
+<para><emphasis>make</emphasis> is a tool that walks the kernel source tree to determine which files need to be compiled, and then calls the compiler and other build tools to do the work in building the kernel. The kernel requires the GNU version of <emphasis>make</emphasis>, which can usually be found in a package called <emphasis>make</emphasis> for your distribution.</para>
+<para>If you wish to download and install <emphasis>make</emphasis> youself, you can find it at <systemitem role="url">http://www.gnu.org/software/make</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 3.79.1 release of <emphasis>make</emphasis> is the oldest that can properly build the kernel. It is recommended that you install the latest stable version of <emphasis>make</emphasis>, because newer versions are known to work faster at processing the build files.</para>
+<para>To determine which version of <emphasis>make</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>make --version</userinput>
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-2-SECT-2" label="2.2">
+<title>Tools to Use the Kernel</title>
+<para>While the version of the kernel that is running does not usually affect any user application, there are a small number of program for which the kernel version is important. This section describes a number of tools that are probably already installed on your Linux system. If you upgrade your kernel to a version different from the one that came with your distribution, some of these packages may also need to be upgraded in order for the system to work properly.</para>
+<sect2 id="linuxkian-CHP-2-SECT-2.1" label="2.2.1">
+<title>util-linux</title>
+ 
+<indexterm id="IDX-CHP-2-0018"><primary>tools</primary><secondary>to use the kernel</secondary><tertiary>util-linux</tertiary></indexterm> 
+
+<para>The <emphasis>util-linux</emphasis> package is a collection of small utilities that do a wide range of different tasks. Most of these utilities handle the mounting and creation of disk partitions and manipulation of the hardware clock in the system.</para>
+<para>If you wish to download and install the <emphasis>util-linux</emphasis> package yourself, you can find it at <systemitem role="url">http://www.kernel.org/pub/linux/utils/util-linux</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 2.10 release of <emphasis>util-linux</emphasis> is the oldest that works properly. It is recommended that you install the latest version of this package, because new version support new features added to the kernel. Bind mounts are one example of an option in newer kernels, and a newer version of <emphasis>util-linux</emphasis> is needed in order to have them work properly.</para>
+<para>To determine which version of the <emphasis>util-linux</emphasis> package you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>fdformat --version</userinput>
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-2-SECT-2.2" label="2.2.2">
+<title>module-init-tools</title>
+ 
+<indexterm id="IDX-CHP-2-0019"><primary>tools</primary><secondary>to use the kernel</secondary><tertiary>module-init-tools</tertiary></indexterm> 
+
+<indexterm id="IDX-CHP-2-0020"><primary>util-linux package</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0021"><primary>module-init-tools package</primary></indexterm> 
+
+<para>The <emphasis>module-init-tools</emphasis> package is needed if you wish to use Linux kernel modules. A <emphasis>kernel module</emphasis> is a loadable chunk of code that can be added to or removed from the kernel while the kernel is running. It is useful to compile device drivers as modules and then load only the ones that correspond to the hardware present in the system. All Linux distributions use modules in order to load only the needed drivers and options for the system based on the hardware present, instead of being forced to build all possible drivers and options in the kernel in one large chunk. Modules save memory by loading just the code that is needed to control the machine properly.</para>
+<para>The kernel module loading process underwent a radical change in the 2.6 kernel release. The linker for the module (the code that resolves all symbols and figures out how to put the pieces together in memory) is now built into the kernel, which makes the userspace tools quite small. Older distributions have a package called <emphasis>modutils</emphasis> that does not work properly with the 2.6 kernel. The <emphasis>module-init-tools</emphasis> package is what you need to get the 2.6 kernel to work properly with modules.</para>
+<para>If you wish to download and install the <emphasis>module-init-tools</emphasis> package yourself, you can find it at <systemitem role="url">http://www.kernel.org/pub/linux/utils/kernel/module-init-tools</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 0.9.10 release of <emphasis>module-init-tools</emphasis> is the oldest version that works properly. It is recommended that the latest version of this package be installed, as new features added to the kernel can be used by newer versions of this package. Blacklisting modules to prevent them from being automatically loaded by the <emphasis>udev</emphasis> package is one such option that is present in newer versions of <emphasis>module-init-tools</emphasis>, but not older ones.</para>
+<para>To determine which version of the <emphasis>module-init-tools</emphasis> package you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>depmod -V</userinput>
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-2-SECT-2.3" label="2.2.3">
+<title>Filesystem-Specific Tools</title>
+<para>A wide range of tools specific to particular filesystems are necessary to create, format, configure, and fix disk partitions. The <emphasis>util-linux</emphasis> package has a few of these utilities, but some of the more popular filesystems have separate packages that contain the necessary programs.</para>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.1" label="2.2.3.1">
+<title>ext2/ext3/ext4</title>
+<indexterm id="IDX-CHP-2-0022"><primary>using the kernel, tools for</primary><secondary>filesystem-specific</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0023"><primary>tools</primary><secondary>to use the kernel</secondary><tertiary>filesystem-specific</tertiary></indexterm> 
+<indexterm id="IDX-CHP-2-0024"><primary>reiserfsprogs package</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0025"><primary>jfsutils pacakge</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0026"><primary>JFS filesystem (IBM)</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0027"><primary>IBM JFS filesystem</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0028"><primary>filesystems</primary><secondary>specific tools for using the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0029"><primary>ext2/ext3/ext4 filesystems</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0030"><primary>e2fsprogs package</primary></indexterm> 
+
+<para>The <emphasis>ext3</emphasis> and experimental <emphasis>ext4</emphasis> filesystems are upgrades of <emphasis>ext2</emphasis> and can be managed with the same tools; any recent version of an <emphasis>ext2</emphasis>-based tool can work with the other two filesystems as well.</para>
+<para>To work with any of these filesystems, you must have the <emphasis>e2fsprogs</emphasis> package. If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://e2fsprogs.sourceforge.net</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 1.29 release of <emphasis>e2fsprogs</emphasis> is the oldest that works properly with the kernel. It is highly recommended that you use the newest version in order to take advantage of newer features in the <emphasis>ext3</emphasis> and <emphasis>ext4</emphasis> filesystems.</para>
+<para>To determine which version of <emphasis>e2fsprogs</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>tune2fs</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.2" label="2.2.3.2">
+<title>JFS</title>
+<para>To use the JFS filesystem from IBM, you must have the <emphasis>jfsutils</emphasis> pacakge. If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://jfs.sourceforge.net</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 1.1.3 release of <emphasis>jfsutils</emphasis> is the oldest that works properly with the kernel. To determine which version of <emphasis>jfsutils</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>fsck.jfs -V</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.3" label="2.2.3.3">
+<title>ReiserFS</title>
+<para>To use the ReiserFS filesystem, 
+<indexterm id="IDX-CHP-2-0031"><primary>ReiserFS filesystem</primary></indexterm> 
+ you must have the <emphasis>reiserfsprogs</emphasis> package. If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://www.namesys.com/download.html</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 3.6.3 release of <emphasis>reiserfsprogs</emphasis> is the oldest that works properly with the kernel. To determine which version of <emphasis>reiserfsprogs</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>reiserfsck -V</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.4" label="2.2.3.4">
+<title>XFS</title>
+<para>To use the XFS filesystem 
+<indexterm id="IDX-CHP-2-0032"><primary>XFS filesystem</primary></indexterm> 
+ from SGI, you must have the <emphasis>xfsprogs</emphasis> package. If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://oss.sgi.com/projects/xfs</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 2.6.0 release of <emphasis>xfsprogs</emphasis> is the oldest that works properly with the kernel. To determine which version of <emphasis>xfsprogs</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>xfs_db -V</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.5" label="2.2.3.5">
+<title>Quotas</title>
+<indexterm id="IDX-CHP-2-0033"><primary>xfsprogs package</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0034"><primary>using the kernel, tools for</primary><secondary>closely tied to kernel version</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0035"><primary>tools</primary><secondary>to use the kernel</secondary><tertiary>closely tied to kernel version</tertiary></indexterm> 
+<indexterm id="IDX-CHP-2-0036"><primary>SGI, XFS filesystem</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0037"><primary>quota-tools package</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0038"><primary>nfs-utils package</primary></indexterm> 
+
+<para>To use the quota functionality of the kernel, you must have the <emphasis>quota-tools</emphasis> package.<footnote id="linuxkian-CHP-2-FN-1" label="*"><para>Some distributions, notably Debian, call this package <emphasis>quota</emphasis> instead of <emphasis>quota-tools</emphasis>.</para></footnote> This package includes programs that let you set quotas on users, provide statistics on the amount of quota being used by different users, and issue warnings when people get too close to using up their available filesystem quota.</para>
+<para>If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://sourceforge.net/projects/linuxquota</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 3.09 release of <emphasis>quota-tools</emphasis> is the oldest that works properly with the kernel. To determine which version of <emphasis>quota-tools</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>quota -V</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.3.6" label="2.2.3.6">
+<title>NFS</title>
+<para>To use the NFS filesystem 
+<indexterm id="IDX-CHP-2-0039"><primary>NFS filesystem</primary></indexterm> 
+ properly, you must have the <emphasis>nfs-utils</emphasis> package.<footnote id="linuxkian-CHP-2-FN-2" label="&dagger;"><para>Some distributions, notably Debian, call this package <emphasis>nfs-common</emphasis> instead of <emphasis>nfs-utils</emphasis>.</para></footnote> This package includes programs that let you mount NFS partitions as a client, and run an NFS server.</para>
+<para>If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://nfs.sf.net</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 1.0.5 release of <emphasis>nfs-utils</emphasis> is the oldest that works properly with the kernel To determine which version of <emphasis>nfs-utils</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>showmount --version</userinput>
+</programlisting>
+</sect3>
+</sect2>
+<sect2 id="linuxkian-CHP-2-SECT-2.4" label="2.2.4">
+<title>Other Tools</title>
+<para>There are a few other important programs that are closely tied to the kernel version. These programs are not usually required in order for the kernel to work properly, but they enable access to different types of hardware and functions.</para>
+<sect3 id="linuxkian-CHP-2-SECT-2.4.1" label="2.2.4.1">
+<title>udev</title>
+<para><emphasis>udev</emphasis> is a program that enables Linux to provide a persistent device-naming system in the <emphasis>/dev</emphasis> directory. It also provides a dynamic <emphasis>/dev</emphasis>, much like the one provided by the older (and now removed) <emphasis>devfs</emphasis> filesystem. Almost all Linux distributions use <emphasis>udev</emphasis> to manage the <emphasis>/dev</emphasis> directory, so it is required in order to properly boot the machine.</para>
+<para>Unfortunately, <emphasis>udev</emphasis> relies on the structure of <emphasis>/sys</emphasis>, which has been known to change from time to time with kernel releases. Some of these changes in the past have been known to break <emphasis>udev</emphasis>, so that your machine will not boot properly. If you have the latest version of <emphasis>udev</emphasis> recommended for your kernel and have problems with it working properly, please contact the <emphasis>udev</emphasis> developers on the mailing list available at <email>linux-hotplug-devel@lists.sourceforge.net</email>.</para>
+<para>It is highly recommended that you use the version of <emphasis>udev</emphasis> that comes with your Linux distribution, as it is tied into the distribution specific boot process very tightly. But if you wish to upgrade <emphasis>udev</emphasis> on your own, you can find it at <systemitem role="url">http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 081 release of <emphasis>udev</emphasis> is the oldest that works properly with the kernel. It is recommended that you use the latest version of <emphasis>udev</emphasis>, because it will work better with newer kernels, due to changes in how <emphasis>udev</emphasis> and the kernel communicate.</para>
+<para>To determine which version of <emphasis>udev</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>udevinfo -V</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.4.2" label="2.2.4.2">
+<title>Process tools</title>
+<indexterm id="IDX-CHP-2-0040"><primary>udev program</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0041"><primary>top tool</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0042"><primary>ps tool</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0043"><primary>procps package</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0044"><primary>processes running on the system, tools for</primary></indexterm> 
+<indexterm id="IDX-CHP-2-0045"><primary>PCMCIA devices</primary><secondary>tools for using with Linux</secondary></indexterm> 
+<indexterm id="IDX-CHP-2-0046"><primary>device naming system in the /dev directory</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-2-0047"><primary sortas="dev directory device naming system udev">/dev directory, device naming system (udev)</primary></indexterm> 
+
+<para>The package <emphasis>procps</emphasis> includes the commonly used tools <emphasis>ps</emphasis> and <emphasis>top</emphasis>, as well as many other handy tools for managing and monitoring processes running on the system.</para>
+<para>If you wish to download and install this package yourself, you can find it at <systemitem role="url">http://procps.sourceforge.net</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 3.2.0 release of <emphasis>procps</emphasis> is the oldest that works properly with the kernel. To determine which version of <emphasis>procps</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>ps --version</userinput>
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-2-SECT-2.4.3" label="2.2.4.3">
+<title>PCMCIA tools</title>
+<para>In order to properly use PCMCIA devices with Linux, a userspace helper program must be used to set up the devices. For older kernel versions, this program was called <emphasis>pcmcia-cs</emphasis>, but that has been replaced with a much simpler system called <emphasis>pcmciautils</emphasis>. 
+<indexterm id="IDX-CHP-2-0048"><primary>pcmciautils</primary></indexterm> 
+ If you wish to use PCMCIA devices, you must have this package installed for them to work properly.</para>
+<para>If you wish to download and install this package yourself, you can find it at <systemitem role="ftpurl">ftp://ftp.kernel.org/pub/linux/utils/kernel/pcmcia</systemitem>.</para>
+<para>As of the 2.6.18 kernel release, the 004 release of <emphasis>pcmciautils</emphasis> is the oldest that works properly with the kernel. But the latest version is recommended in order to take advantage of newer features in the PCMCIA subsystem, such as automatic driver loading when new devices are found.</para>
+<para>To determine which version of <emphasis>pcmciautils</emphasis> you have on your system, run the following command:</para>
+<programlisting>
+$ <userinput>pccardctl -V</userinput>
+</programlisting>
+</sect3>
+</sect2>
+</sect1>
+</chapter>

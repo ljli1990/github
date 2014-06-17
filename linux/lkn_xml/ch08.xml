@@ -1,0 +1,1297 @@
+<chapter id="linuxkian-CHP-8" label="8">
+<title>Kernel Configuration Recipes</title>
+<para>Previous chapters taught the mechanics of reconfiguring the kernel; the payoff comes in this chapter where you can find all the most common kinds of changes people need to make to their kernels, with specific instructions on how to do so.</para>
+<sect1 id="linuxkian-CHP-8-SECT-1" label="8.1">
+<title>Disks</title>
+<indexterm id="IDX-CHP-8-0260"><primary>lsusb program</primary><secondary>identifying USB storage device</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0261"><primary sortas="flash device USB">"flash" device (USB)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0262"><primary>disks</primary><secondary>configuring support by Linux kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0263"><primary>configuration, kernel</primary><secondary>disk controller support</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0264"><primary>configuration, kernel</primary></indexterm> 
+
+<para>The Linux kernel supports a wide range of different disk types. This section shows how to configure the kernel so that it supports most of the more common types of disk controllers.</para>
+<sect2 id="linuxkian-CHP-8-SECT-1.1" label="8.1.1">
+<title>USB Storage</title>
+<para>To use a USB storage<indexterm id="IDX-CHP-8-0265"><primary>USB devices</primary><secondary>storage</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0266"><primary>configuration, kernel</primary><secondary>disk controller support</secondary><tertiary>USB storage</tertiary></indexterm> 
+ device (commonly referred to as USB "flash" device, or an external USB disk drive) USB support must be first working properly. Refer to the recipe in the section called "<link linkend="linuxkian-CHP-8-SECT-2.1">USB</link>" for how to do this.</para>
+<para>A USB storage device 
+<indexterm id="IDX-CHP-8-0267"><primary>disks</primary><secondary>configuring support by Linux kernel</secondary><tertiary>USB storage device</tertiary></indexterm> 
+ can be identified by using the <emphasis>lsusb</emphasis> program. If the following command sequence produces the results shown, a USB storage device is present on the system:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lsusb -v | grep Storage</userinput>
+      bInterfaceClass         8 Mass Storage
+</programlisting>
+<para>Enable it as follows.</para>
+<orderedlist numeration="arabic">
+<listitem><para>A USB Storage device is in reality a USB SCSI device that talks over a USB connection. Because of this, the SCSI subsystem must be enabled:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        [*] SCSI Device Support
+</programlisting>
+</listitem>
+<listitem><para>Also in the SCSI system, the "SCSI disk support" must be enabled in order for the device to be mounted properly:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        [*] SCSI disk support
+</programlisting>
+</listitem>
+<listitem><para>Enable USB Storage support:</para>
+<programlisting>
+Device Drivers
+   USB Support
+   [M] USB Mass Storage support
+</programlisting>
+</listitem>
+</orderedlist>
+<para>A number of specific USB storage devices are listed as separate configuration items, as they do not follow the standard USB specification and require special code. If you have one of these devices, please enable support for them.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-1.2" label="8.1.2">
+<title>IDE Disks</title>
+<indexterm id="IDX-CHP-8-0268"><primary>PCI devices</primary><secondary>IDE disk controllers</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0269"><primary>lspci program</primary><secondary>determining if you have an IDE disk controller</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0270"><primary>IDE (Integrated Disk Electronics)</primary><secondary>configuring disk support by kernel</secondary></indexterm> 
+
+<para>IDE disks<indexterm id="IDX-CHP-8-0271"><primary>disks</primary><secondary>configuring support by Linux kernel</secondary><tertiary>IDE disks</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0272"><primary>configuration, kernel</primary><secondary>disk controller support</secondary><tertiary>IDE disks</tertiary></indexterm> 
+ are the most common type of PC disks. The device that enables them to work properly is an IDE disk controller. To determine whether you have a IDE disk controller on the system, use the <emphasis>lspci</emphasis> command in the following manner:<footnote id="linuxkian-CHP-8-FN-1" label="*"><para>Almost all distributions place the <emphasis>lspci</emphasis> program in the <emphasis>/usr/sbin/</emphasis> directory, but some place it in other locations. To find out where it is located, enter:</para>
+<programlisting>
+$ <userinput>which lspci</userinput>
+/usr/sbin/lspci
+</programlisting>
+<para>If you are using a distribution that puts it somewhere else, please use that path for whenever we discuss using <emphasis>lspci</emphasis>.</para></footnote></para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep IDE</userinput>
+00:1f.1 IDE interface: Intel Corporation 82801EB/ER (ICH5/ICH5R) IDE
+Controller (rev 02)
+00:1f.2 IDE interface: Intel Corporation 82801EB (ICH5) SATA Controller (rev
+02)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some an IDE controller (the first device in the previous example.) If you find only SATA controllers, please see the next section "<link linkend="linuxkian-CHP-8-SECT-1.3">Serial ATA (SATA)</link>." Now perform the following steps.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable the IDE subsystem, and IDE support:</para>
+<programlisting>
+Device Drivers
+    [*] ATA/ATAPI/MFM/RLL support
+    [*]   Enhanced IDE/MFM/RLL disk/cdrom/tape/floppy support
+</programlisting>
+</listitem>
+<listitem><para>In the ATA system, the specific type of IDE controller that you have must be enabled in order for it to work properly. To provide a good backup in case you choose the wrong type, select the "generic" IDE controller:</para>
+<programlisting>
+Device Drivers
+    ATA/ATAPI/MFM/RLL support
+        [*]     generic/default IDE chipset support
+</programlisting>
+</listitem>
+<listitem><para>Enable the different PCI IDE controllers:</para>
+<programlisting>
+Device Drivers
+    ATA/ATAPI/MFM/RLL support
+        [*]     PCI IDE chipset support
+</programlisting>
+</listitem>
+</orderedlist>
+<para>This opens up a lengthy submenu of the different IDE controller types. Select the proper one based on the name of the device you found in the <emphasis>lspci</emphasis> step.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-1.3" label="8.1.3">
+<title>Serial ATA (SATA)</title>
+<indexterm id="IDX-CHP-8-0273"><primary>SATA (Serial ATA)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0274"><primary>libata kernel library, SATA disks</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0275"><primary>disks</primary><secondary>configuring support by Linux kernel</secondary><tertiary>SATA (Serial ATA)</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0276"><primary>configuration, kernel</primary><secondary>disk controller support</secondary><tertiary>SATA (Serial ATA)</tertiary></indexterm> 
+
+<para>SATA is a type of disk controller that is the successor to the IDE disk controller. To determine if you have a SATA disk controller 
+<indexterm id="IDX-CHP-8-0277"><primary>PCI devices</primary><secondary>SATA disk controller</secondary></indexterm> 
+ on the system, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep SATA</userinput>
+00:1f.2 IDE interface: Intel Corporation 82801EB (ICH5) SATA Controller (rev
+02)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some SATA devices.</para>
+<para>SATA disks use a kernel library called <emphasis>libata</emphasis> that handles most of the SATA-specific functionality. That library uses the SCSI layer to talk to the block layer, so several different kernel options need to be enabled in order for SATA disks to work properly.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable the SCSI subsystem:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        [*] SCSI Device Support
+</programlisting>
+</listitem>
+<listitem><para>Also in the SCSI system, the <literal>SCSI disk support</literal> option must be enabled in order for the device to be mounted properly:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        [*] SCSI disk support
+</programlisting>
+</listitem>
+<listitem><para>The SATA options are under the "SCSI low-level drivers" section:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        SCSI low-level drivers
+            [*] Serial ATA (SATA) support
+</programlisting>
+</listitem>
+<listitem><para>In that section, enable the specific SATA controller type that you have. Look at the output of the previously mentioned <emphasis>lspci</emphasis> command for a list of the types of SATA controllers that are present on your system. For example, most motherboards from Intel require the PIIX/ICH SATA driver (as the previous example showed):</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        SCSI low-level drivers
+            [*] Serial ATA (SATA) support
+            [*]   Intel PIIX/ICH SATA support
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-1.4" label="8.1.4">
+<title>Burning a CD-ROM</title>
+ 
+<indexterm id="IDX-CHP-8-0278"><primary>disks</primary><secondary>configuring support by Linux kernel</secondary><tertiary>CD-ROM</tertiary></indexterm> 
+
+<indexterm id="IDX-CHP-8-0279"><primary>USB (Universal Serial Bus)</primary><secondary>determining if machine has USB controller</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0280"><primary>USB devices</primary><secondary>enabling</secondary></indexterm> 
+
+<para>Burning a CD-ROM is very simple on Linux. If your kernel can support reading from a CD-ROM, it can also support burning<indexterm id="IDX-CHP-8-0281"><primary>CD-ROMs</primary><secondary>burning</secondary></indexterm> 
+ a CD-ROM. 
+<indexterm id="IDX-CHP-8-0282"><primary>burning a CD-ROM</primary></indexterm> 
+ There are two ways to enable CD-ROM support in Linux, one for IDE drives and one for SCSI and SATA drives.</para>
+<sect3 id="linuxkian-CHP-8-SECT-1.4.1" label="8.1.4.1">
+<title>IDE CD-ROM drives</title>
+ 
+<indexterm id="IDX-CHP-8-0283"><primary>SATA (Serial ATA)</primary><secondary>CD-ROM drives</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0284"><primary>IDE (Integrated Disk Electronics)</primary><secondary>CD-ROM drives</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0285"><primary>configuration, kernel</primary><secondary>disk controller support</secondary><tertiary>CD-ROM drives</tertiary></indexterm> 
+
+<para>IDE CD-ROM drives are controlled by the same IDE controller as your main IDE disk drives. Make sure the IDE controller is properly supported as described earlier in "<link linkend="linuxkian-CHP-8-SECT-1.2">IDE Disks</link>." If it is properly supported, only one other configuration item needs to be selected:</para>
+<programlisting>
+Device Drivers
+    [*] ATA/ATAPI/MFM/RLL support
+    [*]   Enhanced IDE/MFM/RLL disk/cdrom/tape/floppy support
+    [M]     Include IDE/ATAPI CDROM support
+</programlisting>
+</sect3>
+<sect3 id="linuxkian-CHP-8-SECT-1.4.2" label="8.1.4.2">
+<title>SCSI and SATA CD-ROM drives</title>
+<para>SATA and SCSI CD-ROM drives are controlled by the same controller as your main disk drives. Make sure the SATA or SCSI controller is properly supported. For SATA disks, see the earlier section "<link linkend="linuxkian-CHP-8-SECT-1.3">Serial ATA (SATA)</link>."</para>
+<para>To support SATA or SCSI CD-ROM drives, the SCSI CD-ROM driver must be enabled:</para>
+<programlisting>
+Device Drivers
+    SCSI Device Support
+        [*] SCSI CDROM support
+</programlisting>
+<para>Once that is enabled, the SATA or SCSI CD-ROM drive 
+<indexterm id="IDX-CHP-8-0286"><primary>SCSI CD-ROM drive</primary></indexterm> 
+ should work properly.</para>
+</sect3>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-2" label="8.2">
+<title>Devices</title>
+<para>Linux supports a vast range of different types of devices<indexterm id="IDX-CHP-8-0287"><primary>devices</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0288"><primary>configuration, kernel</primary><secondary>devices</secondary></indexterm> 
+ (more than any other operating system ever has). This section shows how to enable some of the more common types.</para>
+<sect2 id="linuxkian-CHP-8-SECT-2.1" label="8.2.1">
+<title>USB</title>
+ 
+<indexterm id="IDX-CHP-8-0289"><primary>device drivers</primary><secondary>enabling for individual USB devices</secondary></indexterm> 
+
+<para>Linux supports many different types of USB devices. To enable USB support, you must first enable support for a USB controller, which drives the USB connection on the machine.</para>
+<para>To determine if your machine has a USB controller, and which type it is, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep USB</userinput>
+00:1d.0 USB Controller: Intel Corporation 82801EB/ER (ICH5/ICH5R) USB UHCI
+Controller #1 (rev 02)
+00:1d.1 USB Controller: Intel Corporation 82801EB/ER (ICH5/ICH5R) USB UHCI
+Controller #2 (rev 02)
+00:1d.2 USB Controller: Intel Corporation 82801EB/ER (ICH5/ICH5R) USB UHCI
+Controller #3 (rev 02)
+00:1d.3 USB Controller: Intel Corporation 82801EB/ER (ICH5/ICH5R) USB UHCI
+Controller #4 (rev 02)
+00:1d.7 USB Controller: Intel Corporation 82801EB/ER (ICH5/ICH5R) USB2 EHCI
+Controller (rev 02)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some USB controllers.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable USB support for the kernel:</para>
+<programlisting>
+Device Drivers
+    USB Support
+        [M] Support for Host-side USB
+</programlisting>
+</listitem>
+<listitem><para>Enable the specific USB Host controllers for your machine (it is safe to enable them all if you do not know which you have):</para>
+<programlisting>
+Device Drivers
+    USB Support
+    ---   USB Host Controller Drivers
+    [M]   EHCI HCD (USB 2.0) support
+    [M]   OHCI HCD support
+    [M]   UHCI HCD (most Intel and VIA) support
+</programlisting>
+</listitem>
+<listitem><para>Individual USB devices also need their drivers to be enabled. A large majority of them are under the main USB driver section:</para>
+<programlisting>
+Device Drivers
+    USB Support
+</programlisting>
+<para>But some devices, such as USB video and DVB and sound, are listed in the section controlling all of these types of devices. For example, the USB sound driver can be found under the <literal>Sound</literal> menu:</para>
+<programlisting>
+Device drivers
+    Sound
+        [*] Sound card support
+            [*] Advanced Linux Sound Architecture
+                USB Devices
+                    [M] USB Audio/MIDI driver
+</programlisting>
+</listitem>
+</orderedlist>
+<para>If you want to insert USB storage devices (USB flash), look now at the section called "<link linkend="linuxkian-CHP-8-SECT-1.1">USB Storage</link>," at the beginning of this chapter.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-2.2" label="8.2.2">
+<title>IEEE 1394 (FireWire)</title>
+ 
+<indexterm id="IDX-CHP-8-0290"><primary>FireWire</primary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0291"><primary>devices</primary><secondary>IEEE 1394 (FireWire)</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0292"><primary>device drivers</primary><secondary>enabling for specific FireWire devices</secondary></indexterm> 
+
+<para>IEEE 1394 is commonly known by the name FireWire, the name by which Apple Computer publicized it. IEEE 1394 is a high-speed bus that connects external devices, much as USB does.</para>
+<para>To determine whether your machine has a FireWire controller and which type it is, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep FireWire</userinput>
+06:0c.0 FireWire (IEEE 1394): Texas Instruments TSB43AB22/A IEEE-1394a-2000
+Controller (PHY/Link)
+06:0d.2 FireWire (IEEE 1394): Creative Labs SB Audigy FireWire Port (rev 04)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some FireWire controllers.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable IEEE 1394 support for the kernel:</para>
+<programlisting>
+Device Drivers
+    IEEE 1394 (FireWire) 
+<indexterm id="IDX-CHP-8-0293"><primary>IEEE 1394 (FireWire)</primary></indexterm> 
+ support
+        [*] IEEE 1394 (FireWire) support
+</programlisting>
+</listitem>
+<listitem><para>Enable the specific type of FireWire host controller you have:</para>
+<programlisting>
+Device Drivers
+    IEEE 1394 (FireWire) support
+        [*] IEEE 1394 (FireWire) support
+        ---   Device Drivers
+        [M]   Texas Instruments PCILynx support
+        [M]   OHCI-1394 support
+</programlisting>
+</listitem>
+<listitem><para>Finally, enable the specific type of FireWire devices you have:</para>
+<programlisting>
+Device Drivers
+    IEEE 1394 (FireWire) support
+        [*] IEEE 1394 (FireWire) support
+        ---   Protocol Drivers
+        [M]   OHCI-1394 Video support
+        [M]   SBP-2 support (Harddisks etc.)
+        [ ]     Enable Phys DMA support for SBP2 (Debug)
+        [M]   Ethernet over 1394
+        [M]   OHCI-DV I/O support
+        [M]   Raw IEEE1394 I/O support
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-2.3" label="8.2.3">
+<title>PCI Hotplug</title>
+<para>PCI hotplug<indexterm id="IDX-CHP-8-0294"><primary>PCI hotplug</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0295"><primary>devices</primary><secondary>PCI hotplug</secondary></indexterm> 
+ systems are becoming more popular with the use of ExpressCard<indexterm id="IDX-CHP-8-0296"><primary>ExpressCard</primary></indexterm> 
+ and laptop docking stations. 
+<indexterm id="IDX-CHP-8-0297"><primary>laptop docking stations</primary></indexterm> 
+</para>
+<para>To determine whether your machine has an ExpressCard controller, look at the hardware to see whether an ExpressCard card can be plugged into it.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable PCI hotplug support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+    PCI Hotplug Support
+        [M] Support for PCI Hotplug (EXPERIMENTAL)
+</programlisting>
+</listitem>
+<listitem><para>There is a wide range of different types of PCI hotplug controllers. For most laptops and for ExpressCard support, enable the ACPI controller:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+    PCI Hotplug Support
+        [M] Support for PCI Hotplug (EXPERIMENTAL)
+        [M]   ACPI PCI Hotplug driver
+</programlisting>
+</listitem>
+<listitem><para>Also enable the PCI Express controller:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+    [*] PCI Express Support
+    [M]   PCI Express Hotplug driver
+</programlisting>
+</listitem>
+</orderedlist>
+<sect3 id="linuxkian-CHP-8-SECT-2.3.1" label="8.2.3.1">
+<title>PCMCIA/CardBus</title>
+ 
+<indexterm id="IDX-CHP-8-0298"><primary>PCMCIA devices</primary><secondary>configuring kernel support</secondary></indexterm> 
+
+<para>PCMCIA and CardBus device support 
+<indexterm id="IDX-CHP-8-0299"><primary>CardBus device support</primary></indexterm> 
+ is in almost every laptop manufactured. Newer laptops, however, are switching to the ExpressCard format (see the PCI Hotplug recipe in the previous section, "<link linkend="linuxkian-CHP-8-SECT-2.3">PCI Hotplug</link>").</para>
+<para>To determine whether your machine has a PCMCIA controller, look at the hardware to see whether a PCMCIA card can be plugged into it.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    [*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable PCCARD support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    PCCARD (PCMCIA/CardBus) support
+        [M] PCCard (PCMCIA/CardBus) support
+</programlisting>
+</listitem>
+<listitem><para>Enable both PCMCIA and CardBus support to cover the widest range of devices:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    PCCARD (PCMCIA/CardBus) support
+        [M] PCCard (PCMCIA/CardBus) support
+        [M]   16-bit PCMCIA support
+        [*]   32-bit CardBus support
+</programlisting>
+<para>Enable the card bridge type for your laptop. The most common one is the "yenta-like" controller:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+    PCCARD (PCMCIA/CardBus) support
+        [M] PCCard (PCMCIA/CardBus) support
+        [M]   CardBus yenta-compatible bridge support
+        [ ]   Cirrus PD6729 compatible bridge support
+        [ ]   i82092 compatible bridge support
+        [ ]   i82365 compatible bridge support
+        [ ]   Databook TCIC host bridge support
+</programlisting>
+</listitem>
+</orderedlist>
+</sect3>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-2.4" label="8.2.4">
+<title>Sound (ALSA)</title>
+<indexterm id="IDX-CHP-8-0300"><primary>sound system for Linux kernel (ALSA)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0301"><primary>OSS sound protocol</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0302"><primary>devices</primary><secondary>ALSA (Advanced Linux Sound Architecture)</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0303"><primary>ALSA (Advanced Linux Sound Architecture)</primary></indexterm> 
+
+<para>Advanced Linux Sound Architecture (ALSA) 
+<indexterm id="IDX-CHP-8-0304"><primary>Advanced Linux Sound Architecture (ALSA)</primary></indexterm> 
+ is the current sound system for the Linux kernel. An earlier sound system (OSS) has been deprecated, and almost all of the older drivers have been removed from the kernel source tree.</para>
+<para>To determine which type of sound controller is present in your machine, and what type it is, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep -i audio</userinput>
+00:1f.5 Multimedia audio controller: Intel Corporation 82801EB/ER (ICH5/
+ICH5R) AC'97 Audio Controller (rev 02)
+06:0d.0 Multimedia audio controller: Creative Labs SB Audigy (rev 04)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some Audio controllers.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable basic sound support:</para>
+<programlisting>
+Device Drivers
+    Sound
+        [M] Sound Card Support
+</programlisting>
+</listitem>
+<listitem><para>Enable ALSA:</para>
+<programlisting>
+Device Drivers
+    Sound
+        [M] Sound Card Support
+            [M] Advanced Linux Sound Architecture
+</programlisting>
+</listitem>
+<listitem><para>There are a number of different base ALSA options, such as support for the older <literal>OSS</literal> sound protocol. If you have older applications, you should enable the related options:</para>
+<programlisting>
+Device Drivers
+    Sound
+        [M] Sound Card Support
+            [M] Advanced Linux Sound Architecture
+            [M]   OSS Mixer API
+            [M]   OSS PCM (digital audio) API
+            [ ]     OSS PCM (digital audio) API - Include plugin system
+</programlisting>
+</listitem>
+<listitem><para>Enable the specific type of sound device that you have. PCI sound cards are under the PCI submenu:</para>
+<programlisting>
+Device Drivers
+    Sound
+        [M] Sound Card Support
+            [M] Advanced Linux Sound Architecture
+                PCI Devices
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-3" label="8.3">
+<title>CPU</title>
+ 
+<indexterm id="IDX-CHP-8-0305"><primary>CPU</primary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0306"><primary>configuration, kernel</primary><secondary>CPU</secondary></indexterm> 
+
+<indexterm id="IDX-CHP-8-0307"><primary>processor types</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0308"><primary>PC-compatible option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0309"><primary>CPU</primary><secondary>processor types</secondary></indexterm> 
+
+<para>If you wish to have the Linux kernel run as fast as possible for your specific processor and hardware type, there are a few options that you can set to get the last bit of performance out of the hardware. This section will show some of the different processor-specific options that you can tune for your processor.</para>
+<sect2 id="linuxkian-CHP-8-SECT-3.1" label="8.3.1">
+<title>Processor Types</title>
+<para>A wide range of specific processor options are available to be changed in the Linux kernel. The most important one for our purpose specifies the exact type of CPU you are using this kernel for. To determine the type of processor you are using, run the following command:</para>
+<programlisting>
+$ <userinput>cat /proc/cpuinfo  | grep "model name"</userinput>
+model name      : Intel(R) Xeon(TM) CPU 3.20GHz
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows the model name of the processor present on the system.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Select the subarchitecture type of the processor:</para>
+<programlisting>
+Processor type and features
+    Subarchitecture Type
+        (X) PC-compatible
+        ( ) AMD Elan
+        ( ) Voyager (NCR)
+        ( ) NUMAQ (IBM/Sequent)
+        ( ) Summit/EXA (IBM x440)
+        ( ) Support for other sub-arch SMP systems with more than 8 CPUs
+        ( ) SGI 320/540 (Visual Workstation)
+        ( ) Generic architecture (Summit, bigsmp, ES7000, default)
+        ( ) Support for Unisys ES7000 IA32 series
+</programlisting>
+<para>Only if your machine is one of the other types in the preceding list should you select anything other than the <literal>PC-compatible</literal> option. However, if you wish to create a single kernel that will run on all of the types of machines shown, select the <literal>Generic architecture</literal> option. Some of the above options might not be present if you have not also selected the <literal>Symmetric multi-processing support</literal> option.</para></listitem>
+<listitem><para>Select the processor family type. The <literal>PC-compatible</literal> option needs to be selected from the previous options for this submenu to be displayed:</para>
+<programlisting>
+Processor type and features
+    Processor family
+        ( ) 386
+        ( ) 486
+        ( ) 586/K5/5x86/6x86/6x86MX
+        ( ) Pentium-Classic
+        ( ) Pentium-MMX
+        ( ) Pentium-Pro
+        ( ) Pentium-II/Celeron(pre-Coppermine)
+        ( ) Pentium-III/Celeron(Coppermine)/Pentium-III Xeon
+        ( ) Pentium M
+        (X) Pentium-4/Celeron(P4-based)/Pentium-4 M/Xeon
+        ( ) K6/K6-II/K6-III
+        ( ) Athlon/Duron/K7
+        ( ) Opteron/Athlon64/Hammer/K8
+        ( ) Crusoe
+        ( ) Efficeon
+        ( ) Winchip-C6
+        ( ) Winchip-2
+        ( ) Winchip-2A/Winchip-3
+        ( ) GeodeGX1
+        ( ) Geode GX/LX
+        ( ) CyrixIII/VIA-C3
+        ( ) VIA C3-2 (Nehemiah)
+        ( ) Generic x86 support
+</programlisting>
+</listitem>
+</orderedlist>
+<para>For more details on this configuration item, please refer to the entry for M386 in <link linkend="linuxkian-CHP-11">Chapter 11</link> for a full description of how to pick the proper processor type depending on what processor you have, and what range of machines you wish the kernel to run on.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.2" label="8.3.2">
+<title>SMP</title>
+ 
+<indexterm id="IDX-CHP-8-0310"><primary>CPU</primary><secondary>SMP</secondary></indexterm> 
+
+<indexterm id="IDX-CHP-8-0311"><primary>servers, preemption modes to handle workloads</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0312"><primary>multiprocessing, enabling</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0313"><primary>locks, interruptions to a main kernel lock</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0314"><primary>interruptions, kernel</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0315"><primary>HyperThreaded or Dual Core CPU</primary></indexterm> 
+
+<para>If your system contains more than one CPU, or a Hyperthreaded or Dual Core CPU, 
+<indexterm id="IDX-CHP-8-0316"><primary>Dual Core CPU</primary></indexterm> 
+ you should select the multiprocessor option for the Linux kernel in order to take advantage of the additional processors. Unless you do, you will be wasting the other processors by not using them at all.</para>
+<para>Enable multiprocessing:</para>
+<programlisting>
+Processor type and features
+    [*] Symmetric multi-processing support
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.3" label="8.3.3">
+<title>Preemption</title>
+<para>Systems running as servers have very different workload requirements from those being used as a desktop for video and audio applications. The kernel allows different modes of "preemption"<indexterm id="IDX-CHP-8-0317"><primary>preemption</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0318"><primary>CPU</primary><secondary>preemption</secondary></indexterm> 
+ in order to handle these different workloads. <emphasis>Preemption</emphasis> is the ability of the kernel to interrupt itself while it is doing something else, in order to work on something with a higher priority, such as updating a sound or video program.</para>
+<para>To change to a different preemption model, use this menu:</para>
+<programlisting>
+Processor type and features
+    Preemption Model
+        (X) No Forced Preemption (Server)
+    ( ) Voluntary Kernel Preemption (Desktop)
+    ( ) Preemptible Kernel (Low-Latency Desktop)
+</programlisting>
+<para>If you wish to make the kernel even more responsive to higher priority tasks than the general preemption option provides, you can also allow interruptions to one of the main internal kernel locks:</para>
+<programlisting>
+Processor type and features
+    [*] Preempt The Big Kernel Lock
+</programlisting>
+<para>This option is able to be selected only if you have already selected either the <literal>Preemptible Kernel</literal> or <literal>Symmetric multi-processing support</literal> options.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.4" label="8.3.4">
+<title>Suspend</title>
+<indexterm id="IDX-CHP-8-0319"><primary>swap partitions, kernel</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0320"><primary>suspending kernel to disk</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0321"><primary>power management</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0322"><primary>laptops, suspending kernel</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0323"><primary>frequency scaling, CPU</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0324"><primary>CPU</primary><secondary>suspending</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0325"><primary>conserving power and battery life</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0326"><primary>battery life, conserving</primary></indexterm> 
+
+<para>The Linux kernel has the ability to suspend itself to disk, allowing you to disconnect the power, and then at a later time, power up and resume exactly where the machine was when it was suspended. This functionality is very useful on laptops that run Linux.</para>
+<para>Enable this by selecting:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    [*] Software Suspend
+</programlisting>
+<para>The kernel needs to know where to save the suspended kernel image to, and then later where to resume it from. This location is usually a kernel swap partition on the disk. To specify which partition this should be set:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    (/dev/hda3) Default resume partition
+</programlisting>
+<para>Make sure you specify the proper partition to suspend the machine to, and do not use a partition that is being used by the system for data. The proper partition name can be found by running the following command:</para>
+<programlisting>
+$ <userinput>/sbin/swapon -s | grep dev | cut -f 1 -d ' '</userinput>
+/dev/hda3
+</programlisting>
+<para>Use the output of the preceding command in this kernel configuration option, and on the kernel boot line where it specifies where the kernel should be resumed from. After the machine has been suspended, to have it resume properly, pass the <literal>resume=/dev/swappartition</literal> argument to the kernel command line to have it use the proper image. If you do not want to have the suspended image restored, use the <literal>noresume</literal> kernel command-line argument.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.5" label="8.3.5">
+<title>CPU Frequency Scaling</title>
+<para>Most modern processors can slow down the internal clock of the processor to conserve power and battery life. Linux supports this ability and offers a variety of power "governors." Different governors implement different heuristics in order to determine how to vary the processor speed depending on the system load and other variables.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable the basic frequency scaling 
+<indexterm id="IDX-CHP-8-0327"><primary>CPU</primary><secondary>frequency scaling</secondary></indexterm> 
+ functionality:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    [*] CPU Frequency scaling
+</programlisting>
+</listitem>
+<listitem><para>Select the different type of frequency governors you wish to use:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    [*] CPU Frequency scaling
+    [*]   'performance' governor
+    [*]   'powersave' governor
+    [*]   'userspace' governor for userspace frequency scaling
+    [*]   'ondemand' cpufreq policy governor
+    [*]   'conservative' cpufreq governor
+</programlisting>
+<para>For more information on what the different governors do, see the entry for CPU_FREQ in <link linkend="linuxkian-CHP-11">Chapter 11</link>.</para></listitem>
+<listitem><para>Select the default governor you wish to have running when the machine boots:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    [*] CPU Frequency scaling
+          Default CPUFreq governor (performance)
+</programlisting>
+</listitem>
+<listitem><para>Select the specific processor type on the machine. For details on how to determine the processor type of the machine, see the earlier section, "<link linkend="linuxkian-CHP-8-SECT-3.1">Processor Types</link>."</para>
+<programlisting>
+Power management options (ACPI, APM)
+    [*] CPU Frequency scaling
+    ---   CPUFreq processor drivers
+    [ ]   ACPI Processor P-States driver
+    [ ]   AMD Mobile K6-2/K6-3 PowerNow!
+    [ ]   AMD Mobile Athlon/Duron PowerNow!
+    [ ]   AMD Opteron/Athlon64 PowerNow!
+    [ ]   Cyrix MediaGX/NatSemi Geode Suspend Modulation
+    [*]   Intel Enhanced SpeedStep
+    [*]     Use ACPI tables to decode valid frequency/voltage pairs
+    [*]     Built-in tables for Banias CPUs
+    [ ]   Intel Speedstep on ICH-M chipsets (ioport interface)
+    [ ]   Intel SpeedStep on 440BX/ZX/MX chipsets (SMI interface)
+    [ ]   Intel Pentium 4 clock modulation
+    [ ]   nVidia nForce2 FSB changing
+    [ ]   Transmeta LongRun
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.6" label="8.3.6">
+<title>Different Memory Models</title>
+<indexterm id="IDX-CHP-8-0328"><primary>processor types</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0329"><primary>address space of 32-bit processor</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0330"><primary>32-bit Intel processors, memory models</primary></indexterm> 
+
+<para>Linux on 32-bit Intel hardware can access up to 64 GB of memory, but the address space of the 32-bit processor is only 4 GB. To work around this limitation, Linux can map the additional memory into another area and then switch to it when other tasks need it. But if your machine has a smaller amount of memory, it is easier for Linux not to have to worry about handling the bigger areas, so it is beneficial to tell the kernel how much memory you want it to support. For a more detailed description of this option, please see the entry for HIGHMEM in <link linkend="linuxkian-CHP-11">Chapter 11</link>.</para>
+<para>Linux supports three different memory models<indexterm id="IDX-CHP-8-0331"><primary>memory models</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0332"><primary>CPU</primary><secondary>memory models</secondary></indexterm> 
+ for 32-bit Intel processors, depending on the memory available:</para>
+<itemizedlist mark="bull">
+<listitem><para>Under 1 GB of physical memory</para></listitem>
+<listitem><para>Between 1 and 4 GB of physical memory.</para></listitem>
+<listitem><para>Greater than 4 GB of physical memory.</para></listitem>
+</itemizedlist>
+<para>To select the amount of memory:</para>
+<programlisting>
+Processor type and features
+    High Memory Support
+        (X) off
+        ( ) 4GB
+        ( ) 64GB
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-3.7" label="8.3.7">
+<title>ACPI</title>
+ 
+<indexterm id="IDX-CHP-8-0333"><primary>network configuration option (main)</primary></indexterm> 
+
+<para>On almost all modern Intel-based systems, ACPI is required in order for the machine to work properly. ACPI is a standard that allows the BIOS of the computer to work with the operating system in order to access the hardware in an indirect manner, in the hope of handling a wide range of devices with relatively little code specific to each operating system. ACPI also provides a facility to help suspend and resume a machine and control the speed of the processor and fans. If you have a laptop, it is recommended that you enable this option.</para>
+<para>To enable ACPI:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    ACPI (Advanced Configuration and Power Interface) 
+<indexterm id="IDX-CHP-8-0334"><primary>CPU</primary><secondary>ACPI (Advanced
+Configuration and Power Interface)</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0335"><primary>ACPI (Advanced Configuration and Power
+Interface)</primary></indexterm> 
+ Support
+        [*] ACPI Support
+</programlisting>
+<para>There are a wide range of different ACPI "drivers" that control different types of ACPI devices. You should enable the specific ones that you have on your machine:</para>
+<programlisting>
+Power management options (ACPI, APM)
+    ACPI (Advanced Configuration and Power Interface) Support
+        [*] ACPI Support
+        [*]   AC Adapter
+        [*]   Battery
+        [*]   Button
+        [*]   Video
+        [*]   Generic Hotkey (EXPERIMENTAL)
+        [*]   Fan
+        [*]   Processor
+        [*]     Thermal Zone
+        [ ]   ASUS/Medion Laptop Extras
+        [ ]   IBM ThinkPad Laptop Extras
+        [ ]   Toshiba Laptop Extras
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-4" label="8.4">
+<title>Networking</title>
+<para>Networking is required for almost all machines today, and Linux supports almost every networking<indexterm id="IDX-CHP-8-0336"><primary>networking</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0337"><primary>configuration, kernel</primary><secondary>networking</secondary></indexterm> 
+ option available. Here I am going to show only a few of the wide variety that are present.</para>
+<para>For all networking options, including different drivers, the main network configuration option must be enabled:</para>
+<programlisting>
+Networking
+    [*] Networking support
+</programlisting>
+<para>The TCP/IP option 
+<indexterm id="IDX-CHP-8-0338"><primary>TCP/IP option</primary></indexterm> 
+ should also be selected so that the machine can talk to other machines on the Internet:</para>
+<programlisting>
+Networking
+    [*] Networking support
+          Networking options
+              [*] TCP/IP networking
+</programlisting>
+<sect2 id="linuxkian-CHP-8-SECT-4.1" label="8.4.1">
+<title>Netfilter</title>
+ 
+<indexterm id="IDX-CHP-8-0339"><primary>networking</primary><secondary>Netfilter</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0340"><primary>Netfilter</primary></indexterm> 
+
+<indexterm id="IDX-CHP-8-0341"><primary>protocols, selecting for filtering</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0342"><primary>networking</primary><secondary>network drivers</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0343"><primary>netlink interface and Xtables support (Netfilter)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0344"><primary>firewalling</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0345"><primary>filtering and manipulating network packets</primary></indexterm> 
+
+<para>The Netfilter portion of the Linux kernel is a framework for filtering and manipulating all network 
+<indexterm id="IDX-CHP-8-0346"><primary>device drivers</primary><secondary>network</secondary></indexterm> 
+ packets that pass through the machine. It is commonly used if you wish to enable a firewall on the machine to protect it from different systems on the Internet, or to use the machine as a proxy for other machines on the network. For more details on what Netfilter is good for, please see the entry for NETFILTER in <link linkend="linuxkian-CHP-11">Chapter 11</link>.</para>
+<orderedlist numeration="arabic">
+<listitem><para>To enable the main Netfilter option:</para>
+<programlisting>
+Networking
+    [*] Networking support
+          Networking options
+              [*] Network packet filtering (replaces ipchains)
+</programlisting>
+</listitem>
+<listitem><para>It is recommended that you enable the Netfilter netlink interface and Xtables support when using netlink:</para>
+<programlisting>
+Networking
+    [*] Networking support
+          Networking options
+              [*] Network packet filtering (replaces ipchains)
+                    Core Netfilter Configuration
+                        [*] Netfilter netlink interface
+                        [*] Netfilter Xtables support (required for ip_tables)
+</programlisting>
+</listitem>
+<listitem><para>The different protocols that you wish to filter should also be selected:</para>
+<programlisting>
+Networking
+    [*] Networking support
+          Networking options
+              [*] Network packet filtering (replaces ipchains)
+                    IP: Netfilter Configuration
+                        [M] Connection tracking (required for masq/NAT)
+                        [ ]   Connection tracking flow accounting
+                        [ ]   Connection mark tracking support
+                        [ ]   Connection tracking events (EXPERIMENTAL)
+                        [ ]   SCTP protocol connection tracking support (EXPERIMENTAL)
+                        [M]   FTP protocol support
+                        [ ]   IRC protocol support
+                        [ ]   NetBIOS name service protocol support (EXPERIMENTAL)
+                        [M]   TFTP protocol support
+                        [ ]   Amanda backup protocol support
+                        [ ]   PPTP protocol support
+                        [ ]   H.323 protocol support (EXPERIMENTAL)
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-4.2" label="8.4.2">
+<title>Network Drivers</title>
+<para>Linux supports a wide array of different network devices. The most common one is a PCI network device, 
+<indexterm id="IDX-CHP-8-0347"><primary>PCI devices</primary><secondary>network device</secondary></indexterm> 
+ into which an Ethernet cable can be plugged. To determine whether you have a PCI network device on the system, and what type it is, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep Ethernet</userinput>
+03:0c.0 Ethernet controller: D-Link System Inc RTL8139 Ethernet (rev 10)
+03:0e.0 Ethernet controller: Intel Corporation 82545GM Gigabit Ethernet Controller
+(rev 04)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some PCI 
+<indexterm id="IDX-CHP-8-0348"><primary>Ethernet devices</primary><secondary>PCI</secondary></indexterm> 
+ Ethernet devices.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable PCI support for the kernel:</para>
+<programlisting>
+Bus options (PCI, PCMCIA, EISA, MCA, ISA)
+[*] PCI Support
+</programlisting>
+</listitem>
+<listitem><para>Enable basic network device support:</para>
+<programlisting>
+Device Drivers
+    Network device support
+        [*] Network device support
+</programlisting>
+</listitem>
+<listitem><para>Then comes the fun task of finding the specific device drivers for your hardware. The most common place to find Ethernet devices for modern hardware is in the gigabit section of the driver selection:</para>
+<programlisting>
+Device Drivers
+    Network device support
+        [*] Network device support
+            Ethernet (1000 Mbit)
+</programlisting>
+<para>Some older ethernet devices will be found in the 10- and 100-Mbit section:</para>
+<programlisting>
+Device Drivers
+    Network device support
+        [*] Network device support
+            Ethernet (10 or 100Mbit)
+</programlisting>
+<para>Look through those sections to find the proper driver for your specific devices.</para></listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-4.3" label="8.4.3">
+<title>IrDA</title>
+<indexterm id="IDX-CHP-8-0349"><primary>networking</primary><secondary>IrDA (infrared protocol)</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0350"><primary>IrDA (infrared protocol)</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0351"><primary>infrared protocol (IrDA)</primary></indexterm> 
+
+<para>IrDA is an infrared protocol used by a number of laptops and PDAs to communicate over very short distances. It is prevalent on older hardware, with newer hardware using Bluetooth to communicate instead. See the later section, "<link linkend="linuxkian-CHP-8-SECT-4.4">Bluetooth</link>," for configuring Bluetooth.</para>
+<orderedlist numeration="arabic">
+<listitem><para>IrDA is a network protocol, so it can be found under the networking main menu:</para>
+<programlisting>
+Networking
+    [*] Networking support
+    [*]   IrDA (infrared) subsystem support
+</programlisting>
+</listitem>
+<listitem><para>A number of different IrDA protocols can be selected, depending on the type of device you wish to communicate with and the program used to do the communication:</para>
+<programlisting>
+Networking
+    [*] Networking support
+        --- IrDA (infrared) subsystem support
+        ---   IrDA protocols
+        [*]   IrLAN protocol (NEW)
+        [*]   IrCOMM protocol (NEW)
+        [*]   Ultra (connectionless) protocol (NEW)
+</programlisting>
+</listitem>
+<listitem><para>There are a wide range of different types of IrDA devices, some serial, some PCI, and others based on USB. To select the specific type of IrDA device you have, choose it under the driver submenu for IrDA:</para>
+<programlisting>
+Networking
+    [*] Networking support
+        --- IrDA (infrared) subsystem support
+              Infrared-port device drivers
+              --- SIR device drivers
+              [ ] IrTTY (uses Linux serial driver)
+              --- Dongle support
+              --- Old SIR device drivers
+              --- Old Serial dongle support
+              --- FIR device drivers
+              [ ] IrDA USB dongles
+              [ ] SigmaTel STIr4200 bridge (EXPERIMENTAL)
+              [ ] NSC PC87108/PC87338
+              [ ] Winbond W83977AF (IR)
+              [ ] Toshiba Type-O IR Port
+              [ ] SMSC IrCC (EXPERIMENTAL)
+              [ ] ALi M5123 FIR (EXPERIMENTAL)
+              [ ] VLSI 82C147 SIR/MIR/FIR (EXPERIMENTAL)
+              [ ] VIA VT8231/VT1211 SIR/MIR/FIR
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-4.4" label="8.4.4">
+<title>Bluetooth</title>
+ 
+<indexterm id="IDX-CHP-8-0352"><primary>Bluetooth</primary></indexterm> 
+
+<indexterm id="IDX-CHP-8-0353"><primary>wireless</primary><secondary>Bluetooth technology</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0354"><primary>mobile phones, Bluetooth wireless technology</primary></indexterm> 
+
+<para>Bluetooth is a wireless technology that was created to replace IrDA to talk between devices over a very short distance. It is a short-range wireless technology that was designed as a replacement for cables, operates within a 10 meter radius, and is commonly used in mobile phones.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Bluetooth is a network protocol, so it can be found under the networking main menu:</para>
+<programlisting>
+Networking
+    [*] Networking support
+    [*]   Bluetooth subsystem support
+</programlisting>
+</listitem>
+<listitem><para>There are two main protocol selections for Bluetooth. Both of these should be enabled in order to work with all types of Bluetooth devices:</para>
+<programlisting>
+Networking
+    [*] Networking support
+        --- Bluetooth subsystem support
+        [*]   L2CAP protocol support
+        [*]   SCO links support
+</programlisting>
+</listitem>
+<listitem><para>There are relatively few individual Bluetooth devices drivers available, because almost all of these devices follow the Bluetooth specification detailing how devices should operate. The drivers marked in the following list must be selected in order for Bluetooth to work with the device:</para>
+<programlisting>
+Networking
+    [*] Networking support
+        --- Bluetooth subsystem support
+            Bluetooth device drivers
+                [M] HCI USB driver
+                [*]   SCO (voice) support
+                [ ] HCI UART driver
+                [M] HCI BCM203x USB driver
+                [M] HCI BPA10x USB driver
+                [ ] HCI BlueFRITZ! USB driver
+                [ ] HCI DTL1 (PC Card) driver
+                [ ] HCI BT3C (PC Card) driver
+                [ ] HCI BlueCard (PC Card) driver
+                [ ] HCI UART (PC Card) device driver
+                [ ] HCI VHCI (Virtual HCI device) driver
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-4.5" label="8.4.5">
+<title>Wireless</title>
+<para>Wireless networking<indexterm id="IDX-CHP-8-0355"><primary>wireless</primary><secondary>networking</secondary></indexterm> 
+ is very popular, with almost all modern laptops having a built-in wireless<indexterm id="IDX-CHP-8-0356"><primary>networking</primary><secondary>wireless</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0357"><primary>device drivers</primary><secondary>network</secondary><tertiary>wireless</tertiary></indexterm> 
+ network device. Linux supports a wide range of wireless drivers, with more being added every week. To determine whether you have a PCI wireless device on the system, and what type it is, run the following command:</para>
+<programlisting>
+$ <userinput>/usr/sbin/lspci | grep -i wireless</userinput>
+06:05.0 Network controller: Intel Corporation PRO/Wireless 2915ABG MiniPCI
+Adapter (rev 05)
+</programlisting>
+<para>Note that your response will probably not be identical; what is important is that the command shows some PCI wireless devices.</para>
+<orderedlist numeration="arabic">
+<listitem><para>To enable wireless support in Linux, the IEEE 802.11 network configuration option<indexterm id="IDX-CHP-8-0358"><primary>IEEE 802.11</primary><secondary>network configuration option</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0359"><primary>802.11</primary><secondary>network configuration option</secondary></indexterm> 
+ must be enabled. (802.11 is the number of the wireless specification that all these devices follow.)</para>
+<programlisting>
+Networking
+    [*] Networking support
+    [*]   Generic IEEE 802.11 Networking Stack
+</programlisting>
+</listitem>
+<listitem><para>Also enable the different 802.11 protocol options and the <literal>Software MAC</literal> option to provide full support for all different types of wireless devices in Linux:</para>
+<programlisting>
+Networking
+    [*] Networking support
+    [*]   Generic IEEE 802.11 Networking Stack
+    [*]     IEEE 802.11 WEP encryption (802.1x)
+    [M]     IEEE 802.11i CCMP support
+    [M]     IEEE 802.11i TKIP encryption
+    [M]     Software MAC add-on to the IEEE 802.11 networking stack
+</programlisting>
+</listitem>
+<listitem><para>Support for the different PCI types of wireless network devices is found under the Network driver section of the configuration:</para>
+<programlisting>
+Device Drivers
+    Network device support
+        Wireless LAN (non-hamradio)
+            [*] Wireless LAN drivers (non-hamradio) &amp; Wireless Extensions
+            [*]   Wireless Extension API over RtNetlink
+</programlisting>
+<para>There is a wide range of different PCI drivers in this section. Select the proper one depending on the device you have.</para></listitem>
+</orderedlist>
+<para>The USB wireless networking device drivers 
+<indexterm id="IDX-CHP-8-0360"><primary>USB (Universal Serial Bus)</primary><secondary>wireless networking device drivers</secondary></indexterm> 
+ are in a different section of the configuration:</para>
+<programlisting>
+Device Drivers
+    USB Support
+        USB Network Adapters
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-5" label="8.5">
+<title>Filesystems</title>
+<indexterm id="IDX-CHP-8-0361"><primary>hardware RAID</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0362"><primary>disks</primary><secondary>combining multiple to resemble a logical disk with RAID</secondary></indexterm> 
+
+<para>Linux supports a wide range of traditional filesystem types and a number of different types of filesystems<indexterm id="IDX-CHP-8-0363"><primary>filesystems</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0364"><primary>configuration, kernel</primary><secondary>filesystems</secondary></indexterm> 
+ (volume managers, clustered filesystems, etc.). The traditional filesystem types (normal or journaled) can be selected from the main File systems configuration menu:</para>
+<programlisting>
+File systems
+    [*] Second extended fs support
+    [*] Ext3 journalling file system support
+    [ ] Reiserfs support
+    [ ] JFS filesystem support
+    [ ] XFS filesystem support
+</programlisting>
+<para>This section will show a few of the nontraditional filesystem types that Linux supports and how to enable them.</para>
+<sect2 id="linuxkian-CHP-8-SECT-5.1" label="8.5.1">
+<title>RAID</title>
+ 
+<indexterm id="IDX-CHP-8-0365"><primary>RAID</primary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-8-0366"><primary>filesystems</primary><secondary>RAID</secondary></indexterm> 
+
+<para>RAID offers the option of combining numerous disks together so that they look like one logical disk. This can help in providing ways of providing redundancy or speed by spreading the data across different disk platters. Linux supports both hardware and software RAID. 
+<indexterm id="IDX-CHP-8-0367"><primary>software RAID</primary></indexterm> 
+ Hardware RAID is handled by the disk controller, without any help needed from the kernel.</para>
+<orderedlist numeration="arabic">
+<listitem><para>Software RAID is controlled by the kernel, and can be selected as a build option:</para>
+<programlisting>
+Device Drivers
+    Multi-device support (RAID and LVM)
+        [*] Multiple devices driver support (RAID and LVM)
+        [*]   RAID support
+</programlisting>
+</listitem>
+<listitem><para>There are many different types of RAID configurations. At least one needs to be selected in order for RAID to work properly:</para>
+<programlisting>
+Device Drivers
+    Multi-device support (RAID and LVM)
+        [*] Multiple devices driver support (RAID and LVM)
+        [*]   RAID support
+        [*]     Linear (append) mode
+        [*]     RAID-0 (striping) mode
+        [*]     RAID-1 (mirroring) mode
+        [*]     RAID-10 (mirrored striping) mode (EXPERIMENTAL)
+        [*]     RAID-4/RAID-5 mode
+        [*]     RAID-6 mode
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-5.2" label="8.5.2">
+<title>Logical Volume Manager and Device Mapper</title>
+<indexterm id="IDX-CHP-8-0368"><primary>Windows systems, filesharing with Linux</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0369"><primary>volume managers</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0370"><primary>LVM (Logical Volume Manager)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0371"><primary>filesystems</primary><secondary>Linux, sharing files with Windows</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0372"><primary>DM (Device Mapper)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0373"><primary>disks</primary><secondary>combining portions of, using LVM and DM</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0374"><primary>Common Internet File System (CIFS)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0375"><primary>CIFS (Common Internet File System)</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0376"><primary>block devices</primary><secondary>combined to resemble one logical device</secondary></indexterm> 
+
+<para>Much like RAID, Logical Volume Manager (LVM)<indexterm id="IDX-CHP-8-0377"><primary>Logical Volume Manager (LVM)</primary></indexterm> 
+ allows the user to combine different block devices to look like one logical device. However, it does not work on a device level like RAID, but through a block and sector mapping mechanism. It allows different portions of different disks to be combined together to look like one large block device to the user. To do this, the kernel uses something called Device Mapper (DM). 
+<indexterm id="IDX-CHP-8-0378"><primary>Device Mapper (DM)</primary></indexterm> 
+</para>
+<orderedlist numeration="arabic">
+<listitem><para>Enable DM support in the kernel:</para>
+<programlisting>
+Device Drivers
+    Multi-device support (RAID and LVM)
+        [*] Multiple devices driver support (RAID and LVM)
+        [*]   Device mapper support
+</programlisting>
+</listitem>
+<listitem><para>There are a number of helper modules that work with DM to provide additional functionality. You should enable them if you wish to encrypt your devices, or allow snapshot functionality:</para>
+<programlisting>
+Device Drivers
+    Multi-device support (RAID and LVM)
+        [*] Multiple devices driver support (RAID and LVM)
+        [*]   Device mapper support
+        [*]     Crypt target support
+        [*]     Snapshot target (EXPERIMENTAL)
+        [*]     Mirror target (EXPERIMENTAL)
+        [*]     Zero target (EXPERIMENTAL)
+        [*]     Multipath target (EXPERIMENTAL)
+</programlisting>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-5.3" label="8.5.3">
+<title>File Sharing with Windows</title>
+<para>Samba 
+<indexterm id="IDX-CHP-8-0379"><primary>Samba</primary></indexterm> 
+ is a program that allows Linux users to access Windows machines natively across the network, providing a way to share drives and devices in a transparent manner. It also allows Linux to work as a Windows server, allowing Windows clients to connect to it thinking that it is a real Windows machine.</para>
+<para>Two different filesystems that allow a Linux machine to connect with a Windows machine: the SMB filesystem 
+<indexterm id="IDX-CHP-8-0380"><primary>SMB (Server Message Block)</primary><secondary>SMB filesystem</secondary></indexterm> 
+ and the CIFS filesystem. For the ability to connect to older Windows for Workgroups or Windows 95 or 98 machines, select the SMB filesystem:</para>
+<programlisting>
+File systems
+    Network File Systems
+        [*] SMB file system support (to mount Windows shares etc.)
+</programlisting>
+<para>For the ability to connect to newer Windows machines, the CIFS filesystem is recommended instead:</para>
+<programlisting>
+File systems
+    Network File Systems
+        [*] CIFS support
+</programlisting>
+<para>For more details on the differences between these two filesystems, and when one should be used instead of the other, please see the SMB_FS and CIFS entries in <link linkend="linuxkian-CHP-11">Chapter 11</link>.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-5.4" label="8.5.4">
+<title>OCFS2</title>
+<indexterm id="IDX-CHP-8-0381"><primary>SELinux (Security-Enhanced Linux)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0382"><primary>security</primary><secondary>standard security model</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0383"><primary>Oracle cluster filesystem (OCFS2)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0384"><primary>OCFS2 (cluster filesystem from Oracle)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0385"><primary>filesystems</primary><secondary>OCFS2 (cluster filesystem from Oracle)</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0386"><primary>databases, filesystem for</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0387"><primary>cluster filesystem (OCFS2)</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0388"><primary>capability model (security)</primary></indexterm> 
+
+<para>OCFS2 is a cluster filesystem from Oracle that works for large network installations and small local systems at the same time. This filesystem is recommended when using large databases, such as Oracle or DB2, because it can be moved over time to different backing disks across the network quite easily as more storage is needed.</para>
+<para>To enable the filesystem:</para>
+<programlisting>
+File systems
+    [*] OCFS2 file system support
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-6" label="8.6">
+<title>Security</title>
+<para>The Linux kernel supports different security<indexterm id="IDX-CHP-8-0389"><primary>security</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0390"><primary>configuration, kernel</primary><secondary>security</secondary></indexterm> 
+ models by providing hooks and letting you build in your choice of model. At the moment, only a few models come with the default kernel source tree, but developers of new models are working on getting more accepted.</para>
+<sect2 id="linuxkian-CHP-8-SECT-6.1" label="8.6.1">
+<title>Default Linux Capabilities</title>
+<para>The standard type of security model for Linux is the "capability" model. You should always select this option unless you really want to run an insecure kernel for some reason.</para>
+<para>To enable it:</para>
+<programlisting>
+Security options
+    [*] Enable different security models
+    [*]   Default Linux Capabilities
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-6.2" label="8.6.2">
+<title>SELinux</title>
+<para>A very popular security model is called SELinux. This model is supported by a number of different Linux distributions.</para>
+<para>SELinux requires that the networking option be enabled. See the earlier section, "<link linkend="linuxkian-CHP-8-SECT-4">Networking</link>," to enable this.</para>
+<para>SELinux also requires that audit be enabled in the kernel configuration. To do this:</para>
+<programlisting>
+General setup
+    [*] Auditing support
+</programlisting>
+<para>Also, the networking security option must be enabled:</para>
+<programlisting>
+Security options
+    [*] Enable different security models
+    [*]   Socket and Networking Security Hooks
+</programlisting>
+<para>Now it is possible to select the SELinux option:</para>
+<programlisting>
+Security options
+    [*] Enable different security models
+    [*] NSA SELinux Support
+</programlisting>
+<para>There are also a number of individual SELinux options that you might wish to enable. Please see the help for the individual different items for more descriptions on what they do:</para>
+<programlisting>
+Security options
+    [*] Enable different security models
+    [*] NSA SELinux Support
+    [ ]   NSA SELinux boot parameter
+    [ ]   NSA SELinux runtime disable
+    [*]   NSA SELinux Development Support
+    [*]   NSA SELinux AVC Statistics
+    (1)   NSA SELinux checkreqprot default value
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-8-SECT-7" label="8.7">
+<title>Kernel Debugging</title>
+<indexterm id="IDX-CHP-8-0391"><primary>logging</primary><secondary>kernel log timestamps</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0392"><primary>dmesg command</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0393"><primary>debugging, kernel</primary><secondary>SysRq keys</secondary></indexterm> 
+<indexterm id="IDX-CHP-8-0394"><primary>debugging, kernel</primary><secondary>kernel log timestamps</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0395"><primary>debugging, kernel</primary></indexterm> 
+
+<para>A wide range of different kernel options can help in debugging 
+<indexterm id="IDX-CHP-8-0396"><primary>configuration, kernel</primary><secondary>debugging</secondary></indexterm> 
+ what is going on within the kernel. Following is a list of some of the more common ones that can be useful for discovering new things about how the kernel works, or help find potential problems within the current kernel source code.</para>
+<sect2 id="linuxkian-CHP-8-SECT-7.1" label="8.7.1">
+<title>Kernel Log Timestamps</title>
+<para>The kernel outputs a wide range of messages to its logfile. These messages can be seen by looking at the system logfile 
+<indexterm id="IDX-CHP-8-0397"><primary>system logfile</primary></indexterm> 
+ (usually located in <emphasis>/var/log/messages</emphasis>), or by running the <emphasis>dmesg</emphasis> command.</para>
+<para>Sometimes it is useful to see exactly when those messages were created. <emphasis>dmesg</emphasis>, however, does not put any timestamps on the events it shows, and the time resolution of <emphasis>/var/log/messages</emphasis> is only to the nearest second. You can configure the kernel to assign each message a timestamp that is accurate down to the smallest measurable kernel time value (usually in the microsecond range).</para>
+<para>To enable timestamp options on kernel messages:</para>
+<programlisting>
+Kernel hacking
+    [*] Show timing information on printks
+</programlisting>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-7.2" label="8.7.2">
+<title>Magic SysRq Keys</title>
+<para>The <literal>SysRq</literal> key on the keyboard can be used to control the kernel in a number of different ways while the kernel is running, or after it has crashed.</para>
+<para>To enable this option:</para>
+<programlisting>
+Kernel hacking
+    [*] Magic SysRq key 
+<indexterm id="IDX-CHP-8-0398"><primary>SysRq key</primary></indexterm> 
+
+</programlisting>
+<para>For a full description of the different actions that can be triggered by this option, please see the file <emphasis>Documentation/sysrq.txt</emphasis> in the kernel source tree.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-7.3" label="8.7.3">
+<title>Debug Filesystem</title>
+<indexterm id="IDX-CHP-8-0399"><primary>sysfs (virtual filesystem)</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0400"><primary>RAM-based filesystems</primary></indexterm> 
+<indexterm id="IDX-CHP-8-0401"><primary>debugging, kernel</primary><secondary>general configuration options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-8-0402"><primary>debugging, kernel</primary><secondary>debug filesystem</secondary></indexterm> 
+
+<para>A RAM-based filesystem can be used to output a lot of different debugging information. This filesystem is called <emphasis>debugfs</emphasis> 
+<indexterm id="IDX-CHP-8-0403"><primary>filesystems</primary><secondary>debugfs</secondary></indexterm> 
+ and can be enabled:</para>
+<programlisting>
+Kernel hacking
+    [*] Debug filesystem
+</programlisting>
+<para>After you enable this option and boot the rebuilt kernel, it creates the directory <emphasis>/sys/kernel/debug</emphasis> as a location for the user to mount the <literal>debugfs</literal> filesystem. Do this manually by:</para>
+<programlisting>
+$ <userinput>mount -t debugfs none /sys/kernel/debug</userinput>
+</programlisting>
+<para>Or have the filesystem mounted automatically at boot time by adding the following line to the <emphasis>/etc/fstab</emphasis> file:</para>
+<programlisting>
+debugfs /sys/kernel/debug debugfs 0 0
+</programlisting>
+<para>After you mount <emphasis>debugfs</emphasis>, a large number of different directories and files will turn up in the <emphasis>/sys/kernel/debug/</emphasis> directory. These are all virtual and dynamically generated by the kernel, like the files in <emphasis>procfs</emphasis> 
+<indexterm id="IDX-CHP-8-0404"><primary>procfs</primary></indexterm> 
+ or <emphasis>sysfs</emphasis>. The files can be used to help debug different kernel subsystems, or just to see what is happening to the system as it runs.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-8-SECT-7.4" label="8.7.4">
+<title>General Kernel Debugging</title>
+<para>Here are a range of other good kernel configuration options that you might wish to enable if you want to help kernel developers debug different problems, or just learn more about how the kernel works by looking at the messages that these options print out. Note that if you enable almost any of these options, the kernel will slow down a small amount, so if you notice any decrease in performance, you might wish to disable the options:</para>
+<programlisting>
+Kernel hacking
+    [*] Kernel debugging
+    [*]   Detect Soft Lockups
+    [ ]   Collect scheduler statistics
+    [*]   Debug slab memory allocations
+    [*]     Memory leak debugging
+    [*]   Mutex debugging, deadlock detection
+    [*]   Spinlock debugging
+    [*]   Sleep-inside-spinlock checking
+    [ ]   kobject debugging
+    [ ]   Highmem debugging
+    [ ]   Compile the kernel with debug info
+</programlisting>
+</sect2>
+</sect1>
+</chapter>

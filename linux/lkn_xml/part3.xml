@@ -1,0 +1,12 @@
+<part id="linuxkian-PART-III" label="III">
+<title>Kernel Reference</title>
+<partintro>
+<para>This section provides reference information on kernel parameters of all types.</para>
+<para><link linkend="linuxkian-CHP-9">Chapter 9, <citation>Kernel Boot Command-Line Parameter Reference</citation></link></para>
+<para><link linkend="linuxkian-CHP-10">Chapter 10, <citation>Kernel Build Command-Line Reference</citation></link></para>
+<para><link linkend="linuxkian-CHP-11">Chapter 11, <citation>Kernel Configuration Option Reference</citation></link></para>
+</partintro>
+&ch09;
+&ch10;
+&ch11;
+</part>

@@ -1,0 +1,1951 @@
+<chapter id="linuxkian-CHP-9" label="9">
+<title>Kernel Boot Command-Line Parameter Reference</title>
+<para>The majority of this chapter is based on the in-kernel documentation for the different kernel boot command-line reference options, which were written by the kernel developers and released under the GPL.</para>
+<para>There are three ways to pass options to the kernel and thus control its behavior:</para>
+<itemizedlist mark="bull">
+<listitem><para>When building the kernel. Most of this book discusses these options.</para></listitem>
+<listitem><para>When starting the kernel. Usually, parameters are passed to the kernel when it is invoked from a boot file such as the GRUB or LILO configuration file.</para></listitem>
+<listitem><para>At runtime, by writing to files in the <emphasis>/proc</emphasis> and <emphasis>/sys</emphasis> directories.</para></listitem>
+</itemizedlist>
+<para>This chapter describes the second method of passing options. The chapter breaks the boot time options into different logical sections. A number of architecture-specific and individual driver options are not listed here. For a complete list of all known options, please see the file <emphasis>Documentation/kernel-parameters.txt</emphasis> in the kernel source tree and the individual architecture-specific documentation files.</para>
+<para>Not all of the listed options are always available. Most are associated with subsystems and work only if the kernel is configured with those subsystems built in. They also depend on the presence of the hardware with which they are associated.</para>
+<para>All of these parameters are case-sensitive.</para>
+<sect1 id="linuxkian-CHP-9-SECT-1" label="9.1">
+<title>Module-Specific Options</title>
+<indexterm id="IDX-CHP-9-0405"><primary>modules, kernel</primary><secondary>boot command-line parameters</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0406"><primary>boot command-line parameters</primary><secondary>module-specific</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0407"><primary>boot command-line parameters</primary></indexterm> 
+
+<para>In addition to the options listed in this chapter, parameters for modules that are built in to the kernel can also be passed on the command line. (Dynamically loaded modules, of course, are not in memory when the kernel boots and therefore cannot be passed as parameters at boot time.) The syntax for passing parameters consists of the module name followed by a dot (<literal>.</literal>) and the parameter.</para>
+<para>For example, the <emphasis>usbcore</emphasis> module accepts the parameter <emphasis>blinkenlights</emphasis> to display flashing lights on all supported USB 2.0 hubs (don't ever say the kernel developers don't have a sense of humor). To set this parameter when loading the module dynamically, you would enter:</para>
+<programlisting>
+$ <userinput>modprobe usbcore blinkenlights=1</userinput>
+</programlisting>
+<para>But if the <emphasis>usbcore</emphasis> module is built into the kernel, you achieve the same effect by invoking the kernel with the following option:</para>
+<programlisting>
+usbcore.blinkenlights=1
+</programlisting>
+<para>Most module options for modules that are built into the kernel can also be changed at runtime by writing to files in the subdirectory named after the module under the <emphasis>/sys/module</emphasis> directory. Thus, the <emphasis>blinkenlights</emphasis> option is represented by the file <emphasis>/sys/module/usbcore/blinkenlights</emphasis>.</para>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-2" label="9.2">
+<title>Console Options</title>
+<indexterm id="IDX-CHP-9-0408"><primary>quiet option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0409"><primary>logging</primary><secondary>loglevel option</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0410"><primary>logging</primary><secondary>log_buf_len option</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0411"><primary>klogd program</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0412"><primary>initcall_debugg option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0413"><primary>error information, console options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0414"><primary>earlyprintk option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0415"><primary>debugging, kernel</primary><secondary>console options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0416"><primary>debug option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0417"><primary>consoles</primary><secondary>kernel boot command-line parameters</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0418"><primary>console option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0419"><primary>boot command-line parameters</primary><secondary>console options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0420"><primary>blinkenlights parameter</primary></indexterm> 
+
+<para>These options deal with the console or kernel log, where kernel debugging and error information are displayed.</para>
+<variablelist>
+<title>console</title>
+<varlistentry>
+<term><emphasis role="strong">Output console device and options</emphasis>.</term>
+<term><literal>console=Options</literal></term>
+<term><literal>tty</literal><replaceable>n</replaceable></term>
+<listitem><para>Use the virtual console device <replaceable>n</replaceable>.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>ttyS</literal><replaceable>n</replaceable><literal>[,</literal><replaceable>options</replaceable><literal>]</literal>, <literal>ttyUSB0[,</literal><replaceable>options</replaceable><literal>]</literal></term>
+<listitem><para>Use the specified serial port. The options are of the form <replaceable>bbbbpnf</replaceable>, where <replaceable>bbbb</replaceable> is the baud rate, <replaceable>p</replaceable> is parity (<literal>n</literal>, <literal>o</literal>, or <literal>e</literal>), <replaceable>n</replaceable> is number of bits, and <replaceable>f</replaceable> is flow control (<literal>r</literal> for RTS or omitted). Default is <literal>9600n8</literal>.</para>
+<para>See the file <emphasis>Documentation/serial-console.txt</emphasis> for more information on how to use a serial console. If you wish to have access to the kernel console information and do not have a serial port, see the <emphasis>netconsole</emphasis> command-line option.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>uart,io,</literal><replaceable>addr</replaceable><literal>[,</literal><replaceable>options</replaceable><literal>]</literal>, <literal>uart,mmio,</literal><replaceable>addr</replaceable><literal>[,</literal><replaceable>options</replaceable><literal>]</literal></term>
+<listitem><para>Start an early, polled-mode console on the 8250/16550 UART at the specified I/O port or MMIO address, switching to the specified ttyS device later. The options are the same as for ttyS shown earlier.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>netconsole</title>
+<varlistentry>
+<term><emphasis role="strong">Output console data across the network</emphasis>.</term>
+<term><literal>netconsole=</literal>[<replaceable>src-port</replaceable>]<literal>@</literal>[<replaceable>src-ip</replaceable>]<literal>/</literal>[<replaceable>dev</replaceable>]<literal>,</literal>[<replaceable>target-port</replaceable>]<literal>@</literal><replaceable>target-ip</replaceable><literal>/</literal>[<replaceable>target-mac-address</replaceable>]</term>
+<listitem><para>Send kernel console data across the network using UDP packets to another machine. Options are:</para>
+<variablelist>
+<varlistentry>
+<term><replaceable>src-port</replaceable></term>
+<listitem><para>Source port for the UDP packets. The default value is 6665.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>src-ip</replaceable></term>
+<listitem><para>Source IP address of the interface to use.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>dev</replaceable></term>
+<listitem><para>Network interface to use. <literal>eth0</literal> is an example. The network interface can also run normal network traffic, because the netconsole data is not intrusive and should cause no slowdown in other network operations.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>target-port</replaceable></term>
+<listitem><para>Port that the logging agent will use. The default value is 6666.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>target-ip</replaceable></term>
+<listitem><para>IP address for the logging agent.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>target-mac-address</replaceable></term>
+<listitem><para>Ethernet MAC address for the logging agent.</para></listitem>
+</varlistentry>
+</variablelist>
+<para>To listen to this data, the remote machine can use the <emphasis>syslogd</emphasis> program, or run the <emphasis>netcat</emphasis> program as follows:</para>
+<programlisting>
+netcat -u -l -p <replaceable>port</replaceable>
+</programlisting>
+<para>For more background on how to use this option, see the file <emphasis>Documentation/networking/netconsole.txt</emphasis>.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>debug</title>
+<varlistentry>
+<term><emphasis role="strong">Enable kernel debugging</emphasis>.</term>
+<listitem><para>Cause the kernel log level to be set to the debug level, so that all debug messages will be printed to the console at boot time.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>quiet</title>
+<varlistentry>
+<term><emphasis role="strong">Disable all log messages</emphasis>.</term>
+<listitem><para>Set the default kernel log level to KERN_WARNING (4), which suppresses all messages during boot except extremely serious ones. (Log levels are defined under the <emphasis>loglevel</emphasis> parameter.)</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>earlyprintk</title>
+<varlistentry>
+<term><emphasis role="strong">Show early boot messages</emphasis>.</term>
+<term><literal>earlyprintk=</literal>[<replaceable>vga</replaceable>|<replaceable>serial</replaceable>][,<literal>ttyS</literal><replaceable>n</replaceable>[,<replaceable>baudrate</replaceable>]][,<literal>keep</literal>]</term>
+<listitem><para>Show kernel log messages that precede the initialization of the traditional console. These messages are typically never seen on the console unless you use this option. Enabling this can be very useful for tracking down hardware issues. Currently, the option can specify either the VGA device or the serial port, but not both at the same time. Also, only the <literal>ttyS0</literal> or <literal>ttyS1</literal> serial devices will work. Interaction with the standard serial driver is not very good, and the VGA output will eventually be overwritten by the real console.</para>
+<para>Append <literal>,keep</literal> in order not to disable the messages shown by this option when the real kernel console is initialized and takes over the system.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>loglevel</title>
+<varlistentry>
+<term><emphasis role="strong">Set the default console log level</emphasis>.</term>
+<term><literal>loglevel=</literal><replaceable>level</replaceable></term>
+<listitem><para>Specify the initial console log level. Any log messages with levels less than this (that is, of higher priority) will be printed to the console, whereas any messages with levels equal to or greater than this will not be displayed.</para>
+<para>The console log level can also be changed by the <emphasis>klogd</emphasis> program, or by writing the specified level to the <emphasis>/proc/sys/kernel/printk</emphasis> file.</para>
+<para>The kernel log levels are:</para>
+<variablelist>
+<varlistentry>
+<term><literal>0 (KERN_EMERG)</literal></term>
+<listitem><para>The system is unusable.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>1 (KERN_ALERT)</literal></term>
+<listitem><para>Actions that must be taken care of immediately.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>2 (KERN_CRIT)</literal></term>
+<listitem><para>Critical conditions.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>3 (KERN_ERR)</literal></term>
+<listitem><para>Noncritical error conditions.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>4 (KERN_WARNING)</literal></term>
+<listitem><para>Warning conditions that should be taken care of.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>5 (KERN_NOTICE)</literal></term>
+<listitem><para>Normal, but significant events.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>6 (KERN_INFO)</literal></term>
+<listitem><para>Informational messages that require no action.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>7 (KERN_DEBUG)</literal></term>
+<listitem><para>Kernel debugging messages, output by the kernel if the developer enabled debugging at compile time.</para></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>log_buf_len</title>
+<varlistentry>
+<term><emphasis role="strong">Set the size of the kernel log buffer</emphasis>.</term>
+<term><literal>log_buf_len=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Set the size of the kernel's internal log buffer. <replaceable>n</replaceable> must be a power of 2, if not, it will be rounded up to be a power of 2. This value can also be changed by the <literal>CONFIG_LOG_BUF_SHIFT</literal> kernel configuration value.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>initcall_debug</title>
+<varlistentry>
+<term><emphasis role="strong">Debug the initcall functions in the kernel</emphasis>.</term>
+<listitem><para>Cause the kernel to trace all functions that are called by the kernel during initialization of the system as the kernel boots. This option is useful for determining where the kernel is dying during startup.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>kstack</title>
+<varlistentry>
+<term><emphasis role="strong">How many words of the stack to print in kernel oopses</emphasis>.</term>
+<term><literal>kstack=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify how many words from the kernel stack should be printed in the kernel oops dumps. <replaceable>n</replaceable> is an integer value.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>time</title>
+<varlistentry>
+<term><emphasis role="strong">Show timing data on every kernel log message</emphasis>.</term>
+<listitem><para>Cause the kernel to prefix every kernel log message with a timestamp.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-3" label="9.3">
+<title>Interrupt Options</title>
+<indexterm id="IDX-CHP-9-0421"><primary>time option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0422"><primary>oops dumps, printing words from kernel stack</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0423"><primary>nolapic option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0424"><primary>noirqbalance option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0425"><primary>noapic option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0426"><primary>lapic option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0427"><primary>kstack option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0428"><primary>interrupt options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0429"><primary>boot command-line parameters</primary><secondary>interrupt options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0430"><primary>apic option</primary></indexterm> 
+
+<para>Interrupts are a complex aspect of kernel behavior. The boot time options deal mostly with the interface between the kernel and the hardware that handles interrupts, such as the Intel chip's Advanced Programmable Interrupt Controller (APIC). 
+<indexterm id="IDX-CHP-9-0431"><primary>Advanced Programmable Interrupt Controller (APIC)</primary></indexterm> 
+</para>
+<variablelist>
+<title>apic</title>
+<varlistentry>
+<term><emphasis role="strong">Change the verbosity of the APIC subsystem when booting</emphasis>.</term>
+<term><literal>apic=</literal>[<literal>quiet|verbose|debug</literal>]</term>
+<listitem><para>Control how much information the APIC subsystem generates when booting the kernel. The default is <literal>quiet</literal>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noapic</title>
+<varlistentry>
+<term><emphasis role="strong">Do not use any IOAPICs</emphasis>.</term>
+<listitem><para>Prevent the kernel from using any of the IOAPICs that might be present in the system.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lapic</title>
+<varlistentry>
+<term><emphasis role="strong">Enable the local APIC</emphasis>.</term>
+<listitem><para>Cause the kernel to enable the local APIC even if the BIOS had disabled it.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nolapic</title>
+<varlistentry>
+<term><emphasis role="strong">Do not use the local APIC</emphasis>.</term>
+<listitem><para>Tell the kernel not to use the local APIC.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noirqbalance</title>
+<varlistentry>
+<term><emphasis role="strong">Disable kernel IRQ balancing</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0432"><primary>IRQ balancing</primary></indexterm> 
+
+<listitem><para>Disable all of the built-in kernel IRQ balancing logic.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>irqfixup</title>
+<varlistentry>
+<term><emphasis role="strong">Basic fix to interrupt problems</emphasis>.</term>
+<listitem><para>When an interrupt is not handled, search all known interrupt handlers for it. This is intended to get systems with badly broken firmware running.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>irqpoll</title>
+<varlistentry>
+<term><emphasis role="strong">Extended fix to interrupt problems</emphasis>.</term>
+<listitem><para>When an interrupt is not handled, search all known interrupt handlers for it and also check all handlers on each timer interrupt. This is intended to get systems with badly broken firmware running.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noirqdebug</title>
+<varlistentry>
+<term><emphasis role="strong">Disable unhandled interrupt detection</emphasis>.</term>
+<listitem><para>By default, the kernel attempts to detect and disable unhandled interrupt sources because they can cause problems with the responsiveness of the rest of the kernel if left unchecked. This option disables this logic.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-4" label="9.4">
+<title>Memory Options</title>
+<indexterm id="IDX-CHP-9-0433"><primary>paging, hugepages option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0434"><primary>noirqdebug option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0435"><primary>memory options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0436"><primary>memmap option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0437"><primary>mem option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0438"><primary>max_addr option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0439"><primary>irqpoll option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0440"><primary>irqfixup option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0441"><primary>ihash_entries option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0442"><primary>hugepages option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0443"><primary>highmem option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0444"><primary>hash buckets for kernel inode cache</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0445"><primary>debugging, kernel</primary><secondary>IRQ debugging</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0446"><primary>boot command-line parameters</primary><secondary>memory options</secondary></indexterm> 
+
+<para>The kernel handles memory in many different chunks and categories for different purposes. These options allow you to tweak the sizes and settings.</para>
+<variablelist>
+<title>highmem</title>
+ 
+<indexterm id="IDX-CHP-9-0447"><primary>memory options</primary><secondary>highmem</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Specify the size of the highmem memory zone</emphasis>.</term>
+<term><literal>highmem=</literal><replaceable>n</replaceable></term>
+<listitem><para>Force the highmem memory zone to have an exact size of <replaceable>n</replaceable> bytes. This will work even on boxes that have no highmem zones by default. It can also reduce the size of the highmem zone for machines with a lot of memory.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>hugepages</title>
+ 
+<indexterm id="IDX-CHP-9-0448"><primary>memory options</primary><secondary>hugepages</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the number of hugetlb pages</emphasis>.</term>
+<term><literal>hugepages=</literal><replaceable>n</replaceable></term>
+<listitem><para>The hugetlb feature lets you configure Linux to use 4 MB pages, one thousand times the default size. If Linux is configured this way, this options sets the maximum number of hugetlb pages to be <replaceable>n</replaceable>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>ihash_entries</title>
+ 
+<indexterm id="IDX-CHP-9-0449"><primary>memory options</primary><secondary>ihash_entries</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the number of inode hash buckets</emphasis>.</term>
+<term><literal>ihash_entries=</literal><replaceable>n</replaceable></term>
+<listitem><para>Override the default number of hash buckets for the kernel's inode cache. Recommended only for kernel experts.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>max_addr</title>
+ 
+<indexterm id="IDX-CHP-9-0450"><primary>memory options</primary><secondary>max_addr</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Ignore memory</emphasis>.</term>
+<term><literal>max_addr=</literal><replaceable>n</replaceable></term>
+<listitem><para>Cause the kernel to ignore all physical memory greater than or equal to the physical address <replaceable>n</replaceable>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>mem</title>
+ 
+<indexterm id="IDX-CHP-9-0451"><primary>memory options</primary><secondary>mem</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Force memory usage</emphasis>.</term>
+<term><literal>mem=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Set the specific ammount of memory used by the kernel. When used with the <literal>memmap=</literal> 
+<indexterm id="IDX-CHP-9-0452"><primary>memory options</primary><secondary>memmap</secondary></indexterm> 
+ option, physical address space collisions can be avoided. Without the <literal>memmap=</literal> option, this option could cause PCI devices to be placed at addresses that belong to unused RAM. <replaceable>n</replaceable> specifies the amount of memory to force and is measured in units of kilobytes (<literal>K</literal>), megabytes (<literal>M</literal>), or gigabytes (<literal>G</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>mem</title>
+<varlistentry>
+<term><emphasis role="strong">Disable the use of 4 MB pages for kernel memory</emphasis>.</term>
+<term><literal>mem=nopentium</literal></term>
+<listitem><para>Disable the use of huge (4 MB) pages for kernel memory.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>memmap</title>
+<varlistentry>
+<term><emphasis role="strong">Enable setting of an exact E820 memory map</emphasis>.</term>
+<term><literal>memmap=</literal><replaceable>exactmap</replaceable></term>
+<listitem><para>Use a specific memory map. The <replaceable>exactmap</replaceable> lines can be constructed based on BIOS output or other requirements.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>memmap</title>
+<varlistentry>
+<term><emphasis role="strong">Force specific memory to be used</emphasis>.</term>
+<term><literal>memmap=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]<literal>@</literal><replaceable>start</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Force the kernel to use a specific memory region. <replaceable>n</replaceable> is the size of the memory location, and <replaceable>start</replaceable> is the start location in memory of the range. Units can be kilobytes (<literal>K</literal>), megabytes (<literal>M</literal>), or gigabytes (<literal>G</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noexec</title>
+ 
+<indexterm id="IDX-CHP-9-0453"><primary>memory options</primary><secondary>noexec</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Enable or disable nonexecutable mappings</emphasis>.</term>
+<term><literal>noexec=</literal>[<literal>on</literal>|<literal>off</literal>]</term>
+<listitem><para>Enable or disable the kernel's ability to map sections of memory as nonexecutable. By default, the mapping is enabled (<literal>on</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>reserve</title>
+ 
+<indexterm id="IDX-CHP-9-0454"><primary>memory options</primary><secondary>reserve</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Reserve some I/O memory</emphasis>.</term>
+<term><literal>reserve=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Force the kernel to ignore some of the I/O memory areas.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>vmalloc</title>
+ 
+<indexterm id="IDX-CHP-9-0455"><primary>memory options</primary><secondary>vmalloc</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Force the vmalloc area to have a specific size</emphasis>.</term>
+<term><literal>vmalloc=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Force <emphasis>vmalloc</emphasis> to have the exact size specified by <replaceable>n</replaceable>. This can be used to increase the minimum size of the <emphasis>vmalloc</emphasis> area (which is 128 MB on the x86 processor). It can also be used to decrease the size and leave more room for directly mapped kernel RAM.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>norandmaps</title>
+ 
+<indexterm id="IDX-CHP-9-0456"><primary>memory options</primary><secondary>norandmaps</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Do not use address space randomization</emphasis>.</term>
+<listitem><para>By default, the kernel randomizes the address space of all programs when they are started. This option disables this feature. It is equivalent to writing <literal>0</literal> to the file <emphasis>/proc/sys/kernel/randomize_va_space</emphasis>.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>vdso</title>
+ 
+<indexterm id="IDX-CHP-9-0457"><primary>memory options</primary><secondary>vdso</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Enable or disable the VDSO mapping</emphasis>.</term>
+<term><literal>vdso=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>Disable (<literal>0</literal>) or enable (<literal>1</literal>) the VDSO (Virtual Dynamic Shared Object) mapping option. By default, it is enabled.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-5" label="9.5">
+<title>Suspend Options</title>
+<indexterm id="IDX-CHP-9-0458"><primary>vmalloc option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0459"><primary>Virtual Dynamic Shared Object (VDSO)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0460"><primary>vdso option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0461"><primary>suspend options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0462"><primary>resume option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0463"><primary>reserve option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0464"><primary>randomization, address space of programs</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0465"><primary>power management</primary><secondary>suspend options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0466"><primary>norandmaps option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0467"><primary>nonexecutable, mapping memory sections as</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0468"><primary>noexec option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0469"><primary>boot command-line parameters</primary><secondary>suspend options</secondary></indexterm> 
+
+<para>These options change the way the kernel handles suspension for power-saving purposes.</para>
+<variablelist>
+<title>resume</title>
+ 
+<indexterm id="IDX-CHP-9-0470"><primary>suspend options</primary><secondary>resume</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Specify the partition device for the suspend image</emphasis>.</term>
+<term><literal>resume=</literal><replaceable>suspend_device</replaceable></term>
+<listitem><para>Tell the kernel which disk device contains the suspended kernel image. If the data on the image is a valid kernel image created by the software suspend subsystem, it will be loaded into memory and the kernel will run it instead of continuing on with the normal boot process. <replaceable>suspend_device</replaceable> is the kernel device name, which might be different from what userspace thinks the device name is, so be careful with this option.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noresume</title>
+ 
+<indexterm id="IDX-CHP-9-0471"><primary>suspend options</primary><secondary>noresume</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable resume</emphasis>.</term>
+<listitem><para>Disable the resume functionality of the kernel. Any swap partitions that were being used to hold system images to which the kernel could be restored will revert back to available swap space.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-6" label="9.6">
+<title>CPU Options</title>
+<indexterm id="IDX-CHP-9-0472"><primary>nosmp option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0473"><primary>nosep option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0474"><primary>noresume option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0475"><primary>non-maskable interrupt (NMI) watchdog</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0476"><primary>nomce option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0477"><primary>no-hlt option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0478"><primary>nofxsr option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0479"><primary>no387 option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0480"><primary>nmi_watchdog option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0481"><primary>multiprocessors</primary><secondary>nosmp option</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0482"><primary>mce (machine check exception) option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0483"><primary>math emulation library (387)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0484"><primary>machine check exception (mce) option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0485"><primary>lpj (loops per jiffy) option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0486"><primary>CPU</primary><secondary>options</secondary><tertiary>mce (machine check exception)</tertiary></indexterm> 
+<indexterm id="IDX-CHP-9-0487"><primary>CPU</primary><secondary>options</secondary><tertiary>lpj (loops per jiffy)</tertiary></indexterm> 
+<indexterm id="IDX-CHP-9-0488"><primary>cachesize option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0489"><primary>boot command-line parameters</primary><secondary>CPU options</secondary></indexterm> 
+
+<para>These options 
+<indexterm id="IDX-CHP-9-0490"><primary>CPU</primary><secondary>options</secondary></indexterm> 
+ control a wide range of behavior regarding timing, processor use in multiprocessor systems, and other processor issues.</para>
+<variablelist>
+<title>cachesize</title>
+ 
+<indexterm id="IDX-CHP-9-0491"><primary>CPU</primary><secondary>options</secondary><tertiary>cachesize</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Override level 2 CPU cache size detection</emphasis>.</term>
+<term><literal>cachesize=</literal><replaceable>n</replaceable></term>
+<listitem><para>Sometimes CPU hardware bugs make them report the cache size incorrectly. The kernel will attempt to work around and fix known problems with most CPUs, but for some CPUs it is not possible to determine what the correct size should be. This option provides an override for these situations. <replaceable>n</replaceable> is measured in bytes.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lpj</title>
+<varlistentry>
+<term><emphasis role="strong">Set the loops per jiffy</emphasis>.</term>
+<term><literal>lpg=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the loops per jiffy that should be used by the kernel, and thus have the kernel avoid the time-consuming boot-time autodetection of this value. If <replaceable>n</replaceable> is <literal>0</literal>, the value will be autodetected as usual.</para>
+<warning id="linuxkian-CHP-9-NOTE-7" role="ora">
+<para>On SMP systems, this value will be set on all CPUs, which might cause problems if the different CPUs need different settings. An incorrect value will cause incorrect delays in the kernel, which can lead to unpredictable I/O errors and other breakage. Although unlikely, in extreme cases this might damage your hardware.</para>
+</warning>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nmi_watchdog</title>
+ 
+<indexterm id="IDX-CHP-9-0492"><primary>CPU</primary><secondary>options</secondary><tertiary>nmi_watchdog</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the NMI watchdog value</emphasis>.</term>
+<term><literal>nmi_watchdog=</literal>[<literal>0</literal>|<literal>1</literal>|<literal>2</literal>|<literal>3</literal>]</term>
+<listitem><para>This is a debugging feature that allows the user to override the default nonmaskable interrupt (NMI) watchdog value. <literal>0</literal> specifies that no NMI watchdog should be used. <literal>1</literal> specifies that the APIC should be used if present. <literal>2</literal> specifies that the local APIC should be used if present. <literal>3</literal> means that the NMI watchdog is invalid, so do not use it.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>no387</title>
+ 
+<indexterm id="IDX-CHP-9-0493"><primary>CPU</primary><secondary>options</secondary><tertiary>no387</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Always use the 387 emulation library</emphasis>.</term>
+<listitem><para>Always use the 387 math emulation library, 
+<indexterm id="IDX-CHP-9-0494"><primary>387 math emulation library</primary></indexterm> 
+ even if a 387 math coprocessor is present in the system.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nofxsr</title>
+ 
+<indexterm id="IDX-CHP-9-0495"><primary>CPU</primary><secondary>options</secondary><tertiary>nofxsr</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable x86 floating-point save and restore</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0496"><primary>x86 floating-point save and restore</primary></indexterm> 
+
+<listitem><para>Disable the x86 floating-point extended register save and restore. The kernel will save only legacy floating-point registers 
+<indexterm id="IDX-CHP-9-0497"><primary>floating-point registers</primary></indexterm> 
+ on a task switch.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>no-hlt</title>
+ 
+<indexterm id="IDX-CHP-9-0498"><primary>CPU</primary><secondary>options</secondary><tertiary>no-hlt</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Do not use the</emphasis> <userinput>HLT</userinput> <emphasis role="strong">instruction</emphasis>.</term>
+<listitem><para>This option is available because the <literal>HLT</literal> instruction does not work correctly for some x86 processors. This option tells the kernel not to use the instruction.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>mce</title>
+<varlistentry>
+<term><emphasis role="strong">Enable the machine check exception feature</emphasis>.</term>
+<listitem><para>Some processors can check for machine errors (usually errors in the hardware). This option turns this subsystem on, if it has been built into the kernel configuration.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nomce</title>
+ 
+<indexterm id="IDX-CHP-9-0499"><primary>CPU</primary><secondary>options</secondary><tertiary>nomce</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable the machine check exception feature</emphasis>.</term>
+<listitem><para>This option turns the subsystem off.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nosep</title>
+ 
+<indexterm id="IDX-CHP-9-0500"><primary>CPU</primary><secondary>options</secondary><tertiary>nosep</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable x86 SYSENTER/SYSEXIT support</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0501"><primary>SYSENTER/SYSEXIT support</primary></indexterm> 
+
+<listitem><para>Disable x86 SYSENTER/SYSEXIT support in the kernel. This can cause some system calls to take longer.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nosmp</title>
+ 
+<indexterm id="IDX-CHP-9-0502"><primary>CPU</primary><secondary>options</secondary><tertiary>nosmp</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Run as a single-processor machine</emphasis>.</term>
+<listitem><para>Tell an SMP kernel to act as a uniprocessor kernel, even on a multiprocessor machine.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>notsc</title>
+ 
+<indexterm id="IDX-CHP-9-0503"><primary>CPU</primary><secondary>options</secondary><tertiary>notsc</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable the time stamp counter</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0504"><primary>time stamp counter</primary></indexterm> 
+
+<listitem><para>Disable the timestamp counter hardware in the system, if present.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>max_cpus</title>
+ 
+<indexterm id="IDX-CHP-9-0505"><primary>CPU</primary><secondary>options</secondary><tertiary>max_cpus</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Maximum number of CPUs to use</emphasis>.</term>
+<term><literal>maxcpus=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the maximum number of processors that a SMP kernel should use, even if there are more processors present in the system.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-7" label="9.7">
+<title>Scheduler Options</title>
+<indexterm id="IDX-CHP-9-0506"><primary>scheduler options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0507"><primary>notsc option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0508"><primary>migration_cost option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0509"><primary>max_cpus option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0510"><primary>isolcpus option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0511"><primary>CPU</primary><secondary>isolating from kernel scheduler</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0512"><primary>boot command-line parameters</primary><secondary>scheduler options</secondary></indexterm> 
+
+<para>These options tweak the parameters used to make scheduling decisions. Most depend on an intimate understanding of how scheduling works in Linux.</para>
+<variablelist>
+<title>isolcpus</title>
+ 
+<indexterm id="IDX-CHP-9-0513"><primary>scheduler options</primary><secondary>isolcpus</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Isolate CPUs from the kernel scheduler</emphasis>.</term>
+<term><literal>isolcpus=</literal><replaceable>cpu_number</replaceable>[<literal>,</literal><replaceable>cpu_number</replaceable>,...]</term>
+<listitem><para>Remove the specified CPUs, as defined by the <replaceable>cpu_number</replaceable> values, from the general kernel SMP balancing and scheduler algroithms. The only way to move a process onto or off an "isolated" CPU is via the CPU affinity syscalls. <replaceable>cpu_number</replaceable> begins at <literal>0</literal>, so the maximum value is one less than the number of CPUs on the system.</para>
+<para>This option is the preferred way to isolate CPUs. The alternative, manually setting the CPU mask of all tasks in the system, can cause problems and suboptimal load-balancer performance.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>migration_cost</title>
+ 
+<indexterm id="IDX-CHP-9-0514"><primary>scheduler options</primary><secondary>migration_cost</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Override the default scheduler migrations costs</emphasis>.</term>
+<term><literal>migration_cost=</literal><replaceable>level-1-useconds</replaceable>[<replaceable>level-2-useconds</replaceable>...]</term>
+<listitem><para>This is a debugging option that overrides the default scheduler migration cost matrix. The numbers specified by <replaceable>level-N-useconds</replaceable> are indexed by the "CPU domain distance" and are measured in microseconds.</para>
+<para>An example of this option is <literal>migration_cost=1000,2000,3000</literal> for a SMT NUMA machine. It sets up an intra-core migration cost of 1 ms, another inter-core migration cost of 2 ms, and another internode migration cost of 3 ms.</para>
+<warning id="linuxkian-CHP-9-NOTE-8" role="ora">
+<para>Incorrect values can severely degrade scheduler performance, so this option should be used only for scheduler development, never for production environments.</para>
+</warning>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>migration_debug</title>
+ 
+<indexterm id="IDX-CHP-9-0515"><primary>scheduler options</primary><secondary>migration_debug</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Verbosity of migration cost autodetection</emphasis>.</term>
+<term><literal>migration_debug=</literal>[<literal>0</literal>|<literal>1</literal>|<literal>2</literal>]</term>
+<listitem><para>Set the migration cost debug level. If <literal>0</literal> is specified, no extra messages will be printed to the kernel log. This is the default value. <literal>1</literal> prints some information on how the matrix is determined. <literal>2</literal> is very verbose and is useful only if you use a serial console, as the amount of information will overflow the kernel log buffer.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>migration_factor</title>
+ 
+<indexterm id="IDX-CHP-9-0516"><primary>scheduler options</primary><secondary>migration_factor</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Multiply or divide the migration costs</emphasis>.</term>
+<term><literal>migration_factor=</literal><replaceable>percent</replaceable></term>
+<listitem><para>Modify the default migration costs by the specified <replaceable>percent</replaceable>. This is a debugging option that can be used to proportionally increase or decrease the autodetected migration costs for all entries of the migration matrix. For example, <literal>migration_factor=150</literal> increases migration costs by 50 percent, so the scheduler will be less eager to migrate cache-hot tasks. <literal>migration_factor=80</literal> decreases migration costs by 20 percent, thus making the scheduler more eager to migrate tasks.</para>
+<warning id="linuxkian-CHP-9-NOTE-9" role="ora">
+<para>Incorrect values can severely degrade scheduler performance, so this option should be used only for scheduler development, never for production environments.</para>
+</warning>
+</listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-8" label="9.8">
+<title>Ramdisk Options</title>
+<indexterm id="IDX-CHP-9-0517"><primary>Ramdisk options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0518"><primary>migration_factor option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0519"><primary>migration_debug option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0520"><primary>memory</primary><secondary>Ramdisk options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0521"><primary>load_ramdisk option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0522"><primary>initrd option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0523"><primary>boot command-line parameters</primary><secondary>Ramdisk options</secondary></indexterm> 
+
+<para>These options control how the storage of information in memory used to imitate disks (ramdisks) is done, including init ramdisks that hold information necessary at some stages of booting.</para>
+<variablelist>
+<title>initrd</title>
+ 
+<indexterm id="IDX-CHP-9-0524"><primary>Ramdisk options</primary><secondary>initrd</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Location of initial ramdisk</emphasis>.</term>
+<term><literal>initrd=</literal><replaceable>filename</replaceable></term>
+<listitem><para>Specify where the initial ramdisk for the kernel boot is located.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>load_ramdisk</title>
+ 
+<indexterm id="IDX-CHP-9-0525"><primary>Ramdisk options</primary><secondary>load_ramdisk</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Load a kernel ramdisk from a floppy</emphasis>.</term>
+<term><literal>load_ramdisk=</literal><replaceable>n</replaceable></term>
+<listitem><para>If <replaceable>n</replaceable> is set to <literal>1</literal>, a ramdisk is loaded by the kernel at boot time from the floppy drive.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>noinitrd</title>
+ 
+<indexterm id="IDX-CHP-9-0526"><primary>Ramdisk options</primary><secondary>noinitrd</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Do not use any initrd</emphasis>.</term>
+<listitem><para>Do not load any initial ramdisk, even if it is configured in other options passed to the kernel.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>prompt_ramdisk</title>
+ 
+<indexterm id="IDX-CHP-9-0527"><primary>Ramdisk options</primary><secondary>prompt_ramdisk</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Prompt for the list of ramdisks</emphasis>.</term>
+<term><literal>prompt_ramdisk=1</literal></term>
+<listitem><para>Prompt the user for the initial ramdisk before attempting to read it from the floppy drive.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>ramdisk_blocksize</title>
+ 
+<indexterm id="IDX-CHP-9-0528"><primary>Ramdisk options</primary><secondary>ramdisk_blocksize</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Blocksize of the ramdisk</emphasis>.</term>
+<term><literal>ramdisk_blocksize=</literal><replaceable>n</replaceable></term>
+<listitem><para>Tell the ramdisk driver how many bytes to use per block. The default size is 1,024.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>ramdisk_size</title>
+ 
+<indexterm id="IDX-CHP-9-0529"><primary>Ramdisk options</primary><secondary>ramdisk_size</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Size of the ramdisk</emphasis>.</term>
+<term><literal>ramdisk_size=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the size of the initial ramdisk in kilobytes. The default size is 4,096 (4 MB). This option should be used instead of the older <emphasis>ramdisk</emphasis> command-line option.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-9" label="9.9">
+<title>Root Disk Options</title>
+<indexterm id="IDX-CHP-9-0530"><primary>root disk options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0531"><primary>read-write root device</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0532"><primary>read-only root device</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0533"><primary>prompt_ramdisk option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0534"><primary>noinitrd option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0535"><primary>boot command-line parameters</primary><secondary>root disk options</secondary></indexterm> 
+
+<para>These options control how the kernel finds and handles the filesystem that contains the root 
+<indexterm id="IDX-CHP-9-0536"><primary>root disk options</primary><secondary>root</secondary></indexterm> 
+ filesystem.</para>
+<variablelist>
+<title>ro</title>
+ 
+<indexterm id="IDX-CHP-9-0537"><primary>root disk options</primary><secondary>ro</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Mount the root device read-only on boot</emphasis>.</term>
+<listitem><para>The default for the kernel is to mount the root device as read-only at boot time. This option ensures that this is the mode the kernel uses. It overrides the <literal>rw</literal> command-line option, if it had been specified earlier on the boot command line.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>root</title>
+<varlistentry>
+<term><emphasis role="strong">Specify the root filesystem to boot from</emphasis>.</term>
+<term><literal>root=</literal><replaceable>device</replaceable></term>
+<listitem><para>Tell the kernel which disk device the root filesystem image is on. <replaceable>device</replaceable> can be specified in one of the following ways:</para>
+<variablelist>
+<varlistentry>
+<term><replaceable>nnnn</replaceable></term>
+<listitem><para>A device number in hexadecimal represents the major and minor number of the device in the internal format that the kernel expects. This method is not recommended unless you have access to kernel internals.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>/dev/nfs</literal></term>
+<listitem><para>Use the NFS disk specified by the <literal>nfsroot</literal> boot option as the root disk.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>/dev/</literal><replaceable>&lt;diskname&gt;</replaceable></term>
+<listitem><para>Use the kernel disk name specified by <replaceable>&lt;diskname&gt;</replaceable> as the root disk.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>/dev/</literal><replaceable>&lt;diskname&gt;&lt;decimal&gt;</replaceable></term>
+<listitem><para>Use the kernel disk name specified by <replaceable>&lt;diskname&gt;</replaceable> and the partition specified by <replaceable>&lt;decimal&gt;</replaceable> as the root disk.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>/dev/</literal><replaceable>&lt;diskname&gt;</replaceable><literal>p</literal><replaceable>&lt;decimal&gt;</replaceable></term>
+<listitem><para>Use the kernel disk name specified by <replaceable>&lt;diskname&gt;</replaceable> and the partition specified by <replaceable>&lt;decimal&gt;</replaceable> as the root disk. This is the same as above, but is needed when <replaceable>&lt;diskname&gt;</replaceable> ends with a digit.</para></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rootdelay</title>
+ 
+<indexterm id="IDX-CHP-9-0538"><primary>root disk options</primary><secondary>rootdelay</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Time to delay before attempting to mount the root filesystem</emphasis>.</term>
+<term><literal>rootdelay=</literal><replaceable>n</replaceable></term>
+<listitem><para>Wait <replaceable>n</replaceable> seconds before trying to mount the root filesystem. This can be useful if the root filesystem is on a USB or FireWire device, as those disk devices take a bit longer to be discovered by the kernel.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rootflags</title>
+ 
+<indexterm id="IDX-CHP-9-0539"><primary>root disk options</primary><secondary>rootflags</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">The root filesystem mount options</emphasis>.</term>
+<term><literal>rootflags=</literal><replaceable>options</replaceable></term>
+<listitem><para>Mount options that the kernel should use in mounting the root filesystem. The <replaceable>options</replaceable> value depend on the filesystem type; see the documentation for the individual types for details on what is valid.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rootfstype</title>
+ 
+<indexterm id="IDX-CHP-9-0540"><primary>root disk options</primary><secondary>rootfstype</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-9-0541"><primary>filesystems</primary><secondary>rootfstype</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">The root filesystem type</emphasis>.</term>
+<term><literal>rootfstype=</literal><replaceable>type</replaceable></term>
+<listitem><para>Try to mount the root filesystem as this type of filesystem. For instance, <literal>rootfstype=ext3</literal>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rw</title>
+ 
+<indexterm id="IDX-CHP-9-0542"><primary>root disk options</primary><secondary>rw</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Mount the root device read-write on boot</emphasis>.</term>
+<listitem><para>The default for the kernel is to mount the root device as read-only at boot time. This option mounts the root device as read-write instead.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-10" label="9.10">
+<title>Init Options</title>
+<indexterm id="IDX-CHP-9-0543"><primary>single-user mode (S)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0544"><primary>S (single-user) mode</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0545"><primary>kexec options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0546"><primary>init options</primary><secondary>S (single-user)</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0547"><primary>init options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0548"><primary>crashkernel option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0549"><primary>boot command-line parameters</primary><secondary>kexec options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0550"><primary>boot command-line parameters</primary><secondary>init options</secondary></indexterm> 
+
+<para>The <emphasis>init</emphasis> 
+<indexterm id="IDX-CHP-9-0551"><primary>init options</primary><secondary>init</secondary></indexterm> 
+ process is the first to be started by the kernel and is the ancestor of all other processes. These options control which program is run and how it is run.</para>
+<variablelist>
+<title>init</title>
+<varlistentry>
+<term><emphasis role="strong">Program to run at init time</emphasis>.</term>
+<term><literal>init=</literal><replaceable>filename</replaceable></term>
+<listitem><para>Run the specified binary as the <emphasis>init</emphasis> process instead of the default <emphasis>/sbin/init</emphasis> program.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rdinit</title>
+ 
+<indexterm id="IDX-CHP-9-0552"><primary>Ramdisk options</primary><secondary>rdinit</secondary></indexterm> 
+
+ 
+<indexterm id="IDX-CHP-9-0553"><primary>init options</primary><secondary>rdinit</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Run the <emphasis>init</emphasis> process from the ramdisk</emphasis>.</term>
+<term><literal>rdinit=</literal><replaceable>full_path_name</replaceable></term>
+<listitem><para>Run the program specified by <replaceable>full_path_name</replaceable> as the <emphasis>init</emphasis> process. This file must be on the kernel ramdisk instead of on the root filesystem.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>S</title>
+<varlistentry>
+<term><emphasis role="strong">Run <emphasis>init</emphasis> in single-user mode</emphasis>.</term>
+<listitem><para>The default for the kernel is to run <emphasis>init</emphasis> in multi-user mode. This option runs <emphasis>init</emphasis> in single-user mode instead.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-11" label="9.11">
+<title>kexec Options</title>
+<para>The kexec subsystem is a specialized rebooting feature that allows a fast reboot and is usually combined with the kdump facility that enables the previous kernel's memory to be dumped to a safe place for analysis at a later time. These options modify the kexec subsystem's parameters.</para>
+<variablelist>
+<title>crashkernel</title>
+ 
+<indexterm id="IDX-CHP-9-0554"><primary>kexec options</primary><secondary>crashkernel</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Reserve a portion of physical memory for kexec to use</emphasis>.</term>
+<term><literal>crashkernel=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]@<replaceable>start</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>The kexec subsystem likes to have a portion of physical memory reserved for it. This option reserves that memory from the rest of the kernel and will switch to use it if the kernel panics. <replaceable>n</replaceable> specifies the amount of memory to reserve, and <replaceable>start</replaceable> specifies the location for this memory chunk. Both are measured in units of kilobytes (<literal>K</literal>), megabytes (<literal>M</literal>), or gigabytes (<literal>G</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>elfcorehdr</title>
+ 
+<indexterm id="IDX-CHP-9-0555"><primary>kexec options</primary><secondary>elfcorehdr</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Start of the kernel core image ELF header</emphasis>.</term>
+<term><literal>elfcorhdr=</literal><replaceable>n</replaceable></term>
+<listitem><para>The kernel, like every Linux executable, is stored in ELF format. This option specifies the physical address where the kernel core image's ELF header starts. This is used by kexec to find the kernel when booting the secondary kernel image.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-12" label="9.12">
+<title>RCU Options</title>
+<indexterm id="IDX-CHP-9-0556"><primary>RCU (Read Copy Update) options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0557"><primary>elfcorehdr option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0558"><primary>boot command-line parameters</primary><secondary>RCU (Read Copy Update) options</secondary></indexterm> 
+
+<para>Read Copy Update (RCU) is a portion of the kernel that handles mutual exclusion for a variety of subsystems in a lockless manner. There are a number of options that can be used to tune RCU in different ways:</para>
+<variablelist>
+<title>rcu.blimit</title>
+ 
+<indexterm id="IDX-CHP-9-0559"><primary>RCU (Read Copy Update) options</primary><secondary>rcu.blimit</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">RCU batch limit</emphasis>.</term>
+<term><literal>rcu.blimit=</literal><replaceable>n</replaceable></term>
+<listitem><para>Set the maximum number of finished RCU callbacks to process in one batch.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rcu.qhimark</title>
+ 
+<indexterm id="IDX-CHP-9-0560"><primary>RCU (Read Copy Update) options</primary><secondary>rcu.qhimark</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">RCU queue high level</emphasis>.</term>
+<term><literal>rcu.qhimark=</literal><replaceable>n</replaceable></term>
+<listitem><para>Batch limiting is disabled when the number of queued RCU callbacks rises above <replaceable>n</replaceable>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rcu.qlowmark</title>
+ 
+<indexterm id="IDX-CHP-9-0561"><primary>RCU (Read Copy Update) options</primary><secondary>rcu.qlowmark</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">RCU queue low level</emphasis>.</term>
+<term><literal>rcu.qlowmark=</literal><replaceable>n</replaceable></term>
+<listitem><para>Batch limiting is re-enabled when the number of queued RCU callbacks falls below <replaceable>n</replaceable>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rcu.rsinterval</title>
+ 
+<indexterm id="IDX-CHP-9-0562"><primary>RCU (Read Copy Update) options</primary><secondary>rcu.rsinterval</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">RCU callback queue length</emphasis>.</term>
+<term><literal>rcu.rsinterval=</literal><replaceable>n</replaceable></term>
+<listitem><para>Set the number of additional RCU callbacks that should be queued before forcing a reschedule on all CPUs.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-13" label="9.13">
+<title>ACPI Options</title>
+<indexterm id="IDX-CHP-9-0563"><primary sortas="OSI method disabling">_OSI method, disabling</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0564"><primary>operating system name, faking to ACPI</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0565"><primary>memmap option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0566"><primary>IRQ balancing</primary><secondary>ACPI options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0567"><primary>Embedded Controller Description Table (ECDT)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0568"><primary>ECDT (Embedded Controller Description Table)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0569"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acip_os_name</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0570"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>accept_irq_balance</tertiary></indexterm> 
+
+<para>These options 
+<indexterm id="IDX-CHP-9-0571"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary></indexterm> 
+ control parameters that the Advanced Configuration and Power Interface (ACPI) subsystem can use.</para>
+<variablelist>
+<title>acpi</title>
+ 
+<indexterm id="IDX-CHP-9-0572"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ACPI subsystem options</emphasis>.</term>
+<term><literal>acpi=</literal>[<literal>force</literal>|<literal>off</literal>|<literal>noirq</literal>|<literal>ht</literal>|<literal>strict</literal>]</term>
+<listitem><para>This is the main option for the Advanced Configuration and Power Interface (ACPI). Values are:</para>
+<variablelist>
+<varlistentry>
+<term><literal>force</literal></term>
+<listitem><para>Force ACPI to be enabled. Can be used to override the kernel configuration option that disabled it.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>off</literal></term>
+<listitem><para>Disable ACPI. Can be used to override the kernel configuration option that enabled it.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>noirq</literal></term>
+<listitem><para>Prevent ACPI from being used for IRQ routing.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>ht</literal></term>
+<listitem><para>Run only enough of the ACPI layer to enable HyperThreading on processors that are capable of it.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>strict</literal></term>
+<listitem><para>Make the ACPI layer be less tolerant of platforms that are not fully compliant with the ACPI specification.</para></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_sleep</title>
+ 
+<indexterm id="IDX-CHP-9-0573"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_sleep</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ACPI sleep options</emphasis>.</term>
+<term><literal>acpi_sleep=</literal>[<literal>s3_bios</literal>]<literal>,</literal>[<literal>s3_mode</literal>]</term>
+<listitem><para>During S3 resume (which happens after the machine has been suspended to RAM), hardware needs to be reinitialized properly. For most devices this is simple, except for video cards, which are normally initialized by the BIOS. The kernel does not have enough information to restore the video device, because that information is in the BIOS and not accessable at all. This option lets the kernel try to use the ACPI subsystem to restore the video card in two different ways.</para>
+<para>See the file <emphasis>Documentation/power/video.txt</emphasis> for more information on this option and how to find the proper value for your type of hardware.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_sci</title>
+ 
+<indexterm id="IDX-CHP-9-0574"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_sci</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ACPI System Control Interrupt trigger mode</emphasis>.</term>
+<term><literal>acpi_sci=</literal>[<literal>level</literal>|<literal>edge</literal>|<literal>high</literal>|<literal>low</literal>]</term>
+<listitem><para>Set the ACPI System Control Interrupt trigger mode.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_irq_balance</title>
+<varlistentry>
+<term><emphasis role="strong">Enable ACPI IRQ balance</emphasis>.</term>
+<listitem><para>Cause ACPI to balance the active IRQs. This is the default option when operating in APIC mode.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_irq_nobalance</title>
+ 
+<indexterm id="IDX-CHP-9-0575"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_irq_nobalance</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable ACPI IRQ balance</emphasis>.</term>
+<listitem><para>Cause ACPI not to move the active IRQs. This is the default option when operating in PIC mode.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_irq_isa</title>
+ 
+<indexterm id="IDX-CHP-9-0576"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_irq_isa</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Mark the listed IRQs as used by ISA</emphasis>.</term>
+<term><literal>acpi_irq_isa=</literal><replaceable>irq</replaceable>[<literal>,</literal><replaceable>irq</replaceable>...]</term>
+<listitem><para>If the IRQ balance option is enabled, mark the listed IRQs as used by the ISA subsystem.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_irq_pci</title>
+ 
+<indexterm id="IDX-CHP-9-0577"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_irq_pci</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Mark the listed IRQs as used by PCI</emphasis>.</term>
+<term><literal>acpi_irq_pci=</literal><replaceable>irq</replaceable>[<literal>,</literal>[<replaceable>irq</replaceable>...]</term>
+<listitem><para>If the IRQ balance option is enabled, mark the listed IRQs as used by the PCI subsystem.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_os_name</title>
+<varlistentry>
+<term><emphasis role="strong">Fake the operating system name to ACPI</emphasis>.</term>
+<term><literal>acpi_os_name=</literal><replaceable>name</replaceable></term>
+<listitem><para>Tell the ACPI BIOS that the name of the running operating system is <replaceable>name</replaceable>. This can be useful to spoof the BIOS into thinking that Windows is running instead of Linux, which can help solve some ACPI issues for older BIOSes. As an example, use the string <literal>Microsoft 2001</literal> to spoof the BIOS into thinking that Windows 2001 is running on the machine.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_osi</title>
+ 
+<indexterm id="IDX-CHP-9-0578"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_osi</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable the _OSI ACPI method</emphasis>.</term>
+<term><literal>acpi_osi=</literal>[<replaceable>n</replaceable>]</term>
+<listitem><para>This is actually a binary option despite the integer value. If <replaceable>n</replaceable> is absent, ACPI will disable the _OSI method. If <replaceable>n</replaceable> is present, _OSI will not be disabled.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_serialize</title>
+ 
+<indexterm id="IDX-CHP-9-0579"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_serialize</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Force serialization of AML methods</emphasis>.</term>
+<listitem><para>Force the serialization of ACPI Machine Language methods.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_skip_timer_override</title>
+ 
+<indexterm id="IDX-CHP-9-0580"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_skip_timer_override</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Skip interrupt override issues</emphasis>.</term>
+<listitem><para>Allow the ACPI layer to recognize and ignore IRQ0/pin2 interrupt override issues for broken nForce2 BIOSes that result in the XT-PIC timer acting up.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_dbg_layer</title>
+ 
+<indexterm id="IDX-CHP-9-0581"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_dbg_layer</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ACPI debug layer</emphasis>.</term>
+<term><literal>acpi_dbg_layer=</literal><replaceable>n</replaceable></term>
+<listitem><para>Set the ACPI debug layers. <replaceable>n</replaceable> is an integer in which each bit indicates a different ACPI debug layer. After the system has booted, the debug layers can be set via the <emphasis>/proc/acpi/debug_layer</emphasis> file.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_fake_ecdt</title>
+ 
+<indexterm id="IDX-CHP-9-0582"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_fake_ecdt</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ECDT workaround</emphasis>.</term>
+<listitem><para>If present, this allows ACPI to workaround BIOS failures when it lacks an Embedded Controller Description Table.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_generic_hotkey</title>
+ 
+<indexterm id="IDX-CHP-9-0583"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_generic_hotkey</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Use generic ACPI hotkey driver</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0584"><primary>hotkey driver</primary></indexterm> 
+
+<listitem><para>This allows the ACPI consolidated generic hotkey driver to override the platform-specific driver if one is present.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>acpi_pm_good</title>
+ 
+<indexterm id="IDX-CHP-9-0585"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>acpi_pm_good</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Override pmtimer bug detection</emphasis>.</term>
+ 
+<indexterm id="IDX-CHP-9-0586"><primary>pmtimer</primary></indexterm> 
+
+<listitem><para>Force the kernel to assume that the machine's pmtimer latches its value and always returns good values.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>ec_intr</title>
+ 
+<indexterm id="IDX-CHP-9-0587"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>ec_intr</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">ACPI Embedded Controller interrupt mode</emphasis>.</term>
+<term><literal>ec_intr=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the ACPI embedded controller interrupt mode. 
+<indexterm id="IDX-CHP-9-0588"><primary>embedded controller interrupt mode</primary></indexterm> 
+ If <replaceable>n</replaceable> is <literal>0</literal>, polling mode will be used, otherwise interrupt mode will be used. Interrupt mode is the default.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>memmap</title>
+ 
+<indexterm id="IDX-CHP-9-0589"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>memmap</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Mark specific memory as ACPI data</emphasis>.</term>
+<term><literal>memmap=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]<literal>#</literal><replaceable>start</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>Marks a specific location and range of memory as ACPI data. <replaceable>n</replaceable> is the size of the memory location and <replaceable>start</replaceable> is the start location in memory of the range. Both are measured in units of kilobytes (<literal>K</literal>), megabytes (<literal>M</literal>), or gigabytes (<literal>G</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>memmap</title>
+<varlistentry>
+<term><emphasis role="strong">Mark specific memory as reserved</emphasis>.</term>
+<term><literal>memmap=</literal><replaceable>n</replaceable>[<literal>KMG</literal>]<literal>$</literal><replaceable>start</replaceable>[<literal>KMG</literal>]</term>
+<listitem><para>This marks a specific location and range of memory as reserved. <replaceable>n</replaceable> is the size of the memory location and <replaceable>start</replaceable> is the start location in memory of the range.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnpacpi</title>
+ 
+<indexterm id="IDX-CHP-9-0590"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>pnpacpi</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Turn Plug and Play ACPI off</emphasis>.</term>
+<term><literal>pnpacpi=off</literal></term>
+<listitem><para>Disable the Plug and Play ACPI functionality.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>processor.max_cstate</title>
+ 
+<indexterm id="IDX-CHP-9-0591"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>processor.max_cstate</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Limit the processor to a maximum C-state</emphasis>.</term>
+<term><literal>processor.max_cstate=</literal><replaceable>n</replaceable></term>
+<listitem><para>Limit the processor to a maximum C-state, no matter what the ACPI tables say it can support. <replaceable>n</replaceable> is a valid C-state value. A value of <literal>9</literal> overrides any DMI blacklist limit that might be present for this processor.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>processor.nocst</title>
+ 
+<indexterm id="IDX-CHP-9-0592"><primary>ACPI (Advanced Configuration and Power Interface)</primary><secondary>options</secondary><tertiary>processor.nocst</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Ignore the _CST method for C-states</emphasis>.</term>
+<listitem><para>Causes the ACPI core to ignore the _CST method of determining the processor C-states and use the legacy FADT method instead.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-14" label="9.14">
+<title>SCSI Options</title>
+<indexterm id="IDX-CHP-9-0593"><primary>SCSI options</primary><secondary>kernel boot</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0594"><primary>processor.max_cstate option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0595"><primary>pnpacpi option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0596"><primary>max_report_luns option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0597"><primary>max_luns option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0598"><primary>LUNs (Logical Unit Numbers)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0599"><primary>Logical Unit Numbers (LUNs)</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0600"><primary>C-state, processor</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0601"><primary>boot command-line parameters</primary><secondary>SCSI options</secondary></indexterm> 
+
+<para>These options specify different parameters the SCSI subsystem can use. A number of SCSI driver-specific options are also available; please see the different driver documentation files in the kernel directory <emphasis>Documentation/scsi/</emphasis> for details.</para>
+<variablelist>
+<title>max_luns</title>
+ 
+<indexterm id="IDX-CHP-9-0602"><primary>SCSI options</primary><secondary>kernel boot</secondary><tertiary>max_luns</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Maximum number of SCSI LUNS to probe</emphasis>.</term>
+<term><literal>max_luns=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the maximum number of SCSI LUNS that the system should probe. <replaceable>n</replaceable> is an integer from 1 to 4,294,967,295.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>max_report_luns</title>
+ 
+<indexterm id="IDX-CHP-9-0603"><primary>SCSI options</primary><secondary>max_report_luns</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Maximum number of SCSI LUNS received</emphasis>.</term>
+<term><literal>max_report_luns=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the maximum number of SCSI LUNs that the system can receive. <replaceable>n</replaceable> is an integer from 1 to 16,384.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>scsi_dev_flags</title>
+ 
+<indexterm id="IDX-CHP-9-0604"><primary>SCSI options</primary><secondary>scsi_dev_flags</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">SCSI black/white list</emphasis>.</term>
+<term><literal>scsi_dev_flags=</literal><replaceable>vendor</replaceable><literal>:</literal><replaceable>model</replaceable><literal>:</literal><replaceable>flags</replaceable></term>
+<listitem><para>This option lets the user add entries to the SCSI black/white list for a specific vendor and model of device.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-15" label="9.15">
+<title>PCI Options</title>
+<indexterm id="IDX-CHP-9-0605"><primary>PCI devices</primary><secondary>boot command-line options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0606"><primary>boot command-line parameters</primary><secondary>PCI options</secondary></indexterm> 
+
+<para>These options specify different parameters the PCI subsystem can use:</para>
+<variablelist>
+<title>PCI</title>
+<varlistentry>
+<term/>
+<listitem>
+<programlisting>
+pci=<replaceable>option</replaceable>[,<replaceable>option</replaceable>...]
+</programlisting>
+<para>Each <replaceable>option</replaceable> can be one of the following:</para>
+<variablelist>
+<varlistentry>
+<term><literal>off</literal></term>
+<listitem><para>Do not probe for the PCI bus.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>bios</literal></term>
+<listitem><para>Force the use of the PCI BIOS by not accessing the hardware directly. This means that the kernel should trust the BIOS, which is not the standard thing to do (as BIOSes are known to lie more often than they are known to be valid). Use this only if your machine has a nonstandard PCI host bridge and the normal boot method is not working properly.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>nobios</literal></term>
+<listitem><para>Do not use the PCI BIOS, but access the hardware directly instead. This is the default method of probing for PCI devices in all kernels after 2.6.13.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>conf1</literal></term>
+<listitem><para>Force use of PCI Configuration Mechanism 1 (a way to access PCI memory on i386 machines).</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>conf2</literal></term>
+<listitem><para>Force use of PCI Configuration Mechanism 2 (a way to access PCI memory on i386 machines).</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>nommconf</literal></term>
+<listitem><para>Disable use of the ACPI MMCONFIG table for PCI configuration.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>nomsi</literal></term>
+<listitem><para>If the PCI_MSI kernel config parameter is enabled, this kernel boot option can be used to disable the use of MSI interrupts system-wide.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>nosort</literal></term>
+<listitem><para>Do not sort PCI devices according to order given by the PCI BIOS. This sorting is done to get a device order compatible with much older kernel versions.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>biosirq</literal></term>
+<listitem><para>Use PCI BIOS calls to get the interrupt routing table. These calls are known to be buggy on several machines and hang these machine when used, but on other machines they are the only way to get the interrupt routing table. Try this option if the kernel is unable to allocate IRQs or discover secondary PCI buses on your motherboard.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>rom</literal></term>
+<listitem><para>Assign address space to expansion ROMs. Use this with caution as certain devices share address decoders between ROMs and other resources.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>irqmask=0x</literal><replaceable>nnnn</replaceable></term>
+<listitem><para>Set a bit mask of IRQs allowed to be assigned automatically to PCI devices. You can make the kernel exclude IRQs of your ISA cards this way.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>pirqaddr=0x</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the physical address of the PIRQ table (normally generated by the BIOS) if it is outside the F0000-100000 (hexadecimal) range.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>lastbus=</literal><replaceable>n</replaceable></term>
+<listitem><para>Scan all buses through bus <replaceable>n</replaceable>. Can be useful if the kernel is unable to find your secondary buses and you want to tell it explicitly which ones they are.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>assign-busses</literal></term>
+<listitem><para>Always use your own PCI bus numbers, overriding whatever the firmware may have done.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>usepirqmask</literal></term>
+<listitem><para>Honor the possible IRQ mask stored in the BIOS $PIR table. This is needed on some systems with broken BIOSes, notably some HP Pavilion N5400 and Omnibook XE3 notebooks. This will have no effect if ACPI IRQ routing is enabled.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>noacpi</literal></term>
+<listitem><para>Do not use ACPI for IRQ routing or for PCI scanning.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>routeirq</literal></term>
+<listitem><para>Do IRQ routing for all PCI devices. This is normally done in <literal>pci_enable_device( )</literal>, so this option is a temporary workaround for broken drivers that don't call it.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>firmware</literal></term>
+<listitem><para>Do not re-enumerate the bus, but instead just use the configuration from the bootloader. This is currently used on IXP2000 systems where the bus has to be configured a certain way for adjunct CPUs.</para></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-16" label="9.16">
+<title>Plug and Play BIOS Options</title>
+<indexterm id="IDX-CHP-9-0607"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0608"><primary>noisapnp option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0609"><primary>memory</primary><secondary>pnp_reserve_mem option</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0610"><primary>I/O</primary><secondary>ports not used by PnP BIOS</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0611"><primary>DMAs not used by PnP BIOS</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0612"><primary>boot command-line parameters</primary><secondary>PnP BIOS options</secondary></indexterm> 
+
+<variablelist>
+<title>noisapnp</title>
+ 
+<indexterm id="IDX-CHP-9-0613"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>noisapnp</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable the ISA Plug and Play (PnP) subsystem</emphasis>.</term>
+<listitem><para>Disable the ISA PnP subsystem, if it has been enabled in the kernel configuration.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnpbios</title>
+ 
+<indexterm id="IDX-CHP-9-0614"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>pnpbios</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">PnP BIOS settings</emphasis>.</term>
+<term><literal>pnpbios=</literal>[<literal>on</literal>|<literal>off</literal>|<literal>curr</literal>|<literal>no-curr</literal>]</term>
+<listitem><para>Set the main PnP BIOS settings. <literal>on</literal> enables the PnP BIOS subsystem. <literal>off</literal> disables the PnP BIOS subsystem. <literal>curr</literal> tells the PnP BIOS subsystem to use the current static settings and <literal>no-curr</literal> tells the subsystem to probe for dynamic settings if possible.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnp_reserve_irq</title>
+ 
+<indexterm id="IDX-CHP-9-0615"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>pnp_reserve_irq</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">PnP BIOS reserved IRQs</emphasis>.</term>
+<term><literal>pnp_reserve_irq=</literal><replaceable>irq1</replaceable>[<literal>,</literal><replaceable>irq2</replaceable>...]</term>
+<listitem><para>List of the IRQs that the PnP BIOS subsystem should not use for autoconfiguration.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnp_reserve_dma</title>
+ 
+<indexterm id="IDX-CHP-9-0616"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>pnp_reserve_dma</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">PnP BIOS reserved DMAs</emphasis>.</term>
+<term><literal>pnp_reserve_dma=</literal><replaceable>dma1</replaceable>[<literal>,</literal><replaceable>dma2</replaceable>...]</term>
+<listitem><para>List of the DMAs that the PnP BIOS subsystem should not use for autoconfiguration.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnp_reserve_io</title>
+ 
+<indexterm id="IDX-CHP-9-0617"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>pnp_reserve_io</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">PnP BIOS reserved I/O ports</emphasis>.</term>
+<term><literal>pnp_reserve_io=</literal><replaceable>io1</replaceable><literal>,</literal><replaceable>size1</replaceable>[<literal>,</literal><replaceable>io2</replaceable><literal>,</literal><replaceable>size2</replaceable>...]</term>
+<listitem><para>I/O ports that the PnP BIOS subsystem should not use for autoconfiguration. Each port is listed by its starting location and size.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pnp_reserve_mem</title>
+ 
+<indexterm id="IDX-CHP-9-0618"><primary>PnP (Plug and Play)</primary><secondary>BIOS options</secondary><tertiary>pnp_reserve_mem</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">PnP BIOS reserved memory regions</emphasis>.</term>
+<term><literal>pnp_reserve_mem=</literal><replaceable>mem1</replaceable><literal>,</literal><replaceable>size1</replaceable>[<literal>,</literal><replaceable>mem2</replaceable><literal>,</literal><replaceable>size2</replaceable>...]</term>
+<listitem><para>Memory regions that the PnP BIOS subsystem should not use for autoconfiguration. Each region is listed by its starting location and size.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-17" label="9.17">
+<title>SELinux Options</title>
+ 
+<indexterm id="IDX-CHP-9-0619"><primary>boot command-line parameters</primary><secondary>SELinux</secondary></indexterm> 
+
+<indexterm id="IDX-CHP-9-0620"><primary>SELinux (Security-Enhanced Linux)</primary><secondary>boot command-line options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0621"><primary>enforcing option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0622"><primary>checkreqprot option</primary></indexterm> 
+
+<para>These options change some fundamental aspects of SELinux startup.</para>
+<variablelist>
+<title>checkreqprot</title>
+ 
+<indexterm id="IDX-CHP-9-0623"><primary>SELinux (Security-Enhanced Linux)</primary><secondary>boot command-line options</secondary><tertiary>checkreqprot</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the initial checkreqprot flag value</emphasis>.</term>
+<term><literal>checkreqprot=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>Set the initial <emphasis>checkreqprot</emphasis> flag value. <literal>0</literal> means that the check protection will be applied by the kernel and will include any implied execute protection. <literal>1</literal> means that the check protection is requested by the application. The default value is set by a kernel configuration option.</para>
+<para>The value can be changed at runtime via the <emphasis>/selinux/checkreqprot</emphasis> 
+<indexterm id="IDX-CHP-9-0624"><primary>SELinux (Security-Enhanced Linux)</primary><secondary>boot command-line options</secondary><tertiary>selinux</tertiary></indexterm> 
+ file.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>enforcing</title>
+ 
+<indexterm id="IDX-CHP-9-0625"><primary>SELinux (Security-Enhanced Linux)</primary><secondary>boot command-line options</secondary><tertiary>enforcing</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the initial enforcing status</emphasis>.</term>
+<term><literal>enforcing=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>Specify whether SELinux enforces its rules upon boot. <literal>0</literal> means that SELinux will just log policy violations but will not deny access to anything. <literal>1</literal> means that the enforcement will be fully enabled with denials as well as logging. The default value is <literal>0</literal>.</para>
+<para>The value can be changed at runtime via the <emphasis>/selinux/enforce</emphasis> file.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>selinux</title>
+<varlistentry>
+<term><emphasis role="strong">Enable or disable SELinux at boot time</emphasis>.</term>
+<term><literal>selinux=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>This option allows SELinux to be enabled (<literal>1</literal>) or disabled (<literal>0</literal>) to boot time. The default value is set by a kernel configuration option.</para>
+<para>If SELinux is enabled at boot time, the <emphasis>/selinux/disable</emphasis> file can be used later to disable it prior to the initial policy load.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>selinux_compat_net</title>
+ 
+<indexterm id="IDX-CHP-9-0626"><primary>SELinux (Security-Enhanced Linux)</primary><secondary>boot command-line options</secondary><tertiary>selinux_compat_net</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the network control model</emphasis>.</term>
+<term><literal>selinux_compat_net=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>Set the initial value for the SELinux network control model. <literal>0</literal> uses the new secmark-based packet controls, and <literal>1</literal> uses the legacy packet controls. <literal>0</literal> is the default and preferred value.</para>
+<para>This value can be changed at runtime via the <emphasis>/selinux/compat_net</emphasis> file.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-18" label="9.18">
+<title>Network Options</title>
+<indexterm id="IDX-CHP-9-0627"><primary>thash_entries option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0628"><primary>shapers option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0629"><primary>lockd.nlm_grace_period option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0630"><primary>filesystems</primary><secondary>NFS options</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0631"><primary>dhash_entries option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0632"><primary>boot command-line parameters</primary><secondary>NFS options</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0633"><primary>boot command-line parameters</primary><secondary>network options</secondary></indexterm> 
+
+<para>These options 
+<indexterm id="IDX-CHP-9-0634"><primary>networking</primary><secondary>options</secondary></indexterm> 
+ control low-level aspects of the networking subsystem.</para>
+<variablelist>
+<title>netdev</title>
+ 
+<indexterm id="IDX-CHP-9-0635"><primary>networking</primary><secondary>options</secondary><tertiary>netdev</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set various network device parameters</emphasis>.</term>
+<term><literal>netdev=</literal>[<replaceable>irq</replaceable>],[<replaceable>io</replaceable>],[<replaceable>mem_start</replaceable>],[<replaceable>mem_end</replaceable>],[<replaceable>name</replaceable>]</term>
+<listitem><para>Specify network device parameters, which are specific to the driver used by the network device. Some drivers' source files document the applicable options. This option does not usually apply to PCI, USB, or other plug-and-play network devices. It is intended for use only on devices that can not discover their own resource assignments.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>rhash_entries</title>
+<varlistentry>
+<term><emphasis role="strong">Set the number of route cache hash buckets</emphasis>.</term>
+<term><literal>dhash_entries=</literal><replaceable>n</replaceable></term>
+ 
+<indexterm id="IDX-CHP-9-0636"><primary>networking</primary><secondary>options</secondary><tertiary>dhash_entries</tertiary></indexterm> 
+
+<listitem><para>This option lets you override the default number of hash buckets for the kernel's route cache. Recommended only for kernel network experts.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>shapers</title>
+ 
+<indexterm id="IDX-CHP-9-0637"><primary>networking</primary><secondary>options</secondary><tertiary>shapers</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the maximum number of network shapers</emphasis>.</term>
+<term><literal>shapers=</literal><replaceable>n</replaceable></term>
+<listitem><para>This option lets you set the maximum number of network shapers that the kernel can use.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>thash_entries</title>
+ 
+<indexterm id="IDX-CHP-9-0638"><primary>networking</primary><secondary>options</secondary><tertiary>thash_entries</tertiary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the number of TCP connection hash buckets</emphasis>.</term>
+<term><literal>thash_entries=</literal><replaceable>n</replaceable></term>
+<listitem><para>This option lets you override the default number of hash buckets for the kernel's TCP connection cache.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-19" label="9.19">
+<title>Network File System Options</title>
+<indexterm id="IDX-CHP-9-0639"><primary>lockd.nlm_udpport option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0640"><primary>lockd.nlm_timeout option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0641"><primary>lockd.nlm_tcpport option</primary></indexterm> 
+
+<para>These options control NFS startup.</para>
+<variablelist>
+<title>lockd.nlm_grace_period</title>
+ 
+<indexterm id="IDX-CHP-9-0642"><primary>NFS options</primary><secondary>lockd.nlm_grace_period</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Assign a grace period to the lock manager</emphasis>.</term>
+<term><literal>lockd.nlm_grace_period=</literal><replaceable>n</replaceable></term>
+<listitem><para>Set the NFS lock manager grace period. <replaceable>n</replaceable> is measured in seconds.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lockd.nlm_tcpport</title>
+ 
+<indexterm id="IDX-CHP-9-0643"><primary>NFS options</primary><secondary>lockd.nlm_tcpport</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Assign a TCP port to the lock manager</emphasis>.</term>
+<term><literal>lockd.nlm_tcpport=</literal><replaceable>port</replaceable></term>
+<listitem><para>Set the TCP port that the NFS lock manager should use. <replaceable>port</replaceable> must be a valid TCP port value.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lockd.nlm_timeout</title>
+ 
+<indexterm id="IDX-CHP-9-0644"><primary>NFS options</primary><secondary>lockd.nlm_timeout</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Assign a new timeout value to the lock manager</emphasis>.</term>
+<term><literal>lockd.nlm_timeout=</literal><replaceable>n</replaceable></term>
+<listitem><para>Override the default time value for the NFS lock manager. <replaceable>n</replaceable> is measured in seconds. If this option is not specified, the default of 10 seconds will be used.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lockd.nlm_udpport</title>
+ 
+<indexterm id="IDX-CHP-9-0645"><primary>NFS options</primary><secondary>lockd.nlm_udpport</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Assign a UDP port to the lock manager</emphasis>.</term>
+<term><literal>lockd.nlm_udpport=</literal><replaceable>port</replaceable></term>
+<listitem><para>Set the UDP port that the NFS lock manager should use. <replaceable>port</replaceable> must be a valid UDP port value.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nfsroot</title>
+<varlistentry>
+<term><emphasis role="strong">Specifies the NFS root filesystem</emphasis>.</term>
+<term><literal>nfsroot=</literal>[<replaceable>server-ip</replaceable><literal>:</literal>]<replaceable>root-dir</replaceable>[,<replaceable>nfs-options</replaceable>]</term>
+<listitem><para>Set the NFS root filesystem for diskless boxes, to enable them to boot properly over NFS. If this parameter is not set, the value <userinput>/tftpboot/</userinput><replaceable>client_ip_address</replaceable> will be used as the root filesystem with the default NFS options.</para>
+<variablelist>
+<varlistentry>
+<term><replaceable>server-ip</replaceable></term>
+<listitem><para>IP address of the NFS server to connect to.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>root-dir</replaceable></term>
+<listitem><para>Directory on the NFS server to mount as root. If there is a <literal>%s</literal> token in this string, it will be replaced with the ASCII representation of the client's IP address.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>nfs-options</replaceable></term>
+<listitem><para>The standard NFS options, such as <literal>ro</literal>, separated by commas.</para></listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nfs.callback_tcpport</title>
+ 
+<indexterm id="IDX-CHP-9-0646"><primary>NFS options</primary><secondary>nfs.callback_tcpport</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the NFSv4 TCP port for the callback channel</emphasis>.</term>
+<term><literal>nfs.callback_tcpport=</literal><replaceable>port</replaceable></term>
+<listitem><para>Specify the TCP port that the NFSv4 callback channel should listen on. <replaceable>port</replaceable> must be a valid TCP port value.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nfs.idmap_cache_timeout</title>
+ 
+<indexterm id="IDX-CHP-9-0647"><primary>NFS options</primary><secondary>nfs.idmap_cache_timeout</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the maximum lifetime for idmapper cache entries</emphasis>.</term>
+<term><literal>nfs.idmap_cache_timeout=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the maximum lifetime for idmapper cache entries. <replaceable>n</replaceable> is measured in seconds.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-20" label="9.20">
+<title>Hardware-Specific Options</title>
+<indexterm id="IDX-CHP-9-0648"><primary>USB (Universal Serial Bus)</primary><secondary>nousb option</secondary></indexterm> 
+<indexterm id="IDX-CHP-9-0649"><primary>parport option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0650"><primary>parallel port options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0651"><primary>nousb option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0652"><primary>lp option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0653"><primary>hardware options</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0654"><primary>boot command-line parameters</primary><secondary>hardware-specific options</secondary></indexterm> 
+
+<para>These options specify different parameters, depending on the hardware present in the system.</para>
+<variablelist>
+<title>nousb</title>
+ 
+<indexterm id="IDX-CHP-9-0655"><primary>hardware options</primary><secondary>nousb</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable the USB subsystem</emphasis>.</term>
+<listitem><para>If this option is present, the USB subsystem will not be initialized.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>lp</title>
+ 
+<indexterm id="IDX-CHP-9-0656"><primary>hardware options</primary><secondary>lp</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Parallel port and its mode</emphasis>.</term>
+<term><literal>lp=</literal>[<literal>0</literal>|<replaceable>port</replaceable>[,<replaceable>port</replaceable>...]|<literal>reset</literal>|<literal>auto</literal>]</term>
+<listitem><para>Specify the parallel port to use. The <literal>lp=</literal><replaceable>port1</replaceable><literal>,</literal><replaceable>port2</replaceable><literal>...</literal> format associates a sequence of parallel ports to devices, starting with <literal>lp0</literal>. An example is <literal>lp=none,parport0</literal>, which would suppress configuration of the <literal>lp0</literal> device and cause the <literal>lp1</literal> device to use the first parallel port.</para>
+<variablelist>
+<varlistentry>
+<term><literal>lp=0</literal></term>
+<listitem><para>Disables the printer driver.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>lp=reset</literal></term>
+<listitem><para>Causes the attached printers to be reset. This option can be combined with the port specifications.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>lp=auto</literal></term>
+<listitem><para>Causes the kernel to examine the device ID from each port to determine whether a IEEE 1284-compatible printer is attached. If so, the kernel will manage that printer.</para></listitem>
+</varlistentry>
+</variablelist></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>parport</title>
+ 
+<indexterm id="IDX-CHP-9-0657"><primary>hardware options</primary><secondary>parport</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Specify the parallel port parameters</emphasis>.</term>
+<term><literal>parport=[</literal><replaceable>setting</replaceable><literal>[,</literal><replaceable>setting</replaceable><literal>...]</literal></term>
+<listitem><para>Specify settings for parallel port drivers. Parallel ports are assigned in the order they are specified on the command line, starting with <literal>parport0</literal>.</para>
+<para><literal>auto</literal> forces the driver to use any IRQ/DMA settings detected (the default is to ignore detected IRQ/DMA settings because of possible conflicts). You can also specify the base address, IRQ, and DMA settings in the format <literal>0x</literal><replaceable>nnnn</replaceable>[,<replaceable>irq</replaceable>[,<replaceable>dma</replaceable>]]. <replaceable>irq</replaceable> and <replaceable>dma</replaceable> can be numbers, <literal>auto</literal> to use detected settings on that particular port, or <literal>nofifo</literal> to avoid using a FIFO even if it is detected.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>parport_init_mode</title>
+ 
+<indexterm id="IDX-CHP-9-0658"><primary>hardware options</primary><secondary>parport_init_mode</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Parallel port initialization mode</emphasis>.</term>
+<term><literal>parport_init_mode=</literal>[<literal>spp</literal>|<literal>ps2</literal>|<literal>epp</literal>|<literal>ecp</literal>|<literal>ecpepp</literal>]</term>
+<listitem><para>Specifies the mode for operating the parallel port. This is necessary on the Pegasos computer where the firmware has no options for setting up the parallel port mode. This option works for parallel port chips of type 686a and 8231.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>nr_uarts</title>
+ 
+<indexterm id="IDX-CHP-9-0659"><primary>hardware options</primary><secondary>nr_uarts</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Maximum number of UARTs to be registered</emphasis>.</term>
+<term><literal>nr_uarts=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specifies the maximum number of different UARTs that can be registered in the kernel.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-21" label="9.21">
+<title>Timer-Specific Options</title>
+<indexterm id="IDX-CHP-9-0660"><primary>timer options</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0661"><primary>parport_init_mode option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0662"><primary>nr_uarts option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0663"><primary>enable_timer_pin_1 option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0664"><primary>enable_8254_timer option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0665"><primary>disable_timer_pin_1 option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0666"><primary>boot command-line parameters</primary><secondary>timer options</secondary></indexterm> 
+
+<para>These options override default kernel behavior to fix problems with certain chips.</para>
+<variablelist>
+<title>enable_timer_pin_1</title>
+ 
+<indexterm id="IDX-CHP-9-0667"><primary>timer options</primary><secondary>enable_timer_pin_1</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Enable pin 1 of the APIC timer</emphasis>.</term>
+<listitem><para>Enable pin 1 of the APIC timer. This option can be useful to work around chipset bugs (on some ATI chipsets in particular). The kernel tries to set a reasonable default, but sometimes this option is necessary to override it.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>disable_timer_pin_1</title>
+ 
+<indexterm id="IDX-CHP-9-0668"><primary>timer options</primary><secondary>disable_timer_pin_1</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable pin 1 of the APIC timer</emphasis>.</term>
+<listitem><para>Disable pin 1 of the APIC timer. Useful for the same reasons as <literal>enable_timer_pin_1</literal>.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>enable_8254_timer</title>
+ 
+<indexterm id="IDX-CHP-9-0669"><primary>timer options</primary><secondary>enable_8254_timer</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Enable interrupt 0 timer routing over the 8254 chip</emphasis>.</term>
+<listitem><para>Enable interrupt 0 timer routing over the 8254 chip in addition to routing over the IO-APIC. The kernel tries to set a reasonable default, but sometimes this option is necessary to override it.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>disable_8254_timer</title>
+ 
+<indexterm id="IDX-CHP-9-0670"><primary>timer options</primary><secondary>disable_8254_timer</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable interrupt 0 timer routing over the 8254 chip</emphasis>.</term>
+<listitem><para>Disable interrupt 0 timer routing over the 8254 chip in addition to routing over the IO-APIC. The kernel tries to set a reasonable default, but sometimes this option is necessary to override it.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>hpet</title>
+ 
+<indexterm id="IDX-CHP-9-0671"><primary>timer options</primary><secondary>hpet</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Disable HPET and use PIT instead</emphasis>.</term>
+<term><literal>hpet=disable</literal></term>
+<listitem><para>Disable the HPET timer source and tell the kernel to use the PIT timer source instead.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>clocksource</title>
+ 
+<indexterm id="IDX-CHP-9-0672"><primary>timer options</primary><secondary>clocksource</secondary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Set the specific clocksource</emphasis>.</term>
+<term><literal>clocksource=</literal>[<literal>hpet</literal>|<literal>pit</literal>|<literal>tsc</literal>|<literal>acpi_pm</literal>|<literal>cyclone</literal>|<literal>scx200_hrt</literal>]</term>
+<listitem><para>Override the default kernel clocksource and use the clocksource with the specified name instead.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-CHP-9-SECT-22" label="9.22">
+<title>Miscellaneous Options</title>
+<indexterm id="IDX-CHP-9-0673"><primary>profile option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0674"><primary>pause_on_oops option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0675"><primary>panic option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0676"><primary>NUMA nodes, distributing large hashes across</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0677"><primary>max_loop option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0678"><primary>hpet option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0679"><primary>hashdist option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0680"><primary>elevator option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0681"><primary>disable_8254_timer option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0682"><primary>dhash_entries option</primary></indexterm> 
+<indexterm id="IDX-CHP-9-0683"><primary>clocksource option</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-9-0684"><primary>boot command-line parameters</primary><secondary>miscellaneous options</secondary></indexterm> 
+
+<para>These options should always be available and don't depend on any specific subsystem or hardware being present in the system in order to work properly.</para>
+<variablelist>
+<title>dhash_entries</title>
+<varlistentry>
+<term><emphasis role="strong">Set the number of dentry hash buckets</emphasis>.</term>
+<term><literal>dhash_entries=</literal><replaceable>n</replaceable></term>
+<listitem><para>This option lets you override the default number of hash buckets for the kernel's dentry cache. Recommended only for kernel experts.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>elevator</title>
+<varlistentry>
+<term><emphasis role="strong">Set the default I/O scheduler elevator</emphasis>.</term>
+<term><literal>elevator=</literal>[<literal>anticipatory</literal>|<literal>cfq</literal>|<literal>deadline</literal>|<literal>noop</literal>]</term>
+<listitem><para>Specify the I/O scheduler. See <link linkend="linuxkian-CHP-11">Chapter 11</link> for a list of the different I/O schedulers available, and what they do.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>hashdist</title>
+<varlistentry>
+<term><emphasis role="strong">Distribute large hashes across NUMA nodes</emphasis>.</term>
+<term><literal>hashdist=</literal>[<literal>0</literal>|<literal>1</literal>]</term>
+<listitem><para>Large hashes that are allocated during the boot process on the IA-64 platform are, by default, distributed across the different NUMA nodes. This option lets the user turn this option on or off.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>combined_mode</title>
+ 
+<indexterm id="IDX-CHP-9-0685"><primary>combined_mode</primary></indexterm> 
+
+<varlistentry>
+<term><emphasis role="strong">Specify IDE driver usage</emphasis>.</term>
+<term><literal>combined_mode=</literal>[<literal>combined</literal>|<literal>ide</literal>|<literal>libata</literal>]</term>
+<listitem><para>Control which driver uses the IDE ports in combined mode: the legacy IDE driver, <emphasis>libata</emphasis>, or both. Note that using the <literal>ide</literal> or <literal>libata</literal> options may affect your device naming (e.g., by changing <literal>hdc</literal> to <literal>sdb</literal>).</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>max_loop</title>
+<varlistentry>
+<term><emphasis role="strong">Maximum number of loopback devices</emphasis>.</term>
+<term><literal>max_loop=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the maximum number of loopback filesystem devices that can be mounted at the same time. <replaceable>n</replaceable> is an integer from 1 to 256.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>panic</title>
+<varlistentry>
+<term><emphasis role="strong">Time to wait after panic before rebooting</emphasis>.</term>
+<term><literal>panic=</literal><replaceable>n</replaceable></term>
+<listitem><para>Specify the amount of time in seconds that the kernel should wait after a panic happens before it reboots. If this is set to <literal>0</literal> (the default value), the kernel will not reboot after panicking; it will simply halt.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>pause_on_oops</title>
+<varlistentry>
+<term><emphasis role="strong">Delay between kernel oopses</emphasis>.</term>
+<term><literal>pause_on_oops=</literal><replaceable>n</replaceable></term>
+<listitem><para>Tell the kernel to halt all CPUs after the first oops for <replaceable>n</replaceable> seconds before continuing. This is useful if oopses keep scrolling off of the screen before you can write them down or take a picture of them.</para></listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<title>profile</title>
+<varlistentry>
+<term><emphasis role="strong">Control the kernel profiling</emphasis>.</term>
+<term><literal>profile=</literal>[<replaceable>schedule</replaceable><literal>,</literal>][<replaceable>number</replaceable>]</term>
+<listitem><para>This option affects how the kernel profiler is calculated. If <literal>schedule</literal> is specified, the schedule points are affected by the value set in <replaceable>number</replaceable>. If <replaceable>schedule</replaceable> is not specified, <replaceable>number</replaceable> is the step size as a power of two for statistical time-based profiling in the kernel.</para>
+<para>The most common use of this option is <literal>profile=2</literal>.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+</chapter>

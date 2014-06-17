@@ -1,0 +1,316 @@
+<chapter id="linuxkian-CHP-4" label="4">
+<title>Configuring and Building</title>
+<para>Now that you have downloaded the source for your selected kernel version and installed it into a local directory, it is time to build the code. The first step is to configure the kernel with the appropriate options; the kernel can then be compiled. Both tasks are done through the standard <emphasis>make</emphasis> utility.</para>
+<sect1 id="linuxkian-CHP-4-SECT-1" label="4.1">
+<title>Creating a Configuration</title>
+<indexterm id="IDX-CHP-4-0070"><primary>make utility</primary><secondary>make config method</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0071"><primary>make utility</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0072"><primary>configuration, kernel</primary><secondary>configuring from scratch</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0073"><primary>configuration, kernel</primary></indexterm> 
+
+<para>The kernel configuration is kept in a file called <emphasis>.config</emphasis> in the top directory of the kernel source tree. If you have just expanded the kernel source code, there will be no <emphasis>.config</emphasis> file, so it needs to be created. It can be created from scratch, created by basing it on the "<link linkend="linuxkian-CHP-4-SECT-1.2">default configuration</link>," taken from a running kernel version, or taken from a distribution kernel release. We will cover the first two methods here, and the last two methods in <link linkend="linuxkian-CHP-7">Chapter 7</link>.</para>
+<sect2 id="linuxkian-CHP-4-SECT-1.1" label="4.1.1">
+<title>Configuring from Scratch</title>
+<para>The most basic method of configuring a kernel is to use the <emphasis>make config</emphasis> method:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.17.10</userinput>
+$ <userinput>make config</userinput>
+ make config
+scripts/kconfig/conf arch/i386/Kconfig
+*
+* Linux Kernel Configuration
+*
+*
+* Code maturity level options
+*
+Prompt for development and/or incomplete code/drivers (EXPERIMENTAL) [Y/n/?]
+<userinput>Y</userinput>
+*
+* General setup
+*
+Local version - append to kernel release (LOCALVERSION) []
+Automatically append version information to the version string (LOCALVERSION_AUTO)
+[Y/n/?] <userinput>Y</userinput>
+...
+</programlisting>
+<para>The kernel configuration program will step through every configuration option and ask you if you wish to enable this option or not. Typically, your choices for each option are shown in the format <literal>[Y/m/n/?]</literal> The capitalized letter is the default, and can be selected by just pressing the Enter key. The four choices are:</para>
+<variablelist>
+<varlistentry>
+<term><literal>y</literal></term>
+<listitem><para>Build directly into the kernel.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>n</literal></term>
+<listitem><para>Leave entirely out of the kernel.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>m</literal></term>
+<listitem><para>Build as a module, to be loaded if needed.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>?</literal></term>
+<listitem><para>Print a brief descriptive message and repeat the prompt.</para></listitem>
+</varlistentry>
+</variablelist>
+<para>The kernel contains almost two thousand different configuration options, so being asked for every individual one will take a very long time. Luckily, there is an easier way to configure a kernel: base the configuration on a pre-built configuration.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-4-SECT-1.2" label="4.1.2">
+<title>Default Configuration Options</title>
+<indexterm id="IDX-CHP-4-0074"><primary>terminal-based kernel configuration tool</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0075"><primary>configuration, kernel</primary><secondary>modifying</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0076"><primary>configuration, kernel</primary><secondary>default options</secondary></indexterm> 
+
+<para>Every kernel version comes with a "default" kernel configuration. This configuration is loosely based on the defaults that the kernel maintainer of that architecture feels are the best options to be used. In some cases, it is merely the configuration that is used by the kernel maintainer himself for his personal machines. This is true for the i386 architecture, where the default kernel configuration 
+<indexterm id="IDX-CHP-4-0077"><primary>default kernel configuration</primary></indexterm> 
+ matches closely what Linus Torvalds uses for his main development machine.</para>
+<para>To create this default configuration, do the following:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.17.10</userinput>
+$ <userinput>make defconfig</userinput>
+</programlisting>
+<para>A huge number of configuration options will scroll quickly by the screen, and a <emphasis>.config</emphasis> file will be written out and placed in the kernel directory. The kernel is now successfully configured, but it should be customized to your machine in order to make sure it will operate correctly.</para>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-4-SECT-2" label="4.2">
+<title>Modifying the Configuration</title>
+<para>Now that we have a basic configuration file created, it should be modified to support the hardware you have present in the system. For details on how to find out which configuration options you need to select to achieve this, please see <link linkend="linuxkian-CHP-7">Chapter 7</link>. Here we will show you how to select the options you wish to change.</para>
+<para>There are three different interactive kernel configuration<indexterm id="IDX-CHP-4-0078"><primary>tools</primary><secondary>interactive kernel configuration</secondary></indexterm> 
+ tools: 
+<indexterm id="IDX-CHP-4-0079"><primary>interactive kernel configuration tools</primary></indexterm> 
+ a terminal-based one called <emphasis>menuconfig</emphasis>, a GTK+-based graphical one called <emphasis>gconfig</emphasis>, and a QT-based graphical one called <emphasis>xconfig</emphasis>.</para>
+<sect2 id="linuxkian-CHP-4-SECT-2.1" label="4.2.1">
+<title>Console Configuration Method</title>
+<indexterm id="IDX-CHP-4-0080"><primary>Y (menuconfig options built into the kernel)</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0081"><primary>N (left out menuconfig kernel options)</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0082"><primary>modules, kernel</primary><secondary>menuconfig method</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0083"><primary>menuconfig tool</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0084"><primary>left out altogether (N), menuconfig options</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0085"><primary>Generic Driver Options menu</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0086"><primary>Device Drivers menu</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0087"><primary>console-based kernel configuration (menuconfig)</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0088"><primary>configuration, kernel</primary><secondary>modifying</secondary><tertiary>console-based menuconfig tool</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0089"><primary>built into the kernel configuration options</primary><secondary>menuconfig mehod</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0090"><primary>built as a module kernel configuration options</primary><secondary>menuconfig method</secondary></indexterm> 
+
+<para>The <emphasis>menuconfig</emphasis> way of configuring a kernel is a console-based program that offers a way to move around the kernel configuration using the arrow keys on the keyboard. To start up this configuration mode, enter:</para>
+<programlisting>
+$ <userinput>make menuconfig</userinput>
+</programlisting>
+<para>You will be shown a screen much like <link linkend="linuxkian-CHP-4-FIG-1">Figure 4-1</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-1" label="4-1">
+<title>Initial menuconfig screen</title>
+<graphic fileref="figs/linuxkian_0401.gif" width="450" depth="260"/>
+</figure>
+<para>The instructions for navigating through the program, and the meanings of the different characters, are shown at the top of the screen. The rest of the screen containing the different kernel configuration options.</para>
+<para>The kernel configuration is divided up into sections. Each section contains options that correspond to a specific topic. Within those sections can be sub-sections for various specialized topics. As an example, all kernel device drivers can be found under the main menu option <literal>Device Drivers</literal>. To enter that menu, move the arrow key down nine times until the line <literal>Device Drivers ---&gt;</literal> is highlighted, as shown in <link linkend="linuxkian-CHP-4-FIG-2">Figure 4-2</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-2" label="4-2">
+<title>Device Drivers option selected</title>
+<graphic fileref="figs/linuxkian_0402.gif" width="450" depth="260"/>
+</figure>
+<para>Then press the Enter key. It will move you into the <literal>Device Drivers</literal> submenu and show it as illustrated in <link linkend="linuxkian-CHP-4-FIG-3">Figure 4-3</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-3" label="4-3">
+<title>Device Drivers submenu</title>
+<graphic fileref="figs/linuxkian_0403.gif" width="450" depth="260"/>
+</figure>
+<para>You can continue to move down through the menu hierarchy the same way. To see the <literal>Generic Driver Options</literal> submenu, press Enter again, and you will see the three options shown in <link linkend="linuxkian-CHP-4-FIG-4">Figure 4-4</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-4" label="4-4">
+<title>Generic Driver Options submenu</title>
+<graphic fileref="figs/linuxkian_0404.gif" width="450" depth="260"/>
+</figure>
+<para>The first two options have a <literal>[*]</literal> mark by them. That means that this option is selected (by virtue of the <literal>*</literal> being in the middle of the <literal>[ ]</literal> characters), and that this option is a yes-or-no option. The third option has a <literal>&lt; &gt;</literal> marking, showing that this option can be built into the kernel (<literal>Y</literal>), built as a module (<literal>M</literal>), or left out altogether (<literal>N</literal>).</para>
+<para>If the option is selected with <literal>Y</literal>, the angle brackets will contain a <literal>*</literal> character. If it is selected as a module with an <literal>M</literal>, they will contain an <literal>M</literal> character. If it is disabled with <literal>N</literal>, they will show only a blank space.</para>
+<para>So, if you wish to change these three options to select only drivers that do not need external firmware at compile time, disable the option to prevent firmware from being built, and build the userspace firmware loader as a module, press <literal>Y</literal> for the first option, <literal>N</literal> for the second option, and <literal>M</literal> for the third, making the screen look like <link linkend="linuxkian-CHP-4-FIG-5">Figure 4-5</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-5" label="4-5">
+<title>Generic Driver Options submenu changed</title>
+<graphic fileref="figs/linuxkian_0405.gif" width="450" depth="260"/>
+</figure>
+<para>After you are done with your changes to this screen, press either the Escape key or the right arrow followed by the Enter key to leave this submenu. All of the different kernel options can be explored in this manner.</para>
+<para>When you are finished making all of the changes you wish to make to the kernel configuration, exit the program by pressing the Escape key on the main menu. You will be shown the screen in <link linkend="linuxkian-CHP-4-FIG-6">Figure 4-6</link>, asking whether you wish to save your changed kernel configuration.</para>
+<figure id="linuxkian-CHP-4-FIG-6" label="4-6">
+<title>Saving kernel options</title>
+<graphic fileref="figs/linuxkian_0406.gif" width="360" depth="65"/>
+</figure>
+<para>Press Enter to save the configuration, or if you wish to discard any changes made, press the right arrow to move to the <literal>&lt;No&gt;</literal> selection and then press Enter.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-4-SECT-2.2" label="4.2.2">
+<title>Graphical Configuration Methods</title>
+<indexterm id="IDX-CHP-4-0091"><primary>xconfig method</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0092"><primary>QT-based graphical configuration method (xconfig)</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0093"><primary>modules, kernel</primary><secondary>gconfig and xconfig methods</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0094"><primary>GTK+-based graphical configuration method (gconfig)</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0095"><primary>graphical methods, kernel configuration</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0096"><primary>gconfig method</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0097"><primary>configuration, kernel</primary><secondary>modifying</secondary><tertiary>graphical methods</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0098"><primary>built into the kernel configuration options</primary><secondary>gconfig method</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0099"><primary>built as a module kernel configuration options</primary><secondary>gconfig and xconfig methods</secondary></indexterm> 
+
+<para>The <emphasis>gconfig</emphasis> and <emphasis>xconfig</emphasis> methods of configuring a kernel use a graphical program to allow you to modify the kernel configuration. The two methods are almost identical, the only difference being the different graphical toolkit with which they are written. <emphasis>gconfig</emphasis> is written using the GTK+ toolkit and has a two-pane screen looking like <link linkend="linuxkian-CHP-4-FIG-7">Figure 4-7</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-7" label="4-7">
+<title>make gconfig screen</title>
+<graphic fileref="figs/linuxkian_0407.gif" width="549" depth="499"/>
+</figure>
+<para>The <emphasis>xconfig</emphasis> method is written using the QT toolkit and has a three-pane screen looking like <link linkend="linuxkian-CHP-4-FIG-8">Figure 4-8</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-8" label="4-8">
+<title>make xconfig screen</title>
+<graphic fileref="figs/linuxkian_0408.gif" width="549" depth="662"/>
+</figure>
+<para>Use the mouse to navigate the submenus and select options. For instance, you can use it in <link linkend="linuxkian-CHP-4-FIG-8">Figure 4-8</link> to select the <literal>Generic Driver Options</literal> submenu of the <literal>Device Drivers</literal> menu. This will change the <emphasis>xconfig</emphasis> screen to look like <link linkend="linuxkian-CHP-4-FIG-9">Figure 4-9</link>. The corresponding <emphasis>gconfig</emphasis> screen is <link linkend="linuxkian-CHP-4-FIG-10">Figure 4-10</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-9" label="4-9">
+<title>make xconfig Generic Driver Options</title>
+<graphic fileref="figs/linuxkian_0409.gif" width="549" depth="662"/>
+</figure>
+<figure id="linuxkian-CHP-4-FIG-10" label="4-10">
+<title>make gconfig Generic Driver Options</title>
+<graphic fileref="figs/linuxkian_0410.gif" width="549" depth="499"/>
+</figure>
+<para>Changing this submenu to disable the second option and make the third option be built as a module causes the screens to look like <link linkend="linuxkian-CHP-4-FIG-11">Figures 4-11</link> and <link linkend="linuxkian-CHP-4-FIG-12">4-12</link>.</para>
+<figure id="linuxkian-CHP-4-FIG-11" label="4-11">
+<title>make xconfig Generic Driver Options changed</title>
+<graphic fileref="figs/linuxkian_0411.gif" width="549" depth="662"/>
+</figure>
+<figure id="linuxkian-CHP-4-FIG-12" label="4-12">
+<title>make gconfig Generic Driver Options changed</title>
+<graphic fileref="figs/linuxkian_0412.gif" width="549" depth="511"/>
+</figure>
+<para>Please note that in the <emphasis>gconfig</emphasis> method, a checked box signifies that the option will be built into the kernel, whereas a line though the box means the option will be built as a module. In the <emphasis>xconfig</emphasis> method, an option built as a module will be shown with a dot in the box.</para>
+<para>Both of these methods prompt you to save your changed configuration when exiting the program, and offer the option to write that configuration out to a different file. In that way you can create multiple, differing configurations.</para>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-4-SECT-3" label="4.3">
+<title>Building the Kernel</title>
+<indexterm id="IDX-CHP-4-0100"><primary>make utility</primary><secondary>building the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0101"><primary>building the kernel</primary><secondary>make command</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0102"><primary>building the kernel</primary></indexterm> 
+
+<para>Now that you have created a kernel configuration that you wish to use, you need to build the kernel. This is as simple as entering a one-word command:</para>
+<programlisting>
+$ <userinput>make</userinput>
+  CHK     include/linux/version.h
+  UPD     include/linux/version.h
+  SYMLINK include/asm -&gt; include/asm-i386
+  SPLIT   include/linux/autoconf.h -&gt; include/config/*
+  CC      arch/i386/kernel/asm-offsets.s
+  GEN     include/asm-i386/asm-offsets.h
+  CC      scripts/mod/empty.o
+  HOSTCC  scripts/mod/mk_elfconfig
+  MKELF   scripts/mod/elfconfig.h
+  HOSTCC  scripts/mod/file2alias.o
+  HOSTCC  scripts/mod/modpost.o
+  HOSTCC  scripts/mod/sumversion.o
+  HOSTLD  scripts/mod/modpost
+  HOSTCC  scripts/kallsyms
+  HOSTCC  scripts/conmakehash
+  HOSTCC  scripts/bin2c
+  CC      init/main.o
+  CHK     include/linux/compile.h
+  UPD     include/linux/compile.h
+  CC      init/version.o
+  CC      init/do_mounts.o
+...
+</programlisting>
+<para>Running <emphasis>make</emphasis> causes the kernel build system to use the configuration you have selected to build a kernel and all modules needed to support that configuration.<footnote id="linuxkian-CHP-4-FN-1" label="*"><para>Older kernel versions prior to the 2.6 release required the additional step of <emphasis>make modules</emphasis> to build all needed kernel modules. That is no longer required.</para></footnote> While the kernel is building, <emphasis>make</emphasis> displays the individual filenames of what is currently happening, along with any build warnings or errors.</para>
+<para>If the kernel build finished without any errors, you have successfully created a kernel image. However, it needs to be installed properly before you try to boot from it. See <link linkend="linuxkian-CHP-5">Chapter 5</link> for how to do this.</para>
+<para>It is very unusual to get any build errors when building a released kernel version. If you do, please report them to the Linux kernel developers so they can be fixed.</para>
+</sect1>
+<sect1 id="linuxkian-CHP-4-SECT-4" label="4.4">
+<title>Advanced Building Options</title>
+<indexterm id="IDX-CHP-4-0103"><primary>multiprocessors</primary><secondary>building kernel faster</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0104"><primary>make utility</primary><secondary>building the kernel</secondary><tertiary>building faster on multiprocessor machines</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0105"><primary>errors</primary><secondary>building the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0106"><primary>building the kernel</primary><secondary>advanced options</secondary><tertiary>building faster on multiprocessor machines</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0107"><primary>building the kernel</primary><secondary>advanced options</secondary></indexterm> 
+
+<para>The kernel build system allows you to do many more things than just build the full kernel and modules. <link linkend="linuxkian-CHP-10">Chapter 10</link> includes the full list of options that the kernel build system provides. In this section, we will discuss some of these advanced build options. To see a full description of how to use other advanced build options, refer to the in-kernel documentation on the build system, which can be found in the <emphasis>Documentation/kbuild</emphasis> directory of the sources.</para>
+<sect2 id="linuxkian-CHP-4-SECT-4.1" label="4.4.1">
+<title>Building Faster on Multiprocessor Machines</title>
+<para>The kernel build system works very well as a task that can be split up into little pieces and given to different processors. By doing this, you can use the full power of a multiprocessor machine and reduce the kernel build time considerably.</para>
+<para>To build the kernel in a multithreaded way, use the <emphasis>-j</emphasis> option to the <emphasis>make</emphasis> program. It is best to give a number to the <emphasis>-j</emphasis> option that corresponds to twice the number of processors in the system. So, for a machine with two processors present, use:</para>
+<programlisting>
+$ <userinput>make -j4</userinput>
+</programlisting>
+<para>and for a machine with four processors, use:</para>
+<programlisting>
+$ <userinput>make -j8</userinput>
+</programlisting>
+<para>If you do not pass a numerical value to the <emphasis>-j</emphasis> option:</para>
+<programlisting>
+$ <userinput>make -j</userinput>
+</programlisting>
+<para>the build system will create a new thread for every subdirectory in the kernel tree, which can easily cause your machine to become unresponsive and take a much longer time to complete the build. Because of this, it is recommended that you always pass a number to the <emphasis>-j</emphasis> option.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-4-SECT-4.2" label="4.4.2">
+<title>Building Only a Portion of the Kernel</title>
+<indexterm id="IDX-CHP-4-0108"><primary>source code, kernel</primary><secondary>storing separately from output of kernel build</secondary></indexterm> 
+<indexterm id="IDX-CHP-4-0109"><primary>make utility</primary><secondary>building the kernel</secondary><tertiary>source in one place, output in another</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0110"><primary>make utility</primary><secondary>building the kernel</secondary><tertiary>building only a portion</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0111"><primary>drivers/usb/serial directory, building files in</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0112"><primary>building the kernel</primary><secondary>advanced options</secondary><tertiary>kernel build source in one place, output in another</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0113"><primary>building the kernel</primary><secondary>advanced options</secondary><tertiary>building only a portion of kernel</tertiary></indexterm> 
+
+<para>When doing kernel development, sometimes you wish to build only a specific subdirectory or a single file within the whole kernel tree. The kernel build system allows you to easily do this. To selectively build a specific directory, specify it on the build command line. For example, to build the files in the <emphasis>drivers/usb/serial</emphasis> directory, enter:</para>
+<programlisting>
+$ <userinput>make drivers/usb/serial</userinput>
+</programlisting>
+<para>Using this syntax, however, will not build the final module images in that directory. To do that, you can use the <literal>M=</literal> argument:</para>
+<programlisting>
+$ <userinput>make M=drivers/usb/serial</userinput>
+</programlisting>
+<para>which will build all the needed files in that directory and link the final module images.</para>
+<para>When you build a single directory in one of the ways shown, the final kernel image is not relinked together. Therefore, any changes that were made to the subdirectories will not affect the final kernel image, which is probably not what you desire. Execute a final:</para>
+<programlisting>
+$ <userinput>make</userinput>
+</programlisting>
+<para>to have the build system check all changed object files and do the final kernel image link properly.</para>
+<para>To build only a specific file in the kernel tree, just pass it as the argument to <emphasis>make</emphasis>. For example, if you wish to build only the <emphasis>drivers/usb/serial/visor.ko</emphasis> kernel module, enter:</para>
+<programlisting>
+$ <userinput>make drivers/usb/serial/visor.ko</userinput>
+</programlisting>
+<para>The build system will build all needed files for the <emphasis>visor.ko</emphasis> kernel module, and do the final link to create the module.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-4-SECT-4.3" label="4.4.3">
+<title>Source in One Place, Output in Another</title>
+<para>Sometimes it is easier to have the source code for the kernel tree in a read-only location (such as on a CD-ROM, or in a source code control system), and place the output of the kernel build elsewhere, so that you do not disturb the original source tree. The kernel build system handles this easily, by requiring only the single argument <literal>O=</literal> to tell it where to place the output of the build. For example, if the kernel source is located on a CD-ROM mounted on <emphasis>/mnt/cdrom/</emphasis> and you wish to place the built files in your local directory, enter:</para>
+<programlisting>
+$ <userinput>cd /mnt/cdrom/linux-2.6.17.11</userinput>
+$ <userinput>make O=&tilde;/linux/linux-2.6.17.11</userinput>
+</programlisting>
+<para>All of the build files will be created in the <emphasis>&tilde;/linux/linux-2.6.17.11/</emphasis> directory. Please note that this <literal>0=</literal> option should also be passed to the configuration options of the build so that the configuration is correctly placed in the output directory and not in the directory containing the source code.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-4-SECT-4.4" label="4.4.4">
+<title>Different Architectures</title>
+<indexterm id="IDX-CHP-4-0114"><primary>sudo command</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0115"><primary>su command</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0116"><primary>root user, prefixing commands with sudo</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0117"><primary>make utility</primary><secondary>building the kernel</secondary><tertiary>different architectures</tertiary></indexterm> 
+<indexterm id="IDX-CHP-4-0118"><primary>cross-compiled manner, building kernel in</primary></indexterm> 
+<indexterm id="IDX-CHP-4-0119"><primary>building the kernel</primary><secondary>advanced options</secondary><tertiary>different architectures</tertiary></indexterm> 
+ 
+<indexterm id="IDX-CHP-4-0120"><primary>architectures</primary><secondary>different, building kernel for</secondary></indexterm> 
+
+<para>A very useful feature is building the kernel in a cross-compiled manner to allow a more powerful machine to build a kernel for a smaller embedded system, or just to check a build for a different architecture to ensure that a change to the source code did not break something unexpected. The kernel build system allows you to specify a different architecture from the current system with the <literal>ARCH=</literal> argument. The build system also allows you to specify the specific compiler that you wish to use for the build by using the <literal>CC=</literal> argument or a cross-compile toolchain with the <literal>CROSS_COMPILE</literal> argument.</para>
+<para>For example, to get the default kernel configuration of the x86_64 architecture, you would enter:</para>
+<programlisting>
+$ <userinput>make ARCH=x86_64 defconfig</userinput>
+</programlisting>
+<para>To build the whole kernel with an ARM toolchain located in <emphasis>/usr/local/bin/</emphasis>, you would enter:</para>
+<programlisting>
+$ <userinput>make ARCH=arm CROSS_COMPILE=/usr/local/bin/arm-linux-</userinput>
+</programlisting>
+<para>It is useful even for a non-cross-compiled kernel to change what the build system uses for the compiler. Examples of this are using the <emphasis>distcc</emphasis> or <emphasis>ccache</emphasis> programs, both of which help greatly reduce the time it takes to build a kernel. To use the <emphasis>ccache</emphasis> program as part of the build system, enter:</para>
+<programlisting>
+$ <userinput>make CC="ccache gcc"</userinput>
+</programlisting>
+<para>To use both <emphasis>distcc</emphasis> and <emphasis>ccache</emphasis> together, enter:</para>
+<programlisting>
+$ <userinput>make CC="ccache distcc"</userinput>
+</programlisting>
+</sect2>
+</sect1>
+</chapter>

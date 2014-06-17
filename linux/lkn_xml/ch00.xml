@@ -1,0 +1,165 @@
+<preface id="linuxkian-PREFACE-2">
+<title>Preface</title>
+<para>When the topic of this book was first presented to me, I dismissed it as something that was already covered by the plentiful documentation about the Linux kernel. Surely someone had already written down all of the basics needed in order to build, install, and customize the Linux kernel, because it seemed to be a very simple task to me.<footnote id="linuxkian-PREFACE-2-FN-1" label="*"><para>Disclaimer: I'm a Linux kernel developer by trade, so things that seem basic and simple to me at times are completely incomprehensible by most people, as my family continues to remind me.</para></footnote></para>
+<para>After digging through the different HOWTOs and the Linux kernel <emphasis>Documentation</emphasis> directory, I came to the conclusion that there was no one place where all of this information could be found. It could be gleaned by referencing a few files here, and a few outdated web sites there, but this was not acceptable for anyone who did not know exactly what they were looking for in the first place.</para>
+<para>So this book was created with the goal of consolidating all of the existing information already scattered around the Internet about building the Linux kernel, as well as adding a lot of new and useful information that was not written down anywhere but had been learned by trial and error over my years of doing kernel development.</para>
+<para>My secret goal of this book is to bring more people into the Linux kernel development fold. The act of building a customized kernel for your machine is one of the basic tasks needed to become a Linux kernel developer. The more people that try this out, and realize that there is not any real magic behind the whole Linux kernel process, the more people will be willing to jump in and help out in making the kernel the best that it can be.</para>
+<sect1 id="linuxkian-PREFACE-2-SECT-1">
+<title>Who This Book Is For</title>
+<para>This book is intended to cover everything that is needed to know in order to properly build, customize, and install the Linux kernel. No programming experience is needed to understand and use this book.</para>
+<para>Some familiarity with how to use Linux, and some basic command-line usage is expected of the reader.</para>
+<para>This book is not intended to go into the programming aspects of the Linux kernel; there are many other good books listed in the Bibliography that already cover this topic.</para>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-2">
+<title>How the Book Is Organized</title>
+<para>This book is organized into four parts.</para>
+<para><link linkend="linuxkian-PART-I">Part I, <citation>Building the Kernel</citation></link>, includes <link linkend="linuxkian-CHP-1">Chapters 1</link> through <link linkend="linuxkian-CHP-6">6</link>, which cover everything you need to know about retrieving, building, installing, and upgrading the Linux kernel, in more or less step-by-step fashion.</para>
+<variablelist>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-1">Chapter 1, <citation>Introduction</citation></link></term>
+<listitem><para>This chapter explains when and why you would want to build the kernel.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-2">Chapter 2, <citation>Requirements for Building and Using the Kernel</citation></link></term>
+<listitem><para>This chapter covers the different programs and tools that are needed in order to properly build the kernel. It also covers a number of different programs that are tied very closely to the kernel, how to determine the needed version of the programs, and where to find them.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-3">Chapter 3, <citation>Retrieving the Kernel Source</citation></link></term>
+<listitem><para>This chapter discusses how the different Linux kernel versions relate to each other, where to retrieve the Linux kernel source code, and how to download it properly.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-4">Chapter 4, <citation>Configuring and Building</citation></link></term>
+<listitem><para>This chapter explains how to configure and properly build the Linux kernel.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-5">Chapter 5, <citation>Installing and Booting from a Kernel</citation></link></term>
+<listitem><para>This chapter shows how to install the kernel that has been built properly, and then boot into that kernel version.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-6">Chapter 6, <citation>Upgrading a Kernel</citation></link></term>
+<listitem><para>This chapter explains how to upgrade a kernel that was previously built to a newer version without having to start over from nothing.</para></listitem>
+</varlistentry>
+</variablelist>
+<para><link linkend="linuxkian-PART-II">Part II, <citation>Major Customizations</citation></link>, consists of <link linkend="linuxkian-CHP-7">Chapters 7</link> and <link linkend="linuxkian-CHP-8">8</link>, which describe how to properly configure the kernel based on the hardware present in the system, and provides a number of different "recipes" for common configurations.</para>
+<variablelist>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-7">Chapter 7, <citation>Customizing a Kernel</citation></link></term>
+<listitem><para>This chapter discusses how to customize the kernel for the hardware that is present on the system. It goes over a variety of different ways to determine what options should be selected and provides some simple scripts to help with the task.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-8">Chapter 8, <citation>Kernel Configuration Recipes</citation></link></term>
+<listitem><para>This chapter explains how to configure the kernel for a variety of common situations.</para></listitem>
+</varlistentry>
+</variablelist>
+<para><link linkend="linuxkian-PART-III">Part III, <citation>Kernel Reference</citation></link>, consists of <link linkend="linuxkian-CHP-9">Chapters 9</link> through <link linkend="linuxkian-CHP-11">11</link>. These chapters provide a reference to the different kernel command line options, the kernel build options, and a select few of the different kernel configuration options.</para>
+<variablelist>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-9">Chapter 9, <citation>Kernel Boot Command-Line Parameter Reference</citation></link></term>
+<listitem><para>This chapter details all of the different command-line options that can be passed to the kernel, and what the different options do.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-10">Chapter 10, <citation>Kernel Build Command-Line Reference</citation></link></term>
+<listitem><para>This chapter describes the different command line options that are available when building the kernel and how to use them.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-CHP-11">Chapter 11, <citation>Kernel Configuration Option Reference</citation></link></term>
+<listitem><para>This chapter focuses on a few of the more popular and important Linux kernel configuration options.</para></listitem>
+</varlistentry>
+</variablelist>
+<para><link linkend="linuxkian-PART-IV">Part IV, <citation>Additional Information</citation></link></para>
+<variablelist>
+<varlistentry>
+<term><link linkend="linuxkian-APP-A">Appendix A, <citation>Helpful Utilities</citation></link></term>
+<listitem><para>This chapter introduces a number of very good and handy tools that everyone who wishes to track the latest Linux kernel version should use.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="linuxkian-APP-B">Appendix B, <citation>Bibliography</citation></link></term>
+<listitem><para>This chapter offers a list of useful references that you can use to track down more information on building your Linux kernel.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-3">
+<title>Online Version and License</title>
+<para>This book is freely available under the Creative Commons "Attribution-ShareAlike" license, Version 2.5. This license can be seen in its entirety at <systemitem role="url">http://creativecommons.org/licenses/by-sa/2.5/</systemitem>. The full book is also available online at <systemitem role="url">http://www.kroah.com/lkn</systemitem>.</para>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-4">
+<title>Conventions Used in This Book</title>
+<para>This book uses the following typographical conventions:</para>
+<variablelist>
+<varlistentry>
+<term><emphasis>Italic</emphasis></term>
+<listitem><para>Indicates progams, tools, commands and command options, distribution packages, files, directories, usernames, and hostnames. Also indicates nomenclature that we've not previously used and emphasized words.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>Constant Width</literal></term>
+<listitem><para>Indicates strings used for kernel configuration, as well as a few special terms such as device names. Also used to show command output and the contents of text and program files.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><userinput>Constant Width Bold</userinput></term>
+<listitem><para>Used in examples to indicate commands or other text that should be typed literally by the user.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><replaceable>Constant Width Italic</replaceable></term>
+<listitem><para>Indicates text that you should replace with your own values; for example, your own name or password. When this appears as part of text that you should type in, it is shown as <userinput><replaceable>Constant Width Italic Bold</replaceable></userinput>.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>#, $</literal></term>
+<listitem><para>Used in some examples as the root shell prompt (<literal>#</literal>) and as the user prompt (<literal>$</literal>) under the Bourne or <literal>bash</literal> shell.</para></listitem>
+</varlistentry>
+</variablelist>
+<tip id="linuxkian-PREFACE-2-NOTE-1" role="ora">
+<para>Indicates a tip, suggestion, or general note.</para>
+</tip>
+<warning id="linuxkian-PREFACE-2-NOTE-2" role="ora">
+<para>Indicates a warning or caution.</para>
+</warning>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-5">
+<title>Using Shell Scripts</title>
+<indexterm id="IDX-PREFACE-2-0001"><primary sortas="pound sign root shell prompt"># (pound sign), root shell prompt</primary></indexterm> 
+ 
+<indexterm id="IDX-PREFACE-2-0002"><primary sortas="dollar sign Bourne or bash shell user prompt">$ (dollar sign), Bourne or bash shell user prompt</primary></indexterm> 
+
+<para>This book is here to help you get your job done. In general, you may use the shell scripts in this book in your own scripts and documentation. You do not need to contact us for permission. The major scripts can be downloaded from the book's web site on O'Reilly Media, <systemitem role="url">http://www.oreilly.com/catalog/9780596100797</systemitem>.</para>
+<para>We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: "<emphasis>Linux Kernel in a Nutshell</emphasis> by Greg Kroah-Hartman. Copyright 2007 O'Reilly Media, Inc., 978-0-596-10079-7."</para>
+<para>If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at <email>permissions@oreilly.com</email>.</para>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-6">
+<title>Safari&reg; Enabled</title>
+<para><graphic fileref="figs/linuxkian_safari.gif" width="74" depth="51"/> When you see a Safari&reg; enabled icon on the cover of your favorite technology book, that means the book is available online through the O'Reilly Network Safari Bookshelf.</para>
+<para>Safari offers a solution that's better than e-books. It's a virtual library that lets you easily search thousands of top tech books, cut and paste code samples, download chapters, and find quick answers when you need the most accurate, current information. Try it free at <systemitem role="url">http://safari.oreilly.com</systemitem>.</para>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-7">
+<title>How to Contact Us</title>
+<para>We have tested and verified all of the information in this book to the best of our ability, but you may find that features have changed (or even that we have made mistakes!). Please let us know about any errors you find, as well as your suggestions for future editions, by writing:</para>
+<simplelist>
+<member>O'Reilly Media, Inc.</member>
+<member>1005 Gravenstein Highway North</member>
+<member>Sebastopol, CA 95472</member>
+<member>800-998-9938 (in the United States or Canada)</member>
+<member>707-829-0515 (international/local)</member>
+<member>707-829-0104 (fax)</member>
+</simplelist>
+<para>You can also send us messages electronically. To be put on the mailing list or request a catalog, send email to:</para>
+<simplelist>
+<member><email>info@oreilly.com</email></member>
+</simplelist>
+<para>To ask technical questions or comment on the book, send email to:</para>
+<simplelist>
+<member><email>bookquestions@oreilly.com</email></member>
+</simplelist>
+<para>We have a web site for the book, where we'll list examples, errata, and any plans for future editions. You can access this page at:</para>
+<simplelist>
+<member><systemitem role="url">http://www.oreilly.com/catalog/9780596100797</systemitem></member>
+</simplelist>
+</sect1>
+<sect1 id="linuxkian-PREFACE-2-SECT-8">
+<title>Acknowledgments</title>
+<para>Thanks first go to my wonderful wife Shannon and my beautiful children Madeline and Griffin for their understanding and patience while I took the time to work on this book. Without their support and prodding, this book would have never been completed. Special thanks to Shannon for getting me into Linux kernel development in the first place. Without her effort, I would be still doing some odd embedded programming job, and would have never discovered this great community in which to work in.</para>
+<para>My editor, Andy Oram, is the driving force behing this book, shaping it into something that is both readable and informative. His editing skills and patience as deadlines flew by were instrumental in the creation and completion of this book.</para>
+<para>Also a big thanks go to the original editor of this book, David Brickner, for giving me the chance to work on this project and believing that I could complete it, despite the first version weighing in at over 1,000 pages.</para>
+<para>The technical reviewers for this book were amazing, catching all of the numerous mistakes and pointing out omissions that needed to be filled. The reviewers were (in alphabetic order by first name), Christian Benvenuti, Christian Morgner, Golden G. Richard III, Jean Delvare, Jerry Cooperstein, Michael Boerner, Rik van Riel, and Robert Day. Any remaining problems are due to me, and not their excellent skills.</para>
+<para>A special thanks to Randy Dunlap for going over the kernel boot parameters with a fine-tooth comb and pointing out issues in that chapter. Also to Kay Sievers, who helped immensely with all of the chapter on customizing the kernel, and who provided the script at the end of that same chapter. Without his <literal>sysfs</literal> help and knowledge, that chapter would not have been feasible.</para>
+<para>And a final special thanks to my sixth grade English teacher, Ms. Gruber, for teaching me that writing was something that was possible to do, and showing me the enjoyment in doing it. Without that start, none of this would have been attainable.</para>
+</sect1>
+</preface>

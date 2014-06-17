@@ -1,0 +1,258 @@
+<chapter id="linuxkian-CHP-6" label="6">
+<title>Upgrading a Kernel</title>
+<para>Inevitably it happens: you have a custom-built kernel, working just wonderfully except for one little thing that you know is fixed in the latest release from the kernel developers. Or a security problem is found, and a new stable kernel release is made public. Either way, you are faced with the issue of upgrading the kernel and you do not want to lose all the time and effort that went into making that perfect kernel configuration.</para>
+<para>This chapter is going to show how easy it is to update a kernel from an older versions, while still retaining all of the configuration options from the previous one.</para>
+<para>First off, please back up the <emphasis>.config</emphasis> file in the kernel source directory. You have spent some time and effort into creating it, and it should be saved in case something goes wrong when trying to upgrade.</para>
+<programlisting>
+$ <userinput>cd &tilde;/linux/linux-2.6.17.11</userinput>
+$ <userinput>cp .config ../good_config</userinput>
+</programlisting>
+<para>Only five simple steps are needed to upgrade a kernel from a previously built one:</para>
+<orderedlist numeration="arabic">
+<listitem><para>Get the new source code.</para></listitem>
+<listitem><para>Apply the changes to the old source tree to bring it up to the newer level.</para></listitem>
+<listitem><para>Reconfigure the kernel based on the previous kernel configuration.</para></listitem>
+<listitem><para>Build the new kernel.</para></listitem>
+<listitem><para>Install the new kernel.</para></listitem>
+</orderedlist>
+<para>The last two steps work the same as described before, so we will only discuss the first three steps in this chapter.</para>
+<para>In this chapter, we are going to assume that you have built a successful 2.6.17.9 kernel release, and want to upgrade to the 2.6.17.11 release.</para>
+<sect1 id="linuxkian-CHP-6-SECT-1" label="6.1">
+<title>Download the New Source</title>
+<indexterm id="IDX-CHP-6-0142"><primary>upgrading a kernel</primary><secondary>downloading new source code</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0143"><primary>source code, kernel</primary><secondary>downloading patch for kernel upgrade</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0144"><primary>patches</primary><secondary>kernel upgrades</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0145"><primary>kernel.org web sites</primary><secondary>main site</secondary><tertiary>list of current kernel versions for donwload</tertiary></indexterm> 
+
+<para>The Linux kernel developers realize that users do not wish to download the entire source code to the kernel for every update. That would be a waste of bandwidth and time. Because of this, they offer a patch that can upgrade an older kernel release to a newer one.<footnote id="linuxkian-CHP-6-FN-1" label="*"><para>It is called <emphasis>patch</emphasis> because the program <emphasis>patch</emphasis> takes the file and applies it to the original tree, creating the new tree. The patch file contains a representation of the changes that are necessary to reconstruct the new files, based on the old ones. Patch files are readable, and contain a list of the lines that are to be removed and the lines that are to be added, with some context within the file showing where the changes should be made.</para></footnote>
+</para>
+<para>On the main <systemitem role="httpurl">kernel.org</systemitem> web site, you will remember that it contained a list of the current kernel versions that are available for download, as shown in <link linkend="linuxkian-CHP-6-FIG-1">Figure 6-1</link>.</para>
+<figure id="linuxkian-CHP-6-FIG-1" label="6-1">
+<title>The main <systemitem role="httpurl">kernel.org</systemitem> web site</title>
+<graphic fileref="figs/linuxkian_0601.gif" width="549" depth="775"/>
+</figure>
+<para>Previously, you used the link pointed to you by the <literal>F</literal> to download the entire source code for the kernel. However, if you click on the name of the kernel release, it will download a patch file instead, as shown in <link linkend="linuxkian-CHP-6-FIG-2">Figure 6-2</link>.</para>
+<figure id="linuxkian-CHP-6-FIG-2" label="6-2">
+<title>Downloading a patch from <systemitem role="httpurl">kernel.org</systemitem></title>
+<graphic fileref="figs/linuxkian_0602.gif" width="549" depth="780"/>
+</figure>
+<para>This is what we want to do when upgrading. But we need to figure out what patch to download.</para>
+<sect2 id="linuxkian-CHP-6-SECT-1.1" label="6.1.1">
+<title>Which Patch Applies to Which Release?</title>
+<indexterm id="IDX-CHP-6-0146"><primary>upgrading a kernel</primary><secondary>downloading new source code</secondary><tertiary>determining correct patch for a release</tertiary></indexterm> 
+<indexterm id="IDX-CHP-6-0147"><primary>stable kernel patches</primary></indexterm> 
+<indexterm id="IDX-CHP-6-0148"><primary>source code, kernel</primary><secondary>downloading patch for kernel upgrade</secondary><tertiary>determining correct patch</tertiary></indexterm> 
+<indexterm id="IDX-CHP-6-0149"><primary>patches</primary><secondary>determining correct patch for specific release</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0150"><primary>incremental kernel patches</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0151"><primary>base kernel patches</primary></indexterm> 
+
+<para>A kernel patch file will upgrade the source code from only one specific release to another specific release. Here is how the different patch files can be applied:</para>
+<itemizedlist mark="bull">
+<listitem><para>Stable kernel patches apply to the base kernel version. This means that the 2.6.17.10 patch will only apply to the 2.6.17 kernel release. The 2.6.17.10 kernel patch will not apply to the 2.6.17.9 kernel or any other release.</para></listitem>
+<listitem><para>Base kernel release patches only apply to the previous base kernel version. This means that the 2.6.18 patch will only apply to the 2.6.17 kernel release. It will not apply to the last 2.6.17.y kernel release, or any other release.</para></listitem>
+<listitem><para>Incremental patches upgrade from a specific release to the next release. This allows developers to not have to downgrade their kernel and then upgrade it, just to switch from the latest stable release to the next stable release (remember that the stable release patches are only against the base kernel, not the previous stable release). Whenever possible, it is recommended that you use the incremental patches to make your life easier.</para></listitem>
+</itemizedlist>
+</sect2>
+<sect2 id="linuxkian-CHP-6-SECT-1.2" label="6.1.2">
+<title>Finding the Patch</title>
+<indexterm id="IDX-CHP-6-0152"><primary>upgrading a kernel</primary><secondary>downloading new source code</secondary><tertiary>finding the patch</tertiary></indexterm> 
+<indexterm id="IDX-CHP-6-0153"><primary>upgrading a kernel</primary><secondary>applying the patch</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0154"><primary>uncompressing files</primary></indexterm> 
+<indexterm id="IDX-CHP-6-0155"><primary>source code, kernel</primary><secondary>downloading patch for kernel upgrade</secondary><tertiary>finding the patch</tertiary></indexterm> 
+<indexterm id="IDX-CHP-6-0156"><primary>patches</primary><secondary>finding for a kernel release</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0157"><primary>patches</primary><secondary>applying</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0158"><primary>file compression</primary><secondary>uncompressing kernel patches</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0159"><primary>bzip2 command</primary></indexterm> 
+
+<para>As we want to go from the 2.6.17.9 kernel release, to the 2.6.17.11 release, we will need to download two different patches. We will need a patch from the 2.6.17.9 release to the 2.6.17.10 release, and then from the 2.6.17.10 release to the 2.6.17.11 release.<footnote id="linuxkian-CHP-6-FN-2" label="*"><para>If you need to upgrade more than two versions, it is recommended as a way to save steps, to go backward and then upgrade forward. In this case, we could go backward from 2.6.17.9 to 2.6.17 and then forward from 2.6.17 to 2.6.17.11.</para></footnote></para>
+<para>The stable and base kernel patches are located in the same directory structure as the main source trees. All incremental patches can be found one level lower, in the <emphasis>incr</emphasis> subdirectory. So, to find the patch that goes from 2.6.17.9 to 2.6.17.10, we look in the <emphasis>/pub/linux/kernel/v2.6/incr</emphasis> directory to find the files we need:<footnote id="linuxkian-CHP-6-FN-3" label="&dagger;"><para>In this example, we use the very good <emphasis>lftp</emphasis> FTP program to download the patch files. Any FTP program or a web browser can be used to download the same files. The important thing here is to show where the files are located.</para></footnote></para>
+<programlisting>
+$ <userinput>cd &tilde;/linux</userinput>
+$ <userinput>lftp ftp.kernel.org/pub/linux/kernel/v2.6/incr</userinput>
+cd ok, cwd=/pub/linux/kernel/v2.6/incr
+lftp ftp.kernel.org:/pub/linux/kernel/v2.6/incr&gt; ls *2.6.17.9*.bz2
+-rw-rw-r--    1 536      536          2872 Aug 22 19:23 patch-2.6.17.9-10.bz2
+lftp ftp.kernel.org:/pub/linux/kernel/v2.6/incr&gt; get patch-2.6.17.9-10.bz2
+2872 bytes transferred
+lftp ftp.kernel.org:/pub/linux/kernel/v2.6/incr&gt; get patch-2.6.17.10-11.bz2
+7901 bytes transferred
+lftp ftp.kernel.org:/pub/linux/kernel/v2.6/incr&gt; exit
+$ <userinput>ls -F</userinput>
+good_config linux-2.6.17.9/ patch-2.6.17.10-11.bz2  patch-2.6.17.9-10.bz2
+</programlisting>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-CHP-6-SECT-2" label="6.2">
+<title>Applying the Patch</title>
+ 
+<indexterm id="IDX-CHP-6-0160"><primary>Makefiles</primary><secondary>verifying output of kernel patch</secondary></indexterm> 
+
+<para>As the patches we have downloaded are compressed, the first thing to do is uncompress them with the <emphasis>bzip2</emphasis> command:</para>
+<programlisting>
+$ <userinput>bzip2 -dv patch-2.6.17.9-10.bz2</userinput>
+  patch-2.6.17.9-10.bz2: done
+$ <userinput>bzip2 -dv patch-2.6.17.10-11.bz2</userinput>
+  patch-2.6.17.10-11.bz2: done
+$ <userinput>ls -F</userinput>
+good_config linux-2.6.17.9/  patch-2.6.17.10-11  patch-2.6.17.9-10
+</programlisting>
+<para>Now we need to apply the patch files to the kernel directory. Go into the directory:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.17.9</userinput>
+</programlisting>
+<para>Now run the <emphasis>patch</emphasis> program to apply the first patch moving the source tree from the 2.6.17.9 to the 2.6.17.10 release:</para>
+<programlisting>
+$ <userinput>patch -p1 &lt; ../patch-2.6.17.9-10</userinput>
+patching file Makefile
+patching file block/elevator.c
+patching file fs/udf/super.c
+patching file fs/udf/truncate.c
+patching file include/net/sctp/sctp.h
+patching file include/net/sctp/sm.h
+patching file net/sctp/sm_make_chunk.c
+patching file net/sctp/sm_statefuns.c
+patching file net/sctp/socket.c
+</programlisting>
+<para>Verify that the patch really did work properly and that there are no errors or warnings in the output of the patch program. It is also a good idea to look at the <emphasis>Makefile</emphasis> of the kernel to see the kernel version:</para>
+<programlisting>
+$ <userinput>head -n 5 Makefile</userinput>
+VERSION = 2
+PATCHLEVEL = 6
+SUBLEVEL = 17
+EXTRAVERSION = .10
+NAME=Crazed Snow-Weasel
+</programlisting>
+<para>Now that the kernel is at the 2.6.17.10 release level, do the same thing as before, and apply the patch to bring it up to the 2.6.17.11 level:</para>
+<programlisting>
+$ <userinput>patch -p1 &lt; ../patch-2.6.17.10-11</userinput>
+patching file Makefile
+patching file arch/ia64/kernel/sys_ia64.c
+patching file arch/sparc/kernel/sys_sparc.c
+patching file arch/sparc64/kernel/sys_sparc.c
+patching file drivers/char/tpm/tpm_tis.c
+patching file drivers/ieee1394/ohci1394.c
+patching file drivers/md/dm-mpath.c
+patching file drivers/md/raid1.c
+patching file drivers/net/sky2.c
+patching file drivers/pci/quirks.c
+patching file drivers/serial/Kconfig
+patching file fs/befs/linuxvfs.c
+patching file fs/ext3/super.c
+patching file include/asm-generic/mman.h
+patching file include/asm-ia64/mman.h
+patching file include/asm-sparc/mman.h
+patching file include/asm-sparc64/mman.h
+patching file kernel/timer.c
+patching file lib/spinlock_debug.c
+patching file mm/mmap.c
+patching file mm/swapfile.c
+patching file net/bridge/netfilter/ebt_ulog.c
+patching file net/core/dst.c
+patching file net/core/rtnetlink.c
+patching file net/ipv4/fib_semantics.c
+patching file net/ipv4/netfilter/arp_tables.c
+patching file net/ipv4/netfilter/ip_tables.c
+patching file net/ipv4/netfilter/ipt_ULOG.c
+patching file net/ipv4/route.c
+patching file net/ipx/af_ipx.c
+patching file net/netfilter/nfnetlink_log.c
+</programlisting>
+<para>Again verify that the output of the patch program did not show any errors and look at the <emphasis>Makefile</emphasis>:</para>
+<programlisting>
+$ <userinput>head -n 5 Makefile</userinput>
+VERSION = 2
+PATCHLEVEL = 6
+SUBLEVEL = 17
+EXTRAVERSION = .11
+NAME=Crazed Snow-Weasel
+</programlisting>
+<para>Now that the source code is successfully updated to the version you wish to use, it is a good idea to go back and change the directory name to refer to the kernel version number to avoid confusion at a later time:</para>
+<programlisting>
+$ <userinput>cd ..</userinput>
+$ <userinput>mv linux-2.6.17.9 linux-2.6.17.11</userinput>
+$ <userinput>ls -F</userinput>
+good_config linux-2.6.17.11/  patch-2.6.17.10-11  patch-2.6.17.9-10
+</programlisting>
+</sect1>
+<sect1 id="linuxkian-CHP-6-SECT-3" label="6.3">
+<title>Reconfigure the Kernel</title>
+<indexterm id="IDX-CHP-6-0161"><primary>upgrading a kernel</primary><secondary>reconfiguring kernel after upgrade</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0162"><primary>make utility</primary><secondary>silentoldconfig option</secondary></indexterm> 
+<indexterm id="IDX-CHP-6-0163"><primary>make utility</primary><secondary>oldconfig option</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0164"><primary sortas="config file">.config file</primary><secondary>updating for new kernel release</secondary></indexterm> 
+
+<para>Previously, we used the <emphasis>make menuconfig</emphasis> or <emphasis>gconfig</emphasis> or <emphasis>xconfig</emphasis> method to change different configuration options. But once you have a working configuration, the only thing that is necessary is to update it with any new options that have been added to the kernel since the last release. To do this, the <emphasis>make oldconfig</emphasis> and <emphasis>make silentoldconfig</emphasis> options should be used.</para>
+<para><emphasis>make oldconfig</emphasis> takes the current kernel configuration in the <emphasis>.config</emphasis> file, and updates it based on the new kernel release. To do this, it prints out all configuration questions, and provides an answer for them if the option is already handled in the configuration file. If there is a new option, the program stops and asks the user what the new configuration value should be set to. After answering the prompt, the program continues on until the whole kernel configuration is finished.</para>
+<para><emphasis>make silentoldconfig</emphasis> works exactly the same way as <emphasis>oldconfig</emphasis>, but it does not print anything to the screen, unless it needs to ask a question about a new configuration option.</para>
+<para>Usually, when upgrading between different versions of the stable releases, no new configuration options are added, as this is supposed to be a stable kernel series. If this happens, there are no new questions that need to be answered for the kernel configuration, so the program continues successfully without any need for user intervention. An example of this is moving from the 2.6.17.9 to 2.6.17.11 release:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.17.11</userinput>
+$ <userinput>make silentoldconfig</userinput>
+scripts/kconfig/conf -s arch/i386/Kconfig
+#
+# using defaults found in .config
+#
+</programlisting>
+<para>The following example shows what happens when a new kernel option shows up in a new release. The kernel option to enable <emphasis>Mutex debugging</emphasis><indexterm id="IDX-CHP-6-0165"><primary>Mutex debugging</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0166"><primary>debugging, kernel</primary><secondary>Mutex debugging</secondary></indexterm> 
+ is a new one for certain kernel releases. Here is the output when this happened:</para>
+<programlisting>
+$ <userinput>make silentoldconfig</userinput>
+scripts/kconfig/conf -s arch/i386/Kconfig
+#
+# using defaults found in .config
+#
+*
+* Restart config...
+*
+*
+* Kernel hacking
+*
+Show timing information on printks (PRINTK_TIME) [Y/n/?] y
+Magic SysRq key (MAGIC_SYSRQ) [Y/n/?] y
+Kernel debugging (DEBUG_KERNEL) [Y/n/?] y
+  Kernel log buffer size (16 =&gt; 64KB, 17 =&gt; 128KB) (LOG_BUF_SHIFT) [16] 16
+  Detect Soft Lockups (DETECT_SOFTLOCKUP) [Y/n/?] y
+  Collect scheduler statistics (SCHEDSTATS) [N/y/?] n
+  Debug slab memory allocations (DEBUG_SLAB) [Y/n/?] y
+    Memory leak debugging (DEBUG_SLAB_LEAK) [Y/n] y
+  Mutex debugging, deadlock detection (DEBUG_MUTEXES) [N/y/?] (NEW) y
+</programlisting>
+<para>The configuration program stops at this option and asks for the user to choose an option. Press <literal>y</literal>, and the program continues on:</para>
+<programlisting>
+  Spinlock debugging (DEBUG_SPINLOCK) [Y/n/?] y
+  Sleep-inside-spinlock checking (DEBUG_SPINLOCK_SLEEP) [Y/n/?] y
+  kobject debugging (DEBUG_KOBJECT) [N/y/?] n
+  Highmem debugging (DEBUG_HIGHMEM) [N/y/?] n
+  Compile the kernel with debug info (DEBUG_INFO) [N/y/?] n
+Debug Filesystem (DEBUG_FS) [Y/?] y
+Debug VM (DEBUG_VM) [N/y/?] n
+Compile the kernel with frame pointers (FRAME_POINTER) [N/y/?] n
+Compile the kernel with frame unwind information (UNWIND_INFO) [N/y/?] n
+Force gcc to inline functions marked 'inline' (FORCED_INLINING) [N/y/?] n
+torture tests for RCU (RCU_TORTURE_TEST) [N/m/y/?] n
+Check for stack overflows (DEBUG_STACKOVERFLOW) [N/y/?] n
+Stack utilization instrumentation (DEBUG_STACK_USAGE) [N/y/?] n
+Stack backtraces per line (STACK_BACKTRACE_COLS) [2] 2
+*
+* Page alloc debug is incompatible with Software Suspend on i386
+*
+Write protect kernel read-only data structures (DEBUG_RODATA) [N/y/?] n
+Use 4Kb for kernel stacks instead of 8Kb (4KSTACKS) [N/y/?] n
+</programlisting>
+<para>So upgrading the kernel configuration for a new release is as simple as using a different configuration option to <emphasis>make</emphasis>. With this method, you do not need to use the graphical or text-oriented configuration programs for any new kernel update.</para>
+</sect1>
+<sect1 id="linuxkian-CHP-6-SECT-4" label="6.4">
+<title>Can't This Be Automated?</title>
+<indexterm id="IDX-CHP-6-0167"><primary>upgrading a kernel</primary><secondary>automating the process</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-6-0168"><primary>ketchup program</primary></indexterm> 
+
+<para>The whole process of downloading the proper patch file, uncompressing it, and then applying it seems to be ripe for automating. Kernel developers being the type that like to automate repetitive tasks, the program <emphasis>ketchup</emphasis> has been created to handle all of this automatically. See <link linkend="linuxkian-APP-A">Appendix A</link> for more details on how this program works and how to use it.</para>
+</sect1>
+</chapter>

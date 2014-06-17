@@ -1,0 +1,248 @@
+<chapter id="linuxkian-CHP-5" label="5">
+<title>Installing and Booting from a Kernel</title>
+<para>Previous chapters showed you how to download and build your kernel. Now that you have an executable file&mdash;along with any modules you built&mdash;it is time to install the kernel and attempt to boot it. In this chapter, unlike earlier ones, all of the commands need to be run as the root user. This can be done by prefixing each command with <emphasis>sudo</emphasis>, by using the <emphasis>su</emphasis> command to become <emphasis>root</emphasis>, or actually by logging in as <emphasis>root</emphasis>.</para>
+<para>To see whether you have <emphasis>sudo</emphasis> installed and the proper access set up, do the following:</para>
+<programlisting>
+$ <userinput>sudo ls &tilde;/linux/linux-2.6.17.11/Makefile</userinput>
+Password:
+Makefile
+</programlisting>
+<para>Enter either your own password at the password prompt, or the password of the system administrator (root). The choice depends on how the <emphasis>sudo</emphasis> command is set up. If this is successful, and you see the line containing:</para>
+<programlisting>
+Makefile
+</programlisting>
+<para>then you can skip to the next section.</para>
+<para>If <emphasis>sudo</emphasis> is not installed or giving you the proper rights, try using the <emphasis>su</emphasis> command:</para>
+<programlisting>
+$ <userinput>su</userinput>
+Password:
+# exit
+exit
+$
+</programlisting>
+<para>At the password prompt, enter the password of the system administrator (<emphasis>root</emphasis>). When the <emphasis>su</emphasis> program successfully accepts the password, you are transferred to running everything with full root privileges. Be very careful while as <emphasis>root</emphasis>, and do only the minimum needed; then exit the program to continue back as your normal user account.</para>
+<sect1 id="linuxkian-CHP-5-SECT-1" label="5.1">
+<title>Using a Distribution's Installation Scripts</title>
+<indexterm id="IDX-CHP-5-0121"><primary>modules, kernel</primary><secondary>installing</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0122"><primary>make utility</primary><secondary>installing the kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0123"><primary>installing the kernel</primary><secondary>using distribution's installation scripts</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0124"><primary>images, kernel</primary><secondary>automatic creation of initial ramdisk image</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0125"><primary>bootloader program</primary><secondary>notification of new kernel installation</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-5-0126"><primary sortas="boot directory">/boot directory</primary><secondary>installation of static kernel portion</secondary></indexterm> 
+
+<para>Almost all distributions come with a script called <emphasis>installkernel</emphasis> that can be used by the kernel build system to automatically install a built kernel into the proper location and modify the bootloader so that nothing extra needs to be done by the developer.<footnote id="linuxkian-CHP-5-FN-1" label="*"><para>Notable exceptions to this rule are Gentoo and other "from scratch" types distributions, which expect users to know how to install kernels on their own. These types of distributions include documentation on how to install a new kernel, so consult it for the exact method required.</para></footnote></para>
+<tip id="linuxkian-CHP-5-NOTE-4" role="ora">
+<para>Distributions that offer <emphasis>installkernel</emphasis> usually put it in a package called <emphasis>mkinitrd</emphasis>, so try to install that package if you cannot find the script on your machine.</para>
+</tip>
+<para>If you have built any modules and want to use use this method to install a kernel, first enter:</para>
+<programlisting>
+# <userinput>make modules_install</userinput>
+</programlisting>
+<para>This will install all the modules that you have built and place them in the proper location in the filesystem for the new kernel to properly find. Modules are placed in the <emphasis>/lib/modules/</emphasis><replaceable>kernel_version</replaceable> directory, where <replaceable>kernel_version</replaceable> is the kernel version of the new kernel you have just built.</para>
+<para>After the modules have been successfully installed, the main kernel image must be installed:</para>
+<programlisting>
+# <userinput>make install</userinput>
+</programlisting>
+<para>This will kick off the following process:</para>
+<orderedlist numeration="arabic">
+<listitem><para>The kernel build system will verify that the kernel has been successfully built properly.</para></listitem>
+<listitem><para>The build system will install the static kernel portion into the <emphasis>/boot</emphasis> directory and name this executable file based on the kernel version of the built kernel.</para></listitem>
+<listitem><para>Any needed initial ramdisk images will be automatically created, using the modules that have just been installed during the <emphasis>modules_install</emphasis> phase.</para></listitem>
+<listitem><para>The bootloader program will be properly notified that a new kernel is present, and it will be added to the appropriate menu so the user can select it the next time the machine is booted.</para></listitem>
+<listitem><para>After this is finished, the kernel is successfully installed, and you can safely reboot and try out your new kernel image. Note that this installation does not overwrite any older kernel images, so if there is a problem with your new kernel image, the old kernel can be selected at boot time.</para></listitem>
+</orderedlist>
+</sect1>
+<sect1 id="linuxkian-CHP-5-SECT-2" label="5.2">
+<title>Installing by Hand</title>
+ 
+<indexterm id="IDX-CHP-5-0127"><primary>versions, kernel</primary></indexterm> 
+
+<para>If your distribution does not have a <emphasis>installkernel</emphasis> command, or you wish to just do the work by hand 
+<indexterm id="IDX-CHP-5-0128"><primary>installing the kernel</primary><secondary>by hand</secondary></indexterm> 
+ to understand the steps involved, here they are:</para>
+<para>The modules must be installed:</para>
+<programlisting>
+# <userinput>make modules_install</userinput>
+</programlisting>
+<para>The static kernel image must be copied into the <emphasis>/boot</emphasis> directory. For an i386-based kernel, do the following:</para>
+<programlisting>
+# <userinput>make kernelversion</userinput>
+2.6.17.11
+</programlisting>
+<para>Note that the kernel version will probably be different for your kernel. Use this value in place of the text <literal>KERNEL_VERSION</literal> in the following steps:</para>
+<programlisting>
+# <userinput>cp arch/i386/boot/bzImage /boot/bzImage-KERNEL_VERSION</userinput>
+# <userinput>cp System.map /boot/System.map-KERNEL_VERSION</userinput>
+</programlisting>
+<para>Modify the bootloader so it knows about the new kernel. This involves editing a configuration file for the bootloader you use, and is covered later in "<link linkend="linuxkian-CHP-5-SECT-3">Modifying the Bootloader for the New Kernel</link>" for the GRUB and LILO bootloaders.</para>
+<para>If the boot process does not work properly, it's usually because an initial ramdisk image is needed. To create this properly, use the steps in the beginning of this chapter for installing a kernel automatically, because the distribution install scripts know how to properly create the ramdisk using the needed scripts and tools. Because each distribution does this differently, it is beyond the scope of this book to cover all of the different methods of building the ramdisk image.</para>
+<para>Here is a handy script that can be used to install the kernel automatically instead of having to type the previous commands all the time:</para>
+<programlisting>
+#!/bin/sh
+#
+# installs a kernel
+#
+make modules_install
+
+# find out what kernel version this is
+for TAG in VERSION PATCHLEVEL SUBLEVEL EXTRAVERSION ; do
+    eval &grave;sed -ne "/^$TAG/s/ //gp" Makefile&grave;
+done
+SRC_RELEASE=$VERSION.$PATCHLEVEL.$SUBLEVEL$EXTRAVERSION
+
+# figure out the architecture
+ARCH=&grave;grep "CONFIG_ARCH " include/linux/autoconf.h | cut -f 2 -d "\""&grave;
+
+# copy the kernel image
+cp arch/$ARCH/boot/bzImage /boot/bzImage-"$SRC_RELEASE"
+
+# copy the System.map file
+cp System.map /boot/System.map-"$SRC_RELEASE"
+
+echo "Installed $SRC_RELEASE for $ARCH"
+</programlisting>
+</sect1>
+<sect1 id="linuxkian-CHP-5-SECT-3" label="5.3">
+<title>Modifying the Bootloader for the New Kernel</title>
+<indexterm id="IDX-CHP-5-0129"><primary>LILO</primary><secondary>checking for presence of</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0130"><primary>installing the kernel</primary><secondary>modifying bootloader for new kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0131"><primary>GRUB</primary><secondary>modifying for new kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0132"><primary>GRUB</primary><secondary>checking for presence of</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0133"><primary sortas="etc directory liloconf file">/etc directory, /lilo.conf file</primary></indexterm> 
+<indexterm id="IDX-CHP-5-0134"><primary>bootloader program</primary><secondary>modifying for new kernel</secondary></indexterm> 
+ 
+<indexterm id="IDX-CHP-5-0135"><primary sortas="boot directory">/boot directory</primary><secondary>/grub subdirectory</secondary></indexterm> 
+
+<para>There are two common Linux kernel bootloaders: GRUB 
+<indexterm id="IDX-CHP-5-0136"><primary>bootloader program</primary><secondary>modifying for new kernel</secondary><tertiary>GRUB</tertiary></indexterm> 
+ and LILO. GRUB is the one more commonly used in modern distributions, and does some things a little more easily than LILO, but LILO is still seen as well. We'll cover both in this section.</para>
+<para>To determine which bootloader your system uses, look in the <emphasis>/boot/</emphasis> directory. If there is a <emphasis>grub</emphasis> subdirectory:</para>
+<programlisting>
+$ <userinput>ls -F /boot | grep grub</userinput>
+grub/
+</programlisting>
+<para>then you are using the GRUB program to boot with. If this directory is not present, look for the presence of the <emphasis>/etc/lilo.conf</emphasis> file:</para>
+<programlisting>
+$ <userinput>ls /etc/lilo.conf</userinput>
+/etc/lilo.conf
+</programlisting>
+<para>If this is present, you are using the LILO program to boot with.</para>
+<para>The steps involved in adding a new kernel to each of these programs are different, so follow only the section that corresponds to the program you are using.</para>
+<sect2 id="linuxkian-CHP-5-SECT-3.1" label="5.3.1">
+<title>GRUB</title>
+<para>To let GRUB know that a new kernel is present, all you need to do is modify the <emphasis>/boot/grub/menu.lst</emphasis> file. For full details on the structure of this file, and all of the different options available, please see the GRUB info pages:</para>
+<programlisting>
+$ <userinput>info grub</userinput>
+</programlisting>
+<para>The easiest way to add a new kernel entry to the <emphasis>/boot/grub/menu.lst</emphasis> file is to copy an existing entry. For example, consider the following <emphasis>menu.lst</emphasis> file from a Gentoo system:</para>
+<programlisting>
+timeout 300
+default 0
+
+splashimage=(hd0,0)/grub/splash.xpm.gz
+
+title 2.6.16.11
+    root (hd0,0)
+    kernel /bzImage-2.6.16.11 root=/dev/sda2 vga=0x0305
+
+title 2.6.16
+    root (hd0,0)
+    kernel /bzImage-2.6.16 root=/dev/sda2 vga=0x0305
+</programlisting>
+<para>The line starting with the word <literal>title</literal> defines a new kernel entry, so this file contains two entries. Simply copy one block of lines beginning with the <literal>title</literal> line, such as:</para>
+<programlisting>
+title 2.6.16.11
+    root (hd0,0)
+    kernel /bzImage-2.6.16.11 root=/dev/sda2 vga=0x0305
+</programlisting>
+<para>Then, add the block to the end of the file, and edit the version number to contain the version number of the new kernel you just installed. The title does not matter, so long as it is unique, but it is displayed in the boot menu, so you should make it something meaningful. In our example, we installed the 2.6.17.11 kernel, so the final copy of the file looks like:</para>
+<programlisting>
+timeout 300
+default 0
+
+splashimage=(hd0,0)/grub/splash.xpm.gz
+
+title 2.6.16.11
+    root (hd0,0)
+    kernel /bzImage-2.6.16.11 root=/dev/sda2 vga=0x0305
+
+title 2.6.16
+    root (hd0,0)
+    kernel /bzImage-2.6.16 root=/dev/sda2 vga=0x0305
+
+title 2.6.17.11
+    root (hd0,0)
+    kernel /bzImage-2.6.17.11 root=/dev/sda2 vga=0x0305
+</programlisting>
+<para>After you save the file, reboot the system and ensure that the new kernel image's title comes up in the boot menu. Use the down arrow to highlight the new kernel version, and press Enter to boot the new kernel image.</para>
+</sect2>
+<sect2 id="linuxkian-CHP-5-SECT-3.2" label="5.3.2">
+<title>LILO</title>
+ 
+<indexterm id="IDX-CHP-5-0137"><primary>bootloader program</primary><secondary>modifying for new kernel</secondary><tertiary>LILO</tertiary></indexterm> 
+
+<indexterm id="IDX-CHP-5-0138"><primary>upgrading a kernel</primary></indexterm> 
+<indexterm id="IDX-CHP-5-0139"><primary>LILO</primary><secondary>modifying configuration for new kernel</secondary></indexterm> 
+<indexterm id="IDX-CHP-5-0140"><primary>Gentoo Linux, LILO configuration file</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-5-0141"><primary sortas="config file">.config file</primary><secondary>backing up before upgrading kernel</secondary></indexterm> 
+
+<para>To let LILO know that a new kernel is present, you must modify the <emphasis>/etc/lilo.conf</emphasis> configuration file and then run the <emphasis>lilo</emphasis> command to apply the changes made to the configuration file. For full details on the structure of the LILO configuration file, please see the LILO manpage:</para>
+<programlisting>
+$ <userinput>man lilo</userinput>
+</programlisting>
+<para>The easiest way to add a new kernel entry to the <emphasis>/etc/lilo.conf</emphasis> file is to copy an existing entry. For example, consider the following LILO configuration file from a Gentoo system:</para>
+<programlisting>
+boot=/dev/hda
+prompt
+timeout=50
+default=2.6.12
+
+image=/boot/bzImage-2.6.15
+    label=2.6.15
+    read-only
+    root=/dev/hda2
+
+image=/boot/bzImage-2.6.12
+    label=2.6.12
+    read-only
+    root=/dev/hda2
+</programlisting>
+<para>The line starting with the word <literal>image=</literal> defines a new kernel entry, so this file contains two entries. Simply copy one block of lines beginning with <literal>image=</literal>, such as:</para>
+<programlisting>
+image=/boot/bzImage-2.6.15
+    label=2.6.15
+    read-only
+    root=/dev/hda2
+</programlisting>
+<para>Then, add the block to the end of the file, and edit the version number to contain the version number of the new kernel you just installed. The label does not matter, so long as it is unique, but it is displayed in the boot menu, so you should make it something meaningful. In our example, we installed the <literal>2.6.17.11</literal> kernel, so the final copy of the file looks like:</para>
+<programlisting>
+boot=/dev/hda
+prompt
+timeout=50
+default=2.6.12
+
+image=/boot/bzImage-2.6.15
+    label=2.6.15
+    read-only
+    root=/dev/hda2
+
+image=/boot/bzImage-2.6.12
+    label=2.6.12
+    read-only
+    root=/dev/hda2
+
+image=/boot/bzImage-2.6.17
+    label=2.6.17
+    read-only
+    root=/dev/hda2
+</programlisting>
+<para>After you save the file, run the <emphasis>/sbin/lilo</emphasis> program to write the configuration changes out to the boot section of the disk:</para>
+<programlisting>
+# <userinput>/sbin/lilo</userinput>
+</programlisting>
+<para>Now the system can be safely rebooted. The new kernel choice can be seen in the list of kernels that are available at boot time. Use the down arrow to highlight the new kernel version, and press Enter to boot the new kernel image.</para>
+</sect2>
+</sect1>
+</chapter>

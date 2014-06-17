@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//O'Reilly//DTD DBLite 1.0 XML//EN" "/work/tools/docbook/dblite/safari_future.dtd" [
+<!ENTITY metadata SYSTEM "metadata.xml"> 
+<!ENTITY cpyrt SYSTEM "cpyrt.xml"> 
+<!ENTITY ch00 SYSTEM "ch00.xml">
+<!ENTITY part1 SYSTEM "part1.xml">
+<!ENTITY ch01 SYSTEM "ch01.xml">
+<!ENTITY ch02 SYSTEM "ch02.xml">
+<!ENTITY ch03 SYSTEM "ch03.xml">
+<!ENTITY ch04 SYSTEM "ch04.xml">
+<!ENTITY ch05 SYSTEM "ch05.xml">
+<!ENTITY ch06 SYSTEM "ch06.xml">
+<!ENTITY part2 SYSTEM "part2.xml">
+<!ENTITY ch07 SYSTEM "ch07.xml">
+<!ENTITY ch08 SYSTEM "ch08.xml">
+<!ENTITY part3 SYSTEM "part3.xml">
+<!ENTITY ch09 SYSTEM "ch09.xml">
+<!ENTITY ch10 SYSTEM "ch10.xml">
+<!ENTITY ch11 SYSTEM "ch11.xml">
+<!ENTITY part4 SYSTEM "part4.xml">
+<!ENTITY appa SYSTEM "appa.xml">
+<!ENTITY appb SYSTEM "appb.xml">
+<!ENTITY author SYSTEM "author.xml">
+<!ENTITY colo SYSTEM "colo.xml">
+]>
+<book fpi="0596100795">
+<title>Linux Kernel in a Nutshell</title>
+&metadata;
+&cpyrt;
+&ch00;
+&part1;
+&part2;
+&part3;
+&part4;
+&author;
+&colo;
+</book>

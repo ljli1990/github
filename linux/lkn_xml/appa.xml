@@ -1,0 +1,285 @@
+<appendix id="linuxkian-APP-A" label="A">
+<title>Helpful Utilities</title>
+<para>Retrieving, building, updating, and maintaining a Linux kernel source tree involves a lot of different steps, as this book shows. Being naturally lazy creatures, developers have created some programs to help with the various routine tasks. Here we describe a few of these useful tools and the basics on how to use them.</para>
+<para>Linux kernel development differs in many ways from traditional software development. Some of the special demands on kernel programmers include:</para>
+<itemizedlist mark="bull">
+<listitem><para>Constantly applying your changes to the moving target of a fast-based kernel development release schedule</para></listitem>
+<listitem><para>Resolving any merge conflicts between changes you have made and changes made by other people</para></listitem>
+<listitem><para>Exporting your changes in a format that lets others incorporate and work with it easily</para></listitem>
+</itemizedlist>
+<sect1 id="linuxkian-APP-A-SECT-1" label="A.1">
+<title>patch and diff</title>
+ 
+<indexterm id="IDX-APP-A-0882"><primary>utilities</primary><secondary>patch and diff</secondary></indexterm> 
+
+<indexterm id="IDX-APP-A-0883"><primary>utilities</primary></indexterm> 
+<indexterm id="IDX-APP-A-0884"><primary>source code, kernel</primary><secondary>patching, then porting changes to new kernel version</secondary></indexterm> 
+<indexterm id="IDX-APP-A-0885"><primary>patch program</primary></indexterm> 
+ 
+<indexterm id="IDX-APP-A-0886"><primary>diff program</primary></indexterm> 
+
+<para>This section is based on an article originally published in <emphasis>Linux Journal</emphasis>.</para>
+<para>One of the most common methods of doing kernel work is to use the <emphasis>patch</emphasis> and <emphasis>diff</emphasis> programs. To use these tools, two different directory trees: a "clean" one and a "working" one must be used. The clean tree is a released kernel version, while the working one is based on the same version but contains your modifications. Then you can use <emphasis>patch</emphasis> and <emphasis>diff</emphasis> to extract your changes and port them forward to a new kernel release.</para>
+<para>For an example, create two directories containing the latest kernel version as described in <link linkend="linuxkian-CHP-3">Chapter 3</link>:</para>
+<programlisting>
+$ <userinput>tar -zxf linux-2.6.19.tar.gz</userinput>
+$ <userinput>mv linux-2.6.19 linux-2.6.19-dirty</userinput>
+$ <userinput>tar -zxf linux-2.6.19.tar.gz</userinput>
+$ <userinput>ls</userinput>
+linux-2.6.19/
+linux-2.6.19-dirty/
+</programlisting>
+<para>Now make all of the different changes you wish to do in the <emphasis>-dirty</emphasis> directory and leave the clean, original kernel directory alone. After finishing making changes, you should create a patch to send it to other people:</para>
+<programlisting>
+$ <userinput>diff -Naur -X linux-2.6.19/Documentation/dontdiff linux-2.6.19/ \</userinput>
+<userinput>linux-2.6.19-dirty/ &gt; my_patch</userinput>
+</programlisting>
+<para>This will create a file called <emphasis>my_patch</emphasis> that contains the difference between your work and a clean 2.6.19 kernel tree. This patch then can be sent to other people via email.</para>
+<sect2 id="linuxkian-APP-A-SECT-1.1" label="A.1.1">
+<title>New Kernel Versions</title>
+<indexterm id="IDX-APP-A-0887"><primary>versions, kernel</primary><secondary>updating</secondary></indexterm> 
+ 
+<indexterm id="IDX-APP-A-0888"><primary>updating a kernel</primary></indexterm> 
+
+<para>If a new kernel version is released, and you wish to port your changes to the new version, you need to try to apply your generated patch onto a clean kernel version. This can be done in the following steps:</para>
+<orderedlist numeration="arabic">
+<listitem><para>Generate your original patch, as in the previous example.</para></listitem>
+<listitem><para>Using the official patch from <systemitem role="httpurl">kernel.org</systemitem>, move the old kernel version forward one release:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.19</userinput>
+$ <userinput>patch -p1 &lt; ../patch-2.6.20</userinput>
+$ <userinput>cd ..</userinput>
+$ <userinput>mv linux-2.6.19 linux-2.6.20</userinput>
+</programlisting></listitem>
+<listitem><para>Move your working directory forward one release by removing your patch, then apply the new update:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.19-dirty</userinput>
+$ <userinput>patch -p1 -R &lt; ../my_patch</userinput>
+$ <userinput>patch -p1 &lt; ../patch-2.6.20</userinput>
+$ <userinput>cd ..</userinput>
+$ <userinput>mv linux-2.4.19-dirty linux-2.6.20-dirty</userinput>
+</programlisting></listitem>
+<listitem><para>Try to apply your patch on top of the new update:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.20-dirty</userinput>
+$ <userinput>patch -p1 &lt; ../my_patch</userinput>
+</programlisting>
+<para>If your patch does not apply cleanly, resolve all of the conflicts that are created (the <emphasis>patch</emphasis> command will tell you about these conflicts, leaving behind <emphasis>.rej</emphasis> and <emphasis>.orig</emphasis> files for you to compare and fix up manually using your favorite editor). This merge process can be the most difficult part if you have made changes to portions of the source tree that have been changed by other people.</para></listitem>
+</orderedlist>
+<para>If you use this development process, I highly recommend getting the excellent <emphasis>patchutils</emphasis> set of programs (found at <systemitem role="url">http://cyberelk.net/tim/patchutils</systemitem>). These programs enable you to manipulate text patches easily in all sorts of useful ways, and have saved kernel developers many hours of tedious work.</para>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-APP-A-SECT-2" label="A.2">
+<title>Managing Your Patches with quilt</title>
+ 
+<indexterm id="IDX-APP-A-0889"><primary>utilities</primary><secondary>quilt</secondary></indexterm> 
+
+<indexterm id="IDX-APP-A-0890"><primary>source code, kernel</primary><secondary>managing patches with quilt</secondary></indexterm> 
+<indexterm id="IDX-APP-A-0891"><primary>quilt program</primary></indexterm> 
+<indexterm id="IDX-APP-A-0892"><primary>patches</primary><secondary>managing with quilt program</secondary></indexterm> 
+ 
+<indexterm id="IDX-APP-A-0893"><primary>patch program</primary><secondary>using with quilt</secondary></indexterm> 
+
+<para>Kernel development using <emphasis>patch</emphasis> and <emphasis>diff</emphasis> generally works quite well. But after a while, most people grow tired of it and look for a different way to work that does not involve so much tedious patching and merging. Luckily, a few kernel developers came up with a program called <emphasis>quilt</emphasis> that handles the process of manipulating a number of patches made against an external source tree much easier.</para>
+<para>The idea for <emphasis>quilt</emphasis> came from a set of scripts written by Andrew Morton that he used to first maintain the memory management subsystem and then later the entire development kernel tree. His scripts were tied very tightly to his workflow, but the ideas behind them were very powerful. Andreas Gruenbacher took those ideas and created the <emphasis>quilt</emphasis> tool.</para>
+<para>The basic idea behind <emphasis>quilt</emphasis> is that you work with a pristine source tree and add a bunch of patches on top of it. You can push and pop different patches off of the source tree, and maintain this list of patches in a simple manner.</para>
+<orderedlist numeration="arabic">
+<listitem><para>To get started, create a kernel source tree like always:</para>
+<programlisting>
+$ <userinput>tar -zxf linux-2.6.19.tar.gz</userinput>
+$ <userinput>ls</userinput>
+linux-2.6.19/
+</programlisting></listitem>
+<listitem><para>And go into that directory:</para>
+<programlisting>
+$ <userinput>cd linux-2.6.19</userinput>
+</programlisting></listitem>
+<listitem><para>To get started, create a directory called <emphasis>patches</emphasis> that will hold all of our kernel patches:</para>
+<programlisting>
+$ <userinput>mkdir patches</userinput>
+</programlisting></listitem>
+<listitem><para>Then tell <emphasis>quilt</emphasis> to create a new patch called <emphasis>patch1</emphasis>:</para>
+<programlisting>
+$ <userinput>quilt new patch1</userinput>
+Patch patches/patch1 is now on top
+</programlisting></listitem>
+<listitem><para><emphasis>quilt</emphasis> needs to be told about all of the different files that will be modifed by this new patch. To do this, use the <emphasis>add</emphasis> command:</para>
+<programlisting>
+$ <userinput>quilt add Makefile</userinput>
+File Makefile added to patch patches/patch1
+</programlisting></listitem>
+<listitem><para>Edit the file <emphasis>Makefile</emphasis>, modify the <literal>EXTRAVERSION</literal> line, and save the change. After you finish, tell <emphasis>quilt</emphasis> to refresh the patch:</para>
+<programlisting>
+$ <userinput>quilt refresh</userinput>
+Refreshed patch patches/patch1
+</programlisting></listitem>
+</orderedlist>
+<para>The file <emphasis>patches/patch1</emphasis> will contain a patch with the changes that you have just made:</para>
+<programlisting>
+$ <userinput>cat patches/patch1</userinput>
+Index: linux-2.6.19/Makefile
+===================================================================
+--- linux-2.6.19.orig/Makefile
++++ linux-2.6.19/Makefile
+@@ &minus;1,7 +1,7 @@
+ VERSION = 2
+ PATCHLEVEL = 6
+ SUBLEVEL = 19
+-EXTRAVERSION =
++EXTRAVERSION = -dirty
+ NAME=Crazed Snow-Weasel
+
+ # *DOCUMENTATION*
+</programlisting>
+<para>You can continue on, working with this single patch, or create a new one to go on top of this patch. As an example, if three different patches had been created, <literal>patch1</literal>, <literal>patch2</literal>, and <literal>patch3</literal>, they will be applied one on top of one another.</para>
+<para>To see the list of patches that are currently applied:</para>
+<programlisting>
+$ <userinput>quilt series -v</userinput>
++ patches/patch1
++ patches/patch2
+= patches/patch3
+</programlisting>
+<para>This output shows that all three patches are applied, and that the current one is <literal>patch3</literal>.</para>
+<para>If a new kernel version is released, and you wish to port your changes to the new version, quilt can handle this easily with the following steps:</para>
+<orderedlist numeration="arabic">
+<listitem><para>Pop off all of the patches that are currently on the tree:</para>
+<programlisting>
+$ <userinput>quilt pop -a</userinput>
+Removing patch patches/patch3
+Restoring drivers/usb/Makefile
+Removing patch patches/patch2
+Restoring drivers/Makefile
+Removing patch patches/patch1
+Restoring Makefile
+No patches applied
+</programlisting></listitem>
+<listitem><para>Using the official patch from <systemitem role="httpurl">kernel.org</systemitem>, move the old kernel version forward one release:</para>
+<programlisting>
+$ <userinput>patch -p1 &lt; ../patch-2.6.20</userinput>
+$ <userinput>cd ..</userinput>
+$ <userinput>mv linux-2.6.19 linux-2.6.20</userinput>
+</programlisting></listitem>
+<listitem><para>Now have quilt push all of the patches back on top of the new tree:</para>
+<programlisting>
+$ <userinput>quilt push</userinput>
+Applying patch patches/patch1
+patching file Makefile
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- rejects in file Makefile
+Patch patches/patch1 does not apply (enforce with -f)
+</programlisting></listitem>
+<listitem><para>As the first patch doesn't apply cleanly, force the patch to be applied and then fix it up:</para>
+<programlisting>
+$ <userinput>quilt push -f</userinput>
+Applying patch patches/patch1
+patching file Makefile
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file Makefile.rej
+Applied patch patches/patch1 (forced; needs refresh)
+$ <userinput>vim Makefile.rej Makefile</userinput>
+</programlisting></listitem>
+<listitem><para>After the patch is applied by hand, refresh the patch:</para>
+<programlisting>
+$ <userinput>quilt refresh</userinput>
+Refreshed patch patches/patch1
+</programlisting></listitem>
+<listitem><para>And continue pushing the other patches:</para>
+<programlisting>
+$ <userinput>quilt push</userinput>
+Applying patch patches/patch2
+patching file drivers/Makefile
+Now at patch patches/patch2
+$ <userinput>quilt push</userinput>
+Applying patch patches/patch3
+patching file drivers/usb/Makefile
+Now at patch patches/patch3
+</programlisting></listitem>
+</orderedlist>
+<para><emphasis>quilt</emphasis> also has options that will automatically email out all of the patches in the series to a group of people or a mailing list, delete specific patches in the middle of the series, go up or down the series of patches until a specific patch is found, and many more powerful options.</para>
+<para>If you want to do any kind of kernel development, <emphasis>quilt</emphasis> is strongly recommended, even for tracking a few patches, instead of using the more difficult <emphasis>diff</emphasis> and <emphasis>patch</emphasis> method. It is much simpler and will save you much time and effort.</para>
+<para>On a personal note, I cannot recommend this tool enough, as I use it everyday to manage hundreds of patches in different development trees. It is also used by numerous Linux distributions to maintain their kernel packages and has an involved and responsive development community.</para>
+</sect1>
+<sect1 id="linuxkian-APP-A-SECT-3" label="A.3">
+<title>git</title>
+ 
+<indexterm id="IDX-APP-A-0894"><primary>utilities</primary><secondary>git</secondary></indexterm> 
+
+<indexterm id="IDX-APP-A-0895"><primary>source code, kernel</primary><secondary>git (control tool)</secondary></indexterm> 
+ 
+<indexterm id="IDX-APP-A-0896"><primary>git tool</primary></indexterm> 
+
+<para><emphasis>git</emphasis> is a source code control tool that was originally written by Linus Torvalds when the Linux kernel was looking for a new source code control system. It is a distributed system, which differs from traditional source code control systems such as CVS in that it is not required to be connected to a server in order to make a commit to the repository.</para>
+<para><emphasis>git</emphasis> is one of the most powerful, flexible, and fast source code control systems currently available, and has an active development team working behind it. The main web page for <emphasis>git</emphasis> can be found at <systemitem role="url">http://git.or.cz/</systemitem>. It is recommended that any new user of <emphasis>git</emphasis> go through the published tutorials in order to become familiar with how <emphasis>git</emphasis> works, and how to use it properly.</para>
+<para>The Linux kernel is developed using <emphasis>git</emphasis>, and the latest <emphasis>git</emphasis> kernel tree can be found at <systemitem role="url">http://www.kernel.org/git/</systemitem>, along with a large list of other kernel developer's <emphasis>git</emphasis> repositories.</para>
+<para>It is not necessary to use <emphasis>git</emphasis> in order to do Linux kernel development, but it is very handy in helping to track down kernel bugs. If you report a bug to the Linux kernel developers, they might ask you to use <emphasis>git bisect</emphasis> in order to find the exact change that caused the bug to happen. If so, follow the directions in the <emphasis>git</emphasis> documentation for how to use this.</para>
+</sect1>
+<sect1 id="linuxkian-APP-A-SECT-4" label="A.4">
+<title>ketchup</title>
+ 
+<indexterm id="IDX-APP-A-0897"><primary>utilities</primary><secondary>ketchup</secondary></indexterm> 
+
+<indexterm id="IDX-APP-A-0898"><primary>source code, kernel</primary><secondary>updating or switching betwen versions with ketchup</secondary></indexterm> 
+ 
+<indexterm id="IDX-APP-A-0899"><primary>ketchup program</primary></indexterm> 
+
+<para><emphasis>ketchup</emphasis> is a very handy tool used to update or switch between different versions of the Linux kernel source tree. It has the ability to:</para>
+<itemizedlist mark="bull">
+<listitem><para>Find the latest version of the kernel, download it, and uncompress it.</para></listitem>
+<listitem><para>Update a currently installed version of the kernel source tree to any other version, by patching the tree to the proper version.</para></listitem>
+<listitem><para>Handle the different development and stable branches of the kernel tree, including the <emphasis>-mm</emphasis> and <emphasis>-stable</emphasis> trees.</para></listitem>
+<listitem><para>Download any patches or tarballs needed to do the update, if they are not present on the machine already.</para></listitem>
+<listitem><para>Check the GPG signatures of the tarball and patches to verify that it has downloaded a correct file.</para></listitem>
+</itemizedlist>
+<para><emphasis>ketchup</emphasis> can be found at <systemitem role="url">http://www.selenic.com/ketchup/</systemitem> and has lots of additional documentation in the wiki at <systemitem role="url">http://www.selenic.com/ketchup/wiki/</systemitem>.</para>
+<para>Here is a set of steps that show how simple it is to use <emphasis>ketchup</emphasis> to download a specific kernel version, and then have it switch the directory to another kernel version with only a minimal number of commands.</para>
+<para>To have <emphasis>ketchup</emphasis> download the 2.6.16.24 version of the kernel source tree into a directory, and rename the directory to be the same as the kernel version, enter:</para>
+<programlisting>
+$ <userinput>mkdir foo</userinput>
+$ <userinput>cd foo</userinput>
+$ <userinput>ketchup -r 2.6.16.24</userinput>
+None -&gt; 2.6.16.24
+Unpacking linux-2.6.17.tar.bz2
+Applying patch-2.6.17.bz2 -R
+Applying patch-2.6.16.24.bz2
+Current directory renamed to /home/gregkh/linux/linux-2.6.16.24
+</programlisting>
+<para>Now, to upgrade this kernel to contain the latest stable kernel version, just enter:</para>
+<programlisting>
+$ <userinput>ketchup -r 2.6</userinput>
+2.6.16.24 -&gt; 2.6.17.11
+Applying patch-2.6.16.24.bz2 -R
+Applying patch-2.6.17.bz2
+Downloading patch-2.6.17.11.bz2
+--22:21:14--  http://www.kernel.org/pub/linux/kernel/v2.6/patch-2.6.17.11.bz2
+           =&gt; &grave;/home/greg/.ketchup/patch-2.6.17.11.bz2.partial'
+Resolving www.kernel.org... 204.152.191.37, 204.152.191.5
+Connecting to www.kernel.org|204.152.191.37|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 36,809 (36K) [application/x-bzip2]
+100%[====================================&gt;] 36,809        93.32K/s
+22:21:14 (92.87 KB/s) - &grave;/home/greg/.ketchup/patch-2.6.17.11.bz2.partial' saved
+[36809/36809]
+Downloading patch-2.6.17.11.bz2.sign
+--22:21:14--  http://www.kernel.org/pub/linux/kernel/v2.6/patch-2.6.17.11.bz2.sign
+           =&gt; &grave;/home/greg/.ketchup/patch-2.6.17.11.bz2.sign.partial'
+Resolving www.kernel.org... 204.152.191.37, 204.152.191.5
+Connecting to www.kernel.org|204.152.191.37|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 248 [application/pgp-signature]
+100%[====================================&gt;] 248           --.--K/s
+22:21:14 (21.50 MB/s) - &grave;/home/greg/.ketchup/patch-2.6.17.11.bz2.sign.partial' saved
+[248/248]
+Verifying signature...
+gpg: Signature made Wed Aug 23 15:01:04 2006 PDT using DSA key ID 517D0F0E
+gpg: Good signature from "Linux Kernel Archives Verification Key
+&gt;ftpadmin@kernel.org&lt;"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: C75D C40A 11D7 AF88 9981  ED5B C86B A06A 517D 0F0E
+Applying patch-2.6.17.11.bz2
+Current directory renamed to /home/greg/linux/tmp/x/linux-2.6.17.11
+</programlisting>
+<para>This shows that <emphasis>ketchup</emphasis> automatically determined that the newest stable version was 2.6.17.11 and downloaded the needed patch files in order to get to that version.</para>
+<para>It is highly recommended that you use <emphasis>ketchup</emphasis> if you want to download any Linux kernel source trees. It takes all of the work in finding where on the server the correct patch file is, and automatically applies the patch in the proper format, after checking that the downloaded file is properly signed. Combine <emphasis>ketchup</emphasis> with <emphasis>quilt</emphasis> and you have a very powerful setup that contains everything that you need in order to deal effectively with kernel sources as a Linux kernel developer.</para>
+</sect1>
+</appendix>

@@ -1,0 +1,134 @@
+<appendix id="linuxkian-APP-B" label="B">
+<title>Bibliography</title>
+<para>Most of the information in this book has been extracted from the kernel documentation and source code. This is the best place for information on how to build and install the kernel and is usually kept up to date when things in the build procedure change.</para>
+<sect1 id="linuxkian-APP-B-SECT-1" label="B.1">
+<title>Books</title>
+ 
+<indexterm id="IDX-APP-B-0900"><primary>books about Linux and the kernel</primary></indexterm> 
+
+<para>There are a number of very good Linux kernel programming books available, but only a few that deal with building and installing the kernel. Here is a list of books that I have found useful when dealing with the Linux kernel.</para>
+<sect2 id="linuxkian-APP-B-SECT-1.1" label="B.1.1">
+<title>General Linux Books</title>
+<variablelist>
+<varlistentry>
+<term>Ellen Siever, Aaron Weber, Stephen Figgins, Robert Love, and Arnold Robbins. <emphasis>Linux in a Nutshell</emphasis> (O'Reilly), 2005.</term>
+<listitem><para>This book has the most complete and authoritative command reference for Linux. It covers almost every single command that you will ever need to use.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Yaghmour, Karim. <emphasis>Building Embedded Linux Systems</emphasis> (O'Reilly), 2003.</term>
+<listitem><para>This book, although mainly oriented toward the embedded Linux developer, has a great section on how to build up a cross-compiler toolchain and kernel. It is highly recommended for that section, as well as for other portions of the book that are valuable to people wishing to learn more about how to customize a Linux kernel and the rest of the system.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+<sect2 id="linuxkian-APP-B-SECT-1.2" label="B.1.2">
+<title>Linux Kernel Books</title>
+<para>Most of these books are oriented toward the programmer who is interested in learning how to program within the kernel. They are much more technically oriented than this book, but are a great place to start if you wish to learn more about the code that controls the kernel.</para>
+<variablelist>
+<varlistentry>
+<term>Jonathan Corbet, Alessandro Rubini, and Greg Kroah-Hartman. <emphasis>Linux Device Drivers</emphasis> (O'Reilly), 2005.</term>
+<listitem><para>This book covers how the different kernel device driver subsystems work, and provides lots of examples of working drivers. It is recommended for anyone wanting to work with Linux kernel drivers. It is also available online for free at <systemitem role="url">http://lwn.net/Kernel/LDD3/</systemitem>.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Love, Robert. <emphasis>Linux Kernel Development</emphasis> (Novell Press Publishing), 2005.</term>
+<listitem><para>Robert Love's book covers almost all areas of the Linux kernel, showing how everything works together. It is a great place to start learning about the different portions of the kernel internals.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Bovet, Daniel P. and Cesate, Marco. <emphasis>Understanding the Linux Kernel</emphasis> (O'Reilly), 2005.</term>
+<listitem><para>This book goes into the design and implementation of the core Linux kernel. It is a great reference for understanding the algorithms used within the different portions of the kernel. It is highly recommended for anyone wanting to understand the details of how the kernel works.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+</sect1>
+<sect1 id="linuxkian-APP-B-SECT-2" label="B.2">
+<title>Tool Locations</title>
+<indexterm id="IDX-APP-B-0901"><primary>web sites</primary><secondary>tools, source code for</secondary></indexterm> 
+<indexterm id="IDX-APP-B-0902"><primary>utilities</primary><secondary>web sites for source code</secondary></indexterm> 
+<indexterm id="IDX-APP-B-0903"><primary>tools</primary><secondary>web sites for source code</secondary></indexterm> 
+ 
+<indexterm id="IDX-APP-B-0904"><primary>source code, kernel</primary><secondary>tool web sites</secondary></indexterm> 
+
+<para>A lot of different tools were mentioned in this book. Here are links to where the source code for these tools can be found on the Internet.</para>
+<variablelist>
+<varlistentry>
+<term><emphasis>Linux kernel</emphasis></term>
+<listitem><para><systemitem role="url">http://www.kernel.org</systemitem> and <systemitem role="httpurl">ftp://ftp.kernel.org</systemitem> contain all of the different versions of the Linux kernel source code. <systemitem role="url">http://www.kernel.org/git/</systemitem> contains a listing of all <emphasis>git</emphasis> trees in use by the different kernel developers.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>gcc</emphasis></term>
+<listitem><para><systemitem role="url">http://gcc.gnu.org/</systemitem> is the main site for everything related to the GNU C Compiler.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>binutils</emphasis></term>
+<listitem><para><systemitem role="url">http://www.gnu.org/software/binutils/</systemitem> is the main site for all information about <emphasis>binutils</emphasis>.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>make</emphasis></term>
+<listitem><para><systemitem role="url">http://www.gnu.org/software/make/</systemitem> is the main site for all information about <emphasis>make</emphasis>.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>util-linux</emphasis></term>
+<listitem><para><systemitem role="url">http://www.kernel.org/pub/linux/utils/util-linux/</systemitem> is the directory where all versions of <emphasis>util-linux</emphasis> can be downloaded.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>module-init-tools</emphasis></term>
+<listitem><para><systemitem role="url">http://www.kernel.org/pub/linux/utils/kernel/module-init-tools/</systemitem> is the directory where all versions of <emphasis>module-init-tools</emphasis> can be downloaded.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>e2fsprogs</emphasis></term>
+<listitem><para><systemitem role="url">http://e2fsprogs.sourceforge.net/</systemitem> is the main project page for the <emphasis>e2fsprogs</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>jfsutils</emphasis></term>
+<listitem><para><systemitem role="url">http://jfs.sourceforge.net/</systemitem> is the main project page for the <emphasis>jfsutils</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>reiserfsprogs</emphasis></term>
+<listitem><para><systemitem role="url">http://www.namesys.com/download.html</systemitem> is the main project page for the <emphasis>reiserfsprogs</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>xfsprogs</emphasis></term>
+<listitem><para><systemitem role="url">http://oss.sgi.com/projects/xfs/</systemitem> is the main project page for the <emphasis>xfsprogs</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>quota-tools</emphasis></term>
+<listitem><para><systemitem role="url">http://sourceforge.net/projects/linuxquota/</systemitem> is the main project page for the <emphasis>quota-tools</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>nfs-utils</emphasis></term>
+<listitem><para><systemitem role="url">http://nfs.sf.net/</systemitem> is the main project page for the <emphasis>nfs-utils</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>udev</emphasis></term>
+<listitem><para><systemitem role="url">http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html</systemitem> is the directory where all versions of <emphasis>udev</emphasis> can be downloaded.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>procfs</emphasis></term>
+<listitem><para><systemitem role="url">http://procps.sourceforge.net/</systemitem> is the main project page for the <emphasis>procfs</emphasis> package.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>patchutils</emphasis></term>
+<listitem><para><systemitem role="url">http://cyberelk.net/tim/patchutils</systemitem> is the location for all of the <emphasis>patchutils</emphasis> releases.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>git</emphasis></term>
+<listitem><para><systemitem role="url">http://git.or.cz/</systemitem> is the main site for the <emphasis>git</emphasis> project.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>ketchup</emphasis></term>
+<listitem><para><systemitem role="url">http://www.selenic.com/ketchup/</systemitem> is the main project page for the <emphasis>ketchup</emphasis> program.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>quilt</emphasis></term>
+<listitem><para><systemitem role="url">http://savannah.nongnu.org/projects/quilt</systemitem> is the main project page for the <emphasis>quilt</emphasis> program.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>distcc</emphasis></term>
+<listitem><para><systemitem role="url">http://distcc.samba.org/</systemitem> is the main project page for the <emphasis>distcc</emphasis> program.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><emphasis>ccache</emphasis></term>
+<listitem><para><systemitem role="url">http://ccache.samba.org/</systemitem> is the main project page for the <emphasis>ccache</emphasis> program.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+</appendix>

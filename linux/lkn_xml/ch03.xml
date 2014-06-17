@@ -1,0 +1,111 @@
+<chapter id="linuxkian-CHP-3" label="3">
+<title>Retrieving the Kernel Source</title>
+<para>When you're building your own kernel, you want the latest stable release. Many distributions provide their own packages of kernel sources, but these are rarely the most cutting-edge, recent versions. The distribution packages have the advantage of being built to be compatible with the compiler and other tools provided by the distribution (<link linkend="linuxkian-CHP-2">Chapter 2</link> explains the importance of their being compatible) but they may not end up providing the functionality or performance you want. If you can create your own environment with the latest kernel, compiler, and other tools, you will be able to build exactly what you want. This chapter focuses on determining which kernel sources to download, and how to obtain them.</para>
+<sect1 id="linuxkian-CHP-3-SECT-1" label="3.1">
+<title>What Tree to Use</title>
+<indexterm id="IDX-CHP-3-0049"><primary>stable branch (Linux kernel)</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0050"><primary>source code, kernel</primary><secondary>retrieving</secondary><tertiary>which tree to use</tertiary></indexterm> 
+<indexterm id="IDX-CHP-3-0051"><primary>source code, kernel</primary><secondary>retrieving</secondary></indexterm> 
+<indexterm id="IDX-CHP-3-0052"><primary sortas="rc versions kernel">-rc versions, kernel</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0053"><primary>getting kernel</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0054"><primary>downloading kernel</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-3-0055"><primary>development branch (Linux kernel)</primary></indexterm> 
+
+<para>In the past, the Linux kernel was split into only two trees, the "development" branch and the "stable" branch. The <emphasis>development branch</emphasis> was denoted by an odd number for the second release number, while the <emphasis>stable branch</emphasis> used even numbers. So, as an example, the 2.5.25 release was a development kernel, while the 2.4.25 release is a stable release.</para>
+<para>But after the 2.6 series was created, the kernel developers decided to abandon this method of having two separate trees, and declared that all 2.6 kernel releases would be considered "stable," no matter how quickly development was happening. The few months between the major 2.6 releases would allow kernel developers the time to add new features and then stabilize them in time for the next release. Combined with this, a "-stable" kernel branch has been created that releases bug fixes and security updates for the past kernel release, before the next major 2.6 release happens.</para>
+<para>This is all best explained with some examples, illustrated in <link linkend="linuxkian-CHP-3-FIG-1">Figure 3-1</link>. The kernel team released the 2.6.17 kernel as a stable release. Then the developers started working on new features and started releasing the <emphasis>-rc</emphasis> versions as development kernels so that people could help test and debug the changes. After everyone agreed that the development release was stable enough, it was released as the 2.6.18 kernel. This whole cycle usually takes about two to three months, depending on a variety of factors.</para>
+<figure id="linuxkian-CHP-3-FIG-1" label="3-1">
+<title>Kernel development release cycle</title>
+<graphic fileref="figs/linuxkian_0301.gif" width="252" depth="230"/>
+</figure>
+<para>While the development of the new features was happening, the 2.6.17.1, 2.6.17.2, and other stable kernel versions were released, containing bug fixes and security updates.</para>
+<para>If you wish to just use the latest kernel for your work, it is recommended that you use the stable kernel releases. If you wish to help the kernel developers test the features of the next kernel release and give them feedback, use the development kernel release. For the purpose of this chapter, we will assume that you are using a stable kernel release.</para>
+</sect1>
+<sect1 id="linuxkian-CHP-3-SECT-2" label="3.2">
+<title>Where to Find the Kernel Source</title>
+<indexterm id="IDX-CHP-3-0056"><primary>wget utility</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0057"><primary>web sites</primary><secondary>main kernel.org site</secondary></indexterm> 
+<indexterm id="IDX-CHP-3-0058"><primary>versions, kernel</primary><secondary>current, for different kernel trees</secondary></indexterm> 
+<indexterm id="IDX-CHP-3-0059"><primary>stable kernel version, downloading latest</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0060"><primary>source code, kernel</primary><secondary>retrieving</secondary><tertiary>where to find kernel source</tertiary></indexterm> 
+<indexterm id="IDX-CHP-3-0061"><primary>kernel.org web sites</primary><secondary>main site</secondary></indexterm> 
+<indexterm id="IDX-CHP-3-0062"><primary>kernel.org web sites</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-3-0063"><primary>command line</primary><secondary>downloading kernel source</secondary></indexterm> 
+
+<para>All of the source code for the Linux kernel can be found on one of the <systemitem role="httpurl">kernel.org</systemitem> sites, a worldwide network of servers that mirror the Linux source code, enabling anyone to find a local server close to him. This allows the main kernel servers to be responsive to the mirror sites, and lets users download the needed files as quickly as possible.</para>
+<para>The main <systemitem role="url">http://www.kernel.org</systemitem> site shows all of the current kernel versions for the various different kernel trees, as shown in <link linkend="linuxkian-CHP-3-FIG-2">Figure 3-2</link>.</para>
+<figure id="linuxkian-CHP-3-FIG-2" label="3-2">
+<title>The main <systemitem role="httpurl">kernel.org</systemitem> web site</title>
+<graphic fileref="figs/linuxkian_0302.gif" width="549" depth="775"/>
+</figure>
+<para>To download the latest stable kernel version, click on the <emphasis>F</emphasis> character on the line for the kernel version. This will download the full source tree. Or you can navigate to the proper subdirectory for all of the 2.6 kernel versions, <systemitem role="url">http://www.us.kernel.org/pub/linux/kernel/v2.6/</systemitem>, shown in <link linkend="linuxkian-CHP-3-FIG-3">Figure 3-3</link>.</para>
+<figure id="linuxkian-CHP-3-FIG-3" label="3-3">
+<title>The 2.6 kernel source directory</title>
+<graphic fileref="figs/linuxkian_0303.gif" width="549" depth="617"/>
+</figure>
+<para>It is also possible to download the kernel source from the command line, using the <emphasis>wget</emphasis> or <emphasis>curl</emphasis> utilities, both of which should come with your Linux distribution.</para>
+<para>To download the 2.6.17.8 kernel version using <emphasis>wget</emphasis>, enter:</para>
+<programlisting>
+$ <userinput>wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.17.8.tar.gz</userinput>
+--17:44:55--  http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.17.8.tar.gz
+           =&gt; &grave;linux-2.6.17.8.tar.gz'
+Resolving www.kernel.org... 204.152.191.5, 204.152.191.37
+Connecting to www.kernel.org|204.152.191.5|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 51,707,742 (49M) [application/x-gzip]
+100%[=============================================&gt;] 51,707,742    35.25K/s    ETA
+00:00
+18:02:48 (47.12 KB/s) - &grave;linux-2.6.17.8.tar.gz' saved [51707742/51707742]
+</programlisting>
+<para>To download it using <emphasis>curl</emphasis>:</para>
+<programlisting>
+$ <userinput>curl http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.17.8.tar.gz \</userinput>
+<userinput>-o linux-2.6.17.8.tar.gz</userinput>
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 49.3M  100 49.3M    0     0  50298      0  0:17:08  0:17:08 --:--:--  100k
+</programlisting>
+<para>For a quick and easy way to determine the latest kernel versions, use the information available at <systemitem role="url">http://www.kernel.org/kdist/finger_banner</systemitem>, illustrated by <link linkend="linuxkian-CHP-3-FIG-4">Figure 3-4</link>.</para>
+<figure id="linuxkian-CHP-3-FIG-4" label="3-4">
+<title>Latest kernel version</title>
+<graphic fileref="figs/linuxkian_0304.gif" width="549" depth="245"/>
+</figure>
+</sect1>
+<sect1 id="linuxkian-CHP-3-SECT-3" label="3.3">
+<title>What to Do with the Source</title>
+<indexterm id="IDX-CHP-3-0064"><primary>versions, kernel</primary><secondary>determining latest</secondary></indexterm> 
+<indexterm id="IDX-CHP-3-0065"><primary>uncompressing files</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0066"><primary>source code, kernel</primary><secondary>retrieving</secondary><tertiary>what to do with the source</tertiary></indexterm> 
+<indexterm id="IDX-CHP-3-0067"><primary>linux/ directory for kernel source files</primary></indexterm> 
+<indexterm id="IDX-CHP-3-0068"><primary>latest kernel versions, determining</primary></indexterm> 
+ 
+<indexterm id="IDX-CHP-3-0069"><primary>curl utility, downloading kernel source</primary></indexterm> 
+
+<para>Now that you have downloaded the proper kernel source, where is it supposed to go? We suggest creating a local directory in your home directory called <emphasis>linux</emphasis> to hold all of the different kernel source files:</para>
+<programlisting>
+$ <userinput>mkdir &tilde;/linux</userinput>
+</programlisting>
+<para>Now move the source code into this directory:</para>
+<programlisting>
+$ <userinput>mv &tilde;/linux-2.6.17.8.tar.gz &tilde;/linux/</userinput>
+</programlisting>
+<para>And go into the <emphasis>linux</emphasis> directory:</para>
+<programlisting>
+$ <userinput>cd &tilde;/linux</userinput>
+$ <userinput>ls</userinput>
+linux-2.6.17.8.tar.gz
+</programlisting>
+<para>Now that the source code is in the proper directory, uncompress the tree:</para>
+<programlisting>
+$ <userinput>tar -xzvf linux-2.6.17.8.tar.gz</userinput>
+</programlisting>
+<para>The screen will be filled with files that are uncompressed, and you will be left with the following in the <emphasis>linux/</emphasis> directory:</para>
+<programlisting>
+$ <userinput>ls</userinput>
+linux-2.6.17.8.tar.gz
+linux-2.6.17.8/
+</programlisting>
+</sect1>
+</chapter>

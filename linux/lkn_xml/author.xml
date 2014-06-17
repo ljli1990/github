@@ -1,0 +1,4 @@
+<colophon id="linuxkian-AUTHORS">
+<title>About the Author</title>
+<para><emphasis role="strong">Greg Kroah-Hartman</emphasis> has been building the Linux kernel since 1996 and started writing Linux kernel drivers in 1999. He is currently the maintainer of the USB, PCI, driver core, and <emphasis>sysfs</emphasis> subsystems in the kernel source tree and is also one half of the <emphasis>-stable</emphasis> kernel release team. He created the <emphasis>udev</emphasis> program and maintains the Linux hotplug userspace project. He is a Gentoo Linux developer as well as the coauthor of the third edition of <emphasis>Linux Device Drivers</emphasis> (O'Reilly) and a contributing editor to <emphasis>Linux Journal</emphasis>. He also created and maintains the Linux Device Driver Kit. He currently works for SUSE Labs/Novell, doing various Linux kernel-related tasks.</para>
+</colophon>

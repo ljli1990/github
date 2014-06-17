@@ -1,0 +1,10 @@
+<part id="linuxkian-PART-IV" label="IV">
+<title>Additional Information</title>
+<partintro>
+<para>This section includes an Appendix about useful utilities, and pointers to further information.</para>
+<para><link linkend="linuxkian-APP-A">Appendix A, <citation>Helpful Utilities</citation></link></para>
+<para><link linkend="linuxkian-APP-B">Appendix B, <citation>Bibliography</citation></link></para>
+</partintro>
+&appa;
+&appb;
+</part>

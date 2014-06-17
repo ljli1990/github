@@ -1,0 +1,18 @@
+<part id="linuxkian-PART-I" label="I">
+<title>Building the Kernel</title>
+<partintro>
+<para>This part of the book shows how to download, build, and install the kernel. It is largely a step-by-step guide.</para>
+<para><link linkend="linuxkian-CHP-1">Chapter 1, <citation>Introduction</citation></link></para>
+<para><link linkend="linuxkian-CHP-2">Chapter 2, <citation>Requirements for Building and Using the Kernel</citation></link></para>
+<para><link linkend="linuxkian-CHP-3">Chapter 3, <citation>Retrieving the Kernel Source</citation></link></para>
+<para><link linkend="linuxkian-CHP-4">Chapter 4, <citation>Configuring and Building</citation></link></para>
+<para><link linkend="linuxkian-CHP-5">Chapter 5, <citation>Installing and Booting from a Kernel</citation></link></para>
+<para><link linkend="linuxkian-CHP-6">Chapter 6, <citation>Upgrading a Kernel</citation></link></para>
+</partintro>
+&ch01;
+&ch02;
+&ch03;
+&ch04;
+&ch05;
+&ch06;
+</part>

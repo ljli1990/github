@@ -1,0 +1,167 @@
+本文是参考了网上多篇帖子而写的算不上什么原创。唯一值得欣慰的只不过在本机上实现罢了。因为毕竟失败了几次。也因为本人是初学驱动编程，很多简单的问题在我来说是相当的困难的。望有识之士不要笑话。最后，希望本文能给刚学驱动而还没开头的人提供一些帮助。
+
+刚看 O'REILLY 写的《LINUX 设备驱动程序》时。作者一再强调在编写驱动程序时必须 建立内核树。所谓内核树，我的理解和网上资料说的一致就是内核源码的一种逻辑形式。那怎么建立呢？为此上网“翻云覆雨”起来而结果却是“惨败而归“。
+为此托了一天又4个小时（当然包括吃饭睡觉的时间），连个简单的 hello wrold 都没实现。（书中p22页最简单也最没用的驱动事列）
+不过功夫不负有心人。在今天终于弄明白了怎么回事。下面就请让我慢慢道来吧。
+
+先查看自己OS使用的内核版本
+
+shana@shana:~$ uname -r
+2.6.22-14-generic /* 这是我显示的结果 */
+
+如果安装系统时，自动安装了源码。在 /usr/src 目录下有对应的使用的版本目录。例如下（我是自己下的）
+
+shana@shana:/usr/src$ ls
+linux-headers-2.6.22-14
+linux-headers-2.6.22-14-generic
+linux-source-2.6.22 /*这个就是解压后的源码目录 */
+linux-source-2.6.22.tar.bz2 /* 这是我下的源码 包 */
+shana@shana:/usr/src$
+
+如果没有源码。（一般ubuntu 都没有吧）
+查看一下可一下载的源码包（切记不要使用超级用户使用此命令否则……会提示没有此命令）
+
+shana@shana:/usr/src$ apt-cache search linux-source
+linux-source - Linux kernel source with Ubuntu patches
+xen-source-2.6.16 - Linux kernel source for version 2.6.17 with Ubuntu patches
+linux-source-2.6.22 - Linux kernel source for version 2.6.22 with Ubuntu patches
+shana@shana:/usr/src$
+
+我选择了 linux-source-2.6.22 - Linux kernel source for version 2.6.22 with Ubuntu patches 这个～
+然后 install 之
+
+shana@shana:/usr/src$ sudo apt-get install linux-source-2.6.22
+
+下载完成后，在/usr/src下，文件名为：linux-source-2.6.22.tar.bz2,是一个压缩包，解压缩既可以得到整个内核的源代码：
+
+注意 已经切换到超级用户模式
+
+root@shana:/usr/src#tar jxvf linux-source-2.6.20.tar.bz2
+
+解压后生成一个新的目录/usr/src/linux-source-2.6.22，所有的源代码都在该目录下。
+
+进入该目录
+
+开始配置内核 选择最快的原版的配置（默认）方式 （我是如此）
+
+root@shana:/usr/src/linux-source-2.6.22# make oldconfig
+
+当然你也可以使用 自己喜欢的配置方式 如 menuconfig , xconfig(必须有GTK环境吧）。反正不用剪裁什么，所以不管那种方式能配置它就行了。
+
+完成后,开始make 吧 这儿比较久 一般有1一个小时吧。(保证空间足够 我编译完成后 使用了1.8G） 我分区时分给/目录30G的空间，我没遇到这问题。倒是我朋友遇到了。
+
+shana@shana:/usr/src/linux-source-2.6.22$ make
+
+shana@shana:/usr/src/linux-source-2.6.22$ make bzImage
+
+当然，第一个make也可以不执行，直接make bzImage。执行结束后，可以看到在当前目录下生成了一个新的文件: vmlinux, 其属性为-rwxr-xr-x。
+
+然后 ：
+
+root@shana:/usr/src/linux-source-2.6.22#make modules /* 编译 模块 */
+
+root@shana:/usr/src/linux-source-2.6.22#make modules_install /* 安装 模块 */
+
+执行结束之后，会在/lib/modules下生成新的目录/lib/modules/2.6.22-14-generic/
+。 在随后的编译模块文件时，要用到这个路径下的build目录。至此，内核编译完成。可以重启一下系统。
+
+至此 内核树就建立啦 原来不是很难.....
+
+写一个 最简单 最没用的驱动吧
+我在 /home/shana/linux_q/ 目录下创建2个文本文件 hello.c Makefile
+
+//hello.c
+#include <linux/init.h>
+#include <linux/module.h>
+MODULE_LICENSE("Dual BSD/GPL");
+
+static int hello_init(void)
+{
+printk(KERN_ALERT "Hello, world\n");
+return 0;
+}
+
+static void hello_exit(void)
+{
+printk(KERN_ALERT"Goodbye, cruel world\n");
+}
+
+module_init(hello_init);
+module_exit(hello_exit);
+
+程序我就不解释了……
+
+Makefile 文件
+
+obj-m := hello.o
+KERNELDIR := /lib/modules/2.6.20/build
+PWD := $(shell pwd)
+
+modules:
+$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+
+modules_install:
+$(MAKE) -C $(KERNELDIR) M=$(PWD) modules_install
+
+如果以上你都完成了在 make 时出现这样的错误
+
+shana@shana:~/linux_驱动开发$ make
+make: 没有什么可以做的为 `modules'。
+
+原因很简单 你肯定是从我这直接复制的吧～～～呵呵，Makefile格式错误啦～
+解决办法就是 你把如 $(MAKE) -C $(KERNELDIR) M=$(PWD) modules_install 移动到行首 然后按Tab 键自动对齐
+这时里边的变量都变成绿色了～然后在 make 吧
+
+shana@shana:~/linux_驱动开发$ make
+make -C /lib/modules/2.6.22-14-generic/build M=/home/shana/linux_驱动开发 modules
+make[1]: Entering directory `/usr/src/linux-headers-2.6.22-14-generic'
+CC [M] /home/shana/linux_驱动开发/hello.o
+Building modules, stage 2.
+MODPOST 1 modules
+CC /home/shana/linux_驱动开发/hello.mod.o
+LD [M] /home/shana/linux_驱动开发/hello.ko
+make[1]: Leaving directory `/usr/src/linux-headers-2.6.22-14-generic'
+shana@shana:~/linux_驱动开发$
+
+
+shana@shana:~/linux_驱动开发$ ls -l
+总用量 124
+-rw-r--r-- 1 shana shana 303 2008-03-16 10:43 hello.c
+-rw-r--r-- 1 shana shana 49039 2008-03-16 12:11 hello.ko
+-rw-r--r-- 1 shana shana 687 2008-03-16 12:11 hello.mod.c
+-rw-r--r-- 1 shana shana 25840 2008-03-16 12:11 hello.mod.o
+-rw-r--r-- 1 shana shana 24360 2008-03-16 12:11 hello.o
+-rw-r--r-- 1 shana shana 8344 2008-03-16 09:17 linux_qudong_qu.txt
+-rw-r--r-- 1 shana shana 266 2008-03-16 12:09 Makefile
+-rw-r--r-- 1 shana shana 0 2008-03-16 12:11 Module.symvers
+shana@shana:~/linux_驱动开发$
+
+
+然后加载模块 （超级用户）
+
+root@shana:/home/shana/linux_驱动开发# insmod ./hello.ko
+
+按照书上的例子 会在终端显示 hello , world 但是运行后什么都没有出现 （原因不解）
+
+root@shana:/home/shana/linux_驱动开发# insmod ./hello.ko
+root@shana:/home/shana/linux_驱动开发#
+
+查看加载模块
+
+root@shana:/home/shana/linux_驱动开发# lsmod
+Module Size Used by
+hello 2560 0
+
+已经加载上咯～～
+
+删除模块
+
+root@shana:/home/shana/linux_驱动开发# rmmod hello
+root@shana:/home/shana/linux_驱动开发#
+
+那程序的输出在那呢？书中说明 如果不出现在终端 则会写进 syslog 文件中
+
+shana@shana:~/linux_驱动开发$ cat /var/log/syslog |grep world
+Mar 16 12:14:53 shana kernel: [ 5937.529297] Hello, world
+Mar 16 12:16:05 shana kernel: [ 6009.439036] Goodbye, cruel world
+shana@shana:~/linux_驱动开发$ 
