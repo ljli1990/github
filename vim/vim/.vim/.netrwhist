@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/apuser/B2G/sp6821a_gonk4.0/monkey.test/log-backup/mtlog-end-sp6821a_gonk-hudson-261-mingliubtnb-1404150830/tick_collect_info'
+let g:netrw_dirhist_2='/home/apuser/log/305036/slog_20140423190859_scx15_sp7715ga_userdebug/external_storage/2014-04-23-14-44-56/android'
+let g:netrw_dirhist_3='/home/apuser/log/305036/slog_20140423190859_scx15_sp7715ga_userdebug/external_storage/2014-04-23-14-44-56/kernel'
+let g:netrw_dirhist_4='/home/apuser/log/312882/312882/Video界面_scx15_sp7715ga_userdebug/external_storage/2014-05-12-22-23-10/android'
