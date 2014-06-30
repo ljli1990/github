@@ -2,17 +2,19 @@
 #include <linux/module.h>
 
 MODULE_LICENSE("Dual BSD/GPL");
+MODULE_AUTHOR("ming");
+MODULE_DESCRIPTION("For my task 01 of the Eudyptula Challenge");
 
-static int hellomod_init(void)
+static __init int hellomod_init(void)
 {
-	printk(KERN_ALERT "hello,world!\n");
+	printk(KERN_DEBUG "Hello,i'm task 01!\n");
 
 	return 0;
 }
 
-static void hellomod_exit(void)
+static __exit void hellomod_exit(void)
 {
-	printk(KERN_ALERT "Goodbye, cruel world\n");
+	printk(KERN_DEBUG "Goodbye, i'm task 01!\n");
 }
 
 module_init(hellomod_init);
