@@ -1,0 +1,172 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>3.3.&#160;一些重要数据结构-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch03.html" title="第&#160;3&#160;章&#160;字符驱动">
+<link rel="prev" href="ch03s02.html" title="3.2.&#160;主次编号">
+<link rel="next" href="ch03s04.html" title="3.4.&#160;字符设备注册">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">3.3.&#160;一些重要数据结构</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03s02.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;3&#160;章&#160;字符驱动</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch03s04.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SomeImportantDataStructures.sect"></a>3.3.&#160;一些重要数据结构</h2></div></div></div>
+<p>如同你想象的, 注册设备编号仅仅是驱动代码必须进行的诸多任务中的第一个. 我们将很快看到其他重要的驱动组件, 但首先需要涉及一个别的. 大部分的基础性的驱动操作包括 3 个重要的内核数据结构, 称为 file_operations, file, 和 inode. 需要对这些结构的基本了解才能够做大量感兴趣的事情, 因此我们现在在进入如何实现基础性驱动操作的细节之前, 会快速查看每一个.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="FileOperation.sect"></a>3.3.1.&#160;文件操作</h3></div></div></div>
+<p>到现在, 我们已经保留了一些设备编号给我们使用, 但是我们还没有连接任何我们设备操作到这些编号上. file_operation 结构是一个字符驱动如何建立这个连接. 这个结构, 定义在 &lt;linux/fs.h&gt;, 是一个函数指针的集合. 每个打开文件(内部用一个 file 结构来代表, 稍后我们会查看)与它自身的函数集合相关连( 通过包含一个称为 f_op 的成员, 它指向一个 file_operations 结构). 这些操作大部分负责实现系统调用, 因此, 命名为 open, read, 等等. 我们可以认为文件是一个"对象"并且其上的函数操作称为它的"方法", 使用面向对象编程的术语来表示一个对象声明的用来操作对象的动作. 这是我们在 Linux 内核中看到的第一个面向对象编程的现象, 后续章中我们会看到更多.</p>
+<p>传统上, 一个 file_operation 结构或者其一个指针称为 fops( 或者它的一些变体). 结构中的每个成员必须指向驱动中的函数, 这些函数实现一个特别的操作, 或者对于不支持的操作留置为 NULL. 当指定为 NULL 指针时内核的确切的行为是每个函数不同的, 如同本节后面的列表所示.</p>
+<p>下面的列表介绍了一个应用程序能够在设备上调用的所有操作. 我们已经试图保持列表简短, 这样它可作为一个参考, 只是总结每个操作和在 NULL 指针使用时的缺省内核行为.</p>
+<p>在你通读 file_operations 方法的列表时, 你会注意到不少参数包含字串 __user. 这种注解是一种文档形式, 注意, 一个指针是一个不能被直接解引用的用户空间地址. 对于正常的编译, __user 没有效果, 但是它可被外部检查软件使用来找出对用户空间地址的错误使用.</p>
+<p>本章剩下的部分, 在描述一些其他重要数据结构后, 解释了最重要操作的角色并且给了提示, 告诫和真实代码例子. 我们推迟讨论更复杂的操作到后面章节, 因为我们还不准备深入如内存管理, 阻塞操作, 和异步通知.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>struct module *owner</span></span></dt>
+<dd><p>第一个 file_operations 成员根本不是一个操作; 它是一个指向拥有这个结构的模块的指针. 这个成员用来在它的操作还在被使用时阻止模块被卸载. 几乎所有时间中, 它被简单初始化为 THIS_MODULE, 一个在 &lt;linux/module.h&gt; 中定义的宏.</p></dd>
+<dt><span class="term"><span>loff_t (*llseek) (struct file *, loff_t, int);</span></span></dt>
+<dd><p>llseek 方法用作改变文件中的当前读/写位置, 并且新位置作为(正的)返回值. loff_t 参数是一个"long offset", 并且就算在 32位平台上也至少 64 位宽. 错误由一个负返回值指示. 如果这个函数指针是 NULL, seek 调用会以潜在地无法预知的方式修改 file 结构中的位置计数器( 在"file 结构" 一节中描述).</p></dd>
+<dt><span class="term"><span>ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);</span></span></dt>
+<dd><p>用来从设备中获取数据. 在这个位置的一个空指针导致 read 系统调用以 -EINVAL("Invalid argument") 失败. 一个非负返回值代表了成功读取的字节数( 返回值是一个 "signed size" 类型, 常常是目标平台本地的整数类型).</p></dd>
+<dt><span class="term"><span>ssize_t (*aio_read)(struct kiocb *, char __user *, size_t, loff_t);</span></span></dt>
+<dd><p>初始化一个异步读 -- 可能在函数返回前不结束的读操作. 如果这个方法是 NULL, 所有的操作会由 read 代替进行(同步地).</p></dd>
+<dt><span class="term"><span>ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);</span></span></dt>
+<dd><p>发送数据给设备. 如果 NULL, -EINVAL 返回给调用 write 系统调用的程序. 如果非负, 返回值代表成功写的字节数.</p></dd>
+<dt><span class="term"><span>ssize_t (*aio_write)(struct kiocb *, const char __user *, size_t, loff_t *);</span></span></dt>
+<dd><p>初始化设备上的一个异步写.</p></dd>
+<dt><span class="term"><span>int (*readdir) (struct file *, void *, filldir_t);</span></span></dt>
+<dd><p>对于设备文件这个成员应当为 NULL; 它用来读取目录, 并且仅对文件系统有用.</p></dd>
+<dt><span class="term"><span>unsigned int (*poll) (struct file *, struct poll_table_struct *);</span></span></dt>
+<dd><p>poll 方法是 3 个系统调用的后端: poll, epoll, 和 select, 都用作查询对一个或多个文件描述符的读或写是否会阻塞. poll 方法应当返回一个位掩码指示是否非阻塞的读或写是可能的, 并且, 可能地, 提供给内核信息用来使调用进程睡眠直到 I/O 变为可能. 如果一个驱动的 poll 方法为 NULL, 设备假定为不阻塞地可读可写.</p></dd>
+<dt><span class="term"><span>int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);</span></span></dt>
+<dd><p>ioctl 系统调用提供了发出设备特定命令的方法(例如格式化软盘的一个磁道, 这不是读也不是写). 另外, 几个 ioctl 命令被内核识别而不必引用 fops 表. 如果设备不提供 ioctl 方法, 对于任何未事先定义的请求(-ENOTTY, "设备无这样的 ioctl"), 系统调用返回一个错误. </p></dd>
+<dt><span class="term"><span>int (*mmap) (struct file *, struct vm_area_struct *);</span></span></dt>
+<dd><p>mmap 用来请求将设备内存映射到进程的地址空间. 如果这个方法是 NULL, mmap 系统调用返回 -ENODEV.</p></dd>
+<dt><span class="term"><span>int (*open) (struct inode *, struct file *);</span></span></dt>
+<dd><p>尽管这常常是对设备文件进行的第一个操作, 不要求驱动声明一个对应的方法. 如果这个项是 NULL, 设备打开一直成功, 但是你的驱动不会得到通知.</p></dd>
+<dt><span class="term"><span>int (*flush) (struct file *);</span></span></dt>
+<dd><p>flush 操作在进程关闭它的设备文件描述符的拷贝时调用; 它应当执行(并且等待)设备的任何未完成的操作. 这个必须不要和用户查询请求的 fsync 操作混淆了. 当前, flush 在很少驱动中使用; SCSI 磁带驱动使用它, 例如, 为确保所有写的数据在设备关闭前写到磁带上. 如果 flush 为 NULL, 内核简单地忽略用户应用程序的请求.</p></dd>
+<dt><span class="term"><span>int (*release) (struct inode *, struct file *);</span></span></dt>
+<dd><p>在文件结构被释放时引用这个操作. 如同 open, release 可以为 NULL.</p></dd>
+<dt><span class="term"><span>int (*fsync) (struct file *, struct dentry *, int);</span></span></dt>
+<dd><p>这个方法是 fsync 系统调用的后端, 用户调用来刷新任何挂着的数据. 如果这个指针是 NULL, 系统调用返回 -EINVAL.</p></dd>
+<dt><span class="term"><span>int (*aio_fsync)(struct kiocb *, int);</span></span></dt>
+<dd><p>这是 fsync 方法的异步版本.</p></dd>
+<dt><span class="term"><span>int (*fasync) (int, struct file *, int);</span></span></dt>
+<dd><p>这个操作用来通知设备它的 FASYNC 标志的改变. 异步通知是一个高级的主题, 在第 6 章中描述. 这个成员可以是NULL 如果驱动不支持异步通知.</p></dd>
+<dt><span class="term"><span>int (*lock) (struct file *, int, struct file_lock *);</span></span></dt>
+<dd><p>lock 方法用来实现文件加锁; 加锁对常规文件是必不可少的特性, 但是设备驱动几乎从不实现它.</p></dd>
+<dt><span class="term"><span>ssize_t (*readv) (struct file *, const struct iovec *, unsigned long, loff_t *);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>ssize_t (*writev) (struct file *, const struct iovec *, unsigned long, loff_t *);</span></span></dt>
+<dd><p>这些方法实现发散/汇聚读和写操作. 应用程序偶尔需要做一个包含多个内存区的单个读或写操作; 这些系统调用允许它们这样做而不必对数据进行额外拷贝. 如果这些函数指针为 NULL, read 和 write 方法被调用( 可能多于一次 ).</p></dd>
+<dt><span class="term"><span>ssize_t (*sendfile)(struct file *, loff_t *, size_t, read_actor_t, void *);</span></span></dt>
+<dd><p>这个方法实现 sendfile 系统调用的读, 使用最少的拷贝从一个文件描述符搬移数据到另一个. 例如, 它被一个需要发送文件内容到一个网络连接的 web 服务器使用. 设备驱动常常使 sendfile 为 NULL.</p></dd>
+<dt><span class="term"><span>ssize_t (*sendpage) (struct file *, struct page *, int, size_t, loff_t *, int);</span></span></dt>
+<dd><p>sendpage 是 sendfile 的另一半; 它由内核调用来发送数据, 一次一页, 到对应的文件. 设备驱动实际上不实现 sendpage.</p></dd>
+<dt><span class="term"><span>unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);</span></span></dt>
+<dd><p>这个方法的目的是在进程的地址空间找一个合适的位置来映射在底层设备上的内存段中. 这个任务通常由内存管理代码进行; 这个方法存在为了使驱动能强制特殊设备可能有的任何的对齐请求. 大部分驱动可以置这个方法为 NULL.<sup>[<a name="id415066" href="#ftn.id415066">10</a>]</sup></p></dd>
+<dt><span class="term"><span>int (*check_flags)(int)</span></span></dt>
+<dd><p>这个方法允许模块检查传递给 fnctl(F_SETFL...) 调用的标志.</p></dd>
+<dt><span class="term"><span>int (*dir_notify)(struct file *, unsigned long);</span></span></dt>
+<dd><p>这个方法在应用程序使用 fcntl 来请求目录改变通知时调用. 只对文件系统有用; 驱动不需要实现 dir_notify.</p></dd>
+</dl></div>
+<p>scull 设备驱动只实现最重要的设备方法. 它的 file_operations 结构是如下初始化的:</p>
+<pre class="programlisting">
+struct file_operations scull_fops = {
+ .owner =  THIS_MODULE, 
+ .llseek =  scull_llseek, 
+ .read =  scull_read, 
+ .write =  scull_write, 
+ .ioctl =  scull_ioctl, 
+ .open =  scull_open, 
+ .release =  scull_release,  
+};  
+</pre>
+<p>这个声明使用标准的 C 标记式结构初始化语法. 这个语法是首选的, 因为它使驱动在结构定义的改变之间更加可移植, 并且, 有争议地, 使代码更加紧凑和可读. 标记式初始化允许结构成员重新排序; 在某种情况下, 真实的性能提高已经实现, 通过安放经常使用的成员的指针在相同硬件高速存储行中.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ThefileStructure.sect"></a>3.3.2.&#160;文件结构</h3></div></div></div>
+<p>struct file, 定义于 &lt;linux/fs.h&gt;, 是设备驱动中第二个最重要的数据结构. 注意 file 与用户空间程序的 FILE 指针没有任何关系. 一个 FILE 定义在 C 库中, 从不出现在内核代码中. 一个 struct file, 另一方面, 是一个内核结构, 从不出现在用户程序中.</p>
+<p>文件结构代表一个打开的文件. (它不特定给设备驱动; 系统中每个打开的文件有一个关联的 struct file 在内核空间). 它由内核在 open 时创建, 并传递给在文件上操作的任何函数, 直到最后的关闭. 在文件的所有实例都关闭后, 内核释放这个数据结构.</p>
+<p>在内核源码中, struct file 的指针常常称为 file 或者 filp("file pointer"). 我们将一直称这个指针为 filp 以避免和结构自身混淆. 因此, file 指的是结构, 而 filp 是结构指针.</p>
+<p>struct file 的最重要成员在这展示. 如同在前一节, 第一次阅读可以跳过这个列表. 但是, 在本章后面, 当我们面对一些真实 C 代码时, 我们将更详细讨论这些成员.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>mode_t f_mode;</span></span></dt>
+<dd><p>文件模式确定文件是可读的或者是可写的(或者都是), 通过位 FMODE_READ 和 FMODE_WRITE. 你可能想在你的 open 或者 ioctl 函数中检查这个成员的读写许可, 但是你不需要检查读写许可, 因为内核在调用你的方法之前检查. 当文件还没有为那种存取而打开时读或写的企图被拒绝, 驱动甚至不知道这个情况.</p></dd>
+<dt><span class="term"><span>loff_t f_pos;</span></span></dt>
+<dd><p>当前读写位置. loff_t 在所有平台都是 64 位( 在 gcc 术语里是 long long ). 驱动可以读这个值, 如果它需要知道文件中的当前位置, 但是正常地不应该改变它; 读和写应当使用它们作为最后参数而收到的指针来更新一个位置, 代替直接作用于 filp-&gt;f_pos. 这个规则的一个例外是在 llseek 方法中, 它的目的就是改变文件位置.</p></dd>
+<dt><span class="term"><span>unsigned int f_flags;</span></span></dt>
+<dd><p>这些是文件标志, 例如 O_RDONLY, O_NONBLOCK, 和 O_SYNC. 驱动应当检查 O_NONBLOCK 标志来看是否是请求非阻塞操作( 我们在第一章的"阻塞和非阻塞操作"一节中讨论非阻塞 I/O ); 其他标志很少使用. 特别地, 应当检查读/写许可, 使用 f_mode 而不是 f_flags. 所有的标志在头文件 &lt;linux/fcntl.h&gt; 中定义.</p></dd>
+<dt><span class="term"><span>struct file_operations *f_op;</span></span></dt>
+<dd><p>和文件关联的操作. 内核安排指针作为它的 open 实现的一部分, 接着读取它当它需要分派任何的操作时. filp-&gt;f_op 中的值从不由内核保存为后面的引用; 这意味着你可改变你的文件关联的文件操作, 在你返回调用者之后新方法会起作用. 例如, 关联到主编号 1 (/dev/null, /dev/zero, 等等)的 open 代码根据打开的次编号来替代 filp-&gt;f_op 中的操作. 这个做法允许实现几种行为, 在同一个主编号下而不必在每个系统调用中引入开销. 替换文件操作的能力是面向对象编程的"方法重载"的内核对等体.</p></dd>
+<dt><span class="term"><span>void *private_data;</span></span></dt>
+<dd><p>open 系统调用设置这个指针为 NULL, 在为驱动调用 open 方法之前. 你可自由使用这个成员或者忽略它; 你可以使用这个成员来指向分配的数据, 但是接着你必须记住在内核销毁文件结构之前, 在 release 方法中释放那个内存. private_data 是一个有用的资源, 在系统调用间保留状态信息, 我们大部分例子模块都使用它.</p></dd>
+<dt><span class="term"><span>struct dentry *f_dentry;</span></span></dt>
+<dd><p>关联到文件的目录入口( dentry )结构. 设备驱动编写者正常地不需要关心 dentry 结构, 除了作为 filp-&gt;f_dentry-&gt;d_inode 存取 inode 结构.</p></dd>
+</dl></div>
+<p>真实结构有多几个成员, 但是它们对设备驱动没有用处. 我们可以安全地忽略这些成员, 因为驱动从不创建文件结构; 它们真实存取别处创建的结构.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheinodeStructure.sect"></a>3.3.3.&#160;inode 结构</h3></div></div></div>
+<p>inode 结构由内核在内部用来表示文件. 因此, 它和代表打开文件描述符的文件结构是不同的. 可能有代表单个文件的多个打开描述符的许多文件结构, 但是它们都指向一个单个 inode 结构.</p>
+<p>inode 结构包含大量关于文件的信息. 作为一个通用的规则, 这个结构只有 2 个成员对于编写驱动代码有用:</p>
+<div class="variablelist"><dl>
+<dt><span class="term">dev_t i_rdev;<span></span></span></dt>
+<dd><p>对于代表设备文件的节点, 这个成员包含实际的设备编号.</p></dd>
+<dt><span class="term">struct cdev *i_cdev;<span></span></span></dt>
+<dd><p>struct cdev 是内核的内部结构, 代表字符设备; 这个成员包含一个指针, 指向这个结构, 当节点指的是一个字符设备文件时.</p></dd>
+</dl></div>
+<p>i_rdev 类型在 2.5 开发系列中改变了, 破坏了大量的驱动. 作为一个鼓励更可移植编程的方法, 内核开发者已经增加了 2 个宏, 可用来从一个 inode 中获取主次编号:</p>
+<pre class="programlisting">
+unsigned int iminor(struct inode *inode);
+unsigned int imajor(struct inode *inode);
+</pre>
+<p>为了不要被下一次改动抓住, 应当使用这些宏代替直接操作 i_rdev.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id415066" href="#id415066">10</a>] </sup>注意, release 不是每次进程调用 close 时都被调用. 无论何时共享一个文件结构(例如, 在一个 fork 或 dup 之后), release 不会调用直到所有的拷贝都关闭了. 如果你需要在任一拷贝关闭时刷新挂着的数据, 你应当实现 flush 方法.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03s02.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch03s04.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">3.2.&#160;主次编号&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;3.4.&#160;字符设备注册</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

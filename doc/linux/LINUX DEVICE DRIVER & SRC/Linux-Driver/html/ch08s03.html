@@ -1,0 +1,210 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>8.3.&#160;get_free_page 和其友-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch08.html" title="第&#160;8&#160;章&#160;分配内存">
+<link rel="prev" href="ch08s02.html" title="8.2.&#160;后备缓存">
+<link rel="next" href="ch08s04.html" title="8.4.&#160;每-CPU 的变量">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.3.&#160;get_free_page 和其友</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch08s02.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;8&#160;章&#160;分配内存</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch08s04.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="getfreepageandFriends.sect"></a>8.3.&#160;get_free_page 和其友</h2></div></div></div>
+<p>如果一个模块需要分配大块的内存, 它常常最好是使用一个面向页的技术. 请求整个页也有其他的优点, 这个在 15 章介绍.</p>
+<p>为分配页, 下列函数可用:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>get_zeroed_page(unsigned int flags);</span></span></dt>
+<dd><p>返回一个指向新页的指针并且用零填充了该页.</p></dd>
+<dt><span class="term"><span>__get_free_page(unsigned int flags);</span></span></dt>
+<dd><p>类似于 get_zeroed_page, 但是没有清零该页.</p></dd>
+<dt><span class="term"><span>__get_free_pages(unsigned int flags, unsigned int order);</span></span></dt>
+<dd><p>分配并返回一个指向一个内存区第一个字节的指针, 内存区可能是几个(物理上连续)页长但是没有清零.</p></dd>
+</dl></div>
+<p>flags 参数同 kmalloc 的用法相同; 常常使用 GFP_KERNEL 或者 GFP_ATOMIC, 可能带有 __GFP_DMA 标志( 给可能用在 ISA DMA 操作的内存 ) 或者 __GFP_HIGHMEM 当可能使用高端内存时. <sup>[<a name="id451239" href="#ftn.id451239">29</a>]</sup>order 是你在请求的或释放的页数的以 2 为底的对数(即, log2N). 例如, 如果你要一个页 order 为 0, 如果你请求 8 页就是 3. 如果 order 太大(没有那个大小的连续区可用), 页分配失败. get_order 函数, 它使用一个整数参数, 可以用来从一个 size 中提取 order(它必须是 2 的幂)给主机平台. order 允许的最大值是 10 或者 11 (对应于 1024 或者 2048 页), 依赖于体系. 但是, 一个 order-10 的分配在除了一个刚刚启动的有很多内存的系统中成功的机会是小的.</p>
+<p>如果你好奇, /proc/buddyinfo 告诉你系统中每个内存区中的每个 order 有多少块可用.</p>
+<p>当一个程序用完这些页, 它可以使用下列函数之一来释放它们. 第一个函数是一个落回第二个函数的宏:</p>
+<pre class="programlisting">
+void free_page(unsigned long addr);
+void free_pages(unsigned long addr, unsigned long order);
+</pre>
+<p>如果你试图释放和你分配的页数不同的页数, 内存图变乱, 系统在后面时间中有麻烦.</p>
+<p>值得强调一下, __get_free_pages 和其他的函数可以在任何时候调用, 遵循我们看到的 kmalloc 的相同规则. 这些函数不能在某些情况下分配内存, 特别当使用 GFP_ATOMIC 时. 因此, 调用这些分配函数的程序必须准备处理分配失败.</p>
+<p>尽管 kmalloc( GFP_KERNEL )有时失败当没有可用内存时, 内核尽力满足分配请求. 因此, 容易通过分配太多的内存降低系统的响应. 例如, 你可以通过塞入一个 scull 设备大量数据使计算机关机; 系统开始爬行当它试图换出尽可能多的内存来满足 kmalloc 的请求. 因为每个资源在被增长的设备所吞食, 计算机很快就被说无法用; 在这点上, 你甚至不能启动一个新进程来试图处理这个问题. 我们在 scull 不解释这个问题, 因为它只是一个例子模块并且不是一个真正的放入多用户系统的工具. 作为一个程序员, 你必须小心, 因为一个模块是特权代码并且可能在系统中开启新的安全漏洞(最可能是一个服务拒绝漏洞好像刚刚描述过的.)</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AscullUsingWholePagesscullp.sect"></a>8.3.1.&#160;一个使用整页的 scull: scullp</h3></div></div></div>
+<p>为了真实地测试页分配, 我们已随其他例子代码发布了 scullp 模块. 它是一个简化的 scull, 就像前面介绍过的 scullc.</p>
+<p>scullp 分配的内存量子是整页或者页集合: scullp_order 变量缺省是 0, 但是可以在编译或加载时改变.</p>
+<p>下列代码行显示了它如何分配内存:</p>
+<pre class="programlisting">
+/* Here's the allocation of a single quantum */
+if (!dptr-&gt;data[s_pos])
+{
+        dptr-&gt;data[s_pos] =
+                (void *)__get_free_pages(GFP_KERNEL, dptr-&gt;order);
+        if (!dptr-&gt;data[s_pos])
+                goto nomem;
+        memset(dptr-&gt;data[s_pos], 0, PAGE_SIZE &lt;&lt; dptr-&gt;order);
+}
+</pre>
+<p>scullp 中释放内存的代码看来如此:</p>
+<pre class="programlisting">
+/* This code frees a whole quantum-set */
+for (i = 0; i &lt; qset; i++)
+        if (dptr-&gt;data[i])
+                free_pages((unsigned long)(dptr-&gt;data[i]), dptr-&gt;order);
+</pre>
+<p>在用户级别, 被感觉到的区别主要是一个速度提高和更好的内存使用, 因为没有内部的内存碎片. 我们运行一些测试从 scull0 拷贝 4 MB 到 scull1, 并且接着从 scullp0 到 scullp1; 结果显示了在内核空间处理器使用率有轻微上升.</p>
+<p>性能的提高不是激动人心的, 因为 kmalloc 被设计为快的. 页级别分配的主要优势实际上不是速度, 而是更有效的内存使用. 按页分配不浪费内存, 而使用 kmalloc 由于分配的粒度会浪费无法预测数量的内存.</p>
+<p>但是 __get_free_page 函数的最大优势是获得的页完全是你的, 并且你可以, 理论上, 可以通过适当的设置页表来组合这些页为一个线性的区域. 例如, 你可以允许一个用户进程 mmap 作为单个不联系的页而获得的内存区. 我们在 15 章讨论这种操作, 那里我们展示 scullp 如何提供内存映射, 一些 scull 无法提供的东西.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheallocpagesInterface.sect"></a>8.3.2.&#160;alloc_pages 接口</h3></div></div></div>
+<p>为完整起见, 我们介绍另一个内存分配的接口, 尽管我们不会准备使用它直到 15 章. 现在, 能够说 struct page 是一个描述一个内存页的内部内核结构. 如同我们将见到的, 在内核中有许多地方有必要使用页结构; 它们是特别有用的, 在任何你可能处理高端内存的情况下, 高端内存在内核空间中没有一个常量地址.</p>
+<p>Linux 页分配器的真正核心是一个称为 alloc_pages_node 的函数:</p>
+<pre class="programlisting">
+struct page *alloc_pages_node(int nid, unsigned int flags,
+ unsigned int order);
+</pre>
+<p>这个函数页有 2 个变体(是简单的宏); 它们是你最可能用到的版本:</p>
+<pre class="programlisting">
+struct page *alloc_pages(unsigned int flags, unsigned int order);
+struct page *alloc_page(unsigned int flags);
+</pre>
+<p>核心函数, alloc_pages_node, 使用 3 个参数, nid 是要分配内存的 NUMA 节点 ID<sup>[<a name="id451473" href="#ftn.id451473">30</a>]</sup>, flags 是通常的 GFP_ 分配标志, 以及 order 是分配的大小. 返回值是一个指向描述分配的内存的第一个(可能许多)页结构的指针, 或者, 如常, NULL 在失败时.</p>
+<p>alloc_pages 简化了情况, 通过在当前 NUMA 节点分配内存( 它使用 numa_node_id 的返回值作为 nid 参数调用 alloc_pages_node). 并且, 当然, alloc_pages 省略了 order 参数并且分配一个单个页. </p>
+<p>为释放这种方式分配的页, 你应当使用下列一个:</p>
+<pre class="programlisting">
+void __free_page(struct page *page);
+void __free_pages(struct page *page, unsigned int order);
+void free_hot_page(struct page *page);
+void free_cold_page(struct page *page);
+</pre>
+<p>如果你对一个单个页的内容是否可能驻留在处理器缓存中有特殊的认识, 你应当使用 free_hot_page (对于缓存驻留的页) 或者 free_cold_page 通知内核. 这个信息帮助内存分配器在系统中优化它的内存使用.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="vallocandFriends.sect"></a>8.3.3.&#160;vmalloc 和 其友</h3></div></div></div>
+<p>我们展示给你的下一个内存分配函数是 vmlloc, 它在虚拟内存空间分配一块连续的内存区. 尽管这些页在物理内存中不连续 (使用一个单独的对 alloc_page 的调用来获得每个页), 内核看它们作为一个一个连续的地址范围. vmalloc 返回 0 ( NULL 地址 ) 如果发生一个错误, 否则, 它返回一个指向一个大小至少为 size 的连续内存区.</p>
+<p>我们这里描述 vmalloc 因为它是一个基本的 Linux 内存分配机制. 我们应当注意, 但是, vmalloc 的使用在大部分情况下不鼓励. 从 vmalloc 获得的内存用起来稍微低效些, 并且, 在某些体系上, 留给 vmalloc 的地址空间的数量相对小. 使用 vmalloc 的代码如果被提交来包含到内核中可能会受到冷遇. 如果可能, 你应当直接使用单个页而不是试图使用 vmalloc 来掩饰事情.</p>
+<p>让我们看看 vmalloc 如何工作的. 这个函数的原型和它相关的东西(ioremap, 严格地不是一个分配函数, 在本节后面讨论)是下列:</p>
+<pre class="programlisting">
+#include &lt;linux/vmalloc.h&gt; 
+void *vmalloc(unsigned long size);
+void vfree(void * addr);
+void *ioremap(unsigned long offset, unsigned long size);
+void iounmap(void * addr);
+</pre>
+<p>值得强调的是 kmalloc 和 _get_free_pages 返回的内存地址也是虚拟地址. 它们的实际值在它用在寻址物理地址前仍然由 MMU (内存管理单元, 常常是 CPU 的一部分)管理.<sup>[<a name="id451605" href="#ftn.id451605">31</a>]</sup> vmalloc 在它如何使用硬件上没有不同, 不同是在内核如何进行分配任务上.</p>
+<p>kmalloc 和 __get_free_pages 使用的(虚拟)地址范围特有一个一对一映射到物理内存, 可能移位一个常量 PAGE_OFFSET 值; 这些函数不需要给这个地址范围修改页表. vmalloc 和 ioremap 使用的地址范围, 另一方面, 是完全地合成的, 并且每个分配建立(虚拟)内存区域, 通过适当地设置页表.</p>
+<p>这个区别可以通过比较分配函数返回的指针来获知. 在一些平台(例如, x86), vmalloc 返回的地址只是远离 kmalloc 使用的地址. 在其他平台上(例如, MIPS, IA-64, 以及 x86_64 ), 它们属于一个完全不同的地址范围. 对 vmalloc 可用的地址在从 VMALLOC_START 到 VAMLLOC_END 的范围中. 2 个符号都定义在 &lt;asm/patable.h&gt; 中.</p>
+<p>vmalloc 分配的地址不能用于微处理器之外, 因为它们只在处理器的 MMU 之上才有意义. 当一个驱动需要一个真正的物理地址(例如一个 DMA 地址, 被外设硬件用来驱动系统的总线), 你无法轻易使用 vmalloc. 调用 vmalloc 的正确时机是当你在为一个大的只存在于软件中的顺序缓冲分配内存时. 重要的是注意 vamlloc 比 __get_free_pages 有更多开销, 因为它必须获取内存并且建立页表. 因此, 调用 vmalloc 来分配仅仅一页是无意义的.</p>
+<p>在内核中使用 vmalloc 的一个例子函数是 create_module 系统调用, 它使用 vmalloc 为在创建的模块获得空间. 模块的代码和数据之后被拷贝到分配的空间中, 使用 copy_from_user. 在这个方式中, 模块看来是加载到连续的内存. 你可以验证, 同过看 /proc/kallsyms, 模块输出的内核符号位于一个不同于内核自身输出的符号的内存范围.</p>
+<p>使用 vmalloc 分配的内存由 vfree 释放, 采用和 kfree 释放由 kmalloc 分配的内存的相同方式.</p>
+<p>如同 vmalloc, ioremap 建立新页表; 不同于 vmalloc, 但是, 它实际上不分配任何内存. ioremap 的返回值是一个特殊的虚拟地址可用来存取特定的物理地址范围; 获得的虚拟地址应当最终通过调用 iounmap 来释放.</p>
+<p>ioremap 对于映射一个 PCI 缓冲的(物理)地址到(虚拟)内核空间是非常有用的. 例如, 它可用来存取一个 PCI 视频设备的帧缓冲; 这样的缓冲常常被映射在高端物理地址, 在内核启动时建立的页表的地址范围之外. PCI 问题在 12 章有详细解释.</p>
+<p>由于可移植性, 值得注意的是你不应当直接存取由 ioremap 返回的地址好像是内存指针.你应当一直使用 readb 和 其他的在第 9 章介绍的 I/O 函数. 这个要求适用因为一些平台, 例如 Alpha, 无法直接映射 PCI 内存区到处理器地址空间, 由于在 PCI 规格和 Alpha 处理器之间的在数据如何传送方面的不同.</p>
+<p>ioremap 和 vmalloc 是面向页的(它通过修改页表来工作); 结果, 重分配的或者分配的大小被调整到最近的页边界. ioremap 模拟一个非对齐的映射通过"向下调整"被重映射的地址以及通过返回第一个被重映射页内的偏移.</p>
+<p>vmalloc 的一个小的缺点在于它无法在原子上下文中使用, 因为, 内部地, 它使用 kmalloc(GFP_KERNEL) 来获取页表的存储, 并且因此可能睡眠. 这不应当是一个问题 -- 如果 __get_free_page 的使用对于一个中断处理不足够好, 软件设计需要一些清理.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AscullUsingVirtualAddressesscullv.sect"></a>8.3.4.&#160;一个使用虚拟地址的 scull : scullv</h3></div></div></div>
+<p>使用 vmalloc 的例子代码在 scullv 模块中提供. 如同 scullp, 这个模块是一个 scull 的简化版本, 它使用一个不同的分配函数来为设备存储数据获得空间.</p>
+<p>这个模块分配内存一次 16 页. 分配以大块方式进行来获得比 scullp 更好的性能, 并且来展示一些使用其他分配技术要花很长时间的东西是可行的. 使用 __get_free_pages 来分配多于一页是易于失败的, 并且就算它成功了, 它可能是慢的. 如同我们前面见到的, vmalloc 在分配几个页时比其他函数更快, 但是当获取单个页时有些慢, 因为页表建立的开销. scullv 被设计象 scullp 一样. order 指定每个分配的"级数"并且缺省为 4. scullv 和 scullp 之间的位于不同是在分配管理上. 这些代码行使用 vmalloc 来获得新内存:</p>
+<pre class="programlisting">
+/* Allocate a quantum using virtual addresses */
+if (!dptr-&gt;data[s_pos])
+{
+        dptr-&gt;data[s_pos] =
+                (void *)vmalloc(PAGE_SIZE &lt;&lt; dptr-&gt;order);
+        if (!dptr-&gt;data[s_pos])
+                goto nomem;
+        memset(dptr-&gt;data[s_pos], 0, PAGE_SIZE &lt;&lt; dptr-&gt;order);
+}
+</pre>
+<p>以及这些代码行释放内存:</p>
+<pre class="programlisting">
+/* Release the quantum-set */
+for (i = 0; i &lt; qset; i++)
+        if (dptr-&gt;data[i])
+                vfree(dptr-&gt;data[i]);
+</pre>
+<p>如果你在使能调试的情况下编译 2 个模块, 你能看到它们的数据分配通过读取它们在 /proc 创建的文件. 这个快照从一套 x86_64 系统上获得:</p>
+<pre class="screen">
+salma% cat /tmp/bigfile &gt; /dev/scullp0; head -5 /proc/scullpmem
+Device 0: qset 500, order 0, sz 1535135
+
+item at 000001001847da58, qset at 000001001db4c000
+0:1001db56000
+1:1003d1c7000
+salma% cat /tmp/bigfile &gt; /dev/scullv0; head -5 /proc/scullvmem
+Device 0: qset 500, order 4, sz 1535135
+item at 000001001847da58, qset at 0000010013dea000
+0:ffffff0001177000
+1:ffffff0001188000
+</pre>
+<p>下面的输出, 相反, 来自 x86 系统:</p>
+<pre class="screen">
+rudo% cat /tmp/bigfile &gt; /dev/scullp0; head -5 /proc/scullpmem
+Device 0: qset 500, order 0, sz 1535135
+item at ccf80e00, qset at cf7b9800
+0:ccc58000
+1:cccdd000
+rudo% cat /tmp/bigfile &gt; /dev/scullv0; head -5 /proc/scullvmem
+Device 0: qset 500, order 4, sz 1535135
+item at cfab4800, qset at cf8e4000
+0:d087a000
+1:d08d2000
+</pre>
+<p>这些值显示了 2 个不同的行为. 在 x86_64, 物理地址和虚拟地址是完全映射到不同的地址范围( 0x100 和 0xffffff00), 而在 x86 计算机上, vmalloc ；虚拟地址只在物理地址使用的映射之上.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id451239" href="#id451239">29</a>] </sup>尽管 alloc_pages (稍后描述)应当真正地用作分配高端内存页, 由于某些理由我们直到 15 章才真正涉及.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id451473" href="#id451473">30</a>] </sup>NUMA (非统一内存存取) 计算机是多处理器系统, 这里内存对于特定的处理器组("节点")是"局部的". 对局部内存的存取比存取非局部内存更快. 在这样的系统, 在当前节点分配内存是重要的. 驱动作者通常不必担心 NUMA 问题, 但是.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id451605" href="#id451605">31</a>] </sup>实际上, 一些体系结构定义"虚拟"地址为保留给寻址物理内存. 当这个发生了, Linux 内核利用这个特性, 并且 kernel 和 __get_free_pages 地址都位于这些地址范围中的一个. 这个区别对设备驱动和其他的不直接包含到内存管理内核子系统中的代码是透明的</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch08s02.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch08s04.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.2.&#160;后备缓存&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;8.4.&#160;每-CPU 的变量</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

@@ -1,0 +1,108 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>13.2.&#160;USB ºÍ sysfs-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch13.html" title="µÚ&#160;13&#160;ÕÂ&#160;USB Çý¶¯">
+<link rel="prev" href="ch13.html" title="µÚ&#160;13&#160;ÕÂ&#160;USB Çý¶¯">
+<link rel="next" href="ch13s03.html" title="13.3.&#160;USB µÄ Urbs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">13.2.&#160;USB ºÍ sysfs</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch13.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;13&#160;ÕÂ&#160;USB Çý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch13s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="USBandSysfs.sect1"></a>13.2.&#160;USB ºÍ sysfs</h2></div></div></div>
+<p>ÓÉÓÚµ¥¸ö USB ÎïÀíÉè±¸µÄ¸´ÔÓÐÔ, Éè±¸ÔÚ sysfs ÖÐµÄ±íÊ¾Ò²·Ç³£¸´ÔÓ. ÎïÀí USB Éè±¸(Í¨¹ý struct usb_device ±íÊ¾)ºÍµ¥¸ö USB ½Ó¿Ú(ÓÉ struct usb_interface ±íÊ¾)¶¼×÷Îªµ¥¸öÉè±¸³öÏÖÔÚ sysfs . (ÕâÊÇÒòÎªÕâ 2 ¸ö½á¹¹¶¼°üº¬Ò»¸ö struct device½á¹¹). ÀýÈç, ¶ÔÓÚÒ»¸ö¼òµ¥µÄÖ»°üº¬Ò»¸ö USB ½Ó¿ÚµÄ USB  Êó±ê, ÏÂÃæµÄÄÚÈÝ¸øÕâ¸öÉè±¸µÄ sysfs Ä¿Â¼Ê÷:</p>
+<pre class="screen">
+/sys/devices/pci0000:00/0000:00:09.0/usb2/2-1
+|-- 2-1:1.0
+|  |-- bAlternateSetting  
+|  |-- bInterfaceClass  
+|  |-- bInterfaceNumber  
+|  |-- bInterfaceProtocol  
+|  |-- bInterfaceSubClass  
+|  |-- bNumEndpoints  
+|  |-- detach_state  
+|  |-- iInterface  
+|  `-- power  
+|  `-- state  
+|-- bConfigurationValue
+|-- bDeviceClass
+|-- bDeviceProtocol
+|-- bDeviceSubClass
+|-- bMaxPower
+|-- bNumConfigurations
+|-- bNumInterfaces
+|-- bcdDevice
+|-- bmAttributes
+|-- detach_state
+|-- devnum
+|-- idProduct
+|-- idVendor
+|-- maxchild
+|-- power
+| `-- state
+|-- speed
+`-- version
+</pre>
+<p>½á¹¹ usb_device ÔÚÊ÷ÖÐ±»±íÊ¾ÔÚ:</p>
+<pre class="screen">
+/sys/devices/pci0000:00/0000:00:09.0/usb2/2-1 
+</pre>
+<p>¶øÊó±êµÄ USB ½Ó¿Ú - USB Êó±êÉè±¸Çý¶¯±»°ó¶¨µ½µÄ½Ó¿Ú - Î»ÓÚÄ¿Â¼:</p>
+<pre class="screen">
+/sys/devices/pci0000:00/0000:00:09.0/usb2/2-1/2-1:1.0 
+</pre>
+<p>Îª°ïÖúÀí½âÕâ¸ö³¤Éè±¸Â·¾¶µÄº¬Òå, ÎÒÃÇÃèÊöÄÚºËÈçºÎ±êÊ¶ USB Éè±¸.</p>
+<p>µÚÒ»¸ö USB  Éè±¸ÊÇÒ»¸ö¸ù¼¯ÏßÆ÷. ÕâÊÇ USB ¿ØÖÆÆ÷, ³£³£°üº¬ÔÚÒ»¸ö PCI Éè±¸ÖÐ. ¿ØÖÆÆ÷µÄÃüÃûÊÇÓÉÓÚËü¿ØÖÆÕû¸öÁ¬½Óµ½ËüÉÏÃæµÄ USB ×ÜÏß. ¿ØÖÆÆ÷ÊÇÒ»¸ö PCI ×ÜÏßºÍ USB ×ÜÏßÖ®¼äµÄÇÅ, Í¬Ê±ÊÇ×ÜÏßÉÏµÄµÚÒ»¸öÉè±¸.</p>
+<p>ËùÓÐµÄ¸ù¼¯ÏßÆ÷±» USB ºËÐÄ°²ÅÅÁËÒ»¸öÎ¨Ò»µÄºÅ. ÔÚÎÒÃÇµÄÀý×ÓÀï, ¸ù¼¯ÏßÆ÷³ÆÎª usb2, ÒòÎªËüÊÇ×¢²áµ½ USB ºËÐÄµÄµÚ 2 ¸ö¸ù¼¯ÏßÆ÷. ¿É°üº¬ÔÚµ¥¸öÏµÍ³ÖÐÔÚÈÎºÎÊ±¼äµÄ¸ù¼¯ÏßÆ÷µÄÊýÄ¿Ã»ÓÐÏÞÖÆ.</p>
+<p>Ã¿¸öÔÚ USB ×ÜÏßÉÏµÄÉè±¸²ÉÓÃ¸ù¼¯ÏßÆ÷µÄºÅ×÷ÎªËüµÄÃû×ÓµÄµÚÒ»¸öÊý×Ö. ½ô¸ú×ÅµÄÊÇ - ×Ö·ûºÍÉè±¸²åÈëµÄ¶Ë¿ÚºÅ. ÓÉÓÚÎÒÃÇÀý×ÓÖÐµÄÉè±¸²åÔÚµÚÒ»¸ö¶Ë¿Ú, Ò»¸ö 1 ±»Ìí¼Óµ½Ãû×Ó. Òò´Ë¸øÖ÷ USB Êó±êÉè±¸µÄÃû×ÓÊÇ2-1. ÒòÎªÕâ¸ö USB Éè±¸°üº¬Ò»¸ö½Ó¿Ú, ÄÇÊ¹µÃÊ÷ÖÐµÄÁíÒ»¸öÉè±¸±»Ìí¼Óµ½ sysfs Â·¾¶. µ½´Ëµã, USB ½Ó¿ÚµÄÃüÃû·½·¨ÊÇÉè±¸Ãû:ÔÚÎÒÃÇµÄÀý×Ó, ÊÇ 2-1 ½Ó×ÅÒ»¸ö·ÖºÅºÍ USB ÅäÖÃÃû, ½Ó×ÅÒ»¸ö¾äµãºÍ½Ó¿ÚÃû. Òò´Ë¶ÔÕâ¸öÀý×Ó, Éè±¸ÃûÊÇ 2-1:1.0 ÒòÎªËüÊÇµÚÒ»¸öÅäÖÃ²¢ÇÒÓÐ½Ó¿ÚºÅ 0.</p>
+<p>×Ü½á, USB sysfs Éè±¸ÃüÃû·½·¨ÊÇ:</p>
+<pre class="screen">
+root_hub-hub_port:config.interface 
+</pre>
+<p>Ëæ×ÅÉè±¸ÔÚ USB Ê÷ÖÐ½øÒ»²½ÏòÏÂ, ²¢ÇÒÔ½À´Ô½¶àµÄ USB ¼¯ÏßÆ÷, ¼¯ÏßÆ÷¶Ë¿ÚºÅ±»Ìí¼Óµ½×Ö·û´®ÖÐ½ôËæ×ÅÁ´ÖÐÖ®Ç°µÄ¼¯ÏßÆ÷¶Ë¿ÚºÅ. ¶ÔÒ»¸ö 2 ²ãµÄÊ÷, Éè±¸Ãû¿´À´Ïó:</p>
+<pre class="screen">
+root_hub-hub_port-hub_port:config.interface 
+</pre>
+<p>ÈçÍ¬¿ÉÔÚÖ®Ç°µÄ USB Éè±¸ºÍ½Ó¿ÚÄ¿Â¼ÁÐ±íÖÐ¼ûµ½µÄ, ËùÓÐµÄ USB ÌØ¶¨ÐÅÏ¢¿ÉÖ±½Ó´Ó sysfs »ñµÃ(ÀýÈç, idVendor, idProduct, ºÍ bMaxPower ÐÅÏ¢). Ò»¸öÎÄ¼þ, bConfigrationValue, ¿É±»Ð´ÈëÀ´¸Ä±ä¼¤»îµÄÕý±»Ê¹ÓÃµÄ USB ÅäÖÃ. Õâ¶ÔÓÐ¶à¸öÅäÖÃµÄÉè±¸ÊÇÓÐÓÃµÄ, µ±ÄÚºË²»ÄÜ¾ö¶¨Ñ¡ÔñÊ²Ã´ÅäÖÃÀ´ÕýÈ·²Ù×÷Éè±¸. Ðí¶à USB Ã¨ÐèÒªÓÐÕýÈ·µÄÅäÖÃÖµ±»Ð´µ½Õâ¸öÎÄ¼þÀ´Ê¹ÕýÈ·µÄ USB Çý¶¯°ó¶¨µ½Éè±¸.</p>
+<p>sysfs Ã»±©Â¶Ò»¸ö USB Éè±¸µÄËùÓÐµÄ²»Í¬²¿·Ö,ÒòÎªËüÍ£Ö¹ÔÚ½Ó¿ÚË®Æ½. ÈÎºÎÕâ¸öÉè±¸¿ÉÄÜ°üº¬µÄÔ¤±¸ÅäÖÃ¶¼Ã»ÓÐÕ¹Ê¾, Á¬Í¬¹ØÁªµ½½Ó¿ÚµÄ¶ËµãµÄÏ¸½Ú. Õâ¸öÐÅÏ¢¿ÉÔÚ usbfs ÎÄ¼þÏµÍ³ÖÐÕÒµ½, Ëü¼ÓÔØÔÚÏµÍ³µÄ /proc/bus/usb/ Ä¿Â¼. ÎÄ¼þ /proc/bus/usb/devices Õ¹Ê¾ÁËËùÓÐµÄÔÚ sysfs ÖÐ±©Â¶µÄÐÅÏ¢, Á¬Í¬ËùÓÐµÄ³öÏÖÔÚÏµÍ³ÖÐµÄ USB Éè±¸µÄÔ¤±¸ÅäÖÃºÍ¶ËµãÐÅÏ¢. usbfs Ò²ÔÊÐíÓÃ»§¿Õ¼ä³ÌÐòÖ±½Ó¶Ô»° USB Éè±¸, ÕâÒÑÊ¹ÄÜÁËÐí¶àÄÚºËÇý¶¯±»ÒÆ³öµ½ÓÃ»§¿Õ¼ä, ÕâÀïÈÝÒ×Î¬»¤ºÍµ÷ÊÔ. USB É¨ÃèÆ÷Çý¶¯ÊÇÕâ¸öµÄÒ»¸öºÃÀý×Ó, ÓÉÓÚËü²»ÔÙÔÚÄÚºËÖÐ³öÏÖ, ËüµÄ¹¦ÄÜÏÖÔÚ°üº¬ÔÚÓÃ»§¿Õ¼äµÄ SANE ¿â³ÌÐòÖÐ.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch13.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch13.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch13s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;13&#160;ÕÂ&#160;USB Çý¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;13.3.&#160;USB µÄ Urbs</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

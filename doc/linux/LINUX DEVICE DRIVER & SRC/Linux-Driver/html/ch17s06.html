@@ -1,0 +1,103 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.6.&#160;±¨ÎÄ½ÓÊÕ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇý¶¯">
+<link rel="prev" href="ch17s05.html" title="17.5.&#160;±¨ÎÄ´«ËÍ">
+<link rel="next" href="ch17s07.html" title="17.7.&#160;ÖÐ¶Ï´¦Àí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.6.&#160;±¨ÎÄ½ÓÊÕ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PacketReception"></a>17.6.&#160;±¨ÎÄ½ÓÊÕ</h2></div></div></div>
+<p>´ÓÍøÂçÉÏ½ÓÊÕ±¨ÎÄ±È·¢ËÍËüÒªÄÑÒ»Ð©, ÒòÎª±ØÐë·ÖÅäÒ»¸ö sk_buff ²¢´ÓÒ»¸öÔ­×ÓÐÔÉÏÏÂÎÄÖÐµÝ½»¸øÉÏ²ã. ÍøÂçÇý¶¯¿ÉÒÔÊµÏÖ 2 ÖÖ±¨ÎÄ½ÓÊÕµÄÄ£Ê½: ÖÐ¶ÏÇý¶¯ºÍ²éÑ¯. ´ó²¿·ÖÇý¶¯²ÉÓÃÖÐ¶ÏÇý¶¯¼¼Êõ, ÕâÊÇÎÒÃÇÊ×ÏÈÒªÉæ¼°µÄ. ÓÐÐ©¸ß´ø¿íÊÊÅä¿¨µÄÇý¶¯Ò²¿ÉÄÜ²ÉÓÃ²éÑ¯¼¼Êõ; ÎÒÃÇÔÚ"½ÓÊÕÖÐ¶Ï»º½â"Ò»½ÚÖÐÁË½âÕâ¸ö·½·¨.</p>
+<p>snull µÄÊµÏÖ½«"Ó²¼þ"Ï¸½Ú´ÓÉè±¸¶ÀÁ¢µÄ³£¹æÊÂÎñÖÐ·ÖÀë. Òò´Ë, º¯Êý snull_rx ÔÚÓ²¼þÊÕµ½±¨ÎÄºó´Ó snull µÄ"ÖÐ¶Ï"´¦ÀíÖÐµ÷ÓÃ, ²¢ÇÒ±¨ÎÄÏÖÔÚÒÑ¾­ÔÚ¼ÆËã»úµÄÄÚ´æÖÐ. snull_rx ÊÕµ½Ò»¸öÊý¾ÝÖ¸ÕëºÍ±¨ÎÄ³¤¶È; ËüÎ¨Ò»µÄÔðÈÎÊÇ·¢×ßÕâ¸ö±¨ÎÄºÍÔËÐÐ¸½¼ÓÐÅÏ¢¸øÉÏ²ãµÄÍøÂç´úÂë. Õâ¸ö´úÂë¶ÀÁ¢ÓÚ»ñµÃÊý¾ÝÖ¸ÕëºÍ³¤¶ÈµÄ·½Ê½.</p>
+<pre class="programlisting">
+void snull_rx(struct net_device *dev, struct snull_packet *pkt)
+{
+    struct sk_buff *skb;
+    struct snull_priv *priv = netdev_priv(dev);
+    /*
+    *
+    The packet has been retrieved from the transmission
+
+    *
+    medium. Build an skb around it, so upper layers can handle it
+    */
+    skb = dev_alloc_skb(pkt-&gt;datalen + 2);
+    if (!skb) {
+
+        if (printk_ratelimit())
+            printk(KERN_NOTICE "snull rx: low on mem - packet dropped\n"); priv-&gt;stats.rx_dropped++; goto out;
+    }
+    memcpy(skb_put(skb, pkt-&gt;datalen), pkt-&gt;data, pkt-&gt;datalen);
+
+    /* Write metadata, and then pass to the receive level */
+    skb-&gt;dev = dev;
+    skb-&gt;protocol = eth_type_trans(skb, dev);
+    skb-&gt;ip_summed = CHECKSUM_UNNECESSARY; /* don't check it */
+    priv-&gt;stats.rx_packets++;
+    priv-&gt;stats.rx_bytes += pkt-&gt;datalen;
+    netif_rx(skb);
+out:
+    return;
+}
+</pre>
+<p>Õâ¸öº¯Êý×ã¹»ÆÕÍ¨ÒÔ×÷ÎªÈÎºÎÍøÂçÇý¶¯µÄÒ»¸öÄ£°å, µ«ÊÇÔÚÄãÓÐÐÅÐÄÖØÓÃÕâ¸ö´úÂë¶ÎÇ°ÐèÒªÒ»Ð©½âÊÍ.</p>
+<p>µÚÒ»²½ÊÇ·ÖÅäÒ»¸ö»º´æÇøÀ´±£´æ±¨ÎÄ. ×¢Òâ»º´æ·ÖÅäº¯Êý (dev_alloc_skb) ÐèÒªÖªµÀÊý¾Ý³¤¶È. º¯ÊýÓÃÕâÐ©ÐÅÏ¢À´¸ø»º´æÇø·ÖÅä¿Õ¼ä. dev_alloc_skb Ê¹ÓÃ atomic ÓÅÏÈ¼¶µ÷ÓÃ kmalloc , Òò´ËËü¿ÉÒÔÔÚÖÐ¶ÏÊ±¼ä°²È«Ê¹ÓÃ. ÄÚºËÌá¹©ÁËÆäËû½Ó¿Ú¸ø socket »º´æ·ÖÅä, µ«ÊÇËüÃÇ²»ÖµµÃÔÚ´Ë½éÉÜ; socket »º´æÔÚ"socket »º´æ"Ò»½ÚÖÐÏêÏ¸½éÉÜ.</p>
+<p>µ±È», dev_alloc_skb µÄ·µ»ØÖµ±ØÐë¼ì²é, snull ÕâÑù×öÁË. ÎÒÃÇµ÷ÓÃ printk_ratelimit ÔÚ±§Ô¹Ê§°ÜÖ®Ç°, µ«ÊÇ. Ã¿ÃëÖÓ²úÉú³É°ÙÉÏÇ§µÄ¿ØÖÆÌ¨ÏûÏ¢ÊÇÍêÈ«ÏÝËÀÏµÍ³ºÍÒþ²ØÎÊÌâµÄÕæÕýÔ´Í·µÄºÃ·½·¨; printk_ratelimit °ïÖú×èÖ¹Õâ¸öÎÊÌâ, Í¨¹ýÔÚÓÐÌ«¶àÊä³öµ½ÁË¿ØÖÆÌ¨Ê±·µ»Ø 0, ÊÂÇéÐèÒªÂýÏÂÀ´Ò»µã.</p>
+<p>Ò»µ©ÓÐÒ»¸öÓÐÐ§µÄ skb Ö¸Õë, Í¨¹ýµ÷ÓÃ memcpy, ±¨ÎÄÊý¾Ý±»¿½±´µ½»º´æÇø; skb_put º¯Êý¸üÐÂ»º´æÖÐµÄÊý¾ÝÄ©Î²Ö¸Õë²¢·µ»ØÖ¸ÏòÐÂ½¨¿Õ¼äµÄÖ¸Õë.</p>
+<p>Èç¹ûÄãÔÚ±àÐ´Ò»¸ö¸ßÐÔÄÜÇý¶¯, ÎªÒ»¸ö¿ÉÒÔ½øÐÐÍêÈ«×ÜÏßÕ¼¾Ý I/O µÄ½Ó¿Ú, Ò»¸ö¿ÉÄÜµÄÓÅ»¯ÖµµÃÔÚ´Ë¿¼ÂÇÏÂ. Ò»Ð©Çý¶¯ÔÚ±¨ÎÄ½ÓÊÕÇ°·ÖÅä sokcet »º´æ, ½Ó×ÅÊ¹½Ó¿Ú½«±¨ÎÄÊý¾ÝÖ±½Ó·ÅÈë socket »º´æ¿Õ¼ä. ÍøÂç²ãÍ¨¹ýÔÚ¿É DMA µÄ¿Õ¼ä( Èç¹ûÄãµÄÉè±¸ÉèÖÃÁË NETIF_F_HIGHDMA ±êÖ¾, Õâ¸ö¿Õ¼äÓÐ¿ÉÄÜÔÚ¸ß¶ËÄÚ´æ)ÖÐ·ÖÅäËùÓÐ socket »º´æÀ´ÅäºÏÕâ¸ö²ßÂÔ. ÕâÑù±ÜÃâÁËµ¥¶ÀµÄÌî³ä socket »º´æµÄ¿½±´²Ù×÷, µ«ÊÇÐèÒªÐ¡ÐÄ»º´æÇøµÄ´óÐ¡, ÒòÎªÄãÎÞ·¨ÌáÇ°ÖªµÀ½øÀ´µÄ±¨ÎÄ´óÐ¡. change_mtu ·½·¨µÄÊµÏÖÔÚÕâÖÖÇé¿öÏÂÒ²ÖØÒª, ÒòÎªËüÔÊÐíÇý¶¯¶Ô×î´ó±¨ÎÄ´óÐ¡¸Ä±ä×÷³öÏìÓ¦.</p>
+<p>ÍøÂç²ãÔÚ¸ã¶®±¨ÎÄµÄÒâË¼Ç°ÐèÒªÇå³þÒ»Ð©ÊÂÇé. Îª´Ë, dev ºÍ protocol ³ÉÔ±±ØÐëÔÚ»º´æÏòÉÏ´«µÝÇ°¸³Öµ. ÒÔÌ«ÍøÖ§³Ö´úÂëÊä³öÒ»¸ö°ïÖúº¯Êý( eth_type_trans ), Ëü·¢ÏÖÒ»¸öºÏÊÊÖµÀ´¸³¸ø protocol. ½Ó×ÅÎÒÃÇÐèÒªÖ¸³öÐ£ÑéºÍÒªÈçºÎ½øÐÐ»òÕßÒÑ¾­ÔÚ±¨ÎÄÉÏÍê³É( snull ²»ÐèÒª×öÈÎºÎÐ£ÑéºÍ ). ¶ÔÓÚ skb-&gt;ip_summed ¿ÉÄÜµÄ²ßÂÔÓÐ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>CHECKSUM_HW</span></span></dt>
+<dd><p>Éè±¸ÒÑ¾­ÔÚÓ²¼þÀï×öÁËÐ£Ñé. Ò»¸öÓ²¼þÐ£ÑéµÄÀý×ÓÊ¹ APARC HME ½Ó¿Ú.</p></dd>
+<dt><span class="term"><span>CHECKSUM_NONE</span></span></dt>
+<dd><p>Ð£ÑéºÍ»¹Ã»±»ÑéÖ¤, ±ØÐëÓÉÏµÍ³Èí¼þÀ´Íê³ÉÕâ¸öÈÎÎñ. Õâ¸öÊÇÈ±Ê¡µÄ, ÔÚÐÂ·ÖÅäµÄ»º´æÖÐ.</p></dd>
+<dt><span class="term"><span>CHECKSUM_UNNECESSARY</span></span></dt>
+<dd><p>²»Òª×öÈÎºÎÐ£Ñé. ÕâÊÇ snull ºÍ »·»Ø½Ó¿ÚµÄ²ßÂÔ.</p></dd>
+</dl></div>
+<p>Äã¿ÉÄÜÆæ¹ÖÎªÊ²Ã´Ð£ÑéºÍ×´Ì¬±ØÐëÔÚÕâÀïÖ¸¶¨, µ±ÎÒÃÇÒÑ¾­ÔÚÎÒÃÇµÄ net_device ½á¹¹µÄÌØÐÔ³ÉÔ±ÖÐÉèÖÃÁË±êÖ¾. ´ð°¸ÊÇÌØÐÔ±êÖ¾¸æËßÄÚºËÎÒÃÇµÄÉè±¸ÈçºÎ¶Ô´ýÍâ³öµÄ±¨ÎÄ. Ëü²»ÓÃÓÚ½øÈëµÄ±¨ÎÄ, Ïà·´, ½øÈë±¨ÎÄ±ØÐëµ¥¶À±ê¼Ç.</p>
+<p>×îºó, Çý¶¯¸üÐÂËüµÄÍ³¼Æ¼ÆÊýÀ´¼ÇÂ¼ÊÕµ½Ò»¸ö±¨ÎÄ¡£ Í³¼Æ½á¹¹ÓÉ¼¸¸ö³ÉÔ±×é³É; ×îÖØÒªµÄÊÇ rx_packet, rx_bytes, ºÍ tx_bytes, ·Ö±ðº¬ÓÐÊÕµ½µÄ±¨ÎÄÊýÄ¿, ·¢ËÍµÄÊýÄ¿, ºÍ·¢ËÍµÄ×Ö½Ú×ÜÊý. ËùÓÐµÄ³ÉÔ±ÔÚ"Í³¼ÆÐÅÏ¢"Ò»½ÚÖÐÍêÈ«ÃèÊö.</p>
+<p>±¨ÎÄ½ÓÊÕµÄ×îºóÒ»²½ÓÉ netif_rx ½øÐÐ, ËüµÝ½» socket »º´æ¸øÉÏ²ã. Êµ¼ÊÉÏ netif_rx ·µ»ØÒ»¸öÕûÊý; NET_RX_SUCCESS(0) ÒâË¼ÊÇ±¨ÎÄ³É¹¦½ÓÊÕ; ÈÎºÎÆäËûÖµÖ¸Ê¾´íÎó. ÓÐ 3 ¸ö·µ»ØÖµ (NET_RX_CN_LOW, NET_RX_CN_MOD, ºÍ NET_RX_CN_HIGH )Ö¸³öÍøÂç×ÓÏµÍ³µÄµÝÔöµÄÓµÈû¼¶±ð; NET_RX_DROP ÒâË¼ÊÇ±¨ÎÄ±»¶ªÆú. Ò»¸öÇý¶¯ÔÚÓµÈû±ä¸ßÊ±¿ÉÄÜÊ¹ÓÃÕâÐ©ÖµÀ´Í£Ö¹ÊäËÍ±¨ÎÄ¸øÄÚºË, µ«ÊÇ, Êµ¼ÊÉÏ, ´ó²¿·ÖÇý¶¯ºöÂÔ´Ó netif_rx µÄ·µ»ØÖµ. Èç¹ûÄãÔÚ±àÐ´Ò»¸ö¸ß´ø¿íÉè±¸µÄÇý¶¯, ²¢ÇÒÏ£ÍûÕýÈ·´¦ÀíÓµÈû, ×îºÃµÄ°ì·¨ÊÇÊµÏÖ NAPI, ÎÒÃÇÔÚ¿ìËÙÌÖÂÛÖÐ¶Ï´¦ÀíºóÌÖÂÛËü.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.5.&#160;±¨ÎÄ´«ËÍ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.7.&#160;ÖÐ¶Ï´¦Àí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

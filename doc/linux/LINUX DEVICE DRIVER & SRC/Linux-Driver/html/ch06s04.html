@@ -1,0 +1,111 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>6.4.&#160;Òì²½Í¨Öª-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch06.html" title="µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇý¶¯²Ù×÷">
+<link rel="prev" href="ch06s03.html" title="6.3.&#160;poll ºÍ select">
+<link rel="next" href="ch06s05.html" title="6.5.&#160;ÒÆÎ»Ò»¸öÉè±¸">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">6.4.&#160;Òì²½Í¨Öª</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch06s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇý¶¯²Ù×÷</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch06s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="AsynchronousNotification.sect1"></a>6.4.&#160;Òì²½Í¨Öª</h2></div></div></div>
+<p>¾¡¹Ü×èÈûºÍ·Ç×èÈû²Ù×÷ºÍ select ·½·¨µÄ½áºÏ¶ÔÓÚ²éÑ¯Éè±¸ÔÚ´ó²¿·ÖÊ±¼äÊÇ×ã¹»µÄ, Ò»Ð©Çé¿ö»¹²»ÄÜ±»ÎÒÃÇÆù½ñËù¼ûµ½µÄ¼¼ÊõÀ´ÓÐÐ§µØ½â¾ö.</p>
+<p>ÈÃÎÒÃÇÏëÏóÒ»¸ö½ø³Ì, ÔÚµÍÓÅÏÈ¼¶ÉÏÖ´ÐÐÒ»¸ö³¤¼ÆËãÑ­»·, µ«ÊÇÐèÒª¾¡¿ÉÄÜ¿ìµÄ´¦ÀíÊäÈëÊý¾Ý. Èç¹ûÕâ¸ö½ø³ÌÔÚÏìÓ¦ÐÂµÄÀ´×ÔÄ³Ð©Êý¾Ý»ñÈ¡ÍâÉèµÄ±¨¸æ, ËüÓ¦µ±Á¢¿ÌÖªµÀµ±ÐÂÊý¾Ý¿ÉÓÃÊ±. Õâ¸öÓ¦ÓÃ³ÌÐò¿ÉÄÜ±»±àÐ´À´µ÷ÓÃ poll ÓÐ¹æÂÉµØ¼ì²éÊý¾Ý, µ«ÊÇ, ¶ÔÐí¶àÇé¿ö, ÓÐ¸üºÃµÄ·½·¨. Í¨¹ýÊ¹ÄÜÒì²½Í¨Öª, Õâ¸öÓ¦ÓÃ³ÌÐò¿ÉÄÜ½ÓÊÜÒ»¸öÐÅºÅÎÞÂÛºÎÊ±Êý¾Ý¿ÉÓÃ²¢ÇÒ²»ÐèÒªÈÃ×Ô¼ºÈ¥²éÑ¯.</p>
+<p>ÓÃ»§³ÌÐò±ØÐëÖ´ÐÐ 2 ¸ö²½ÖèÀ´Ê¹ÄÜÀ´×ÔÊäÈëÎÄ¼þµÄÒì²½Í¨Öª. Ê×ÏÈ, ËüÃÇÖ¸¶¨Ò»¸ö½ø³Ì×÷ÎªÎÄ¼þµÄÓµÓÐÕß. µ±Ò»¸ö½ø³ÌÊ¹ÓÃ fcntl ÏµÍ³µ÷ÓÃ·¢³ö F_SETOWN ÃüÁî, Õâ¸öÓµÓÐÕß½ø³ÌµÄ ID ±»±£´æÔÚ filp-&gt;f_owner ¸øÒÔºóÊ¹ÓÃ. ÕâÒ»²½¶ÔÄÚºËÖªµÀÍ¨ÖªË­ÊÇ±ØÒªµÄ. ÎªÁËÕæÕýÊ¹ÄÜÒì²½Í¨Öª, ÓÃ»§³ÌÐò±ØÐëÉèÖÃ FASYNC ±êÖ¾ÔÚÉè±¸ÖÐ, Í¨¹ý F_SETFL fcntl ÃüÁî.</p>
+<p>ÔÚÕâ 2  ¸öµ÷ÓÃÒÑ±»Ö´ÐÐºó, ÊäÈëÎÄ¼þ¿ÉÇëÇóµÝ½»Ò»¸ö SIGIO ÐÅºÅ, ÎÞÂÛºÎÊ±ÐÂÊý¾Ýµ½´ï. ÐÅºÅ±»·¢ËÍ¸ø´æ´¢ÓÚ filp-&gt;f_owner ÖÐµÄ½ø³Ì(»òÕß½ø³Ì×é, Èç¹ûÖµÎª¸ºÖµ).</p>
+<p>ÀýÈç, ÏÂÃæµÄÓÃ»§³ÌÐòÖÐµÄ´úÂëÐÐÊ¹ÄÜÁËÒì²½µÄÍ¨Öªµ½µ±Ç°½ø³Ì, ¸ø stdin ÊäÈëÎÄ¼þ:</p>
+<pre class="programlisting">
+signal(SIGIO, &amp;input_handler); /* dummy sample; sigaction() is better */
+fcntl(STDIN_FILENO, F_SETOWN, getpid());
+oflags = fcntl(STDIN_FILENO, F_GETFL);
+fcntl(STDIN_FILENO, F_SETFL, oflags | FASYNC);
+</pre>
+<p>Õâ¸öÔÚÔ´ÂëÖÐÃûÎª asynctest µÄ³ÌÐòÊÇÒ»¸ö¼òµ¥µÄ³ÌÐò, ¶ÁÈ¡ stdin. Ëü¿ÉÓÃÀ´²âÊÔ scullpipe µÄÒì²½ÄÜÁ¦. Õâ¸ö³ÌÐòºÍ cat ÀàËÆµ«ÊÇ²»½áÊøÓÚÎÄ¼þÎ²; ËüÖ»ÏìÓ¦ÊäÈë, ¶ø²»ÊÇÃ»ÓÐÊäÈë.</p>
+<p>×¢Òâ, µ«ÊÇ, ²»ÊÇËùÓÐµÄÉè±¸¶¼Ö§³ÖÒì²½Í¨Öª, ²¢ÇÒÄã¿ÉÑ¡Ôñ²»Ìá¹©Ëü. Ó¦ÓÃ³ÌÐò³£³£¼Ù¶¨Òì²½ÄÜÁ¦Ö»¶Ô socket ºÍ tty ¿ÉÓÃ.</p>
+<p>ÊäÈëÍ¨ÖªÓÐÒ»¸öÊ£ÏÂµÄÎÊÌâ. µ±Ò»¸ö½ø³ÌÊÕµ½Ò»¸ö SIGIO, Ëü²»ÖªµÀÄÄ¸öÊäÈëÎÄ¼þÓÐÐÂÊý¾ÝÌá¹©. Èç¹û¶àÓÚÒ»¸öÎÄ¼þ±»Ê¹ÄÜÒì²½µØÍ¨Öª¹ÒÆðÊäÈëµÄ½ø³Ì, Ó¦ÓÃ³ÌÐò±ØÐëÈÔÈ»¿¿ poll »òÕß select À´ÕÒ³ö·¢ÉúÁËÊ²Ã´.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheDriversPointofView.sect2"></a>6.4.1.&#160;Çý¶¯µÄ¹Ûµã</h3></div></div></div>
+<p>¶ÔÎÒÃÇÀ´ËµÒ»¸ö¸üÏà¹ØµÄÖ÷ÌâÊÇÉè±¸Çý¶¯ÈçºÎÊµÏÖÒì²½ÐÅºÅ. ÏÂÃæÁÐ³öÁËÏêÏ¸µÄ²Ù×÷Ë³Ðò, ´ÓÄÚºËµÄ¹Ûµã:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>1. µ±·¢³ö F_SETOWN, Ê²Ã´¶¼Ã»·¢Éú, ³ýÁËÒ»¸öÖµ±»¸³Öµ¸ø filp-&gt;f_owner.</p></li>
+<li><p>2. µ± F_SETFL ±»Ö´ÐÐÀ´´ò¿ª FASYNC, Çý¶¯µÄ fasync ·½·¨±»µ÷ÓÃ. Õâ¸ö·½·¨±»µ÷ÓÃÎÞÂÛºÎÊ± FASYNC µÄÖµÔÚ filp-&gt;f_flags ÖÐ±»¸Ä±äÀ´Í¨ÖªÇý¶¯Õâ¸ö±ä»¯, Òò´ËËü¿ÉÕýÈ·µØÏìÓ¦. Õâ¸ö±êÖ¾ÔÚÎÄ¼þ±»´ò¿ªÊ±È±Ê¡µØ±»Çå³ý. ÎÒÃÇ½«¿´Õâ¸öÇý¶¯·½·¨µÄ±ê×¼ÊµÏÖ, ÔÚ±¾½Ú.</p></li>
+<li><p>3. µ±Êý¾Ýµ½´ï, ËùÓÐµÄ×¢²áÒì²½Í¨ÖªµÄ½ø³Ì±ØÐë±»·¢³öÒ»¸ö SIGIO ÐÅºÅ.</p></li>
+</ul></div>
+<p>ËäÈ»ÊµÏÖµÚÒ»²½ÊÇÈÝÒ×µÄ--ÔÚÇý¶¯²¿·ÖÃ»ÓÐÊ²Ã´Òª×öµÄ--ÆäËûµÄ²½Öè°üÀ¨Î¬»¤Ò»¸ö¶¯Ì¬Êý¾Ý½á¹¹À´¸ú×Ù²»Í¬µÄÒì²½¶ÁÕß; ¿ÉÄÜÓÐ¼¸¸ö. Õâ¸ö¶¯Ì¬Êý¾Ý½á¹¹, µ«ÊÇ, ²»ÒÀÀµÌØÊâµÄÉè±¸, ²¢ÇÒÄÚºËÌá¹©ÁËÒ»¸öºÏÊÊµÄÍ¨ÓÃÊµÏÖÕâÑùÄã²»±ØÖØÐÂ±àÐ´Í¬ÑùµÄ´úÂë¸øÃ¿¸öÇý¶¯.</p>
+<p>Linux Ìá¹©µÄÍ¨ÓÃÊµÏÖÊÇ»ùÓÚÒ»¸öÊý¾Ý½á¹¹ºÍ 2 ¸öº¯Êý(ËüÃÇÔÚÇ°ÃæËùËµµÄµÚ 2 ²½ºÍµÚ 3 ²½±»µ÷ÓÃ). ÉùÃ÷Ïà¹Ø²ÄÁÏµÄÍ·ÎÄ¼þÊÇ&lt;linux/fs.h&gt;(ÕâÀïÃ»ÐÂ¶«Î÷), ²¢ÇÒÊý¾Ý½á¹¹±»³ÆÎª struct fasync_struct. ÖÁÓÚµÈ´ý¶ÓÁÐ, ÎÒÃÇÐèÒª²åÈëÒ»¸öÖ¸ÕëÔÚÉè±¸ÌØ¶¨µÄÊý¾Ý½á¹¹ÖÐ.</p>
+<p>Çý¶¯µ÷ÓÃµÄ 2 ¸öº¯Êý¶ÔÓ¦ÏÂÃæµÄÔ­ÐÍ:</p>
+<pre class="programlisting">
+int fasync_helper(int fd, struct file *filp, int mode, struct fasync_struct **fa);
+void kill_fasync(struct fasync_struct **fa, int sig, int band);
+</pre>
+<p>fasync_helper ±»µ÷ÓÃÀ´´ÓÏà¹ØµÄ½ø³ÌÁÐ±íÖÐÌí¼Ó»òÈ¥³ýÈë¿ÚÏî, µ± FASYNC ±êÖ¾ÒòÒ»¸ö´ò¿ªÎÄ¼þ¶ø¸Ä±ä. ËüµÄËùÓÐ²ÎÊý³ýÁË×îºóÒ»¸ö, ¶¼±»Ìá¹©¸ø fasync ·½·¨²¢ÇÒ±»Ö±½Ó´«µÝ. µ±Êý¾Ýµ½´ïÊ± kill_fasync ±»ÓÃÀ´Í¨ÖªÏà¹ØµÄ½ø³Ì. ËüµÄ²ÎÊýÊÇ±»´«µÝµÄÐÅºÅ(³£³£ÊÇ SIGIO)ºÍ band, Õâ¼¸ºõ¶¼ÊÇ POLL_IN<sup>[<a name="id437432" href="#ftn.id437432">25</a>]</sup>(µ«ÊÇÕâ¿ÉÓÃÀ´·¢ËÍ"½ô¼±"»òÕß´øÍâÊý¾Ý, ÔÚÍøÂç´úÂëÀï).</p>
+<p>ÕâÊÇ scullpipe ÈçºÎÊµÏÖ fasync ·½·¨µÄ:</p>
+<pre class="programlisting">
+static int scull_p_fasync(int fd, struct file *filp, int mode)
+{
+ struct scull_pipe *dev = filp-&gt;private_data;
+ return fasync_helper(fd, filp, mode, &amp;dev-&gt;async_queue);
+}
+</pre>
+<p>ÏÔÈ»ËùÓÐµÄ¹¤×÷¶¼ÓÉ fasync_helper ½øÐÐ. µ«ÊÇ, ²»¿ÉÄÜÊµÏÖÕâ¸ö¹¦ÄÜÔÚÃ»ÓÐÒ»¸ö·½·¨ÔÚÇý¶¯ÀïµÄÇé¿öÏÂ, ÒòÎªÕâ¸ö°ïÃ¦º¯ÊýÐèÒª´æÈ¡ÕýÈ·µÄÖ¸Ïò struct fasync_struct (ÕâÀïÊÇ Óëdev-&gt;async_queue)µÄÖ¸Õë, ²¢ÇÒÖ»ÓÐÇý¶¯¿ÉÌá¹©Õâ¸öÐÅÏ¢.</p>
+<p>µ±Êý¾Ýµ½´ï, ÏÂÃæµÄÓï¾ä±ØÐë±»Ö´ÐÐÀ´Í¨ÖªÒì²½¶ÁÕß. ÒòÎª¶Ô sucllpipe ¶ÁÕßµÄÐÂÊý¾ÝÍ¨¹ýÒ»¸ö·¢³ö write µÄ½ø³Ì±»²úÉú, Õâ¸öÓï¾ä³öÏÖÔÚ scullpipe µÄ write ·½·¨ÖÐ.</p>
+<pre class="programlisting">
+if (dev-&gt;async_queue)
+ kill_fasync(&amp;dev-&gt;async_queue, SIGIO, POLL_IN);
+</pre>
+<p>×¢Òâ, Ò»Ð©Éè±¸»¹ÊµÏÖÒì²½Í¨ÖªÀ´Ö¸Ê¾µ±Éè±¸¿É±»Ð´ÈëÊ±; ÔÚÕâ¸öÇé¿ö, µ±È», kill_fasnyc ±ØÐë±»Ê¹ÓÃÒ»¸ö POLL_OUT Ä£Ê½À´µ÷ÓÃ.</p>
+<p>¿ÉÄÜ»á³öÏÖÎÒÃÇÒÑ¾­Íê³Éµ«ÊÇÈÔÈ»ÓÐÒ»¼þÊÂÒÅÂ©. ÎÒÃÇ±ØÐëµ÷ÓÃÎÒÃÇµÄ fasync ·½·¨, µ±ÎÄ¼þ±»¹Ø±ÕÀ´´Ó¼¤»îÒì²½¶ÁÕßÁÐ±íÖÐÈ¥³ýÎÄ¼þ. ¾¡¹ÜÕâ¸öµ÷ÓÃ½öµ± filp-&gt;f_flags ±»ÉèÖÃÎª FASYNC Ê±ÐèÒª, µ÷ÓÃÕâ¸öº¯ÊýÎÞÂÛÈçºÎ²»»áÓÐÎÊÌâ²¢ÇÒÊÇ³£¼ûµÄÊµÏÖ. ÏÂÃæµÄ´úÂëÐÐ, ÀýÈç, ÊÇ scullpipe µÄ release ·½·¨µÄÒ»²¿·Ö:</p>
+<pre class="programlisting">
+/* remove this filp from the asynchronously notified filp's */
+scull_p_fasync(-1, filp, 0);
+</pre>
+<p>Õâ¸öÔÚÒì²½Í¨ÖªÖ®ÏÂµÄÊý¾Ý½á¹¹Ò»Ö±ºÍ½á¹¹ struct wait_queue ÊÇÒ»ÖÂµÄ, ÒòÎª 2 ÖÖÇé¿ö¶¼Éæ¼°µÈ´ýÒ»¸öÊÂ¼þ. Çø±ðÊÇÕâ¸ö struct file ±»ÓÃÀ´Ìæ´ú struct task_struct. ¶ÓÁÐÖÐµÄ½á¹¹ file ½Ó×ÅÓÃÀ´´æÈ¡ f_owner, ÎªÁËÍ¨Öª½ø³Ì.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id437432" href="#id437432">25</a>] </sup>POLL_IN ÊÇÒ»¸ö·ûºÅ, ÓÃÔÚÒì²½Í¨Öª´úÂëÖÐ; ËüµÈÍ¬ÓÚ POLLIN|POLLRDNORM.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch06s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch06s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">6.3.&#160;poll ºÍ select&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;6.5.&#160;ÒÆÎ»Ò»¸öÉè±¸</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

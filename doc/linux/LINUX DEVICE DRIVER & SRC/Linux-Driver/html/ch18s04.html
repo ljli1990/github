@@ -1,0 +1,170 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>18.4.&#160;ioctls º¯Êı-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch18.html" title="µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯">
+<link rel="prev" href="ch18s03.html" title="18.3.&#160;TTY ÏßÂ·ÉèÖÃ">
+<link rel="next" href="ch18s05.html" title="18.5.&#160;TTY Éè±¸µÄ proc ºÍ sysfs ´¦Àí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">18.4.&#160;ioctls º¯Êı</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch18s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch18s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ioctl.sect"></a>18.4.&#160;ioctls º¯Êı</h2></div></div></div>
+<p>ÔÚ struct tty_driver ÖĞµÄ ioctl º¯Êı±» tty ºËĞÄµ÷ÓÃµ± ioctl(2) ±»ÔÚÉè±¸½ÚµãÉÏµ÷ÓÃ. Èç¹ûÕâ¸ö tty Çı¶¯²»ÖªµÀÈçºÎ´¦Àí´«µİ¸øËüµÄ ioctl Öµ, ËüÓ¦µ±·µ»Ø -ENOIOCTLCMD À´ÊÔÍ¼ÈÃ tty ºËĞÄÊµÏÖÒ»¸öÍ¨ÓÃµÄµ÷ÓÃ°æ±¾.</p>
+<p>2.6 ÄÚºË¶¨ÒåÁË´óÔ¼ 70 ¸ö²»Í¬µÄ tty ioctls, ¿É±»ÓÃÀ´·¢ËÍ¸øÒ»¸ö tty Çı¶¯. ´ó²¿·ÖµÄ tty Çı¶¯²»´¦ÀíËüÃÇÈ«²¿, µ«ÊÇÖ»ÓĞÒ»¸öĞ¡µÄ¸üÆÕÍ¨µÄ×Ó¼¯. ÕâÊÇÒ»¸ö¸üÍ¨ÓÃµÄ tty ioctls ÁĞ±í, ËüÃÇµÄº¬Òå, ÒÔ¼°ÈçºÎÊµÏÖËüÃÇ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>TIOCSERGETLSR </span></span></dt>
+<dd><p>»ñµÃÕâ¸ö tty Éè±¸µÄÏßÂ·×´Ì¬¼Ä´æÆ÷( LSR )µÄÖµ.</p></dd>
+<dt><span class="term"><span>TIOCGSERIAL </span></span></dt>
+<dd>
+<p>»ñµÃ´®¿ÚÏßĞÅÏ¢. µ÷ÓÃÕß¿ÉÒÔÇ±ÔÚµØ´Ó tty Éè±¸»ñµÃĞí¶à´®¿ÚÏßÂ·ĞÅÏ¢, ÔÚÕâ¸öµ÷ÓÃÖĞÒ»´ÎÈ«²¿. Ò»Ğ©³ÌĞò( ÀıÈç setserial ºÍ dip) µ÷ÓÃÕâ¸öº¯ÊıÀ´È·±£²¨ÌØÂÊ±»ÕıÈ·ÉèÖÃ, ÒÔ¼°À´»ñµÃÍ¨³£µÄ¹ØÓÚÇı¶¯¿ØÖÆµÄÉè±¸ÀàĞÍĞÅÏ¢. µ÷ÓÃÕß´«µİÒ»¸öÖ¸ÏòÒ»¸ö´óµÄ serial_struct ½á¹¹µÄÖ¸Õë, Õâ¸ö½á¹¹Ó¦µ±ÓÉ tty Çı¶¯Ìî³äÕıÈ·µÄÖµ. ÕâÊÇÒ»¸öÈçºÎÊµÏÖÕâ¸öµÄÀı×Ó:</p>
+<pre class="programlisting">
+static int tiny_ioctl(struct tty_struct *tty, struct file *file, unsigned int cmd, unsigned long arg)
+{
+        struct tiny_serial *tiny = tty-&gt;driver_data;
+        if (cmd == TIOCGSERIAL)
+        {
+                struct serial_struct tmp;
+                if (!arg)
+                        return -EFAULT;
+                memset(&amp;tmp, 0, sizeof(tmp));
+                tmp.type  = tiny-&gt;serial.type;
+                tmp.line  = tiny-&gt;serial.line;
+                tmp.port  = tiny-&gt;serial.port;
+                tmp.irq  = tiny-&gt;serial.irq;
+                tmp.flags  = ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ;
+
+                tmp.xmit_fifo_size = tiny-&gt;serial.xmit_fifo_size;
+                tmp.baud_base = tiny-&gt;serial.baud_base;
+                tmp.close_delay = 5*HZ;
+                tmp.closing_wait = 30*HZ;
+                tmp.custom_divisor = tiny-&gt;serial.custom_divisor;
+                tmp.hub6 = tiny-&gt;serial.hub6;
+                tmp.io_type = tiny-&gt;serial.io_type;
+                if (copy_to_user((void __user *)arg, &amp;tmp, sizeof(tmp)))
+
+                        return -EFAULT;
+                return 0;
+        }
+        return -ENOIOCTLCMD;
+}
+</pre>
+</dd>
+<dt><span class="term"><span>TIOCSSERIAL</span></span></dt>
+<dd><p>ÉèÖÃ´®¿ÚÏßÂ·ĞÅÏ¢. ÕâÊÇ IOCGSERIAL µÄ·´Ãæ, ²¢ÇÒÔÊĞíÓÃ»§Ò»´ÎÈ«²¿ÉèÖÃ tty Éè±¸µÄ´®¿ÚÏß×´Ì¬. Ò»¸öÖ¸Ïò struct serial_struct µÄÖ¸Õë±»´«µİ¸øÕâ¸öµ÷ÓÃ, ÌîÂúÕâ¸ö tty Éè±¸Ó¦µ±±»ÉèÖÃµÄÊı¾İ. Èç¹ûÕâ¸ö tty Çı¶¯Ã»ÓĞÊµÏÖÕâ¸öµ÷ÓÃ, ´ó²¿·Ö³ÌĞòÈÔÈ»ÕıÈ·¹¤×÷.</p></dd>
+<dt><span class="term"><span>TIOCMIWAIT </span></span></dt>
+<dd>
+<p>µÈ´ı MSR ¸Ä±ä. ÓÃ»§ÔÚ·ÇÑ°³£µÄÇé¿öÏÂÇëÇóÕâ¸ö ioctl, ËüÏëÔÚÄÚºËÖĞË¯ÃßÖ±µ½Õâ¸ö tty Éè±¸µÄ MSR ¼Ä´æÆ÷·¢ÉúÄ³Ğ©ÊÂÇé. arg ²ÎÊı°üº¬ÓÃ»§ÔÚµÈ´ıµÄÊÂ¼şÀàĞÍ. ÕâÍ¨³£ÓÃÀ´µÈ´ıÖ±µ½Ò»¸ö×´Ì¬Ïß±ä»¯, Ö¸Ê¾ÓĞ¸ü¶àµÄÊı¾İ·¢ËÍ¸øÉè±¸.</p>
+<p>µ±ÊµÏÖÕâ¸ö ioctl Ê±ÒªĞ¡ĞÄ, ²¢ÇÒ²»ÒªÊ¹ÓÃ interruptible_sleep_on µ÷ÓÃ, ÒòÎªËüÊÇ²»°²È«µÄ(ÓĞºÜ¶à²»ºÃµÄ¾ºÕùÌõ¼şÉæ¼°Ëü). Ïà·´, Ò»¸ö wait_queue Ó¦µ±ÓÃÀ´±ÜÃâÕâ¸öÎÊÌâ. ÕâÊÇÒ»¸öÈçºÎÊµÏÖÕâ¸ö ioctl µÄÀı×Ó:</p>
+<pre class="programlisting">
+static int tiny_ioctl(struct tty_struct *tty, struct file *file, unsigned int cmd, unsigned long arg)
+{
+        struct tiny_serial *tiny = tty-&gt;driver_data;
+        if (cmd == TIOCMIWAIT)
+        {
+
+                DECLARE_WAITQUEUE(wait, current);
+                struct async_icount cnow;
+                struct async_icount cprev;
+                cprev = tiny-&gt;icount;
+                while (1) {
+
+                        add_wait_queue(&amp;tiny-&gt;wait, &amp;wait);
+                        set_current_state(TASK_INTERRUPTIBLE);
+                        schedule();
+                        remove_wait_queue(&amp;tiny-&gt;wait, &amp;wait); /* see if a signal woke us up */
+                        if (signal_pending(current))
+                                return -ERESTARTSYS;
+                        cnow = tiny-&gt;icount;
+                        if (cnow.rng == cprev.rng &amp;&amp; cnow.dsr == cprev.dsr &amp;&amp;
+                                        cnow.dcd == cprev.dcd &amp;&amp; cnow.cts == cprev.cts)
+                                return -EIO; /* no change =&gt; error */
+                        if (((arg &amp; TIOCM_RNG) &amp;&amp; (cnow.rng != cprev.rng)) || ((arg &amp; TIOCM_DSR) &amp;&amp; (cnow.dsr != cprev.dsr)) || ((arg &amp; TIOCM_CD) &amp;&amp; (cnow.dcd != cprev.dcd)) || ((arg &amp; TIOCM_CTS) &amp;&amp; (cnow.cts != cprev.cts)) ) {
+                                return 0;
+                        }
+                        cprev = cnow;
+
+                }
+        }
+        return -ENOIOCTLCMD;
+
+}
+</pre>
+<p>ÔÚ tty Çı¶¯µÄ´úÂëÖĞÄÜÖªµÀ MSR ¼Ä´æÆ÷¸Ä±äµÄÄ³Ğ©µØ·½, ÏÂÃæµÄ´úÂëĞĞ±ØĞëµ÷ÓÃÒÔ±ãÕâ¸ö´úÂëÄÜÕı³£¹¤×÷:</p>
+<pre class="programlisting">
+wake_up_interruptible(&amp;tp-&gt;wait);
+</pre>
+</dd>
+<dt><span class="term"><span>TIOCGICOUNT</span></span></dt>
+<dd><p>»ñµÃÖĞ¶Ï¼ÆÊı. µ±ÓÃ»§ÒªÖªµÀÒÑ¾­²úÉú¶àÉÙ´®¿ÚÏßÖĞ¶ÏÊ±µ÷ÓÃ. Èç¹ûÇı¶¯ÓĞÒ»¸öÖĞ¶Ï´¦Àí, ËüÓ¦µ±¶¨ÒåÒ»¸öÄÚ²¿¼ÆÊıÆ÷½á¹¹À´¸ú×ÙÕâĞ©Í³¼ÆºÍµİÔöÊÊµ±µÄ¼ÆÊıÆ÷, Ã¿´ÎÕâ¸öº¯Êı±»ÄÚºËÔËĞĞÊ±.</p></dd>
+</dl></div>
+<p>Õâ¸ö ioctl µ÷ÓÃ´«µİÄÚºËÒ»¸öÖ¸Ïò½á¹¹ serial_icounter_struct µÄÖ¸Õë, ËüÓ¦µ±±» tty Çı¶¯Ìî³ä. Õâ¸öµ÷ÓÃ³£³£ºÍÖ®Ç°µÄ IOCMIWAIT ioctl µ÷ÓÃ½áºÏÊ¹ÓÃ. Èç¹û tty Çı¶¯¸ú×ÙËùÓĞµÄÕâĞ©ÖĞ¶ÏÔÚÇı¶¯²Ù×÷Ê±, ÊµÏÖÕâ¸öµ÷ÓÃµÄ´úÂë»á·Ç³£¼òµ¥:</p>
+<pre class="programlisting">
+static int tiny_ioctl(struct tty_struct *tty, struct file *file, unsigned int cmd, unsigned long arg)
+{
+        struct tiny_serial *tiny = tty-&gt;driver_data;
+        if (cmd == TIOCGICOUNT)
+        {
+                struct async_icount cnow = tiny-&gt;icount;
+                struct serial_icounter_struct icount;
+                icount.cts = cnow.cts;
+                icount.dsr = cnow.dsr;
+                icount.rng = cnow.rng;
+                icount.dcd = cnow.dcd;
+                icount.rx = cnow.rx;
+                icount.tx = cnow.tx;
+                icount.frame = cnow.frame;
+                icount.overrun = cnow.overrun;
+                icount.parity = cnow.parity;
+                icount.brk = cnow.brk;
+                icount.buf_overrun = cnow.buf_overrun;
+                if (copy_to_user((void __user *)arg, &amp;icount, sizeof(icount)))
+
+                        return -EFAULT;
+                return 0;
+        }
+        return -ENOIOCTLCMD;
+}
+</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch18s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch18.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch18s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">18.3.&#160;TTY ÏßÂ·ÉèÖÃ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;18.5.&#160;TTY Éè±¸µÄ proc ºÍ sysfs ´¦Àí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

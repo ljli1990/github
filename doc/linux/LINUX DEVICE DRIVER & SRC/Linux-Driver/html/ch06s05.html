@@ -1,0 +1,97 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>6.5.&#160;ÒÆÎ»Ò»¸öÉè±¸-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch06.html" title="µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇı¶¯²Ù×÷">
+<link rel="prev" href="ch06s04.html" title="6.4.&#160;Òì²½Í¨Öª">
+<link rel="next" href="ch06s06.html" title="6.6.&#160;ÔÚÒ»¸öÉè±¸ÎÄ¼şÉÏµÄ´æÈ¡¿ØÖÆ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">6.5.&#160;ÒÆÎ»Ò»¸öÉè±¸</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch06s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇı¶¯²Ù×÷</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch06s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SeekingaDevice.sect1"></a>6.5.&#160;ÒÆÎ»Ò»¸öÉè±¸</h2></div></div></div>
+<p>±¾ÕÂ×îºóÒ»¸öĞèÒªÎÒÃÇÉæ¼°µÄ¶«Î÷ÊÇ llseek ·½·¨, ËüÓĞÓÃ(¶ÔÓÚÄ³Ğ©Éè±¸)²¢ÇÒÈİÒ×ÊµÏÖ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ThellseekImplementation.sect2"></a>6.5.1.&#160;llseek ÊµÏÖ</h3></div></div></div>
+<p>llseek ·½·¨ÊµÏÖÁË lseek ºÍ llseek ÏµÍ³µ÷ÓÃ. ÎÒÃÇÒÑ¾­ËµÁËÈç¹û llseek ·½·¨´ÓÉè±¸µÄ²Ù×÷ÖĞÈ±Ê§, ÄÚºËÖĞµÄÈ±Ê¡µÄÊµÏÖ½øĞĞÒÆÎ»Í¨¹ıĞŞ¸Ä filp-&gt;f_pos, ÕâÊÇÎÄ¼şÖĞµÄµ±Ç°¶ÁĞ´Î»ÖÃ. Çë×¢Òâ¶ÔÓÚ lseek ÏµÍ³µ÷ÓÃÒªÕıÈ·¹¤×÷, ¶ÁºÍĞ´·½·¨±ØĞëÅäºÏ, Í¨¹ıÊ¹ÓÃºÍ¸üĞÂËüÃÇÊÕµ½µÄ×÷ÎªµÄ²ÎÊıµÄ offset Ïî.</p>
+<p>Äã¿ÉÄÜĞèÒªÌá¹©Äã×Ô¼ºµÄ·½·¨, Èç¹ûÒÆÎ»²Ù×÷¶ÔÓ¦Ò»¸öÔÚÉè±¸ÉÏµÄÎïÀí²Ù×÷. Ò»¸ö¼òµ¥µÄÀı×Ó¿ÉÔÚ scull Çı¶¯ÖĞÕÒµ½:</p>
+<pre class="programlisting">
+loff_t scull_llseek(struct file *filp, loff_t off, int whence)
+{
+        struct scull_dev *dev = filp-&gt;private_data;
+        loff_t newpos;
+
+        switch(whence)
+        {
+        case 0: /* SEEK_SET */
+                newpos = off;
+                break;
+
+        case 1: /* SEEK_CUR */
+                newpos = filp-&gt;f_pos + off;
+                break;
+
+        case 2: /* SEEK_END */
+                newpos = dev-&gt;size + off;
+                break;
+
+        default: /* can't happen */
+                return -EINVAL;
+        }
+        if (newpos &lt; 0)
+                return -EINVAL;
+        filp-&gt;f_pos = newpos;
+        return newpos;
+}
+</pre>
+<p>Î¨Ò»Éè±¸ÌØ¶¨µÄ²Ù×÷ÊÇ´ÓÉè±¸ÖĞ»ñÈ¡ÎÄ¼ş³¤¶È. ÔÚ scull ÖĞ read ºÍ write ·½·¨ÈçĞèÒªµØÒ»ÑùĞ­×÷, ÈçÍ¬ÔÚµÚ 3 ÕÂËùÊ¾.</p>
+<p>¾¡¹Ü¸Õ¸ÕÕ¹Ê¾µÄÕâ¸öÊµÏÖ¶Ô scull ÓĞÒâÒå, Ëü´¦ÀíÒ»¸ö±»ºÜºÃ¶¨ÒåÁËµÄÊı¾İÇø, ´ó²¿·ÖÉè±¸Ìá¹©ÁËÒ»¸öÊı¾İÁ÷¶ø²»ÊÇÒ»¸öÊı¾İÇø(ÏëÏë´®¿Ú»òÕß¼üÅÌ), ²¢ÇÒÒÆÎ»ÕâĞ©Éè±¸Ã»ÓĞÒâÒå. Èç¹ûÕâ¾ÍÊÇÄãµÄÉè±¸µÄÇé¿ö, Äã²»ÄÜÖ»ÖÆÖ¹ÉùÃ÷ llseek ²Ù×÷, ÒòÎªÈ±Ê¡µÄ·½·¨ÔÊĞíÒÆÎ». Ïà·´, ÄãÓ¦µ±Í¨ÖªÄÚºËÄãµÄÉè±¸²»Ö§³Ö llseek , Í¨¹ıµ÷ÓÃ nonseekable_open ÔÚÄãµÄ open ·½·¨ÖĞ.</p>
+<pre class="programlisting">
+int nonseekable_open(struct inode *inode; struct file *filp); 
+</pre>
+<p>Õâ¸öµ÷ÓÃ±êÊ¶ÁË¸ø¶¨µÄ filp Îª²»¿ÉÒÆÎ»µÄ; ÄÚºË´Ó²»ÔÊĞíÒ»¸ö lseek µ÷ÓÃÔÚÕâÑùÒ»¸öÎÄ¼şÉÏ³É¹¦. Í¨¹ıÓÃÕâÑùµÄ·½Ê½±êÊ¶Õâ¸öÎÄ¼ş, Äã¿ÉÈ·¶¨²»»áÓĞÍ¨¹ı pread ºÍ pwrite ÏµÍ³µ÷ÓÃµÄ·½Ê½À´ÊÔÍ¼ÒÆÎ»Õâ¸öÎÄ¼ş.</p>
+<p>ÍêÕûÆğ¼û, ÄãÒ²Ó¦¸ÃÔÚÄãµÄ file_operations ½á¹¹ÖĞÉèÖÃ llseek ·½·¨µ½Ò»¸öÌØÊâµÄ°ïÃ¦º¯Êı no_llseek, Ëü¶¨ÒåÔÚ &lt;linux/fs.h&gt;. </p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch06s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch06s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">6.4.&#160;Òì²½Í¨Öª&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;6.6.&#160;ÔÚÒ»¸öÉè±¸ÎÄ¼şÉÏµÄ´æÈ¡¿ØÖÆ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

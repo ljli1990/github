@@ -1,0 +1,180 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.7.&#160;³õÊ¼»¯ºÍ¹ØÍ£-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch02.html" title="µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é">
+<link rel="prev" href="ch02s06.html" title="2.6.&#160;Ô¤±¸ÖªÊ¶">
+<link rel="next" href="ch02s08.html" title="2.8.&#160;Ä£¿é²ÎÊý">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.7.&#160;³õÊ¼»¯ºÍ¹ØÍ£</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s08.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="InitializationandShutdown.sect1"></a>2.7.&#160;³õÊ¼»¯ºÍ¹ØÍ£</h2></div></div></div>
+<p> ÈçÒÑÌáµ½µÄ, Ä£¿é³õÊ¼»¯º¯Êý×¢²áÄ£¿éÌá¹©µÄÈÎºÎ¹¦ÄÜ. ÕâÐ©¹¦ÄÜ, ÎÒÃÇÖ¸µÄÊÇÐÂ¹¦ÄÜ, ¿ÉÒÔÓÉÓ¦ÓÃ³ÌÐò´æÈ¡µÄ»òÕßÒ»Õû¸öÇý¶¯»òÕßÒ»¸öÐÂÈí¼þ³éÏó. Êµ¼ÊµÄ³õÊ¼»¯º¯Êý¶¨Òå³£³£Èç: </p>
+<pre class="programlisting">
+static int __init initialization_function(void)
+{
+
+ /* Initialization code here */
+}
+module_init(initialization_function);
+</pre>
+<p> ³õÊ¼»¯º¯ÊýÓ¦µ±ÉùÃ÷³É¾²Ì¬µÄ, ÒòÎªËüÃÇ²»»áÔÚÌØ¶¨ÎÄ¼þÖ®Íâ¿É¼û; Ã»ÓÐÓ²ÐÔ¹æ¶¨Õâ¸ö, È»¶ø, ÒòÎªÃ»ÓÐº¯ÊýÄÜÊä³ö¸øÄÚºËÆäËû²¿·Ö, ³ý·ÇÃ÷È·ÇëÇó. ÉùÃ÷ÖÐµÄ __init ±êÖ¾¿ÉÄÜ¿´ÆðÀ´ÓÐµã¹Ö; ËüÊÇÒ»¸ö¸øÄÚºËµÄ°µÊ¾, ¸ø¶¨µÄº¯ÊýÖ»ÊÇÔÚ³õÊ¼»¯Ê¹ÓÃ. Ä£¿é¼ÓÔØÕßÔÚÄ£¿é¼ÓÔØºó»á¶ªµôÕâ¸ö³õÊ¼»¯º¯Êý, Ê¹ËüµÄÄÚ´æ¿É×öÆäËûÓÃÍ¾. Ò»¸öÀàËÆµÄ±êÇ© (__initdata) ¸øÖ»ÔÚ³õÊ¼»¯Ê±ÓÃµÄÊý¾Ý. Ê¹ÓÃ __init ºÍ __initdata ÊÇ¿ÉÑ¡µÄ, µ«ÊÇËü´øÀ´µÄÂé·³ÊÇÖµµÃµÄ. Ö»ÊÇÒªÈ·ÈÏ²»ÒªÓÃÔÚÄÇÐ©ÔÚ³õÊ¼»¯Íê³Éºó»¹Ê¹ÓÃµÄº¯Êý(»òÕßÊý¾Ý½á¹¹)ÉÏ. Äã¿ÉÄÜ»¹»áÓöµ½ __devinit ºÍ __devinitdata ÔÚÄÚºËÔ´ÂëÀï; ÕâÐ©Ö»ÔÚÄÚºËÃ»ÓÐÅäÖÃÖ§³Ö hotplug Éè±¸Ê±×ª»»³É __init ºÍ _initdata. ÎÒÃÇ»áÔÚ 14 ÕÂÌ¸ÂÛ hotplug Ö§³Ö.  </p>
+<p> Ê¹ÓÃ moudle_init ÊÇÇ¿ÖÆµÄ. Õâ¸öºê¶¨ÒåÔö¼ÓÁËÌØ±ðµÄ¶Îµ½Ä£¿éÄ¿±ê´úÂëÖÐ, ±íÃ÷ÔÚÄÄÀïÕÒµ½Ä£¿éµÄ³õÊ¼»¯º¯Êý. Ã»ÓÐÕâ¸ö¶¨Òå, ÄãµÄ³õÊ¼»¯º¯Êý²»»á±»µ÷ÓÃ.</p>
+<p> Ä£¿é¿ÉÒÔ×¢²áÐí¶àµÄ²»Í¬ÉèÊ©, °üÀ¨²»Í¬ÀàÐÍµÄÉè±¸, ÎÄ¼þÏµÍ³, ¼ÓÃÜ×ª»», ÒÔ¼°¸ü¶à. ¶ÔÃ¿Ò»¸öÉèÊ©, ÓÐÒ»¸öÌØ¶¨µÄÄÚºËº¯ÊýÀ´Íê³ÉÕâ¸ö×¢²á. ´«¸øÄÚºË×¢²áº¯ÊýµÄ²ÎÊý³£³£ÊÇÒ»Ð©Êý¾Ý½á¹¹µÄÖ¸Õë, ÃèÊöÐÂÉèÊ©ÒÔ¼°Òª×¢²áµÄÐÂÉèÊ©µÄÃû×Ó. Êý¾Ý½á¹¹³£³£°üº¬Ä£¿éº¯ÊýÖ¸Õë, Ä£¿éÖÐµÄº¯Êý¾ÍÊÇÕâÑù±»µ÷ÓÃµÄ.  </p>
+<p> ÄÜ¹»×¢²áµÄÏîÄ¿Ô¶Ô¶³¬³öµÚ 1 ÕÂÖÐÌáµ½µÄÉè±¸ÀàÐÍÁÐ±í. ËüÃÇ°üÀ¨, ÆäËûµÄ, ´®¿Ú, ¶àÑùÉè±¸, sysfs Èë¿Ú, /proc ÎÄ¼þ, Ö´ÐÐÓò, Á´Â·¹æ³Ì. ÕâÐ©¿É×¢²áÏîµÄ´ó²¿·Ö¶¼Ö§³Ö²»Ö±½ÓºÍÓ²¼þÏà¹ØµÄº¯Êý, µ«ÊÇ´¦ÓÚ"Èí¼þ³éÏó"ÇøÓòÀï. ÕâÐ©Ïî¿ÉÒÔ×¢²á, ÊÇÒòÎªËüÃÇÒÔ¸÷ÖÖ·½Ê½(ÀýÈçÏó /proc ÎÄ¼þºÍÁ´Â·¹æ³Ì)¼¯³ÉÔÚÇý¶¯µÄ¹¦ÄÜÖÐ.  
+</p>
+<p> ¶ÔÄ³Ð©Çý¶¯ÓÐÆäËûµÄÉèÊ©¿ÉÒÔ×¢²á×÷Îª²¹³ä, µ«ËüÃÇµÄÊ¹ÓÃÌ«ÌØ±ð, ËùÒÔ²»ÖµµÃÌÖÂÛËüÃÇ. ËüÃÇÊ¹ÓÃ¶Ñµþ¼¼Êõ, ÔÚ"ÄÚºË·ûºÅ±í"Ò»½ÚÖÐ½²¹ý. Èç¹ûÄãÏëÉîÈëÌ½Çó, Äã¿ÉÒÔÔÚÄÚºËÔ´ÂëÀï²éÕÒ EXPORT_SYMBOL , ÕÒµ½ÓÉ²»Í¬Çý¶¯Ìá¹©µÄÈë¿Úµã. ´ó²¿·Ö×¢²áº¯ÊýÒÔ register_ ×öÇ°×º, Òò´ËÕÒµ½ËüÃÇµÄÁíÍâÒ»¸ö·½·¨ÊÇÔÚÄÚºËÔ´ÂëÀï²éÕÒ register_ .  </p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheCleanupFunction.sect2"></a>2.7.1.&#160;ÇåÀíº¯Êý</h3></div></div></div>
+<p> Ã¿¸ö·ÇÊÔÑéÐÔµÄÄ£¿éÒ²ÒªÇóÓÐÒ»¸öÇåÀíº¯Êý, Ëü×¢Ïú½Ó¿Ú, ÔÚÄ£¿é±»È¥³ýÖ®Ç°·µ»ØËùÓÐ×ÊÔ´¸øÏµÍ³. Õâ¸öº¯Êý¶¨ÒåÎª:</p>
+<pre class="programlisting">
+static void __exit cleanup_function(void)
+{
+ /* Cleanup code here */
+}
+
+module_exit(cleanup_function);
+</pre>
+<p> ÇåÀíº¯ÊýÃ»ÓÐ·µ»ØÖµ, Òò´ËËü±»ÉùÃ÷Îª void. __exit ÐÞÊÎ·û±êÊ¶Õâ¸ö´úÂëÊÇÖ»ÓÃÓÚÄ£¿éÐ¶ÔØ( Í¨¹ýÊ¹±àÒëÆ÷°ÑËü·ÅÔÚÌØÊâµÄ ELF ¶Î). Èç¹ûÄãµÄÄ£¿éÖ±½Ó½¨Á¢ÔÚÄÚºËÀï, »òÕßÈç¹ûÄãµÄÄÚºËÅäÖÃ³É²»ÔÊÐíÄ£¿éÐ¶ÔØ, ±êÊ¶Îª __exit µÄº¯Êý±»¼òµ¥µØ¶ªÆú. ÒòÎªÕâ¸öÔ­Òò, Ò»¸ö±êÊ¶ __exit µÄº¯ÊýÖ»ÔÚÄ£¿éÐ¶ÔØ»òÕßÏµÍ³Í£Ö¹Ê±µ÷ÓÃ; ÈÎºÎ±ðµÄÊ¹ÓÃÊÇ´íµÄ. ÔÙÒ»´Î, moudle_exit ÉùÃ÷¶ÔÓÚÊ¹µÃÄÚºËÄÜ¹»ÕÒµ½ÄãµÄÇåÀíº¯ÊýÊÇ±ØÒªµÄ.</p>
+<p> Èç¹ûÄãµÄÄ£¿éÃ»ÓÐ¶¨ÒåÒ»¸öÇåÀíº¯Êý, ÄÚºË²»»áÔÊÐíËü±»Ð¶ÔØ.  
+</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ErrorHandlingDuringInitialization.sect2"></a>2.7.2.&#160;³õÊ¼»¯ÖÐµÄ´íÎó´¦Àí</h3></div></div></div>
+<p> Äã±ØÐë¼Ç×¡Ò»¼þÊÂ, ÔÚ×¢²áÄÚºËÉèÊ©Ê±, ×¢²á¿ÉÄÜÊ§°Ü. ¼´±ã×î¼òµ¥µÄ¶¯×÷³£³£ÐèÒªÄÚ´æ·ÖÅä, ·ÖÅäµÄÄÚ´æ¿ÉÄÜ²»¿ÉÓÃ. Òò´ËÄ£¿é´úÂë±ØÐëÒ»Ö±¼ì²é·µ»ØÖµ, ²¢ÇÒÈ·ÈÏÒªÇóµÄ²Ù×÷Êµ¼ÊÉÏÒÑ¾­³É¹¦.  </p>
+<p> Èç¹ûÔÚÄã×¢²á¹¤¾ßÊ±·¢ÉúÈÎºÎ´íÎó, Ê×ÏÈµÚÒ»µÄÊÂÇéÊÇ¾ö¶¨Ä£¿éÊÇ·ñÄÜ¹»ÎÞÂÛÈçºÎ¼ÌÐø³õÊ¼»¯Ëü×Ô¼º. ³£³£, ÔÚÒ»¸ö×¢²áÊ§°ÜºóÄ£¿é¿ÉÒÔ¼ÌÐø²Ù×÷, Èç¹ûÐèÒª¿ÉÒÔ¹¦ÄÜ½µ¼¶. ÔÚÈÎºÎ¿ÉÄÜµÄÊ±ºò, ÄãµÄÄ£¿éÓ¦µ±¾¡Á¦ÏòÇ°, ²¢Ìá¹©ÊÂÇéÊ§°Üºó¾ß±¸µÄÄÜÁ¦.</p>
+<p> Èç¹ûÖ¤ÊµÄãµÄÄ£¿éÔÚÒ»¸öÌØ±ðÀàÐÍµÄÊ§°ÜºóÍêÈ«²»ÄÜ¼ÓÔØ, Äã±ØÐëÈ¡ÏûÈÎºÎÔÚÊ§°ÜÇ°×¢²áµÄ¶¯×÷. ÄÚºË²»±£ÁôÒÑ¾­×¢²áµÄÉèÊ©µÄÃ¿Ä£¿é×¢²á, Òò´ËÈç¹û³õÊ¼»¯ÔÚÄ³¸öµãÊ§°Ü, Ä£¿é±ØÐëÄÜ×Ô¼ºÍË»ØËùÓÐ¶«Î÷. Èç¹ûÄãÎÞ·¨×¢ÏúÄã»ñÈ¡µÄ¶«Î÷, ÄÚºË¾Í±»ÖÃÓÚÒ»¸ö²»ÎÈ¶¨×´Ì¬; Ëü°üº¬ÁË²»´æÔÚµÄ´úÂëµÄÄÚ²¿Ö¸Õë. ÕâÖÖÇé¿öÏÂ, ¾­³£µØ, Î¨Ò»µÄ·½·¨¾ÍÊÇÖØÆôÏµÍ³. ÔÚ³õÊ¼»¯´íÎó·¢ÉúÊ±, ÄãÈ·ÊµÒªÐ¡ÐÄµØ½«ÊÂÇé×öÕýÈ·. </p>
+<p> ´íÎó»Ö¸´ÓÐÊ±ÓÃ goto Óï¾ä´¦ÀíÊÇ×îºÃµÄ. ÎÒÃÇÍ¨³£²»Ô¸Ê¹ÓÃ goto, µ«ÊÇÔÚÎÒÃÇµÄ¹ÛÄîÀï, ÕâÊÇÒ»¸öËüÓÐÓÃµÄµØ·½. ÔÚ´íÎóÇéÐÎÏÂÐ¡ÐÄÊ¹ÓÃ goto ¿ÉÒÔÈ¥µô´óÁ¿µÄ¸´ÔÓ, ¹ý¶È¶ÔÆëµÄ, "½á¹¹ÐÎ" µÄÂß¼­. Òò´Ë, ÔÚÄÚºËÀï, goto ÊÇ´¦Àí´íÎó¾­³£ÓÃµ½, ÈçÕâÀïÏÔÊ¾µÄ.  </p>
+<p> ÏÂÃæÀý×Ó´úÂë( Ê¹ÓÃÉèÊ©×¢²áºÍ×¢Ïúº¯Êý)ÔÚ³õÊ¼»¯ÔÚÈÎºÎµãÊ§°ÜÊ±×öµÃÕýÈ·: </p>
+<pre class="programlisting">
+int __init my_init_function(void)
+{
+        int err;
+        /* registration takes a pointer and a name */
+        err = register_this(ptr1, "skull");
+        if (err)
+                goto fail_this;
+        err = register_that(ptr2, "skull");
+        if (err)
+                goto fail_that;
+        err = register_those(ptr3, "skull");
+        if (err)
+                goto fail_those;
+        return 0; /* success */
+fail_those:
+        unregister_that(ptr2, "skull");
+fail_that:
+        unregister_this(ptr1, "skull");
+fail_this:
+        return err; /* propagate the error */
+
+}
+</pre>
+<p> Õâ¶Î´úÂëÊÔÍ¼×¢²á 3 ¸ö(Ðé¹¹µÄ)ÉèÊ©. goto Óï¾äÔÚÊ§°ÜÇé¿öÏÂÊ¹ÓÃ, ÔÚÊÂÇé±ä»µÖ®Ç°Ö»¶ÔÖ®Ç°ÒÑ¾­³É¹¦×¢²áµÄÉèÊ©½øÐÐ×¢Ïú.  </p>
+<p> ÁíÒ»¸öÑ¡Ïî, ²»ÐèÒª·±¶àµÄ goto Óï¾ä, ÊÇ¸ú×ÙÒÑ¾­³É¹¦×¢²áµÄ, ²¢ÇÒÔÚÈÎºÎ³ö´íÇé¿öÏÂµ÷ÓÃÄãµÄÄ£¿éµÄÇåÀíº¯Êý. ÇåÀíº¯ÊýÖ»»Ø¾íÄÇÐ©ÒÑ¾­³É¹¦Íê³ÉµÄ²½Öè. È»¶øÕâÖÖÑ¡Ôñ, ÐèÒª¸ü¶à´úÂëºÍ¸ü¶à CPU Ê±¼ä, Òò´ËÔÚ¿ìËÙÍ¾¾¶ÏÂ, ÄãÈÔÈ»ÒÀÀµÓÚ goto ×÷Îª×îºÃµÄ´íÎó»Ö¸´¹¤¾ß.  </p>
+<p> my_init_function µÄ·µ»ØÖµ, err, ÊÇÒ»¸ö´íÎóÂë. ÔÚ Linux ÄÚºËÀï, ´íÎóÂëÊÇ¸ºÊý, ÊôÓÚ¶¨ÒåÓÚ &lt;linux/errno.h&gt; µÄ¼¯ºÏ. Èç¹ûÄãÐèÒª²úÉúÄã×Ô¼ºµÄ´íÎóÂë´úÌæÄã´ÓÆäËûº¯ÊýµÃµ½µÄ·µ»ØÖµ, ÄãÓ¦µ±°üº¬ &lt;linux/errno.h&gt; ÒÔ±ãÊ¹ÓÃ·ûºÅÊ½µÄ·µ»ØÖµ, ÀýÈç -ENODEV, -ENOMEM, µÈµÈ. ·µ»ØÊÊµ±µÄ´íÎóÂë×ÜÊÇÒ»¸öºÃ×ö·¨, ÒòÎªÓÃ»§³ÌÐòÄÜ¹»°ÑËüÃÇ×ª±äÎªÓÐÒâÒåµÄ×Ö´®, Ê¹ÓÃ perror »òÕßÀàËÆµÄ·½·¨.</p>
+<p> ÏÔÈ», Ä£¿éÇåÀíº¯Êý±ØÐë³·ÏúÈÎºÎÓÉ³õÊ¼»¯º¯Êý½øÐÐµÄ×¢²á, ²¢ÇÒ¹ßÀý(µ«³£³£²»ÊÇÒªÇóµÄ)ÊÇ°´ÕÕ×¢²áÊ±Ïà·´µÄË³Ðò×¢ÏúÉèÊ©.  </p>
+<pre class="programlisting">
+void __exit my_cleanup_function(void) 
+{
+ unregister_those(ptr3, "skull");
+ unregister_that(ptr2, "skull");
+ unregister_this(ptr1, "skull");
+ return;
+
+} 
+</pre>
+<p> Èç¹ûÄãµÄ³õÊ¼»¯ºÍÇåÀí±È´¦Àí¼¸Ïî¸´ÔÓ, goto ·½·¨¿ÉÄÜ±äµÃÄÑÓÚ¹ÜÀí, ÒòÎªËùÓÐµÄÇåÀí´úÂë±ØÐëÔÚ³õÊ¼»¯º¯ÊýÀïÖØ¸´, °üÀ¨¼¸¸ö»ìºÏµÄ±êºÅ. ÓÐÊ±, Òò´Ë, Ò»ÖÖ²»Í¬µÄ´úÂëÅÅ²¼Ö¤Ã÷¸ü³É¹¦.  </p>
+<p> Ê¹´úÂëÖØ¸´×îÐ¡ºÍËùÓÐ¶«Î÷Á÷Ïß»¯, ÄãÓ¦µ±×öµÄÊÇÎÞÂÛºÎÊ±·¢Éú´íÎó¶¼´Ó³õÊ¼»¯Àïµ÷ÓÃÇåÀíº¯Êý. ÇåÀíº¯Êý½Ó×Å±ØÐëÔÚ³·ÏúËüµÄ×¢²áÇ°¼ì²éÃ¿Ò»ÏîµÄ×´Ì¬. ÒÔ×î¼òµ¥µÄÐÎÊ½, ´úÂë¿´ÆðÀ´ÏóÕâÑù: </p>
+<pre class="programlisting">
+struct something *item1;
+struct somethingelse *item2;
+int stuff_ok;
+
+void my_cleanup(void)
+{
+        if (item1)
+                release_thing(item1);
+        if (item2)
+                release_thing2(item2);
+        if (stuff_ok)
+                unregister_stuff();
+        return;
+}
+
+int __init my_init(void)
+{
+        int err = -ENOMEM;
+
+        item1 = allocate_thing(arguments);
+        item2 = allocate_thing2(arguments2);
+        if (!item2 || !item2)
+                goto fail;
+
+        err = register_stuff(item1, item2);
+        if (!err)
+                stuff_ok = 1;
+        else
+                goto fail;
+        return 0; /* success */
+
+fail:
+        my_cleanup();
+        return err;
+}
+</pre>
+<p> ÈçÕâ¶Î´úÂëËùÊ¾, ÄãÒ²ÐíÐèÒª, Ò²Ðí²»ÒªÍâ²¿µÄ±êÖ¾À´±êÊ¶³õÊ¼»¯²½ÖèµÄ³É¹¦, ÒªÒÀÀµÄãµ÷ÓÃµÄ×¢²á/·ÖÅäº¯ÊýµÄÓïÒå. ²»¹ÜÒª²»Òª±êÖ¾, ÕâÖÖ³õÊ¼»¯»á±äµÃ°üº¬´óÁ¿µÄÏî, ³£³£±ÈÖ®Ç°Õ¹Ê¾µÄ¼¼ÊõÒªºÃ. ×¢Òâ, µ«ÊÇ, ÇåÀíº¯Êýµ±ÓÉ·ÇÍË³ö´úÂëµ÷ÓÃÊ±²»ÄÜ±êÖ¾Îª __exit, ÈçÍ¬Ç°ÃæµÄÀý×Ó.  
+</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ModuleLoadingRaces.sect2"></a>2.7.3.&#160;Ä£¿é¼ÓÔØ¾ºÕù</h3></div></div></div>
+<p> µ½Ä¿Ç°, ÎÒÃÇµÄÌÖÂÛÒÑÀ´µ½Ò»¸öÄ£¿é¼ÓÔØµÄÖØÒª·½Ãæ: ¾ºÕùÇé¿ö. Èç¹ûÄãÔÚÈçºÎ±àÐ´ÄãµÄ³õÊ¼»¯º¯ÊýÉÏ²»Ð¡ÐÄ, Äã¿ÉÄÜÔì³ÉÍþÐ²µ½Õû¸öÏµÍ³µÄÎÈ¶¨µÄÇéÐÎ. ÎÒÃÇ½«ÔÚ±¾ÊéÉÔºóÌÖÂÛ¾ºÕùÇé¿ö; ÏÖÔÚ, ¿ìËÙÌá¼¸µã¾Í×ã¹»ÁË: </p>
+<p> Ê×ÏÈÊ±ÄãÓ¦¸ÃÒ»Ö±¼Ç×¡, ÄÚºËµÄÄ³Ð©±ðµÄ²¿·Ö»áÔÚ×¢²áÍê³ÉÖ®ºóÂíÉÏÊ¹ÓÃÈÎºÎÄã×¢²áµÄÉèÊ©. ÕâÊÇÍêÈ«¿ÉÄÜµÄ, »»¾ä»°Ëµ, ÄÚºË½«µ÷ÓÃ½øÄãµÄÄ£¿é, ÔÚÄãµÄ³õÊ¼»¯º¯ÊýÈÔÈ»ÔÚÔËÐÐÊ±. ËùÒÔÄãµÄ´úÂë±ØÐë×¼±¸ºÃ±»µ÷ÓÃ, Ò»µ©ËüÍê³ÉÁËËüµÄµÚÒ»¸ö×¢²á. ²»Òª×¢²áÈÎºÎÉèÊ©, Ö±µ½ËùÓÐµÄÐèÒªÖ§³ÖÄÇ¸öÉèÊ©µÄÄãµÄÄÚ²¿³õÊ¼»¯ÒÑ¾­Íê³É.  </p>
+<p> ÄãÒ²±ØÐë¿¼ÂÇµ½Èç¹ûÄãµÄ³õÊ¼»¯º¯Êý¾ö¶¨Ê§°Ü»á·¢ÉúÊ²Ã´, µ«ÊÇÄÚºËµÄÒ»²¿·ÖÒÑ¾­ÔÚÊ¹ÓÃÄãµÄÄ£¿éÒÑ×¢²áµÄÉèÊ©. Èç¹ûÕâÖÖÇé¿ö¶ÔÄãµÄÄ£¿éÊÇ¿ÉÄÜµÄ, ÄãÓ¦µ±ÈÏÕæ¿¼ÂÇ¸ù±¾²»ÒªÊ¹³õÊ¼»¯Ê§°Ü. ±Ï¾¹, Ä£¿éÒÑÇå³þµØ³É¹¦Êä³öÒ»Ð©ÓÐÓÃµÄ¶«Î÷. Èç¹û³õÊ¼»¯±ØÐëÊ§°Ü, ±ØÐëÐ¡ÐÄµØ´¦ÀíÈÎºÎ¿ÉÄÜµÄÔÚÄÚºË±ð´¦·¢ÉúµÄ²Ù×÷, Ö±µ½ÕâÐ©²Ù×÷ÒÑÍê³É.  
+</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s08.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.6.&#160;Ô¤±¸ÖªÊ¶&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;2.8.&#160;Ä£¿é²ÎÊý</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

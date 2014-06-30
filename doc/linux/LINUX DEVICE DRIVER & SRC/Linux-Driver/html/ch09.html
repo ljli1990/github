@@ -1,0 +1,157 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;9&#160;ÕÂ&#160;ÓëÓ²¼þÍ¨Ñ¶-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch08s06.html" title="8.6.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch09s02.html" title="9.2.&#160;Ê¹ÓÃ I/O ¶Ë¿Ú">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;9&#160;ÕÂ&#160;ÓëÓ²¼þÍ¨Ñ¶</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch08s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch09s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="CommunicationwithHardware.chap"></a>µÚ&#160;9&#160;ÕÂ&#160;ÓëÓ²¼þÍ¨Ñ¶</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch09.html#IOPortsandIOMemor.sect">9.1. I/O ¶Ë¿ÚºÍ I/O ÄÚ´æ</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ch09.html#IORegistersandConventionalMemory.sect">9.1.1. I/O ¼Ä´æÆ÷ºÍ³£¹æÄÚ´æ</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ch09s02.html">9.2. Ê¹ÓÃ I/O ¶Ë¿Ú</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch09s02.html#IOPortAllocation.sect">9.2.1. I/O ¶Ë¿Ú·ÖÅä</a></span></dt>
+<dt><span class="sect2"><a href="ch09s02.html#ManipulatingIOports.sect">9.2.2. ²Ù×÷ I/O ¶Ë¿Ú</a></span></dt>
+<dt><span class="sect2"><a href="ch09s02.html#IOPortAccessfromUserSpace.sect">9.2.3. ´ÓÓÃ»§¿Õ¼äµÄ I/O ´æÈ¡</a></span></dt>
+<dt><span class="sect2"><a href="ch09s02.html#StringOperations.sect">9.2.4. ×Ö´®²Ù×÷</a></span></dt>
+<dt><span class="sect2"><a href="ch09s02.html#PausingIO.sect">9.2.5. ÔÝÍ£ I/O</a></span></dt>
+<dt><span class="sect2"><a href="ch09s02.html#PlatformDependencies.sect">9.2.6. Æ½Ì¨ÒÀÀµÐÔ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch09s03.html">9.3. Ò»¸ö I/O ¶Ë¿ÚÀý×Ó</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch09s03.html#AnOverviewoftheParallelPort.sect">9.3.1. ²¢¿Ú×ÝÀÀ</a></span></dt>
+<dt><span class="sect2"><a href="ch09s03.html#ASampleDriver.sect">9.3.2. Ò»¸öÀý×ÓÇý¶¯</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch09s04.html">9.4. Ê¹ÓÃ I/O ÄÚ´æ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch09s04.html#IOMemoryAllocationandMapping.sect">9.4.1. I/O ÄÚ´æ·ÖÅäºÍÓ³Éä</a></span></dt>
+<dt><span class="sect2"><a href="ch09s04.html#AccessingIOMemory.sect">9.4.2. ´æÈ¡ I/O ÄÚ´æ</a></span></dt>
+<dt><span class="sect2"><a href="ch09s04.html#PortsasIOMemory.sect">9.4.3. ×÷Îª I/O ÄÚ´æµÄ¶Ë¿Ú</a></span></dt>
+<dt><span class="sect2"><a href="ch09s04.html#ReusingshortforIOMemory.sect">9.4.4. ÖØÓÃ short Îª I/O ÄÚ´æ</a></span></dt>
+<dt><span class="sect2"><a href="ch09s04.html#ISAMemoryBelow1MB.sect">9.4.5. ÔÚ 1 MB Ö®ÏÂµÄ ISA ÄÚ´æ</a></span></dt>
+<dt><span class="sect2"><a href="ch09s04.html#isareadbandFriends.sect">9.4.6. isa_readb ºÍÆäÓÑ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch09s05.html">9.5. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>¾¡¹Ü°ÚÅª scull ºÍÀàËÆµÄÍæ¾ßÊÇ¶ÔÓÚ Linux Éè±¸Çý¶¯µÄÈí¼þ½Ó¿ÚÒ»¸öºÜºÃµÄÈëÃÅ, µ«ÊÇÊµÏÖÒ»¸öÕæÕýµÄÉè±¸ÐèÒªÓ²¼þ. Çý¶¯ÊÇÈí¼þ¸ÅÄîºÍÓ²¼þµçÂ·Ö®¼äµÄ³éÏó²ã; ÈçÍ¬ÕâÑù, ÐèÒªÓëÁ½Õß¹µÍ¨. Ö±µ½ÏÖÔÚ, ÎÒÃÇÒÑ¾­¼ì²éÁËÈí¼þ¸ÅÄîµÄÄÚ²¿; ±¾ÕÂÍê³ÉÕâ¸öÍ¼ÏñÍ¨¹ýÏòÄãÕ¹Ê¾Ò»¸öÇý¶¯ÈçºÎ´æÈ¡ I/O ¶Ë¿ÚºÍ I/O ÄÚ´æ, Í¬Ê±ÔÚ¸÷ÖÖ Linux Æ½Ì¨ÊÇ¿ÉÒÆÖ²µÄ.</p>
+<p>±¾ÕÂ¼ÌÐø¾¡¿ÉÄÜ±£³Ö¶ÀÁ¢ÓÚÌØÊâµÄÓ²¼þµÄ´«Í³. µ«ÊÇ, ÔÚÐèÒªÒ»¸öÌØÊâÀý×ÓµÄµØ·½, ÎÒÃÇÊ¹ÓÃ¼òµ¥µÄÊý×Ö I/O ¶Ë¿Ú(ÀýÈç±ê×¼µÄ PC ²¢¿Ú)À´Õ¹Ê¾ I/O Ö¸ÁîÈçºÎ¹¤×÷, ÒÔ¼°Õý³£µÄÖ¡»º´æÊÓÆµÄÚ´æÀ´Õ¹Ê¾ÄÚ´æÓ³ÉäµÄI/O.</p>
+<p>ÎÒÃÇÑ¡Ôñ¼òµ¥µÄÊý×Ö I/O, ÒòÎªËüÊÇÒ»¸öÊäÈë/Êä³ö´ò¿ªµÄ×î¼òµ¥ÐÎÊ½. Í¬Ñù, ²¢¿ÚÊµÏÖÔ­Ê¼ I/O ²¢ÇÒÔÚ´ó²¿·Ö¼ÆËã»ú¶¼ÓÐ: Ð´µ½Éè±¸µÄÊý¾ÝÎ»³öÏÖÔÚÊä³ö¹Ü½ÅÉÏ, ²¢ÇÒ´¦ÀíÆ÷¿ÉÖ±½Ó´æÈ¡µ½ÊäÈë¹Ü½ÅÉÏµÄµçÆ½. Êµ¼ÊÉÏ, Äã²»µÃ²»Á¬½Ó LED »òÕßÒ»¸ö´òÓ¡»úµ½¶Ë¿ÚÉÏÀ´ÕæÕýµØ¿´µ½Ò»¸öÊý×é I/O ²Ù×÷µÄ½á¹û, µ«ÊÇµ×²ãÓ²¼þ·Ç³£Ò×ÓÚÊ¹ÓÃ.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="IOPortsandIOMemor.sect"></a>9.1.&#160;I/O ¶Ë¿ÚºÍ I/O ÄÚ´æ</h2></div></div></div>
+<p>Ã¿¸öÍâÉè¶¼ÊÇÍ¨¹ý¶ÁÐ´ËüµÄ¼Ä´æÆ÷À´¿ØÖÆ. ´ó²¿·ÖÊ±¼äÒ»¸öÉè±¸ÓÐ¼¸¸ö¼Ä´æÆ÷, ²¢ÇÒÔÚÁ¬ÐøµØÖ·´æÈ¡ËüÃÇ, »òÕßÔÚÄÚ´æµØÖ·¿Õ¼ä»òÕßÔÚ I/O µØÖ·¿Õ¼ä.</p>
+<p>ÔÚÓ²¼þ¼¶±ðÉÏ, ÄÚ´æÇøºÍ I/O ÇøÓòÃ»ÓÐ¸ÅÄîÉÏµÄÇø±ð: ËüÃÇ¶¼ÊÇÍ¨¹ýÔÚµØÖ·×ÜÏßºÍ¿ØÖÆ×ÜÏßÉÏ·¢³öµçÐÅºÅÀ´´æÈ¡(¼´, ¶ÁÐ´ÐÅºÅ)<sup>[<a name="id455522" href="#ftn.id455522">32</a>]</sup>²¢ÇÒ¶Á×Ô»òÕßÐ´µ½Êý¾Ý×ÜÏß.</p>
+<p>µ«ÊÇÒ»Ð© CPU ÖÆÔìÉÌÔÚËûÃÇµÄÐ¾Æ¬ÉÏÊµÏÖÁËÒ»¸öµ¥¸öµØÖ·¿Õ¼ä, ÓÐÈËÈÏÎªÍâÉè²»Í¬ÓÚÄÚ´æ, Òò´Ë, Ó¦¸ÃÓÐÒ»¸ö·Ö¿ªµÄµØÖ·¿Õ¼ä. Ò»Ð©´¦ÀíÆ÷(×îÓÐÃûµÄÊÇ x86 ¼Ò×å)ÓÐ·Ö¿ªµÄ¶ÁºÍÐ´µçÏß¸ø I/O ¶Ë¿ÚºÍÌØÊâµÄ CPU Ö¸ÁîÀ´´æÈ¡¶Ë¿Ú.</p>
+<p>ÒòÎªÍâÉè±»½¨Á¢À´ÊÊºÏÒ»¸öÍâÉè×ÜÏß, ²¢ÇÒ´ó²¿·ÖÁ÷ÐÐµÄ I/O ×ÜÏß³ÉÐÍÔÚ¸öÈË¼ÆËã»úÉÏ, ¼´±ãÄÇÐ©Ã»ÓÐµ¥¶ÀµØÖ·¿Õ¼ä¸ø I/O ¶Ë¿ÚµÄ´¦ÀíÆ÷, Ò²±ØÐëÔÚ´æÈ¡Ò»Ð©ÌØÊâÉè±¸Ê±Î±×°¶ÁÐ´¶Ë¿Ú, ³£³£ÀûÓÃÍâ²¿µÄÐ¾Æ¬×é»òÕß CPU ºËµÄ¶îÍâµçÂ·. ºóÒ»¸ö·½·¨ÔÚÓÃÔÚÇ¶ÈëÊ½Ó¦ÓÃµÄÐ¡´¦ÀíÆ÷ÖÐ³£¼û.</p>
+<p>ÓÉÓÚÍ¬ÑùµÄÀíÓÉ, Linux ÔÚËùÓÐËüÔËÐÐµÄ¼ÆËã»úÆ½Ì¨ÉÏÊµÏÖÁË I/O ¶Ë¿ÚµÄ¸ÅÄî, ÉõÖÁÔÚÄÇÐ© CPU ÊµÏÖÒ»¸öµ¥¸öµØÖ·¿Õ¼äµÄÆ½Ì¨ÉÏ. ¶Ë¿Ú´æÈ¡µÄÊµÏÖÓÐÊ±ÒÀÀµÌØÊâµÄÖ÷»úÖÆÔìºÍÐÍºÅ( ÒòÎª²»Í¬µÄÐÍºÅÊ¹ÓÃ²»Í¬µÄÐ¾Æ¬×éÀ´Ó³Éä×ÜÏß´«ËÍµ½ÄÚ´æµØÖ·¿Õ¼ä).</p>
+<p>¼´±ãÍâÉè×ÜÏßÓÐÒ»¸öµ¥¶ÀµÄµØÖ·¿Õ¼ä¸ø I/O ¶Ë¿Ú, ²»ÊÇËùÓÐµÄÉè±¸Ó³ÉäËüÃÇµÄ¼Ä´æÆ÷µ½ I/O ¶Ë¿Ú. ËäÈ»¶ÔÓÚ ISA ÍâÉè°åÊ¹ÓÃ I/O ¶Ë¿ÚÊÇÆÕ±éµÄ, ´ó²¿·Ö PCI Éè±¸Ó³Éä¼Ä´æÆ÷µ½Ò»¸öÄÚ´æµØÖ·Çø. ÕâÖÖ I/O ÄÚ´æ·½·¨Í¨³£ÊÇÊ×Ñ¡µÄ, ÒòÎªËü²»ÐèÒªÊ¹ÓÃÌØÊâÄ¿µÄ´¦ÀíÆ÷Ö¸Áî; CPU ºË´æÈ¡ÄÚ´æ¸ü¼ÓÓÐÐ§, ²¢ÇÒ±àÒëÆ÷µ±´æÈ¡ÄÚ´æÊ±ÓÐ¸ü¶à×ÔÓÉÔÚ¼Ä´æÆ÷·ÖÅäºÍÑ°Ö·Ä£Ê½µÄÑ¡ÔñÉÏ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="IORegistersandConventionalMemory.sect"></a>9.1.1.&#160;I/O ¼Ä´æÆ÷ºÍ³£¹æÄÚ´æ</h3></div></div></div>
+<p>²»¹ÜÓ²¼þ¼Ä´æÆ÷ºÍÄÚ´æÖ®¼äµÄÇ¿ÏàËÆÐÔ, ´æÈ¡ I/O ¼Ä´æÆ÷µÄ³ÌÐòÔ±±ØÐëÐ¡ÐÄ±ÜÃâ±» CPU(»òÕß±àÒëÆ÷)ÓÅ»¯ËùÏ·Åª, Ëü¿ÉÄÜÐÞ¸ÄÏ£ÍûµÄ I/O ÐÐÎª.</p>
+<p>I/O ¼Ä´æÆ÷ºÍ RAM µÄÖ÷Òª²»Í¬ÊÇ I/O ²Ù×÷ÓÐ±ß¼ÊÐ§¹û, ¶øÄÚ´æ²Ù×÷Ã»ÓÐ: Ò»¸öÄÚ´æÐ´µÄÎ¨Ò»Ð§¹ûÊÇ´æ´¢Ò»¸öÖµµ½Ò»¸öÎ»ÖÃ, ²¢ÇÒÒ»¸öÄÚ´æ¶Á·µ»Ø×î½üÐ´µ½ÄÇÀïµÄÖµ. ÒòÎªÄÚ´æ´æÈ¡ËÙ¶È¶Ô CPU ÐÔÄÜÊÇÖÁ¹ØÖØÒªµÄ, ÕâÖÖÎÞ±ß¼ÊÐ§¹ûµÄÇé¿öÒÑ±»¶àÖÖ·½Ê½ÓÅ»¯: Öµ±»»º´æ, ²¢ÇÒ ¶Á/Ð´Ö¸Áî±»ÖØ±àÅÅ.</p>
+<p>±àÒëÆ÷ÄÜ¹»»º´æÊý¾ÝÖµµ½ CPU ¼Ä´æÆ÷¶ø²»Ð´µ½ÄÚ´æ, ²¢ÇÒ¼´±ãËü´æ´¢ËüÃÇ, ¶ÁºÍÐ´²Ù×÷¶¼ÄÜ¹»ÔÚ»º³åÄÚ´æÖÐ½øÐÐ¶ø²»½Ó´¥ÎïÀí RAM. ÖØ±àÅÅÒ²¿ÉÄÜÔÚ±àÒëÆ÷¼¶±ðºÍÔÚÓ²¼þ¼¶±ð¶¼·¢Éú: ³£³£Ò»¸öÖ¸ÁîÐòÁÐÄÜ¹»Ö´ÐÐµÃ¸ü¿ì, Èç¹ûËüÒÔ²»Í¬ÓÚÔÚ³ÌÐòÎÄ±¾ÖÐ³öÏÖµÄË³ÐòÀ´Ö´ÐÐ, ÀýÈç, Îª±ÜÃâÔÚ RISC Á÷Ë®ÏßÖÐµÄ»¥Ëø. ÔÚCISC ´¦ÀíÆ÷, Òª»¨·ÑÏàµ±ÊýÁ¿Ê±¼äµÄ²Ù×÷ÄÜ¹»ºÍÆäËûµÄ²¢·¢Ö´ÐÐ, ¸ü¿ìµÄ.</p>
+<p>µ±Ó¦ÓÃÓÚ´«Í³ÄÚ´æÊ±(ÖÁÉÙÔÚµ¥´¦ÀíÆ÷ÏµÍ³)ÕâÐ©ÓÅ»¯ÊÇÍ¸Ã÷ºÍÓÐÒæµÄ, µ«ÊÇËüÃÇ¿ÉÄÜ¶ÔÕýÈ·µÄ I/O ²Ù×÷ÊÇÖÂÃüµÄ, ÒòÎªËüÃÇ¸ÉÈÅÁËÄÇÐ©"±ß¼ÊÐ§¹û", ÕâÊÇÖ÷ÒªµÄÔ­ÒòÎªÊ²Ã´Ò»¸öÇý¶¯´æÈ¡ I/O ¼Ä´æÆ÷. ´¦ÀíÆ÷ÎÞ·¨Ô¤¼ûÕâÖÖÇéÐÎ, Ò»Ð©ÆäËûµÄ²Ù×÷(ÔÚÒ»¸ö¶ÀÁ¢´¦ÀíÆ÷ÉÏÔËÐÐ, »òÕß·¢ÉúÔÚÒ»¸ö I/O ¿ØÖÆÆ÷µÄÊÂÇé)ÒÀÀµÄÚ´æ´æÈ¡µÄË³Ðò. ±àÒëÆ÷»òÕß CPU ¿ÉÄÜÖ»¾¡Á¦Ê¤¹ýÄã²¢ÇÒÖØ±àÅÅÄãÇëÇóµÄ²Ù×÷; ½á¹û¿ÉÄÜÊÇÆæ¹ÖµÄ´íÎó¶ø·Ç³£ÄÑÓÚµ÷ÊÔ. Òò´Ë, Ò»¸öÇý¶¯±ØÐëÈ·±£Ã»ÓÐ½øÐÐ»º³å²¢ÇÒÔÚ´æÈ¡¼Ä´æÆ÷Ê±Ã»ÓÐ·¢Éú¶Á»òÐ´µÄÖØ±àÅÅ.</p>
+<p>Ó²¼þ»º³åµÄÎÊÌâÊÇ×îÒ×Ãæ¶ÔµÄ:µ×²ãµÄÓ²¼þÒÑ¾­ÅäÖÃ(»òÕß×Ô¶¯µØ»òÕßÍ¨¹ý Linux ³õÊ¼»¯´úÂë)³É½ûÖ¹ÈÎºÎÓ²¼þ»º³å, µ±´æÈ¡ I/O ÇøÊ±(²»¹ÜËüÃÇÊÇÄÚ´æ»¹ÊÇ¶Ë¿ÚÇøÓò).</p>
+<p>¶Ô±àÒëÆ÷ÓÅ»¯ºÍÓ²¼þÖØ±àÅÅµÄ½â¾ö·½·¨ÊÇ°²·ÅÒ»¸öÄÚ´æÆÁÕÏÔÚ±ØÐëÒÔÒ»¸öÌØÊâË³Ðò¶ÔÓ²¼þ(»òÕßÁíÒ»¸ö´¦ÀíÆ÷)¿É¼ûµÄ²Ù×÷Ö®¼ä. Linux Ìá¹© 4 ¸öºêÀ´Ó¦¶Ô¿ÉÄÜµÄÅÅÐòÐèÒª:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/kernel.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void barrier(void)</span></span></dt>
+<dd><p>Õâ¸öº¯Êý¸æÖª±àÒëÆ÷²åÈëÒ»¸öÄÚ´æÆÁÕÏµ«ÊÇ¶ÔÓ²¼þÃ»ÓÐÓ°Ïì. ±àÒëµÄ´úÂë½«ËùÓÐµÄµ±Ç°¸Ä±äµÄ²¢ÇÒ×¤ÁôÔÚ CPU ¼Ä´æÆ÷µÄÖµ´æ´¢µ½ÄÚ´æ, ²¢ÇÒºóÀ´ÖØÐÂ¶ÁÈ¡ËüÃÇµ±ÐèÒªÊ±. ¶ÔÆÁÕÏµÄµ÷ÓÃ×èÖ¹±àÒëÆ÷¿çÔ½ÆÁÕÏµÄÓÅ»¯, ¶øÁô¸øÓ²¼þ×ÔÓÉ×öËüµÄÖØ±àÅÅ.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/system.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void rmb(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_barrier_depends(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wmb(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void mb(void);</span></span></dt>
+<dd>
+<p>ÕâÐ©º¯Êý²åÈëÓ²¼þÄÚ´æÆÁÕÏÔÚ±àÒëµÄÖ¸ÁîÁ÷ÖÐ; ËüÃÇµÄÊµ¼ÊÊµÀýÊÇÆ½Ì¨Ïà¹ØµÄ. Ò»¸ö rmb ( read memory barrier) ±£Ö¤ÈÎºÎ³öÏÖÓÚÆÁÕÏÇ°µÄ¶ÁÔÚÖ´ÐÐÈÎºÎºóÐø¶ÁÖ®Ç°Íê³É. wmb ±£Ö¤Ð´²Ù×÷ÖÐµÄË³Ðò, ²¢ÇÒ mb Ö¸Áî¶¼±£Ö¤. Ã¿¸öÕâÐ©Ö¸ÁîÊÇÒ»¸öÆÁÕÏµÄ³¬¼¯.</p>
+<p>read_barrier_depends ÊÇ¶ÁÆÁÕÏµÄÒ»¸öÌØÊâµÄ, ÈõÐ©µÄÐÎÊ½. ¶ø rmb ×èÖ¹ËùÓÐ¿çÔ½ÆÁÕÏµÄ¶ÁµÄÖØ±àÅÅ, read_barrier_depends Ö»×èÖ¹ÒÀÀµÀ´×ÔÆäËû¶ÁµÄÊý¾ÝµÄ¶ÁµÄÖØ±àÅÅ. Çø±ðÊÇÎ¢Ð¡µÄ, ²¢ÇÒËü²»ÔÚËùÓÐÌåÏµÖÐ´æÔÚ. ³ý·ÇÄãÈ·ÇÐµØÀí½â×öÊ²Ã´, ²¢ÇÒÄãÓÐÀíÓÉÏàÐÅ, Ò»¸öÍêÕûµÄ¶ÁÆÁÕÏÈ·ÊµÊÇÒ»¸ö¹ý¶ÈµØÐÔÄÜ¿ªÏú, Äã¿ÉÄÜÓ¦µ±¼á³ÖÊ¹ÓÃ rmb.</p>
+</dd>
+<dt><span class="term"><span>void smp_rmb(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void smp_read_barrier_depends(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void smp_wmb(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void smp_mb(void);</span></span></dt>
+<dd><p>ÆÁÕÏµÄÕâÐ©°æ±¾½öµ±ÄÚºËÎª SMP ÏµÍ³±àÒëÊ±²åÈëÓ²¼þÆÁÕÏ; ·ñÔò, ËüÃÇ¶¼À©Õ¹ÎªÒ»¸ö¼òµ¥µÄÆÁÕÏµ÷ÓÃ.</p></dd>
+</dl></div>
+<p>ÔÚÒ»¸öÉè±¸Çý¶¯ÖÐÒ»¸öµäÐÍµÄÄÚ´æÆÁÕÏµÄÓÃ·¨¿ÉÄÜÓÐÕâÑùµÄÐÎÊ½:</p>
+<pre class="programlisting">
+writel(dev-&gt;registers.addr, io_destination_address);
+writel(dev-&gt;registers.size, io_size);
+writel(dev-&gt;registers.operation, DEV_READ);
+wmb();
+writel(dev-&gt;registers.control, DEV_GO);
+</pre>
+<p>ÔÚÕâÖÖÇé¿ö, ÊÇÖØÒªµÄ, È·±£ËùÓÐµÄ¿ØÖÆÒ»¸öÌØÊâ²Ù×÷µÄÉè±¸¼Ä´æÆ÷ÔÚ¸æËßËü¿ªÊ¼Ç°ÒÑ±»ÕýÈ·ÉèÖÃ. ÄÚ´æÆÁÕÏÇ¿ÖÆÐ´ÒÔÐèÒªµÄË³ÐòÍê³É.</p>
+<p>ÒòÎªÄÚ´æÆÁÕÏÓ°ÏìÐÔÄÜ, ËüÃÇÓ¦µ±Ö»ÓÃÔÚÈ·ÊµÐèÒªËüÃÇµÄµØ·½. ÆÁÕÏµÄ²»Í¬ÀàÐÍÒ²ÓÐ²»Í¬µÄÐÔÄÜÌØÐÔ, Òò´ËÖµµÃÊ¹ÓÃ×îÌØ¶¨µÄ¿ÉÄÜÀàÐÍ. ÀýÈç, ÔÚ x86 ÌåÏµÉÏ, wmb() Ä¿Ç°Ê²Ã´¶¼²»×ö, ÒòÎªÐ´µ½´¦ÀíÆ÷Íâ²»±»ÖØ±àÅÅ.  µ«ÊÇ, ¶Á±»ÖØ±àÅÅ, Òò´Ë mb() ±» wmb() Âý.</p>
+<p>ÖµµÃ×¢Òâ´ó²¿·ÖµÄÆäËûµÄ´¦ÀíÍ¬²½µÄÄÚºËÔ­Óï, ÀýÈç×ÔÐýËøºÍÔ­×ÓµÄ _t ²Ù×÷, ÈçÍ¬ÄÚ´æÆÁÕÏÒ»ÑùÊÇº¯Êý. »¹ÖµµÃ×¢ÒâµÄÊÇÒ»Ð©ÍâÉè×ÜÏß(ÀýÈç PCI ×ÜÏß)ÓÐËüÃÇ×Ô¼ºµÄ»º³åÎÊÌâ; ÎÒÃÇÔÚÒÔºóÕÂ½ÚÓöµ½Ê±ÌÖÂÛËüÃÇ.</p>
+<p>Ò»Ð©ÌåÏµÔÊÐíÒ»¸ö¸³ÖµºÍÒ»¸öÄÚ´æÆÁÕÏµÄÓÐÐ§×éºÏ. ÄÚºËÌá¹©ÁË¼¸¸öºêÀ´Íê³ÉÕâ¸ö×éºÏ; ÔÚÈ±Ê¡Çé¿öÏÂ, ËüÃÇÈçÏÂ¶¨Òå:</p>
+<pre class="programlisting">
+#define set_mb(var, value) do {var = value; mb();}  while 0
+#define set_wmb(var, value) do {var = value; wmb();} while 0
+#define set_rmb(var, value) do {var = value; rmb();} while 0
+</pre>
+<p>ÔÚºÏÊÊµÄµØ·½, &lt;asm/system.h&gt; ¶¨ÒåÕâÐ©ºêÀ´Ê¹ÓÃÌåÏµÌØ¶¨µÄÖ¸ÁîÀ´ºÜ¿ìÍê³ÉÈÎÎñ. ×¢Òâ set_rmb Ö»ÔÚÉÙÁ¿ÌåÏµÉÏ¶¨Òå. (Ò»¸ö do...while ½á¹¹µÄÊ¹ÓÃÊÇÒ»¸ö±ê×¼ C ÓÃÓï, À´Ê¹±»À©Õ¹µÄºê×÷ÎªÒ»¸öÕý³£µÄ C Óï¾ä¿ÉÔÚËùÓÐÉÏÏÂÎÄÖÐ¹¤×÷).</p>
+</div>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id455522" href="#id455522">32</a>] </sup>²»ÊÇËùÓÐµÄ¼ÆËã»úÆ½Ì¨Ê¹ÓÃÒ»¸ö¶ÁºÍÒ»¸öÐ´ÐÅºÅ; ÓÐÐ©ÓÐ²»Í¬µÄ·½·¨À´Ñ°Ö·Íâ²¿µçÂ·. Õâ¸ö²»Í¬ÔÚÈí¼þ²ã´ÎÊÇÎÞ¹ØµÄ, µ«ÊÇ, ÎÒÃÇ½«¼ÙÉèÈ«²¿ÓÐ¶ÁºÍÐ´À´¼ò»¯ÌÖÂÛ.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch08s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch09s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.6.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;9.2.&#160;Ê¹ÓÃ I/O ¶Ë¿Ú</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

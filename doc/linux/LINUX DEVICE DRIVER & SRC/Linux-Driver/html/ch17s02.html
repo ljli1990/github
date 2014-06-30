@@ -1,0 +1,166 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.2.&#160;Á¬½Óµ½ÄÚºË-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="next" href="ch17s03.html" title="17.3.&#160;net_device ½á¹¹µÄÏêÇé">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.2.&#160;Á¬½Óµ½ÄÚºË</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ConnectingtotheKernel"></a>17.2.&#160;Á¬½Óµ½ÄÚºË</h2></div></div></div>
+<p>ÎÒÃÇ´Ó·ÖÎö snull µÄÔ´ÂëÀ´²é¿´ÍøÂçÇı¶¯µÄ½á¹¹¿ªÊ¼. °Ñ¼¸¸öÇı¶¯µÄÔ´ÂëÁôÔÚÊÖ±ß, ¶ÔÓÚÏÂÃæµÄÌÖÂÛºÍµÃÖªÕæÊµÊÀ½çÖĞµÄ Linux ÍøÂçÇı¶¯ÈçºÎÔËĞĞÊÇ»áÓĞ°ïÖúµÄ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="DeviceRegistration"></a>17.2.1.&#160;Éè±¸×¢²á</h3></div></div></div>
+<p>µ±Ò»¸öÇı¶¯Ä£¿é¼ÓÔØ½øÒ»¸öÔËĞĞ×ÅµÄÄÚºËÖĞ, ËüÇëÇó×ÊÔ´²¢Ìá¹©¹¦ÄÜ; ÕâÀïÃ»ÓĞĞÂÄÚÈİ. ²¢ÇÒÔÚ×ÊÔ´ÊÇÈçºÎÇëÇóÉÏÒ²Ã»ÓĞĞÂ¶«Î÷. Çı¶¯Ó¦µ±Ì½²âËüµÄÉè±¸ºÍËüµÄÓ²¼şÎ»ÖÃ( I/O ¶Ë¿ÚºÍ IRQ Ïß ) -- µ«ÊÇ²»×¢²áËüÃÇ --ÈçÔÚµÚ 10 ÕÂµÄ" °²×°Ò»¸öÖĞ¶Ï´¦Àí³ÌĞò "ÖĞËùÊö. Ò»¸öÍøÂçÇı¶¯Í¨¹ıËüµÄÄ£¿é³õÊ¼»¯º¯Êı×¢²áµÄ·½Ê½Óë×Ö·ûºÍ¿éÇı¶¯ÊÇ²»Í¬µÄ. ÒòÎªÃ»ÓĞ¶ÔµÈµÄÖ÷´Î±àºÅ¸øÍøÂç½Ó¿Ú, Ò»¸öÍøÂçÇı¶¯²»ÇëÇóÕâÑùÒ»¸öºÅ. Ïà·´, Çı¶¯ÎªÃ¿¸ö¸Õ¸ÕÌ½²âµ½µÄ½Ó¿ÚÔÚÒ»¸öÈ«¾ÖµÄÍøÂçÉè±¸ÁĞ±íÀï²åÈëÒ»¸öÊı¾İ½á¹¹.</p>
+<p>Ã¿¸ö½Ó¿ÚÓÉÒ»¸ö½á¹¹ net_device ÏîÀ´ÃèÊö, ËüÔÚ &lt;linux/netdevice.h&gt; Àï¶¨Òå. snull Çı¶¯ÁôÓĞÖ¸ÏòÁ½¸öÕâÑù½á¹¹µÄÖ¸Õë, ÔÚÒ»¸ö¼òµ¥Êı×éÀï.</p>
+
+struct net_device *snull_devs[2]; 
+<p>net_device ½á¹¹, ÈçÍ¬Ğí¶àÆäËûÄÚºË½á¹¹, °üº¬Ò»¸ö kobject, ÒÔ¼°Òò´ËËü¿É±»ÒıÓÃ¼ÆÊı²¢Í¨¹ı sysfs Êä³ö. ÈçÍ¬±ğµÄÕâÑùµÄ½á¹¹, Ëü±ØĞë¶¯Ì¬·ÖÅä. ½øĞĞÕâÖÖ·ÖÅäµÄÄÚºËº¯ÊıÊÇ alloc_netdev, ËüÓĞÏÂÁĞÔ­ĞÍ:</p>
+<pre class="programlisting">
+struct net_device *alloc_netdev(int sizeof_priv,
+                                            const char *name,
+                                            void (*setup)(struct net_device *));
+</pre>
+<p>ÕâÀï, sizeof_priv ÊÇÇı¶¯µÄµÄ"Ë½ÓĞÊı¾İ"ÇøµÄ´óĞ¡; ¶ÔÓÚÍøÂçÇı¶¯, Õâ¸öÇøÊÇÍ¬ net_device ½á¹¹Ò»Æğ·ÖÅäµÄ. Êµ¼ÊÉÏ, ÕâÁ½¸öÊÇÊÇÔÚÒ»¸ö´óÄÚ´æ¿éÖĞÒ»Æğ·ÖÅäµÄ, µ«ÊÇÇı¶¯×÷ÕßÓ¦µ±¼Ù×°²»ÖªµÀÕâÒ»µã. name ÊÇÕâ¸ö½Ó¿ÚµÄÃû×Ó, ÈçÍ¬ÓÃ»§¿Õ¼ä¿´µ½µÄÒ»Ñù; Õâ¸öÃû×Ó¿ÉÒÔÓĞÒ»¸ö printf ·ç¸ñµÄ %d ÔÚÀïÃæ. ÄÚºËÓÃÏÂÒ»¸ö¿ÉÓÃµÄ½Ó¿ÚºÅÀ´Ìæ»»Õâ¸ö %d. ×îºó, setup ÊÇÒ»¸ö³õÊ¼»¯º¯ÊıµÄÖ¸Õë, ±»µ÷ÓÃÀ´ÉèÖÃ net_device ½á¹¹µÄÊ£Óà²¿·Ö. ÎÒÃÇ¼´½«½øÈëÕâ¸ö³õÊ¼»¯º¯Êı, µ«ÊÇÏÖÔÚ, ÎªÇ¿»¯Æğ¼û, snull ÒÔÕâÑùµÄ·½Ê½·ÖÅäËüµÄÁ½¸öÉè±¸½á¹¹:</p>
+<pre class="programlisting">
+snull_devs[0] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
+                             snull_init);
+snull_devs[1] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
+                             snull_init);
+if (snull_devs[0] == NULL || snull_devs[1] == NULL)
+    goto out;
+</pre>
+<p>ÏóÍ¨³£Ò»Ñù, ÎÒÃÇ±ØĞë¼ì²é·µ»ØÖµÀ´È·±£·ÖÅä³É¹¦.</p>
+<p>ÍøÂç×ÓÏµÍ³Îª¸÷ÖÖ½Ó¿ÚÌá¹©ÁËÒ»Ğ©°ïÖúº¯Êı, °ü¹ü×Å alloc_netdev. ×îÍ¨ÓÃµÄÊÇ alloc_etherdev, ¶¨ÒåÔÚ &lt;linux/etherdevice.h&gt;:</p>
+<pre class="programlisting">
+struct net_device *alloc_etherdev(int sizeof_priv); 
+</pre>
+<p>Õâ¸öº¯Êı·ÖÅäÒ»¸öÍøÂçÉè±¸Ê¹ÓÃ eth%d ×÷Îª²ÎÊı name. ËüÌá¹©ÁË×Ô¼ºµÄ³õÊ¼»¯º¯Êı ( ether_setup )À´ÉèÖÃ¼¸¸ö net_device ×Ö¶Î, Ê¹ÓÃ¶ÔÒÔÌ«ÍøÉè±¸ºÏÊÊµÄÖµ. Òò´Ë, Ã»ÓĞÇı¶¯Ìá¹©µÄ³õÊ¼»¯º¯Êı¸ø alloc_etherdev; Çı¶¯Ó¦µ±Ö»Íê³ÉËüÒªÇóµÄ³õÊ¼»¯, Ö±½ÓÔÚÒ»¸ö³É¹¦µÄ·ÖÅäÖ®ºó. ÆäËûÀàĞÍÇı¶¯µÄ±àĞ´Õß¿ÉÄÜÏëÀûÓÃÕâĞ©°ïÖúº¯ÊıµÄÆäÖĞÒ»¸ö, ÀıÈç alloc_fcdev ( ¶¨ÒåÔÚ &lt;linux/fcdevice.h&gt; ) Îª fiber-channel Éè±¸, alloc_fddidev (&lt;linux/fddidevice.h&gt;) Îª FDDI Éè±¸, »òÕß aloc_trdev (&lt;linux/trdevice.h&gt;) ÎªÁîÅÆ»·Éè±¸.</p>
+<p>snull ¿ÉÒÔË³ÀûÊ¹ÓÃ alloc_etherdev; ÎÒÃÇÑ¡ÔñÊ¹ÓÃ alloc_netdev À´´úÌæ, ×÷ÎªÑİÊ¾µÍ²ã½Ó¿ÚµÄ·½Ê½, ²¢ÇÒ¸øÎÒÃÇ¿ØÖÆ°²ÅÅ¸ø½Ó¿ÚµÄÃû×Ó.</p>
+<p>Ò»µ© net_device ½á¹¹Íê³É³õÊ¼»¯, Íê³ÉÕâ¸ö¹ı³Ì¾ÍÖ»ÊÇ´«µİÕâ¸ö½á¹¹¸ø register_netdev. ÔÚ snull ÖĞ, µ÷ÓÃ¿´À´ÈçÍ¬ÕâÑù:</p>
+<pre class="programlisting">
+for (i = 0; i &lt; 2; i++)
+    if ((result = register_netdev(snull_devs[i])))
+        printk("snull: error %i registering device \"%s\"\n",
+               result, snull_devs[i]-&gt;name);
+</pre>
+<p>Ò»Ğ©¾­³£µÄ×¢ÒâÎÊÌâÕâÀïÌáÒ»ÏÂ: ÔÚÄãµ÷ÓÃ register_netdev Ê±, ÄãµÄÇı¶¯¿ÉÄÜ»áÂíÉÏ±»µ÷ÓÃÀ´²Ù×÷Éè±¸. Òò´Ë, Äã²»Ó¦µ±×¢²áÉè±¸Ö±µ½ËùÓĞ¶«Î÷¶¼ÒÑ¾­ÍêÈ«³õÊ¼»¯.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="InitializingEachDevice"></a>17.2.2.&#160;³õÊ¼»¯Ã¿Ò»¸öÉè±¸</h3></div></div></div>
+<p>ÎÒÃÇÒÑ¾­¿´µ½ÁË net_device ½á¹¹µÄ·ÖÅäºÍ×¢²á, µ«ÊÇÎÒÃÇÔ½¹ıÁËÖĞ¼äµÄÍêÈ«³õÊ¼»¯Õâ¸ö½á¹¹µÄ²½Öè. ×¢Òâ net_device ½á¹¹ÔÚÔËĞĞÊ±Ò»Ö±ÊÇ·ÅÔÚÒ»Æğ; Ëü²»ÄÜÈçÍ¬Ò»¸ö file_operations »òÕß block_device_opreations ½á¹¹Ò»ÑùÔÚ±àÒëÊ±ÉèÖÃ. ±ØĞëÔÚµ÷ÓÃ register_netdev Ö®Ç°Íê³É³õÊ¼»¯. net_device ½á¹¹ÓÖ´óÓÖ¸´ÔÓ; ĞÒÔËµÄÊÇ, ÄÚºË¸ºÔğÁËÒ»Ğ©ÒÔÌ«Íø·¶Î§ÖĞµÄÈ±Ê¡Öµ, Í¨¹ı ether_setup º¯Êı(ÓÉ alloc_etherdev µ÷ÓÃ).</p>
+<p>ÒòÎª snull Ê¹ÓÃ alloc_netdev, ËüÓĞµ¥¶ÀµÄ³õÊ¼»¯º¯Êı. ¸Ãº¯ÊıµÄºËĞÄ( snull_init )ÈçÏÂ:</p>
+<pre class="programlisting">
+ether_setup(dev); /* assign some of the fields */
+dev-&gt;open = snull_open;
+dev-&gt;stop = snull_release;
+dev-&gt;set_config = snull_config;
+dev-&gt;hard_start_xmit = snull_tx;
+dev-&gt;do_ioctl = snull_ioctl;
+dev-&gt;get_stats = snull_stats;
+dev-&gt;rebuild_header = snull_rebuild_header;
+dev-&gt;hard_header = snull_header;
+dev-&gt;tx_timeout = snull_tx_timeout;
+dev-&gt;watchdog_timeo = timeout;
+/* keep the default flags, just add NOARP */
+dev-&gt;flags |= IFF_NOARP;
+dev-&gt;features |= NETIF_F_NO_CSUM;
+dev-&gt;hard_header_cache = NULL; /* Disable caching */
+</pre>
+<p>ÉÏÃæµÄ´úÂëÊÇ¶Ô net_device ½á¹¹µÄÀıĞĞ³õÊ¼»¯; ´ó²¿·ÖÊÇ´æ´¢ÎÒÃÇµÄ¸÷ÖÖÇı¶¯º¯ÊıÖ¸Õë. ´úÂëµÄµ¥¸ö²»Ñ°³£µÄÌØĞÔÊÇÉèÖÃ IFF_NOARP ÔÚ flags ÀïÃæ. Õâ¸öÖ¸³ö¸Ã½Ó¿Ú²»ÄÜÊ¹ÓÃ ARP. ARP ÊÇÒ»¸öµÍ²ãÒÔÌ«ÍøĞ­Òé; ËüµÄ¹¤×÷ÊÇ½« IP µØÖ·×ª±ä³ÉÒÔÌ«Íø½éÖÊ´æÈ¡¿ØÖÆ (MAC) µØÖ·. ÒòÎªÓÉ snull Ä£ÄâµÄÔ¶³ÌÏµÍ³²¢²»´æÔÚ, ¾ÍÃ»ÈË»Ø´ğ¶ÔËüÃÇµÄ ARP ÇëÇó. ²»ÏëÒòÎªÔö¼Ó ARP ÊµÏÖÊ¹ snull ±ä¸´ÔÓ, ÎÒÃÇÑ¡Ôñ±êÊ¶½Ó¿Ú×÷Îª²»ÄÜ´¦ÀíÕâ¸öĞ­Òé. ÆäÖĞµÄ¶Ô hard_header_cache ¸³ÖµÊÇÍ¬ÑùÀíÓÉ: Ëü¹Ø±ÕÁËÕâ¸ö½Ó¿ÚµÄ(²»´æÔÚµÄ) ARP »Ø´ğ. Õâ¸öÖ÷ÌâÔÚ±¾ÕÂºóÃæµÄ" MAC µØÖ·½âÎö"Ò»½ÚÖĞÏêÊö.</p>
+<p>´úÂë³õÊ¼»¯Ò²ÉèÖÃÁË¼¸¸öºÍ·¢ËÍ³¬Ê±µÄ´¦ÀíÓĞ¹ØµÄ¼¸¸ö±äÁ¿( tx_timeout ºÍ watchdog_time ). ÎÒÃÇÔÚ"·¢ËÍ³¬Ê±"Ò»½ÚÍêÕûµØÉæ¼°Õâ¸öÖ÷Ìâ.</p>
+<p>ÎÒÃÇÏÖÔÚ¿´½á¹¹ net_device µÄÁíÒ»¸ö³ÉÔ±, priv. ËüµÄ½ÇÉ«½üËÆÓÚÎÒÃÇÓÃÔÚ×Ö·ûÇı¶¯ÉÏµÄ private_data Ö¸Õë. ²»Í¬ÓÚ fops-&gt;private_data, Õâ¸ö priv Ö¸ÕëÊÇËæ net_device ½á¹¹Ò»Æğ·ÖÅäµÄ. Ò²²»¹ÄÀøÖ±½Ó´æÈ¡ priv ³ÉÔ±, ÓÉÓÚĞÔÄÜºÍÁé»îĞÔµÄÔ­Òò. µ±Ò»¸öÇı¶¯ĞèÒª´æÈ¡Ë½ÓĞÊı¾İÖ¸Õë, Ó¦µ±Ê¹ÓÃ netdev_priv º¯Êı. Òò´Ë, snull Çı¶¯³äÂú×ÅÕâÑùµÄÉùÃ÷:</p>
+<pre class="programlisting">
+struct snull_priv *priv = netdev_priv(dev); 
+</pre>
+<p>snull Ä£¿éÉùÃ÷ÁËÒ»¸ö snull_priv Êı¾İ½á¹¹À´¸ø priv Ê¹ÓÃ:</p>
+<pre class="programlisting">
+struct snull_priv {
+    struct net_device_stats stats;
+    int status;
+    struct snull_packet *ppool;
+    struct snull_packet *rx_queue; /* List of incoming packets */
+    int rx_int_enabled;
+    int tx_packetlen;
+    u8 *tx_packetdata;
+    struct sk_buff *skb;
+    spinlock_t lock;
+
+};
+</pre>
+<p>Õâ¸ö½á¹¹°üÀ¨, »¹ÓĞÆäËû¶«Î÷, Ò»¸ö net_device_stats ½á¹¹µÄÊµÀı, ÕâÊÇ·ÅÖÃ½Ó¿ÚÍ³¼ÆÁ¿µÄ±ê×¼µØ·½. ÏÂÃæµÄÔÚ snull_init ÖĞµÄ¸÷ĞĞ·ÖÅä²¢³õÊ¼»¯ dev-&gt;priv:</p>
+<pre class="programlisting">
+priv = netdev_priv(dev);
+memset(priv, 0, sizeof(struct snull_priv));
+spin_lock_init(&amp;priv-&gt;lock);
+snull_rx_ints(dev, 1); /* enable receive interrupts */
+</pre>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ModuleUnloading"></a>17.2.3.&#160;Ä£¿éĞ¶ÔØ</h3></div></div></div>
+<p>Ä£¿éĞ¶ÔØÊ±Ã»Ê²Ã´ÌØ±ğµÄ. Ä£¿éµÄÇåÀíº¯ÊıÖ»ÊÇ×¢Ïú½Ó¿Ú, ½øĞĞÈÎºÎĞèÒªµÄÄÚ²¿ÇåÀí, ÊÍ·Å net_device ½á¹¹»ØÏµÍ³.</p>
+<pre class="programlisting">
+void snull_cleanup(void)
+{
+    int i;
+
+    for (i = 0; i &lt; 2; i++) {
+        if (snull_devs[i]) {
+            unregister_netdev(snull_devs[i]);
+            snull_teardown_pool(snull_devs[i]);
+            free_netdev(snull_devs[i]);
+
+        }
+    }
+    return;
+}
+</pre>
+<p>¶Ô unregister_netdev µÄµ÷ÓÃ´ÓÏµÍ³ÖĞÈ¥³ıÁË½Ó¿Ú; free_netdev ¹é»¹ net_device ½á¹¹¸øÄÚºË. Èç¹ûÄ³¸öµØ·½ÓĞ¶ÔÕâ¸ö½á¹¹µÄÒıÓÃ, Ëü¿ÉÄÜ¼ÌĞø´æÔÚ, µ«ÊÇÄãµÄÇı¶¯²»ĞèÒª¹ØĞÄÕâ¸ö. Ò»µ©ÄãÒÑ¾­×¢ÏúÁË½Ó¿Ú, ÄÚºË²»ÔÙµ÷ÓÃËüµÄ·½·¨.</p>
+<p>×¢ÒâÎÒÃÇµÄÄÚ²¿ÇåÀí( ÔÚ snull_teardown_pool ÀïËù×öµÄ )Ö±µ½ÒÑ¾­×¢ÏúÁËÉè±¸ºó²ÅÄÜ½øĞĞ. Ëü±ØĞë, µ«ÊÇ, ÔÚÎÒÃÇ·µ»Ø net_device ½á¹¹¸øÏµÍ³Ö®Ç°½øĞĞ; Ò»µ©ÎÒÃÇÒÑµ÷ÓÃÁË free_netdev, ÎÒÃÇÔÙ²»ÄÜ¶ÔÕâ¸öÉè±¸»òÕßÎÒÃÇµÄË½ÓĞÊı¾İ×öÈÎºÎÒıÓÃ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.3.&#160;net_device ½á¹¹µÄÏêÇé</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

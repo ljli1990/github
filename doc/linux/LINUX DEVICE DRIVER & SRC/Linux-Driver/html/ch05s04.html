@@ -1,0 +1,116 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>5.4.&#160;Completions »úÖÆ-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch05.html" title="µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö">
+<link rel="prev" href="ch05s03.html" title="5.3.&#160;Æì±êºÍ»¥³âÌå">
+<link rel="next" href="ch05s05.html" title="5.5.&#160;×ÔĞıËø">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.4.&#160;Completions »úÖÆ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch05s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Completions.sect"></a>5.4.&#160;Completions »úÖÆ</h2></div></div></div>
+<p>ÄÚºË±à³ÌµÄÒ»¸öÆÕÍ¨Ä£Ê½°üÀ¨ÔÚµ±Ç°Ïß³ÌÖ®Íâ³õÊ¼»¯Ä³¸ö¶¯×÷, ½Ó×ÅµÈ´ıÕâ¸ö¶¯×÷½áÊø. Õâ¸ö¶¯×÷¿ÉÄÜÊÇ´´½¨Ò»¸öĞÂÄÚºËÏß³Ì»òÕßÓÃ»§¿Õ¼ä½ø³Ì, ¶ÔÒ»¸ö´æÔÚ×ÅµÄ½ø³ÌµÄÇëÇó, »òÕßÒ»Ğ©»ùÓÚÓ²¼şµÄ¶¯×÷. ÔÚÕâĞ©Çé¿öÖĞ, ºÜÓĞÓÕ»óÈ¥Ê¹ÓÃÒ»¸öÆì±êÀ´Í¬²½ 2 ¸öÈÎÎñ, Ê¹ÓÃÕâÑùµÄ´úÂë:</p>
+<pre class="programlisting">
+struct semaphore sem; 
+init_MUTEX_LOCKED(&amp;sem);
+start_external_task(&amp;sem);
+down(&amp;sem);
+</pre>
+<p>Íâ²¿ÈÎÎñ¿ÉÒÔ½Ó×Åµ÷ÓÃ up(??sem), ÔÚËüµÄ¹¤×÷Íê³ÉÊ±.</p>
+<p>ÊÂÊµÖ¤Ã÷, ÕâÖÖÇé¿öÆì±ê²»ÊÇ×îºÃµÄ¹¤¾ß. Õı³£Ê¹ÓÃÖĞ, ÊÔÍ¼¼ÓËøÒ»¸öÆì±êµÄ´úÂë·¢ÏÖÆì±ê¼¸ºõÔÚËùÓĞÊ±¼ä¶¼¿ÉÓÃ; Èç¹û¶ÔÆì±êÓĞºÜ¶à¾ºÕù, ĞÔÄÜ»áÊÜËğ²¢ÇÒ¼ÓËø·½°¸ĞèÒªÖØĞÂÉóÊÓ. Òò´ËÆì±êÒÑ¾­¶Ô"¿ÉÓÃ"Çé¿ö×öÁËºÜ¶àµÄÓÅ»¯. µ±ÓÃÉÏÃæÕ¹Ê¾µÄ·½·¨À´Í¨ÖªÈÎÎñÍê³É, È»¶ø, µ÷ÓÃ down µÄÏß³Ì½«¼¸ºõÊÇÒ»Ö±²»µÃ²»µÈ´ı; Òò´ËĞÔÄÜ½«ÊÜËğ. Æì±ê»¹¿ÉÄÜÒ×ÓÚ´¦ÓÚÒ»¸ö( À§ÄÑµÄ ) ¾ºÕùÇé¿ö, Èç¹ûËüÃÇ±íÃ÷Îª×Ô¶¯±äÁ¿ÒÔÕâÖÖ·½Ê½Ê¹ÓÃÊ±. ÔÚÒ»Ğ©Çé¿öÖĞ, Æì±ê¿ÉÄÜÔÚµ÷ÓÃ up µÄ½ø³ÌÓÃÍêËüÖ®Ç°ÏûÊ§.</p>
+<p>ÕâĞ©ÎÊÌâÒıÆğÁËÔÚ 2.4.7 ÄÚºËÖĞÔö¼ÓÁË "completion" ½Ó¿Ú. completion ÊÇÈÎÎñÊ¹ÓÃµÄÒ»¸öÇáÁ¿¼¶»úÖÆ: ÔÊĞíÒ»¸öÏß³Ì¸æËßÁíÒ»¸öÏß³Ì¹¤×÷ÒÑ¾­Íê³É. ÎªÊ¹ÓÃ completion, ÄãµÄ´úÂë±ØĞë°üº¬ &lt;linux/completion.h&gt;. Ò»¸ö completion ¿É±»´´½¨, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+DECLARE_COMPLETION(my_completion); 
+</pre>
+<p>»òÕß, Èç¹û completion ±ØĞë¶¯Ì¬´´½¨ºÍ³õÊ¼»¯:</p>
+<pre class="programlisting">
+struct completion my_completion;
+/* ... */
+init_completion(&amp;my_completion);
+</pre>
+<p>µÈ´ı completion ÊÇÒ»¸ö¼òµ¥ÊÂÀ´µ÷ÓÃ:</p>
+<pre class="programlisting">
+void wait_for_completion(struct completion *c); 
+</pre>
+<p>×¢ÒâÕâ¸öº¯Êı½øĞĞÒ»¸ö²»¿É´ò¶ÏµÄµÈ´ı. Èç¹ûÄãµÄ´úÂëµ÷ÓÃ wait_for_completion ²¢ÇÒÃ»ÓĞÈËÍê³ÉÕâ¸öÈÎÎñ, ½á¹û»áÊÇÒ»¸ö²»¿ÉÉ±ËÀµÄ½ø³Ì.<sup>[<a name="id427688" href="#ftn.id427688">18</a>]</sup></p>
+<p>ÁíÒ»·½Ãæ, ÕæÕıµÄ completion ÊÂ¼ş¿ÉÄÜÍ¨¹ıµ÷ÓÃÏÂÁĞÖ®Ò»À´·¢³ö:</p>
+<pre class="programlisting">
+void complete(struct completion *c);
+void complete_all(struct completion *c);
+</pre>
+<p>Èç¹û¶àÓÚÒ»¸öÏß³ÌÔÚµÈ´ıÍ¬Ò»¸ö completion ÊÂ¼ş, Õâ 2 ¸öº¯Êı×ö·¨²»Í¬. complete Ö»»½ĞÑÒ»¸öµÈ´ıµÄÏß³Ì, ¶ø complete_all ÔÊĞíËüÃÇËùÓĞ¶¼¼ÌĞø. ÔÚ´ó²¿·ÖÇé¿öÏÂ, Ö»ÓĞÒ»¸öµÈ´ıÕß, Õâ 2 ¸öº¯Êı½«²úÉúÒ»ÖÂµÄ½á¹û.</p>
+<p>Ò»¸ö completion Õı³£µØÊÇÒ»¸öµ¥·¢Éè±¸; Ê¹ÓÃÒ»´Î¾Í·ÅÆú. È»¶ø, Èç¹û²ÉÈ¡ÕıÈ·µÄ´ëÊ©ÖØĞÂÊ¹ÓÃ completion ½á¹¹ÊÇ¿ÉÄÜµÄ. Èç¹ûÃ»ÓĞÊ¹ÓÃ complete_all, ÖØĞÂÊ¹ÓÃÒ»¸ö completion ½á¹¹Ã»ÓĞÈÎºÎÎÊÌâ, Ö»Òª¶ÔÓÚ·¢³öÊ²Ã´ÊÂ¼şÃ»ÓĞÄ£ºı. Èç¹ûÄãÊ¹ÓÃ complete_all, È»¶ø, Äã±ØĞëÔÚÖØĞÂÊ¹ÓÃÇ°ÖØĞÂ³õÊ¼»¯ completion ½á¹¹. ºê¶¨Òå:</p>
+<pre class="programlisting">
+INIT_COMPLETION(struct completion c); 
+</pre>
+<p>¿ÉÓÃÀ´¿ìËÙ½øĞĞÕâ¸ö³õÊ¼»¯.</p>
+<p>×÷ÎªÈçºÎÊ¹ÓÃ completion µÄÒ»¸öÀı×Ó, ¿¼ÂÇ complete Ä£¿é, Ëü°üº¬ÔÚÀı×ÓÔ´ÂëÀï. Õâ¸öÄ£¿éÊ¹ÓÃ¼òµ¥µÄÓïÒå¶¨ÒåÒ»¸öÉè±¸: ÈÎºÎÊÔÍ¼´ÓÒ»¸öÉè±¸¶ÁµÄ½ø³Ì½«µÈ´ı(Ê¹ÓÃ wait_for_completion)Ö±µ½ÆäËû½ø³ÌÏòÕâ¸öÉè±¸Ğ´. ÊµÏÖÕâ¸öĞĞÎªµÄ´úÂëÊÇ:</p>
+<pre class="programlisting">
+DECLARE_COMPLETION(comp);
+ssize_t complete_read (struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+    printk(KERN_DEBUG "process %i (%s) going to sleep\n",current-&gt;pid, current-&gt;comm);
+    wait_for_completion(&amp;comp);
+    printk(KERN_DEBUG "awoken %i (%s)\n", current-&gt;pid, current-&gt;comm);
+    return 0; /* EOF */
+}
+
+ssize_t complete_write (struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+    printk(KERN_DEBUG "process %i (%s) awakening the readers...\n", current-&gt;pid, current-&gt;comm);
+    complete(&amp;comp);
+    return count; /* succeed, to avoid retrial */
+}
+</pre>
+<p>ÓĞ¶à¸ö½ø³ÌÍ¬Ê±´ÓÕâ¸öÉè±¸"¶Á"ÊÇÓĞ¿ÉÄÜµÄ. Ã¿¸ö¶ÔÉè±¸µÄĞ´½«È·ÇĞµØÊ¹Ò»¸ö¶Á²Ù×÷Íê³É, µ«ÊÇÃ»ÓĞ°ì·¨ÖªµÀ»áÊÇÄÄ¸ö.</p>
+<p>completion »úÖÆµÄµäĞÍÊ¹ÓÃÊÇÔÚÄ£¿éÍË³öÊ±ÓëÄÚºËÏß³ÌµÄÖÕÖ¹Ò»Æğ. ÔÚÕâ¸öÔ­ĞÍÀı×ÓÀï, Ò»Ğ©Çı¶¯µÄÄÚ²¿¹¤×÷ÊÇÍ¨¹ıÒ»¸öÄÚºËÏß³ÌÔÚÒ»¸ö while(1) Ñ­»·ÖĞ½øĞĞµÄ. µ±Ä£¿é×¼±¸ºÃ±»ÇåÀíÊ±, exit º¯Êı¸æÖªÏß³ÌÍË³ö²¢ÇÒµÈ´ı½áÊø. Îª´ËÄ¿µÄ, ÄÚºË°üº¬Ò»¸öÌØÊâµÄº¯Êı¸øÏß³ÌÊ¹ÓÃ:</p>
+<pre class="programlisting">
+void complete_and_exit(struct completion *c, long retval); 
+</pre>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id427688" href="#id427688">18</a>] </sup>ÔÚ±¾Êé±àĞ´Ê±, Ìí¼Ó¿ÉÖĞ¶Ï°æ±¾µÄ²¹¶¡ÒÑ¾­Á÷ĞĞµ«ÊÇ»¹Ã»ÓĞºÏ²¢µ½Ö÷ÏßÖĞ.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch05s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.3.&#160;Æì±êºÍ»¥³âÌå&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;5.5.&#160;×ÔĞıËø</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

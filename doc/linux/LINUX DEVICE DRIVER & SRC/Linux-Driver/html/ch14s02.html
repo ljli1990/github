@@ -1,0 +1,146 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>14.2.&#160;µÍ¼¶ sysfs ²Ù×÷-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ">
+<link rel="prev" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ">
+<link rel="next" href="ch14s03.html" title="14.3.&#160;ÈÈ²å°ÎÊÂ¼þ²úÉú">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">14.2.&#160;µÍ¼¶ sysfs ²Ù×÷</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch14.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="LowLevelSysfsOperations.sect"></a>14.2.&#160;µÍ¼¶ sysfs ²Ù×÷</h2></div></div></div>
+<p>kobject ÊÇÔÚ sysfs ÐéÄâÎÄ¼þÏµÍ³Ö®ºóµÄ»úÖÆ. ¶ÔÃ¿¸öÔÚ sysfs ÖÐ·¢ÏÖµÄÄ¿Â¼, ÓÐÒ»¸ö kobject Ç±·üÔÚÄÚºËÄ³´¦. Ã¿¸ö¸ÐÐËÈ¤µÄ kobject Ò²Êä³öÒ»¸ö»ò¶à¸öÊôÐÔ, Ëü³öÏÖÔÚ kobject µÄ sysfs Ä¿Â¼, ×÷Îª°üº¬ÄÚºË²úÉúµÄÐÅÏ¢µÄÎÄ¼þ. ±¾½Ú¼ì²é kobject ºÍ sysfs ÈçºÎÔÚµÍ²ã½»»¥.</p>
+<p>Ê¹ÓÃ sysfs µÄ´úÂëÓ¦µ±°üº¬ &lt;linux/sysfs.h&gt;.</p>
+<p>Ê¹Ò»¸ö kobject ÔÚ sysfs ³öÏÖ½ö½öÊÇµ÷ÓÃ kobject_add µÄÊÂÇé. ÎÒÃÇÒÑ¾­¼ûµ½Õâ¸öº¯Êý×÷ÎªÌí¼ÓÒ»¸ö kobject µ½Ò»¸ö kset µÄ·½Ê½; ÔÚ sysfs ÖÐ´´½¨Èë¿ÚÒ²ÊÇËüµÄ¹¤×÷µÄÒ»²¿·Ö. ÓÐÒ»Ð©ÊÂÇéÖµµÃÖªµÀ, ¹ØÓÚ sysfs Èë¿ÚÈçºÎ´´½¨:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>kobjects µÄ sysfs Èë¿ÚÒ»Ö±ÎªÄ¿Â¼, Òò´ËÒ»¸ö¶Ô kobject_add µÄµ÷ÓÃµ¼ÖÂÔÚsysfs ÖÐ´´½¨Ò»¸öÄ¿Â¼. ³£³£µØ, Õâ¸öÄ¿Â¼°üº¬Ò»¸ö»ò¶à¸öÊôÐÔ; ÎÒÃÇÉÔºó¼ûµ½ÊôÐÔÈçºÎÖ¸¶¨.</p></li>
+<li><p>·ÖÅä¸ø kobject µÄÃû×Ó( ÓÃ kobject_set_name ) ÊÇ¸ø sysfs Ä¿Â¼Ê¹ÓÃµÄÃû×Ó. Òò´Ë, ³öÏÖÔÚ sysfs ²ã´ÎµÄÏàÍ¬²¿·ÖµÄ kobjects ±ØÐëÓÐ¶ÀÌØµÄÃû×Ó. ·ÖÅä¸ø kobjects µÄÃû×ÓÒ²Ó¦µ±ÊÇºÏÀíµÄÎÄ¼þÃû×Ó: ËüÃÇ²»ÄÜ°üº¬Ð±Ïß×Ö·û, ²¢ÇÒ¿Õ°×µÄÊ¹ÓÃÇ¿ÁÒ²»ÍÆ¼ö.</p></li>
+<li><p>sysfs Èë¿ÚÎ»ÓÚ¶ÔÓ¦ kobject µÄ parent Ö¸ÕëµÄÄ¿Â¼ÖÐ. Èç¹û parent ÊÇ NULL µ± kobject_add ±»µ÷ÓÃÊ±, Ëü±»ÉèÖÃÎªÇ¶ÔÚÐÂ kobject µÄ kset ÖÐµÄ kobject; Òò´Ë, sysfs ²ã¼¶³£³£Æ¥ÅäÊ¹ÓÃ kset ´´½¨µÄÄÚ²¿²ã´Î. Èç¹û parent ºÍ kset ¶¼ÊÇ NULL, sysfs Ä¿Â¼ÔÚ¶¥¼¶±»´´½¨, Õâ¼¸ºõµ±È»²»ÊÇÄãËùÒªµÄ.</p></li>
+</ul></div>
+<p>Ê¹ÓÃÎÒÃÇÖÁ½ñËùÃèÊöµÄ, ÎÒÃÇ¿ÉÒÔÊ¹ÓÃÒ»¸ö kobject À´ÔÚ sysfs ÖÐ´´½¨Ò»¸ö¿ÕÄ¿Â¼. ³£³£µØ, ÄãÏë×ö±ÈÕâ¸üÓÐÈ¤µÄÊÂÇé, Òò´ËÊÇÊ±¼ä¿´ÊôÐÔµÄÊµÏÖ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="DefaultAttributes.sect"></a>14.2.1.&#160;È±Ê¡ÊôÐÔ</h3></div></div></div>
+<p>µ±±»´´½¨Ê±, Ã¿¸ö kobject ±»¸ø¶¨Ò»Ì×È±Ê¡ÊôÐÔ. ÕâÐ©ÊôÐÔÍ¨¹ý kobj_type ½á¹¹À´Ö¸¶¨. Õâ¸ö½á¹¹, ¼Ç×¡, ¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+struct kobj_type {
+ void (*release)(struct kobject *);
+ struct sysfs_ops *sysfs_ops;
+ struct attribute **default_attrs; 
+}; 
+</pre>
+<p>default_attr ³ÉÔ±ÁÐ¾ÙÁË¶ÔÃ¿¸öÕâÑùÀàÐÍµÄ kobject ±»´´½¨µÄÊôÐÔ, ²¢ÇÒ sysfs_ops Ìá¹©·½·¨À´ÊµÏÖÕâÐ©ÊôÐÔ. ÎÒÃÇ´Ó default_attrs ¿ªÊ¼, ËüÖ¸ÏòÒ»¸öÖ¸ÏòÊôÐÔ½á¹¹µÄÖ¸ÕëÊý×é:</p>
+<pre class="programlisting">
+struct attribute {
+ char *name;
+ struct module *owner;
+ mode_t mode; 
+}; 
+</pre>
+<p>ÔÚÕâ¸ö½á¹¹ÖÐ, name ÊÇÊôÐÔµÄÃû×Ó( ÈçÍ¬Ëü³öÏÖÔÚ kobject µÄ sysfs Ä¿Â¼ÖÐ), owner ÊÇÒ»¸öÖ¸ÏòÄ£¿éµÄÖ¸Õë(Èç¹ûÓÐÒ»¸ö), Ä£¿é¸ºÔðÕâ¸öÊôÐÔµÄÊµÏÖ, ²¢ÇÒ mode ÊÇÓ¦ÓÃµ½Õâ¸öÊôÐÔµÄ±£»¤Î». mode ³£³£ÊÇ S_IRUGO ¶ÔÓÚÖ»¶ÁÊôÐÔ; Èç¹ûÕâ¸öÊôÐÔÊÇ¿ÉÐ´µÄ, Äã¿ÉÒÔÈÓ³ö S_IWUSR À´Ö»¸ø root Ð´È¨ÏÞ( modes µÄºê¶¨ÒåÔÚ &lt;linux/stat.h&gt; ÖÐ). default_attrs ÁÐ±íÖÐµÄ×îºóÒ»¸öÈë¿Ú±ØÐëÓÃ 0 Ìî³ä.</p>
+<p>default_attr Êý×éËµÃ÷ÕâÐ©ÊôÐÔÊÇÊ²Ã´, µ«ÊÇÃ»ÓÐ¸æËß sysfs ÈçºÎÕæÕýÊµÏÖÕâÐ©ÊôÐÔ. Õâ¸öÈÎÎñÂäµ½ kobj_type-&gt;sysfs_ops ³ÉÔ±, ËüÖ¸ÏòÒ»¸ö½á¹¹, ¶¨ÒåÎª:</p>
+<pre class="programlisting">
+struct sysfs_ops {
+ ssize_t (*show)(struct kobject *kobj, struct attribute *attr, char *buffer);
+ ssize_t (*store)(struct kobject *kobj, struct attribute *attr, const char *buffer, size_t size);
+};
+</pre>
+<p>ÎÞÂÛºÎÊ±Ò»¸öÊôÐÔ´ÓÓÃ»§¿Õ¼ä¶ÁÈ¡, show ·½·¨±»ÓÃÒ»¸öÖ¸Ïò kobject µÄÖ¸ÕëºÍÊÊµ±µÄÊôÐÔ½á¹¹À´µ÷ÓÃ. Õâ¸ö·½·¨Ó¦µ±½«¸ø¶¨ÊôÐÔÖµ±àÂë½ø»º³å, ÒªÈ·¶¨Ã»ÓÐ¸²¸ÇËü( ËüÊÇ PAGE_SIZE ×Ö½Ú), ²¢ÇÒ·µ»ØÊµ¼ÊµÄ±»·µ»ØÊý¾ÝµÄ³¤¶È. sysfs µÄ¹ßÀý±íÃ÷Ã¿¸öÊôÐÔÓ¦µ±°üº¬Ò»¸öµ¥¸öµÄ, ÈË¿É¶ÁµÄÖµ; Èç¹ûÄãÓÐÐí¶àÏûÏ¢·µ»Ø, Äã¿ÉÒª¿¼ÂÇ½«Ëü·ÖÎª¶à¸öÊôÐÔ.</p>
+<p>Í¬ÑùµÄ show ·½·¨ÓÃÔÚËùÓÐµÄºÍ¸ø¶¨ kobject ¹ØÁªµÄÊôÐÔ. ´«µÝµ½º¯ÊýµÄ attr Ö¸Õë¿ÉÓÃÀ´¾ö¶¨ÐèÒªÄÄ¸öÊôÐÔ. Ò»Ð© show ·½·¨°üº¬¶ÔÊôÐÔÃû×ÓµÄÒ»ÏµÁÐ²âÊÔ. ÆäËûµÄÊµÏÖ½«ÊôÐÔ½á¹¹Ç¶ÈëÁíÒ»¸ö½á¹¹, À´°üº¬ÐèÒª·µ»ØÊôÐÔÖµµÄÐÅÏ¢; ÔÚÕâÖÖÇé¿öÏÂ, container_of ¿ÉÄÜÓÃÔÚ show ·½·¨ÖÐÀ´»ñµÃÒ»¸öÖ¸ÏòÇ¶Èë½á¹¹µÄÖ¸Õë.</p>
+<p>store ·½·¨ÀàËÆ; ËüÓ¦µ±½«´æÔÚ»º³åµÄÊý¾Ý±àÂë( size °üº¬Êý¾ÝµÄ³¤¶È, Õâ²»ÄÜ³¬¹ý PAGE_SIZE ), ´æ´¢ºÍÒÔÈÎºÎÓÐÒâÒåµÄµÄ·½Ê½ÏìÓ¦ÐÂÊý¾Ý, ²¢ÇÒ·µ»ØÊµ¼Ê±àÂëµÄ×Ö½ÚÊý. store ·½·¨Ö»ÔÚÊôÐÔµÄÐí¿ÉÔÊÐíÐ´²Å±»µ÷ÓÃ. µ±±àÐ´Ò»¸ö store ·½·¨Ê±, ²»ÒªÍü¼ÇÄãÔÚ½ÓÊÕÀ´×ÔÓÃ»§¿Õ¼äµÄÈÎÒâÐÅÏ¢; ÄãÓ¦µ±ÔÚ²ÉÈ¡¶ÔÓ¦¶¯×÷Ö®Ç°·Ç³£Ð¡ÐÄµØÑéÖ¤Ëü. Èç¹ûµ½Êý¾Ý²»Æ¥ÅäÆÚÍû, ·µ»ØÒ»¸ö¸ºµÄ´íÎóÖµ, ¶ø²»ÊÇ¿ÉÄÜµØ×öÒ»Ð©²»ÏëÒªµÄºÍÎÞ·¨»Ö¸´µÄÊÂÇé. Èç¹ûÄãµÄÉè±¸Êä³öÒ»¸ö×ÔÏú»ÙµÄÊôÐÔ, ÄãÓ¦µ±ÒªÇóÒ»¸öÌØ¶¨µÄ×Ö·û´®Ð´µ½ÄÇÀïÀ´Òý·¢Õâ¸ö¹¦ÄÜ; Ò»¸öÅ¼È»µÄ, Ëæ»úÐ´Ó¦µ±Ö»²úÉúÒ»¸ö´íÎó.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="NondefaultAttributes.sect"></a>14.2.2.&#160;·ÇÈ±Ê¡ÊôÐÔ</h3></div></div></div>
+<p>ÔÚÐí¶àÇé¿öÖÐ, kobject ÀàÐÍµÄ default_attrs ³ÉÔ±ÃèÊöËùÓÐµÄ kobject »áÓµÓÐµÄÊôÐÔ. µ«ÊÇÄÇ²»ÊÇÒ»¸öÉè¼ÆÖÐµÄÏÞÖÆ; ÊôÐÔËæÒâ¿ÉÒÔÌí¼Óµ½ºÍÉ¾³ý×Ô kojects. Èç¹ûÄãÏëÌí¼ÓÒ»¸öÐÂÊôÐÔµ½Ò»¸ö kobject µÄ sysfs Ä¿Â¼, ¼òµ¥µØÌî³äÒ»¸öÊôÐÔ½á¹¹²¢ÇÒ´«µÝËüµ½:</p>
+<pre class="programlisting">
+int sysfs_create_file(struct kobject *kobj, struct attribute *attr);
+</pre>
+<p>Èç¹ûËùÓÐ¶¼½øÐÐË³Àû, ÎÄ¼þ±»Ê¹ÓÃÔÚÊôÐÔ½á¹¹ÖÐ¸ø¶¨µÄÃû×Ó´´½¨, ²¢ÇÒ·µ»ØÖµÊÇ 0; ·ñÔò, ·µ»ØÍ¨³£µÄ¸º´íÎóÂë.</p>
+<p>×¢Òâ, ÏàÍ¬µÄ show() ºÍ store() º¯Êý±»µ÷ÓÃÀ´ÊµÏÖ¶ÔÐÂÊôÐÔµÄ²Ù×÷. ÔÚÄãÌí¼ÓÒ»¸öÐÂµÄ, ·ÇÈ±Ê¡ÊôÐÔµ½ kobject, ÄãÓ¦µ±ÈÎºÎ±ØÒªµÄ²½ÖèÀ´È·±£ÕâÐ©º¯ÊýÖªµÀÈçºÎÊµÏÖÕâ¸öÊôÐÔ.</p>
+<p>ÎªÈ¥³ýÒ»¸öÊôÐÔ, µ÷ÓÃ:</p>
+<pre class="programlisting">
+int sysfs_remove_file(struct kobject *kobj, struct attribute *attr); 
+</pre>
+<p>ÔÚµ÷ÓÃºó, Õâ¸öÊôÐÔ²»ÔÙ³öÏÖÔÚ kobject µÄ sysfs Èë¿Ú. ÒªÐ¡ÐÄ, µ«ÊÇ, Ò»¸öÓÃ»§¿Õ¼ä½ø³Ì¿ÉÄÜÓÐÒ»¸ö´ò¿ªµÄÄÇ¸öÊôÐÔµÄÎÄ¼þÃèÊö·û, ²¢ÇÒÔÚÕâ¸öÊôÐÔÒÑ¾­±»È¥³ýºó show ºÍ store µ÷ÓÃÈÔÈ»¿ÉÄÜ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="BinaryAttributes.sect"></a>14.2.3.&#160;¶þ½øÖÆÊôÐÔ</h3></div></div></div>
+<p>sysfs ¹ßÀýµ÷ÓÃËùÓÐÊôÐÔÀ´°üº¬Ò»¸öµ¥¸öµÄÈË¿É¶ÁÎÄ±¾¸ñÊ½µÄÖµ. ¾ÍÊÇËµ, Ö»ÊÇÅ¼È»µØºÜÉÙÐèÒªÀ´´´½¨ÄÜ¹»´¦Àí´óÁ¿¶þ½øÖÆÊý¾ÝµÄÊôÐÔ. Õâ¸öÐèÒªÕæÕýµØÖ»³öÏÖÔÚ±ØÐë´«µÝÊý¾Ý, ²»¿É¶¯µØ, ÔÚÓÃ»§¿Õ¼äºÍÉè±¸. ÀýÈç, ÉÏÔØ¹Ì¼þµ½Éè±¸ÐèÒªÕâ¸öÌØÐÔ. µ±ÕâÑùÒ»¸öÉè±¸ÔÚÏµÍ³ÖÐÓöµ½, Ò»¸öÓÃ»§³ÌÐò¿ÉÒÔ±»Æô¶¯( Í¨¹ýÈÈ²å°Î»úÖÆ); Õâ¸ö³ÌÐò½Ó×Å´«µÝ¹Ì¼þ´úÂëµ½ÄÚºËÍ¨¹ýÒ»¸ö¶þ½øÖÆ sysfs ÊôÐÔ, ÈçÍ¬ÔÚ"ÄÚºË¹Ì¼þ½Ó¿Ú"Ò»½ÚÖÐËùÊ¾.</p>
+<p>¶þ½øÖÆÊôÐÔÊ¹ÓÃÒ»¸ö bin+attribute ½á¹¹À´ÃèÊö:</p>
+<pre class="programlisting">
+struct bin_attribute {
+struct attribute attr;
+size_t size;
+ssize_t (*read)(struct kobject *kobj, char *buffer, loff_t pos, size_t size);
+ssize_t (*write)(struct kobject *kobj, char *buffer, loff_t pos, size_t size);
+};
+</pre>
+<p>ÕâÀï, attr ÊÇÒ»¸öÊôÐÔ½á¹¹, ¸ø³öÃû×Ó, ÓµÓÐÕß, ºÍÕâ¸ö¶þ½øÖÆÊôÐÔµÄÈ¨ÏÞ, ²¢ÇÒ size ÊÇÕâ¸ö¶þ½øÖÆÊôÐÔµÄ×î´ó´óÐ¡(»òÕß 0 , Èç¹ûÃ»ÓÐ×î´óÖµ). read ºÍ write ·½·¨ÀàËÆÓÚÕý³£µÄ×Ö·ûÇý¶¯¶ÔÓ¦Îï; ËüÃÇÒ»´Î¼ÓÔØ¿É±»¶à´Îµ÷ÓÃ, Ã¿´Îµ÷ÓÃ×î´óÒ»Ò³Êý¾Ý. ¶ÔÓÚ sysfs Ã»ÓÐ°ì·¨À´Ö¸Ê¾×îºóÒ»¸öÐ´²Ù×÷, Òò´ËÊµÏÖ¶þ½øÖÆÊôÐÔµÄ´úÂë±ØÐëÄÜ¹»ÒÔÆäËû·½Ê½¾ö¶¨Êý¾ÝµÄ½áÊø.</p>
+<p>¶þ½øÖÆÊôÐÔ±ØÐëÃ÷È·´´½¨; ËüÃÇ²»ÄÜ½¨Á¢ÎªÈ±Ê¡ÊôÐÔ. Îª´´½¨Ò»¸ö¶þ½øÖÆÊôÐÔ, µ÷ÓÃ:</p>
+<pre class="programlisting">
+int sysfs_create_bin_file(struct kobject *kobj, struct bin_attribute *attr);
+</pre>
+<p>È¥³ý¶þ½øÖÆÊôÐÔ¿ÉÓÃ:</p>
+<pre class="programlisting">
+int sysfs_remove_bin_file(struct kobject *kobj, struct bin_attribute *attr);
+</pre>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="SymbolicLinks.sect"></a>14.2.4.&#160;·ûºÅÁ¬½Ó</h3></div></div></div>
+<p>sysfs ÎÄ¼þÏµÍ³ÓÐÍ¨³£µÄÊ÷½á¹¹, ·´Ó³Ëü´ú±íµÄ kobjects µÄ²ã´Î×éÖ¯. µ«ÊÇÄÚºËÖÐ¶ÔÏó¼äµÄ¹ØÏµ³£³£±ÈÄÇ¸ö¸ü¼Ó¸´ÔÓ. ÀýÈç, Ò»¸ö sysfs ×ÓÊ÷ (/sys/devices )´ú±íËùÓÐµÄÏµÍ³ÒÑÖªµÄÉè±¸, ¶øÆäËûµÄ×ÓÊ÷( ÔÚ /sys/bus Ö®ÏÂ )±íÊ¾Éè±¸Çý¶¯. ÕâÐ©Ê÷, µ«ÊÇ, ²»´ú±íÇý¶¯ºÍËüÃÇËù¹ÜÀíµÄÉè±¸¼äµÄ¹ØÏµ. Õ¹Ê¾ÕâÐ©¸½¼Ó¹ØÏµÐèÒª¶îÍâµÄÖ¸Õë, Ö¸ÕëÔÚ sysfs ÖÐÍ¨¹ý·ûºÅÁ¬½ÓÊµÏÖ.</p>
+<p>´´½¨Ò»¸ö·ûºÅÁ¬½ÓÔÚ sysfs ÊÇÈÝÒ×µÄ:</p>
+<pre class="programlisting">
+int sysfs_create_link(struct kobject *kobj, struct kobject *target, char *name);
+</pre>
+<p>Õâ¸öº¯Êý´´½¨Ò»¸öÁ¬½Ó(³ÆÎª name)Ö¸ÏòÄ¿±êµÄ sysfs Èë¿Ú×÷ÎªÒ»¸ö kobj µÄÊôÐÔ. ËüÊÇÒ»¸öÏà¶ÔÁ¬½Ó, Òò´ËËü²»¹Ü sysfs ÔÚÈÎºÎÌØÊâµÄÏµÍ³ÖÐ°²×°ÔÚÄÄÀï¶¼¿ÉÓÃ.</p>
+<p>Õâ¸öÁ¬½ÓÉõÖÁµ±Ä¿±ê±»´ÓÏµÍ³ÖÐÒÆ×ßÒ²³ÖÐø. Èç¹ûÄãÔÚ´´½¨¶ÔÆäËû kobjects µÄ·ûºÅÁ¬½Ó, ÄãÓ¦µ±¿ÉÄÜÓÐÒ»¸ö·½·¨ÖªµÀ¶ÔÕâ¸ö kobjects µÄ¸Ä±ä, »òÕßÄ³ÖÖ±£Ö¤Ä¿±ê kobjects ²»»áÏûÊ§. ½á¹û( ÔÚ sysfs ÖÐµÄËÀµÄ·ûºÅÁ¬½Ó )²»ÊÇÌØ±ðÑÏÖØ, µ«ÊÇËüÃÇ²»´ú±í×îºÃµÄ±à³Ì·ç¸ñ²¢ÇÒ¿ÉÄÜµ¼ÖÂÔÚÓÃ»§¿Õ¼äµÄ»ìÂÒ.</p>
+<p>È¥³ý·ûºÅÁ¬½Ó¿ÉÊ¹ÓÃ:</p>
+<pre class="programlisting">
+void sysfs_remove_link(struct kobject *kobj, char *name); 
+</pre>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch14.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch14.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;14.3.&#160;ÈÈ²å°ÎÊÂ¼þ²úÉú</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

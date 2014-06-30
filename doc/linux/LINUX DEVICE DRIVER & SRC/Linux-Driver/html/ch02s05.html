@@ -1,0 +1,70 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.5.&#160;дз╨к╥Ш╨е╠М-LinuxиХ╠╦гЩ╤╞╣зхЩ╟Фё╗жпнд╟Фё╘</title>
+<meta name="description" content="гЩ╤╞©╙╥╒" />
+<meta name="keywords" content="LinuxиХ╠╦гЩ╤╞,жпнд╟Ф,╣зхЩ╟Ф,ldd,linux device driver,гЩ╤╞©╙╥╒,╣Гвс╟Ф,ЁлпРиХ╪ф,хМ╪Ч©╙╥╒,©╙╥╒ф╣╣ю" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux иХ╠╦гЩ╤╞ Edition 3">
+<link rel="up" href="ch02.html" title="╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И">
+<link rel="prev" href="ch02s04.html" title="2.4.&#160;╠ЮрК╨м╪сть">
+<link rel="next" href="ch02s06.html" title="2.6.&#160;т╓╠╦ж╙й╤">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.5.&#160;дз╨к╥Ш╨е╠М</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s04.html">иор╩рЁ</a>&#160;</td>
+<th width="60%" align="center">╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s06.html">обр╩рЁ</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheKernelSymbolTable.sect1"></a>2.5.&#160;дз╨к╥Ш╨е╠М</h2></div></div></div>
+<p> нрцгря╬╜©╢╣╫ insmod хГ╨н╤тс╕╧╡сц╣ддз╨к╥Ш╨ею╢╫Б╬Жн╢╤╗рЕ╣д╥Ш╨е. ╠Мжп╟Э╨╛акх╚╬ждз╨коН╣д╣ьж╥ -- ╨╞йЩ╨м╠Да© -- пХр╙ю╢мЙЁидё©И╩╞╣дгЩ╤╞. ╣╠╪стьр╩╦Ждё©И, хГ╨нсидё©ИйДЁЖ╣д╥Ш╨еЁин╙дз╨к╥Ш╨е╠М╣др╩╡©╥ж. м╗ЁёгИ©Жоб, р╩╦Ждё©ИмЙЁикЭвт╪╨╣д╧╕дэ╡╩пХр╙йДЁЖхГ╨н╥Ш╨е. дЦпХр╙йДЁЖ╥Ш╨е, ╣╚йг, тзхн╨н╠П╣ддё©Идэ╣црФсзй╧сцкЭцг╣дй╠╨Р.  </p>
+<p> пб╣ддё©И©иртсцдЦ╣ддё©ИйДЁЖ╣д╥Ш╨е, дЦ©ирт╤я╣Чпб╣ддё©ИтзфДкШдё©Иж╝ио. дё©И╤я╣ЧтзжВаВдз╨кт╢бКжпр╡й╣ожак: msdos нд╪Чо╣мЁрюю╣ fat дё©ИйДЁЖ╣д╥Ш╨е, дЁр╩╦ЖйДхК USB иХ╠╦дё©И╤я╣Чтз usbcore ╨мйДхКдё©Иж╝ио.  </p>
+<p> дё©И╤я╣Чтз╦╢тс╣д╧╓Ёлжпспсц╢╕. хГ╧Шр╩╦Жпб╣дЁИоСртгЩ╤╞ЁлпР╣дпнй╫й╣ож, кЭ©идэлА╧╘р╩╦Жль╤╗с╡╪Чй╣ож╣д╡ЕхК╣Ц. юЩхГ, video-for-linux о╣апгЩ╤╞╥жЁир╩╦Жм╗сцдё©И, йДЁЖаксиль╤╗с╡╪Ч╣д╣м╡ЦиХ╠╦гЩ╤╞й╧сц╣д╥Ш╨е. ╦Ы╬щдЦ╣диХжц, дЦ╪стьм╗сц╣дйсф╣дё©И╨мдЦ╣дря╟╡в╟с╡╪Ч╤тс╕╣дль╤╗дё©И. ╤т╡╒©з╣дж╖Ёж╨мжз╤Ю©иа╛╫сиХ╠╦ртм╛яЫ╣д╥╫й╫╢╕юМ, хГм╛ USB дз╨квсо╣мЁ. тз╡╒©звсо╣мЁ╣д╤я╣Чтзм╪ <a href="ch02s05.html#ldd3-2-2.fig" title="м╪&#160;2.2.&#160;╡╒©згЩ╤╞дё©И╣д╤я╣Ч">╡╒©згЩ╤╞дё©И╣д╤я╣Ч</a> жпотй╬; ╪Щм╥отй╬акдё©И╨мдз╨к╠ЮЁл╫с©з╪Д╣дм╗я╤.  
+</p>
+<div class="figure">
+<a name="ldd3-2-2.fig"></a><p class="title"><b>м╪&#160;2.2.&#160;╡╒©згЩ╤╞дё©И╣д╤я╣Ч</b></p>
+<div><img src="images/snagitldd3/ldd3-2-2.png" alt="╡╒©згЩ╤╞дё©И╣д╤я╣Ч"></div>
+</div>
+<p> ╣╠й╧сц╤я╣Ч╣ддё©Ий╠, йЛо╓ modprobe ╧╓╬ъйгсп╟ОжЗ╣д. хГнрцгг╟цФ╫╡╣д, modprobe ╨╞йЩ╨э╤Ю╣ь╥╫сК insmod оЮм╛, ╣╚йгкЭр╡╪стьхн╨ндЦр╙╪сть╣ддё©ИпХр╙╣дфДкШдё©И. кЫрт, р╩╦Ж modprobe цЭаНспй╠©идэ╢ЗлФ╪╦╢нй╧сц insmod( ╬║╧эдЦ╢с╣╠г╟д©б╪об╪стьдЦвт╪╨дё©Ихт╫╚пХр╙ insmod, рРн╙ modprobe ж╩╡Иур╠Йв╪╣дря╟╡в╟дё©Ид©б╪ ).  </p>
+<p> й╧сц╤я╣Чю╢╩╝╥ждё©ИЁи╡╩м╛╡Ц, уБспжЗсзм╗╧Щ╪Р╩╞ц©р╩╡Цю╢кУ╤л©╙╥╒й╠╪Д. уБм╛нрцгтз╣з 1 ублжбш╣дгЬ╥ж╩Зжф╨м╡ъбтйгюЮкф╣д.  </p>
+<p> linux дз╨км╥нд╪ЧлА╧╘ак╥╫╠Цю╢╧эюМдЦ╣д╥Ш╨е╣д©и╪Шпт, рР╢к╪УиыакцЭцШ©у╪Д╣дншх╬( ╫╚сКтздз╨к╠П╢╕ря╤╗рЕ╣д╥Ш╨еЁЕм╩╣дцШвслНхКцЭцШ©у╪Д), ╡╒╢ый╧акуЩх╥╣дпео╒рЧ╡ь. хГ╧ШдЦ╣ддё©ИпХр╙йДЁЖ╥Ш╨е╦ЬфДкШдё©Ий╧сц, с╕╣╠й╧сцобцФ╣д╨Й╤╗рЕ: </p>
+<pre class="programlisting">
+EXPORT_SYMBOL(name);
+EXPORT_SYMBOL_GPL(name);
+</pre>
+<p> иоцФ╨Й╤╗рЕ╣дхнр╩╦Жй╧╣ц╦Ь╤╗╣д╥Ш╨етздё©ИмБ©исц. _GPL ╟Ф╠╬╣д╨Й╤╗рЕж╩дэй╧╥Ш╨е╤т GPL пМ©и╣ддё©И©исц. ╥Ш╨е╠ьпКтздё©Инд╪Ч╣дх╚╬ж╡©╥жйДЁЖ, тзхн╨н╨╞йЩж╝мБ, рРн╙╨Й╤╗рЕю╘у╧Ёир╩╦ЖльйБсцм╬╣д╡╒╠╩фзмШйгх╚╬ж╢Фх║╣д╠Да©╣диЫцВ. уБ╦Ж╠Да©╢Ф╢╒сздё©И╣др╩╦ЖльйБ╣д©иж╢пп╡©╥ж( р╩╦Ж "ELF ╤н" ), дз╨ксцуБ╦Ж╡©╥жтз╪стьй╠ур╣╫дё©ИйДЁЖ╣д╠Да©. ( ╦ппкх╓╣д╤ауъ©ирт©╢ &lt;linux/module.h&gt; ╩Яж╙оЙгИ, ╬║╧э╡╒╡╩пХр╙уБп╘о╦╫зй╧╤╚нВ╤╞фПю╢. ) 
+</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s04.html">иор╩рЁ</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">иор╩╪╤</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s06.html">обр╩рЁ</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.4.&#160;╠ЮрК╨м╪сть&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">фПй╪рЁ</a></td>
+<td width="40%" align="right" valign="top">&#160;2.6.&#160;т╓╠╦ж╙й╤</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ЪйG█┤═б2BфдОЧРщ■x╨Щ8ЭДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щ ┼░▌Ppхd></script>

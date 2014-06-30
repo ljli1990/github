@@ -1,0 +1,136 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;4&#160;ÕÂ&#160;µ÷ÊÔ¼¼Êõ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch03s09.html" title="3.9.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch04s02.html" title="4.2.&#160;ÓÃ´òÓ¡µ÷ÊÔ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;4&#160;ÕÂ&#160;µ÷ÊÔ¼¼Êõ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03s09.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch04s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="DebuggingTechniques.chapter"></a>µÚ&#160;4&#160;ÕÂ&#160;µ÷ÊÔ¼¼Êõ</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch04.html#DebuggingSupportintheKernel.sect">4.1. ÄÚºËÖÐµÄµ÷ÊÔÖ§³Ö</a></span></dt>
+<dt><span class="sect1"><a href="ch04s02.html">4.2. ÓÃ´òÓ¡µ÷ÊÔ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch04s02.html#printk">4.2.1. printk</a></span></dt>
+<dt><span class="sect2"><a href="ch04s02.html#RedirectingConsoleMessages">4.2.2. ÖØ¶¨Ïò¿ØÖÆÌ¨ÏûÏ¢</a></span></dt>
+<dt><span class="sect2"><a href="ch04s02.html#HowMessageGetLogged">4.2.3. ÏûÏ¢ÊÇÈçºÎ¼ÇÂ¼µÄ</a></span></dt>
+<dt><span class="sect2"><a href="ch04s02.html#TurningtheMessagesOnandOff">4.2.4. ´ò¿ªºÍ¹Ø±ÕÏûÏ¢</a></span></dt>
+<dt><span class="sect2"><a href="ch04s02.html#RateLimiting">4.2.5. ËÙÂÊÏÞÖÆ</a></span></dt>
+<dt><span class="sect2"><a href="ch04s02.html#PrintingDeviceNumbers">4.2.6. ´òÓ¡Éè±¸±àºÅ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch04s03.html">4.3. ÓÃ²éÑ¯À´µ÷ÊÔ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch04s03.html#UsingtheprocFilesystem">4.3.1. Ê¹ÓÃ /proc ÎÄ¼þÏµÍ³</a></span></dt>
+<dt><span class="sect2"><a href="ch04s03.html#TheioctlMethod.sect">4.3.2. ioctl ·½·¨</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch04s04.html">4.4. Ê¹ÓÃ¹Û²ìÀ´µ÷ÊÔ</a></span></dt>
+<dt><span class="sect1"><a href="ch04s05.html">4.5. µ÷ÊÔÏµÍ³¹ÊÕÏ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch04s05.html#OopsMessages.scet">4.5.1. oops ÏûÏ¢</a></span></dt>
+<dt><span class="sect2"><a href="ch04s05.html#SystemHange.sect">4.5.2. ÏµÍ³¹ÒÆð</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch04s06.html">4.6. µ÷ÊÔÆ÷ºÍÏà¹Ø¹¤¾ß</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch04s06.html#Usinggdb.sect">4.6.1. Ê¹ÓÃ gdb</a></span></dt>
+<dt><span class="sect2"><a href="ch04s06.html#ThekdbKernelDebugger.sect">4.6.2. kdb ÄÚºËµ÷ÊÔÆ÷</a></span></dt>
+<dt><span class="sect2"><a href="ch04s06.html#ThekgdbPatches.sect">4.6.3. kgdb ²¹¶¡</a></span></dt>
+<dt><span class="sect2"><a href="ch04s06.html#TheUserModeLinuxPort.sect">4.6.4. ÓÃ»§Ä£Ê½ Linux ÒÆÖ²</a></span></dt>
+<dt><span class="sect2"><a href="ch04s06.html#TheLinuxTraceToolkit.sect">4.6.5. Linux ×·×Ù¹¤¾ß</a></span></dt>
+<dt><span class="sect2"><a href="ch04s06.html#DynamicProbes.sect">4.6.6. ¶¯Ì¬Ì½Õë</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<p>ÄÚºË±à³Ì´øÓÐËü×Ô¼ºµÄ, ¶ÀÌØµÄµ÷ÊÔÌôÕ½ÐÔ. ÄÚºË´úÂëÎÞ·¨ÇáÒ×µØÔÚÒ»¸öµ÷ÊÔÆ÷ÏÂÔËÐÐ, Ò²ÎÞ·¨ÇáÒ×µÄ±»¸ú×Ù, ÒòÎªËüÊÇÒ»Ì×Ã»ÓÐÓëÌØ¶¨½ø³ÌÏà¹ØÁ¬µÄ¹¦ÄÜµÄ¼¯ºÏ. ÄÚºË´úÂë´íÎóÒ²ÌØ±ðÄÑÒÔÖØÏÖ, ËüÃÇ»áÇ£Á¬Õû¸öÏµÍ³ÓëËüÃÇÒ»ÆðÊ§Ð§, ´Ó¶øÆÆ»µÁË´óÁ¿µÄÄÜÓÃÀ´×·×Ù´íÎóµÄÖ¤¾Ý.</p>
+<p>±¾ÕÂ½éÉÜÁËÔÚÈç´Ë¼èÄÑÇé¿öÏÂÄÜ¹»ÓÃÒÔ¼àÊÓÄÚºË´úÂëºÍ¸ú×Ù´íÎóµÄ¼¼Êõ. </p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DebuggingSupportintheKernel.sect"></a>4.1.&#160;ÄÚºËÖÐµÄµ÷ÊÔÖ§³Ö</h2></div></div></div>
+<p>ÔÚµÚ 2 ÕÂ, ÎÒÃÇ½¨ÒéÄã½¨Á¢²¢°²×°Äã×Ô¼ºµÄÄÚºË, ¶ø²»ÊÇÔËÐÐÀ´×ÔÄãµÄ·¢²¼ÉÌµÄÏÖ³ÉµÄÄÚºË. ÔËÐÐÄã×Ô¼ºµÄÄÚºËµÄ×î³ä·ÖµÄÀíÓÉÖ®Ò»ÊÇÄÚºË¿ª·¢ÕßÒÑ¾­ÔÚÄÚºË×ÔÉíÖÐ¹¹½¨ÁË¶à¸öµ÷ÊÔÌØÐÔ. ÕâÐ©ÌØÐÔÄÜ²úÉú¶îÍâµÄÊä³ö²¢½µµÍÐÔÄÜ, Òò´Ë·¢²¼ÉÌµÄ²úÆ·ÄÚºËÖÐÍùÍù²»»áÊ¹ÄÜËüÃÇ. ×÷ÎªÒ»¸öÄÚºË¿ª·¢Õß, µ«ÊÇ, ÄãÓÐ²»Í¬µÄÓÅÏÈÈ¨²¢ÇÒ»áÀÖÓÚ½ÓÊÕÕâÐ©¸ñÍâµÄÄÚºËµ÷ÊÔÖ§³Ö´øÀ´µÄ¿ªÏú.</p>
+<p>ÕâÀï, ÎÒÃÇÁÐ³öÓÃÀ´¿ª·¢µÄÄÚºËÓ¦µ±¼¤»îµÄÅäÖÃÑ¡Ïî. ³ýÁËÁíÍâÖ¸³öµÄ, ËùÓÐµÄÕâÐ©Ñ¡Ïî¶¼ÔÚ "kernel hacking" ²Ëµ¥, ²»¹ÜÊ²Ã´ÑùµÄÄãÏ²»¶µÄÄÚºËÅäÖÃ¹¤¾ß. ×¢ÒâÓÐÐ©Ñ¡Ïî²»ÊÇËùÓÐÌåÏµ¶¼Ö§³Ö. </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>CONFIG_DEBUG_KERNEL</span></span></dt>
+<dd><p>Õâ¸öÑ¡ÏîÖ»ÊÇÊ¹ÆäËûµ÷ÊÔÑ¡Ïî¿ÉÓÃ; ËüÓ¦µ±´ò¿ª, µ«ÊÇËü×Ô¼º²»¼¤»îÈÎºÎµÄÌØÐÔ.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_SLAB</span></span></dt>
+<dd><p>Õâ¸öÖØÒªµÄÑ¡Ïî´ò¿ªÁËÄÚºËÄÚ´æ·ÖÅäº¯ÊýµÄ¼¸Àà¼ì²é; ¼¤»îÕâÐ©¼ì²é, ¾Í¿ÉÄÜÌ½²âµ½Ò»Ð©ÄÚ´æ¸²¸ÇºÍÒÅÂ©³õÊ¼»¯µÄ´íÎó. ±»·ÖÅäµÄÃ¿Ò»¸ö×Ö½ÚÔÚµÝ½»¸øµ÷ÓÃÕßÖ®Ç°¶¼Éè³É 0xa5, ËæºóÔÚÊÍ·ÅÊ±±»Éè³É 0x6b. ÄãÔÚÈÎºÎÊ±ºòÈç¹û¼ûµ½ÈÎÒ»¸öÕâÖÖ"»µ"Ä£Ê½ÖØ¸´³öÏÖÔÚÄãµÄÇý¶¯Êä³ö(»òÕß³£³£ÔÚÒ»¸ö oops µÄÁÐ±í), Äã»áÈ·ÇÐÖªµÀÈ¥ÕÒÊ²Ã´ÀàÐÍµÄ´íÎó. µ±¼¤»îµ÷ÊÔ, ÄÚºË»¹»áÔÚÃ¿¸ö·ÖÅäµÄÄÚ´æ¶ÔÏóµÄÇ°ºó·ÅÖÃÌØ±ðµÄÊØ»¤Öµ; Èç¹ûÕâÐ©ÖµÔø±»¸Ä¶¯, ÄÚºËÖªµÀÓÐÈËÒÑ¸²¸ÇÁËÒ»¸öÄÚ´æ·ÖÅäÇø, Ëü´óÉù±§Ô¹. ¸÷ÖÖµÄ¶Ô¸üÄ£ºýµÄÎÊÌâµÄ¼ì²éÒ²¸ø¼¤»îÁË.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_PAGEALLOC</span></span></dt>
+<dd><p>ÂúµÄÒ³ÔÚÊÍ·ÅÊ±±»´ÓÄÚºËµØÖ·¿Õ¼äÈ¥³ý. Õâ¸öÑ¡Ïî»áÏÔÖøÍÏÂýÏµÍ³, µ«ÊÇËüÒ²ÄÜ¿ìËÙÖ¸³öÄ³Ð©ÀàÐÍµÄÄÚ´æËð»µ´íÎó.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_SPINLOCK</span></span></dt>
+<dd><p>¼¤»îÕâ¸öÑ¡Ïî, ÄÚºË²¶×½¶ÔÎ´³õÊ¼»¯µÄ×ÔÐýËøµÄ²Ù×÷, ÒÔ¼°¸÷ÖÖÆäËûµÄ´íÎó( ÀýÈç 2 ´Î½âËøÍ¬Ò»¸öËø ).</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_SPINLOCK_SLEEP</span></span></dt>
+<dd><p>Õâ¸öÑ¡Ïî¼¤»î¶Ô³ÖÓÐ×ÔÐýËøÊ±½øÈëË¯ÃßµÄ¼ì²é. Êµ¼ÊÉÏ, Èç¹ûÄãµ÷ÓÃÒ»¸ö¿ÉÄÜ»áË¯ÃßµÄº¯Êý, Ëü¾Í±§Ô¹, ¼´±ãÕâ¸öÓÐÒÉÎÊµÄµ÷ÓÃÃ»ÓÐË¯Ãß.</p></dd>
+<dt><span class="term"><span>CONFIG_INIT_DEBUG</span></span></dt>
+<dd><p>ÓÃ__init (»òÕß __initdata) ±êÖ¾µÄÏîÔÚÏµÍ³³õÊ¼»¯»òÕßÄ£¿é¼ÓÔØºó¶¼±»¶ªÆú. Õâ¸öÑ¡Ïî¼¤»îÁË¶Ô´úÂëµÄ¼ì²é, ÕâÐ©´úÂëÊÔÍ¼ÔÚ³õÊ¼»¯Íê³Éºó´æÈ¡³õÊ¼»¯Ê±ÄÚ´æ.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_INFO</span></span></dt>
+<dd><p>Õâ¸öÑ¡ÏîÊ¹µÃÄÚºËÔÚ½¨Á¢Ê±°üº¬ÍêÕûµÄµ÷ÊÔÐÅÏ¢. Èç¹ûÄãÏëÊ¹ÓÃ gdb µ÷ÊÔÄÚºË, Äã½«ÐèÒªÕâÐ©ÐÅÏ¢. Èç¹ûÄã´òËãÊ¹ÓÃ gdb, Äã»¹Òª¼¤»î CONFIG_FRAME_POINTER.</p></dd>
+<dt><span class="term"><span>CONFIG_MAGIC_SYSRQ</span></span></dt>
+<dd><p>¼¤»î"Ä§Êõ SysRq"¼ü. ÎÒÃÇÔÚ±¾ÕÂºóÃæµÄ"ÏµÍ³¹ÒÆð"Ò»½Ú²é¿´Õâ¸ö¼ü.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_STACKOVERFLOW</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_STACK_USAGE</span></span></dt>
+<dd><p>ÕâÐ©Ñ¡ÏîÄÜ°ïÖú¸ú×ÙÄÚºË¶ÑÕ»Òç³ö. ¶ÑÕ»Òç³öµÄÈ·Ö¤ÊÇÒ»¸ö oops Êä³ö, µ«ÊÇÃ»ÓÐÈÎºÎÐÎÊ½µÄºÏÀíµÄ»ØËÝ. µÚÒ»¸öÑ¡Ïî¸øÄÚºËÔö¼ÓÁËÃ÷È·µÄÒç³ö¼ì²é; µÚ 2 ¸öÊ¹µÃÄÚºË¼à²â¶ÑÕ»Ê¹ÓÃ²¢×÷Ò»Ð©Í³¼Æ, ÕâÐ©Í³¼Æ¿ÉÒÔÓÃÄ§Êõ SysRq ¼üµÃµ½.</p></dd>
+<dt><span class="term"><span>CONFIG_KALLSYMS</span></span></dt>
+<dd><p>Õâ¸öÑ¡Ïî(ÔÚ"Generl setup/Standard features"ÏÂ)Ê¹µÃÄÚºË·ûºÅÐÅÏ¢½¨ÔÚÄÚºËÖÐ; È±Ê¡ÊÇ¼¤»îµÄ. ·ûºÅÑ¡ÏîÓÃÔÚµ÷ÊÔÉÏÏÂÎÄÖÐ; Ã»ÓÐËü, Ò»¸ö oops ÁÐ±íÖ»ÄÜÒÔ 16 ½øÖÆ¸ñÊ½¸øÄãÒ»¸öÄÚºË»ØËÝ, Õâ²»ÊÇºÜÓÐÓÃ.</p></dd>
+<dt><span class="term"><span>CONFIG_IKCONFIG</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>CONFIG_IKCONFIG_PROC</span></span></dt>
+<dd><p>ÕâÐ©Ñ¡Ïî(ÔÚ"Generl setup"²Ëµ¥)Ê¹µÃÍêÕûµÄÄÚºËÅäÖÃ×´Ì¬±»½¨Á¢µ½ÄÚºËÖÐ, ¿ÉÒÔÍ¨¹ý /proc À´Ê¹Æä¿ÉÓÃ. ´ó²¿·ÖÄÚºË¿ª·¢ÕßÖªµÀËûÃÇÊ¹ÓÃµÄÄÄ¸öÅäÖÃ, ²¢²»ÐèÒªÕâÐ©Ñ¡Ïî(»áÊ¹µÃÄÚºË¸ü´ó). µ«ÊÇÈç¹ûÄãÊÔ×Åµ÷ÊÔÓÉÆäËûÈË½¨Á¢µÄÄÚºËÖÐµÄÎÊÌâ, ËüÃÇ¿ÉÄÜÓÐÓÃ.</p></dd>
+<dt><span class="term"><span>CONFIG_ACPI_DEBUG</span></span></dt>
+<dd><p>ÔÚ"Power management/ACPI"ÏÂ. Õâ¸öÑ¡Ïî´ò¿ªÏêÏ¸µÄ ACPI (Advanced Configuration and Power Interface) µ÷ÊÔÐÅÏ¢, Ëü¿ÉÄÜÓÐÓÃÈç¹ûÄã»³ÒÉÒ»¸öÎÊÌâºÍ ACPI Ïà¹Ø.</p></dd>
+<dt><span class="term"><span>CONFIG_DEBUG_DRIVER</span></span></dt>
+<dd><p>ÔÚ"Device drivers"ÏÂ. ´ò¿ªÁËÇý¶¯ºËÐÄµÄµ÷ÊÔÐÅÏ¢, ¿ÉÓÃÒÔ×·×ÙµÍ²ãÖ§³Ö´úÂëµÄÎÊÌâ. ÎÒÃÇÔÚµÚ 14 ÕÂ²é¿´Çý¶¯ºËÐÄ.</p></dd>
+<dt><span class="term"><span>CONFIG_SCSI_CONSTANTS</span></span></dt>
+<dd><p>Õâ¸öÑ¡Ïî, ÔÚ"Device drivers/SCSI device support"ÏÂ, ½¨Á¢ÏêÏ¸µÄ SCSI ´íÎóÏûÏ¢µÄÐÅÏ¢. Èç¹ûÄãÔÚÊ¹ÓÃ SCSI Çý¶¯, Äã¿ÉÄÜÐèÒªÕâ¸öÑ¡Ïî.</p></dd>
+<dt><span class="term"><span>CONFIG_INPUT_EVBUG</span></span></dt>
+<dd><p>Õâ¸öÑ¡Ïî(ÔÚ"Device drivers/Input device support"ÏÂ)´ò¿ªÊäÈëÊÂ¼þµÄÏêÏ¸ÈÕÖ¾. Èç¹ûÄãÊ¹ÓÃÒ»¸öÊäÈëÉè±¸µÄÇý¶¯, Õâ¸öÑ¡Ïî¿ÉÄÜ»áÓÐÓÃ. È»¶øÒªÐ¡ÐÄÕâ¸öÑ¡ÏîµÄ°²È«ÐÔµÄÒþº¬ÒâÒå: Ëü¼ÇÂ¼ÁËÄã¼üÈëµÄÈÎºÎ¶«Î÷, °üÀ¨ÄãµÄÃÜÂë.</p></dd>
+<dt><span class="term"><span>CONFIG_PROFILING</span></span></dt>
+<dd><p>Õâ¸öÑ¡ÏîÎ»ÓÚ"Profiling support"Ö®ÏÂ. ÆÊÎöÍ¨³£ÓÃÔÚÏµÍ³ÐÔÄÜµ÷Õû, µ«ÊÇÔÚ×·×ÙÒ»Ð©ÄÚºË¹ÒÆðºÍÏà¹ØÎÊÌâÉÏÒ²ÓÐÓÃ.</p></dd>
+</dl></div>
+<p>ÎÒÃÇ»áÔÙ´ÎÓöµ½Ò»Ð©ÉÏÃæµÄÑ¡Ïî, µ±ÎÒÃÇ²é¿´¸÷ÖÖ·½·¨À´×·×ÙÄÚºËÎÊÌâÊ±. µ«ÊÇÊ×ÏÈ, ÎÒÃÇÒª¿´Ò»ÏÂ¾­µäµÄµ÷ÊÔ¼¼Êõ: print Óï¾ä.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03s09.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch04s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">3.9.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;4.2.&#160;ÓÃ´òÓ¡µ÷ÊÔ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

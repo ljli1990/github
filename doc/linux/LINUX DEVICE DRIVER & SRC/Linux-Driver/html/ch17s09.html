@@ -1,0 +1,66 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.9.&#160;Á¬½Ó×´Ì¬µÄ¸Ä±ä-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇý¶¯">
+<link rel="prev" href="ch17s08.html" title="17.8.&#160;½ÓÊÕÖÐ¶Ï»º½â">
+<link rel="next" href="ch17s10.html" title="17.10.&#160;Socket »º´æ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.9.&#160;Á¬½Ó×´Ì¬µÄ¸Ä±ä</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s10.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ChangeinLinkState"></a>17.9.&#160;Á¬½Ó×´Ì¬µÄ¸Ä±ä</h2></div></div></div>
+<p>ÍøÂçÁ¬½Ó, ¸ù¾Ý¶¨Òå, ´ò½»µÀ±¾µØÏµÍ³Ö®ÍâµÄÊÀ½ç. Òò´Ë, ËüÃÇ³£³£ÊÜÍâ½çÊÂ¼þµÄÓ°Ïì, ²¢ÇÒËüÃÇ¿ÉÄÜÊÇ¶ÌÔÝµÄ¶«Î÷. ÍøÂç×ÓÏµÍ³ÐèÒªÖªµÀÍøÂçÁ¬½ÓµÄÉÏ»òÏÂ, ËüÌá¹©ÁË¼¸¸öÇý¶¯¿ÉÓÃÀ´´«´ïÕâÖÖÐÅÏ¢µÄº¯Êý.</p>
+<p>´ó²¿·ÖÉæ¼°Êµ¼ÊµÄÎïÀíÁ¬½ÓµÄÍøÂç¼¼ÊõÌá¹©ÓÐÒ»¸öÔØ²¨×´Ì¬; ÔØ²¨´æÔÚËµÃ÷Ó²¼þ´æÔÚ²¢×¼±¸ºÃ. ÒÔÌ«ÍøÊÊÅäÆ÷, ÀýÈç, ÔÚµçÏßÉÏ¸ÐÖªÔØ²¨ÐÅºÅ; µ±Ò»¸öÓÃ»§°íµ¹Ò»¸ùµçÀÂ, ÔØ²¨ÏûÊ§, Á¬½Ó¶Ï¿ª. È±Ê¡µØ, ÍøÂçÉè±¸¼ÙÉèÓÐÔØ²¨ÐÅºÅ´æÔÚ. Çý¶¯¿ÉÒÔÃ÷È·¸Ä±äÕâ¸ö×´Ì¬, µ«ÊÇ, Ê¹ÓÃÕâÐ©º¯Êý:</p>
+<pre class="programlisting">
+void netif_carrier_off(struct net_device *dev);
+void netif_carrier_on(struct net_device *dev);
+</pre>
+<p>Èç¹ûÄãµÄÇý¶¯¼ì²âµ½ËüµÄÒ»¸öÉè±¸ÔØ²¨¶ªÊ§, ËüÓ¦µ±µ÷ÓÃ netif_carrier_off À´Í¨ÖªÄÚºËÕâ¸ö¸Ä±ä. µ±ÔØ²¨»ØÀ´Ê±, Ó¦µ±µ÷ÓÃ netif_carrier_on. Ò»Ð©Çý¶¯Ò²µ÷ÓÃ netif_carrier_off µ±½øÐÐ´óµÄÅäÖÃ¸Ä±äÊ±(ÀýÈçÃ½½éÀàÐÍ); Ò»µ©ÊÊÅäÆ÷ÒÑ¾­Íê³É¸´Î»Ëü×ÔÉí, ÐÂÔØ²¨±»¼ì²â²¢ÇÒ»Ö¸´Á÷Á¿.</p>
+<p>Ò»¸öÕûÊýº¯ÊýÒ²´æÔÚ:</p>
+<pre class="programlisting">
+int netif_carrier_ok(struct net_device *dev); 
+</pre>
+<p>Ëü¿ÉÓÃÓÚ²âÊÔµ±Ç°ÔØ²¨×´Ì¬( ÈçÍ¬Éè±¸½á¹¹ÖÐËù·´Ó³µÄ );</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s10.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.8.&#160;½ÓÊÕÖÐ¶Ï»º½â&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.10.&#160;Socket »º´æ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

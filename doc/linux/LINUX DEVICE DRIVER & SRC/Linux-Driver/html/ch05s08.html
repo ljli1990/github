@@ -1,0 +1,257 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>5.8.&#160;快速参考-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch05.html" title="第&#160;5&#160;章&#160;并发和竞争情况">
+<link rel="prev" href="ch05s07.html" title="5.7.&#160;加锁的各种选择">
+<link rel="next" href="ch06.html" title="第&#160;6&#160;章&#160;高级字符驱动操作">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.8.&#160;快速参考</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05s07.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;5&#160;章&#160;并发和竞争情况</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch06.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ConcurrencyandRaceConditionsQR.sect"></a>5.8.&#160;快速参考</h2></div></div></div>
+<p>本章已介绍了很多符号给并发的管理. 最重要的这些在此总结:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;asm/semaphore.h&gt;</span></span></dt>
+<dd><p>定义旗标和其上操作的包含文件.</p></dd>
+<dt><span class="term"><span>DECLARE_MUTEX(name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_MUTEX_LOCKED(name);</span></span></dt>
+<dd><p>2 个宏定义, 用来声明和初始化一个在互斥模式下使用的旗标.</p></dd>
+<dt><span class="term"><span>void init_MUTEX(struct semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void init_MUTEX_LOCKED(struct semaphore *sem);</span></span></dt>
+<dd><p>这 2 函数用来在运行时初始化一个旗标.</p></dd>
+<dt><span class="term"><span>void down(struct semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int down_interruptible(struct semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int down_trylock(struct semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void up(struct semaphore *sem);</span></span></dt>
+<dd><p>加锁和解锁旗标. down 使调用进程进入不可打断睡眠, 如果需要; down_interruptible, 相反, 可以被信号打断. down_trylock 不睡眠; 相反, 它立刻返回如果旗标不可用. 加锁旗标的代码必须最终使用 up 解锁它.</p></dd>
+<dt><span class="term"><span>struct rw_semaphore;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>init_rwsem(struct rw_semaphore *sem);</span></span></dt>
+<dd><p>旗标的读者/写者版本和初始化它的函数.</p></dd>
+<dt><span class="term"><span>void down_read(struct rw_semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int down_read_trylock(struct rw_semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void up_read(struct rw_semaphore *sem);</span></span></dt>
+<dd><p>获得和释放对读者/写者旗标的读存取的函数.</p></dd>
+<dt><span class="term"><span>void down_write(struct rw_semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int down_write_trylock(struct rw_semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void up_write(struct rw_semaphore *sem);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void downgrade_write(struct rw_semaphore *sem);</span></span></dt>
+<dd><p>管理对读者/写者旗标写存取的函数.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/completion.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_COMPLETION(name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>init_completion(struct completion *c);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>INIT_COMPLETION(struct completion c);</span></span></dt>
+<dd><p>描述 Linux completion 机制的包含文件, 已经初始化 completion 的正常方法. INIT_COMPLETION 应当只用来重新初始化一个之前已经使用过的 completion. </p></dd>
+<dt><span class="term"><span>void wait_for_completion(struct completion *c);</span></span></dt>
+<dd><p>等待一个 completion 事件发出.</p></dd>
+<dt><span class="term"><span>void complete(struct completion *c);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void complete_all(struct completion *c);</span></span></dt>
+<dd><p>发出一个 completion 事件. completion 唤醒, 最多, 一个等待着的线程, 而 complete_all 唤醒全部等待者.</p></dd>
+<dt><span class="term"><span>void complete_and_exit(struct completion *c, long retval);</span></span></dt>
+<dd><p>通过调用 complete 来发出一个 completion 事件, 并且为当前线程调用 exit.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/spinlock.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>spinlock_t lock = SPIN_LOCK_UNLOCKED;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>spin_lock_init(spinlock_t *lock);</span></span></dt>
+<dd><p>定义自旋锁接口的包含文件, 以及初始化锁的 2 个方法.</p></dd>
+<dt><span class="term"><span>void spin_lock(spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_lock_irqsave(spinlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_lock_irq(spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_lock_bh(spinlock_t *lock);</span></span></dt>
+<dd><p>加锁一个自旋锁的各种方法, 并且, 可能地, 禁止中断.</p></dd>
+<dt><span class="term"><span>int spin_trylock(spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int spin_trylock_bh(spinlock_t *lock);</span></span></dt>
+<dd><p>上面函数的非自旋版本; 在获取锁失败时返回 0, 否则非零.</p></dd>
+<dt><span class="term"><span>void spin_unlock(spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_unlock_irq(spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void spin_unlock_bh(spinlock_t *lock);</span></span></dt>
+<dd><p>释放一个自旋锁的相应方法.</p></dd>
+<dt><span class="term"><span>rwlock_t lock = RW_LOCK_UNLOCKED</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>rwlock_init(rwlock_t *lock);</span></span></dt>
+<dd><p>初始化读者/写者锁的 2 个方法.</p></dd>
+<dt><span class="term"><span>void read_lock(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_lock_irqsave(rwlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_lock_irq(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_lock_bh(rwlock_t *lock);</span></span></dt>
+<dd><p>获得一个读者/写者锁的读存取的函数.</p></dd>
+<dt><span class="term"><span>void read_unlock(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_unlock_irqrestore(rwlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_unlock_irq(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void read_unlock_bh(rwlock_t *lock);</span></span></dt>
+<dd><p>释放一个读者/写者自旋锁的读存取.</p></dd>
+<dt><span class="term"><span>void write_lock(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_lock_irqsave(rwlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_lock_irq(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_lock_bh(rwlock_t *lock);</span></span></dt>
+<dd><p>获得一个读者/写者锁的写存取的函数.</p></dd>
+<dt><span class="term"><span>void write_unlock(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_unlock_irqrestore(rwlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_unlock_irq(rwlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_unlock_bh(rwlock_t *lock);</span></span></dt>
+<dd><p>释放一个读者/写者自旋锁的写存取的函数.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/atomic.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>atomic_t v = ATOMIC_INIT(value);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void atomic_set(atomic_t *v, int i);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_read(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void atomic_add(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void atomic_sub(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void atomic_inc(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void atomic_dec(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_inc_and_test(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_dec_and_test(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_sub_and_test(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_add_negative(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_add_return(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_sub_return(int i, atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_inc_return(atomic_t *v);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int atomic_dec_return(atomic_t *v);</span></span></dt>
+<dd><p>原子地存取整数变量. atomic_t 变量必须只通过这些函数存取.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/bitops.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void set_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void clear_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void change_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>test_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int test_and_set_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int test_and_clear_bit(nr, void *addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int test_and_change_bit(nr, void *addr);</span></span></dt>
+<dd><p>原子地存取位值; 它们可用做标志或者锁变量. 使用这些函数阻止任何与并发存取这个位相关的竞争情况.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/seqlock.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>seqlock_t lock = SEQLOCK_UNLOCKED;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>seqlock_init(seqlock_t *lock);</span></span></dt>
+<dd><p>定义 seqlock 的包含文件, 已经初始化它们的 2 个方法.</p></dd>
+<dt><span class="term"><span>unsigned int read_seqbegin(seqlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned int read_seqbegin_irqsave(seqlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int read_seqretry(seqlock_t *lock, unsigned int seq);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int read_seqretry_irqrestore(seqlock_t *lock, unsigned int seq, unsigned long flags);</span></span></dt>
+<dd><p>获得一个 seqlock-保护 的资源的读权限的函数.</p></dd>
+<dt><span class="term"><span>void write_seqlock(seqlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_seqlock_irqsave(seqlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_seqlock_irq(seqlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_seqlock_bh(seqlock_t *lock);</span></span></dt>
+<dd><p>获取一个 seqlock-保护的资源的写权限的函数.</p></dd>
+<dt><span class="term"><span>void write_sequnlock(seqlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_sequnlock_irqrestore(seqlock_t *lock, unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_sequnlock_irq(seqlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void write_sequnlock_bh(seqlock_t *lock);</span></span></dt>
+<dd><p>释放一个 seqlock-保护的资源的写权限的函数.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/rcupdate.h&gt;</span></span></dt>
+<dd><p>需要使用读取-拷贝-更新(RCU)机制的包含文件.</p></dd>
+<dt><span class="term"><span>void rcu_read_lock;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void rcu_read_unlock;</span></span></dt>
+<dd><p>获取对由 RCU 保护的资源的原子读权限的宏定义.</p></dd>
+<dt><span class="term"><span>void call_rcu(struct rcu_head *head, void (*func)(void *arg), void *arg);</span></span></dt>
+<dd><p>安排一个回调在所有处理器已经被调度以及一个 RCU-保护的资源可用被安全的释放之后运行.</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05s07.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch06.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.7.&#160;加锁的各种选择&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;第&#160;6&#160;章&#160;高级字符驱动操作</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

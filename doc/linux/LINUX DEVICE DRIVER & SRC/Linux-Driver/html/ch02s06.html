@@ -1,0 +1,68 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.6.&#160;т╓╠╦ж╙й╤-LinuxиХ╠╦гЩ╤╞╣зхЩ╟Фё╗жпнд╟Фё╘</title>
+<meta name="description" content="гЩ╤╞©╙╥╒" />
+<meta name="keywords" content="LinuxиХ╠╦гЩ╤╞,жпнд╟Ф,╣зхЩ╟Ф,ldd,linux device driver,гЩ╤╞©╙╥╒,╣Гвс╟Ф,ЁлпРиХ╪ф,хМ╪Ч©╙╥╒,©╙╥╒ф╣╣ю" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux иХ╠╦гЩ╤╞ Edition 3">
+<link rel="up" href="ch02.html" title="╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И">
+<link rel="prev" href="ch02s05.html" title="2.5.&#160;дз╨к╥Ш╨е╠М">
+<link rel="next" href="ch02s07.html" title="2.7.&#160;ЁУй╪╩╞╨м╧ьмё">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.6.&#160;т╓╠╦ж╙й╤</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s05.html">иор╩рЁ</a>&#160;</td>
+<th width="60%" align="center">╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s07.html">обр╩рЁ</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Preliminaries.sect1"></a>2.6.&#160;т╓╠╦ж╙й╤</h2></div></div></div>
+<p> нрцгуЩтз╫с╫Эх╔©╢р╩п╘й╣╪й╣ддё©И╢ЗбК. ╣╚йгйвох, нрцгпХр╙©╢р╩п╘пХр╙ЁЖожтздЦ╣ддё©Ит╢бКнд╪Чжп╣д╤╚нВ. дз╨кйгр╩╦Ж╤юль╣д╩╥╬Ё, кЭ╫╚кЭ╣др╙гСг©╪ссзр╙╨мкЭ╫с©з╣д╢ЗбКио.  </p>
+<p> ╢С╡©╥ждз╨к╢ЗбК╟Э╨╛акпМ╤ЮйЩа©╣дм╥нд╪Чю╢╩Я╣ц╨╞йЩ, йЩ╬щ╫А╧╧╨м╠Да©╣д╤╗рЕ. нрцг╫╚тзеЖ╣╫кЭцгй╠╪Л╡ИуБп╘нд╪Ч, ╣╚йгсп╪╦╦Жнд╪Ч╤тдё©ИйгльйБ╣д, ╠ьпКЁЖожтзц©р╩╦Ж©и╪стьдё©Ижп. рР╢к, ╪╦╨УкЫспдё©И╢ЗбК╤╪спобцФдзхщ: </p>
+<pre class="programlisting">
+#include &lt;linux/module.h&gt;
+#include &lt;linux/init.h&gt;
+</pre>
+<p> moudle.h ╟Э╨╛ак╢Са©╪стьдё©ИпХр╙╣д╨╞йЩ╨м╥Ш╨е╣д╤╗рЕ. дЦпХр╙ init.h ю╢ж╦╤╗дЦ╣дЁУй╪╩╞╨мгЕюМ╨╞йЩ, хГнрцгтзиоцФ╣д "hello world" юЩвсюО╪Ш╣╫╣д, уБ╦Жнрцгтзобр╩╫зжпты╫╡. ╢С╡©╥ждё©И╩╧╟Э╨╛ moudleparam.h, й╧╣ц©ирттздё©И╪стьй╠╢╚╣щ╡нйЩ╦Ьдё©И. нрцг╫╚╨э©ЛсЖ╣╫.  </p>
+<p> ╡╩йгяо╦Яр╙гС╣д, ╣╚йгдЦ╣ддё©Их╥й╣с╕╣╠ж╦╤╗кЭ╣д╢ЗбКй╧сцдд╦ЖпМ©и. вЖ╣╫уБр╩╣Цж╩пХ╟Э╨╛р╩пп MODULE_LICENSE: </p>
+<pre class="programlisting">
+MODULE_LICENSE("GPL"); 
+</pre>
+<p> дз╨кхой╤╣дль╤╗пМ©исп, "GPL"( ййсц GNU м╗сц╧╚╧╡пМ©и╣дхн╨н╟Ф╠╬ ), "GPL v2"( ж╩ййсц GPL ╟Ф╠╬ 2 ), "GPL and additional rights", "Dual BSD/GPL", "Dual MPL/GPL", ╨м "Proprietary". ЁЩ╥гдЦ╣ддё©ИцВх╥╠Йй╤йгтздз╨кхой╤╣др╩╦ЖвтсипМ©иоб, ╥ЯтР╬м╪ы╤╗кЭйгк╫сп╣д, дз╨ктздё©И╪стьй╠╠╩"е╙ншвг"ак. оСнрцгтз╣з 1 уб"пМ©илУ©Н"жплА╣╫╣д, дз╨к©╙╥╒уъ╡╩╩Аххпд╟ОжЗтз╪стьакк╫спдё©И╨СсЖ╣╫нйлБ╣дсц╩╖.  </p>
+<p> ©ирттздё©Ижп╟Э╨╛╣дфДкШцХйЖпт╤╗рЕсп MODULE_AUTHOR ( иЫцВк╜╠Юп╢акдё©И ), MODULE_DESCRIPION( р╩╦Жхк©и╤а╣д╧ьсздё©ИвЖй╡ц╢╣диЫцВ ), MODULE_VERSION ( р╩╦Ж╢ЗбКпч╤╘╟Ф╠╬╨е; ©╢ &lt;linux/module.h&gt; ╣дв╒ймрт╠Цж╙╣ю╢╢╫╗╟Ф╠╬вж╢╝й╧сц╣д╧ъюЩ), MODULE_ALIAS ( дё©Ин╙хккЫж╙╣даМр╩╦ЖцШвс ), рт╪╟ MODULE_DEVICE_TABLE ( ю╢╦Фж╙сц╩╖©у╪Д, дё©Иж╖Ёждгп╘иХ╠╦ ). нрцг╩Алжбш MODULE_ALIAS тз╣з 11 убрт╪╟ MUDULE_DEVICE_TABLE тз╣з 12 уб.  </p>
+<p> ╦Вжж MODULE_ иЫцВ©иртЁЖожтздЦ╣дт╢бКнд╪Ч╣дхн╨н╨╞йЩж╝мБ╣д╣ь╥╫. ╣╚йг, р╩╦Ждз╨к╢ЗбКжпоЮ╤т╫Эфз╣д╧ъюЩйг╟яуБп╘иЫцВ╥етзнд╪Чд╘н╡.  
+</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s05.html">иор╩рЁ</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">иор╩╪╤</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s07.html">обр╩рЁ</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.5.&#160;дз╨к╥Ш╨е╠М&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">фПй╪рЁ</a></td>
+<td width="40%" align="right" valign="top">&#160;2.7.&#160;ЁУй╪╩╞╨м╧ьмё</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ЪйG█┤═б2BфдОЧРщ■x╨Щ8ЭДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щ ┼░▌Ppхd></script>

@@ -1,0 +1,282 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>4.3.&#160;用查询来调试-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch04.html" title="第&#160;4&#160;章&#160;调试技术">
+<link rel="prev" href="ch04s02.html" title="4.2.&#160;用打印调试">
+<link rel="next" href="ch04s04.html" title="4.4.&#160;使用观察来调试">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">4.3.&#160;用查询来调试</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch04s02.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;4&#160;章&#160;调试技术</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch04s04.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DebuggingbyQuerying"></a>4.3.&#160;用查询来调试</h2></div></div></div>
+<p>前面一节描述了 printk 是任何工作的以及怎样使用它. 没有谈到的是它的缺点.</p>
+<p>大量使用 printk 能够显著地拖慢系统, 即便你降低 cosole_loglevel 来避免加载控制台设备, 因为 syslogd 会不停地同步它的输出文件; 因此, 要打印的每一行都引起一次磁盘操作. 从 syslogd 的角度这是正确的实现. 它试图将所有东西写到磁盘上, 防止系统刚好在打印消息后崩溃; 然而, 你不想只是为了调试信息的原因而拖慢你的系统. 可以在出现于 /etc/syslogd.conf 中的你的日志文件名前加一个连字号来解决这个问题<sup>[<a name="id421348" href="#ftn.id421348">14</a>]</sup>. 改变配置文件带来的问题是, 这个改变可能在你结束调试后保留在那里, 即便在正常系统操作中你确实想尽快刷新消息到磁盘. 这样永久改变的另外的选择是运行一个非 klogd 程序( 例如 cat /proc/kmsg, 如之前建议的), 但是这可能不会提供一个合适的环境给正常的系统操作.</p>
+<p>经常地, 最好的获得相关信息的方法是查询系统, 在你需要消息时, 不是连续地产生数据. 实际上, 每个 Unix 系统提供许多工具来获取系统消息: ps, netstat, vmstat, 等等.</p>
+<p>有几个技术给驱动开发者来查询系统: 创建一个文件在 /proc 文件系统下, 使用 ioctl 驱动方法, 借助 sysfs 输出属性. 使用 sysfs 需要不少关于驱动模型的背景知识. 在 14 章讨论.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="UsingtheprocFilesystem"></a>4.3.1.&#160;使用 /proc 文件系统</h3></div></div></div>
+<p>/proc文件系统是一个特殊的软件创建的文件系统, 内核用来输出消息到外界. /proc 下的每个文件都绑到一个内核函数上, 当文件被读的时候即时产生文件内容. 我们已经见到一些这样的文件起作用; 例如, /proc/modules, 常常返回当前已加载的模块列表.</p>
+<p>/proc 在 Linux 系统中非常多地应用. 很多现代 Linux 发布中的工具, 例如 ps, top, 以及 uptime, 从 /proc 中获取它们的信息. 一些设备驱动也通过 /proc 输出信息, 你的也可以这样做. /proc 文件系统是动态的, 因此你的模块可以在任何时候添加或去除条目.</p>
+<p>完全特性的 /proc 条目可能是复杂的野兽; 另外, 它们可写也可读, 但是, 大部分时间, /proc 条目是只读的文件. 本节只涉及简单的只读情况. 那些感兴趣于实现更复杂的东西的人可以从这里获取基本知识; 接下来可参考内核源码来获知完整的信息.</p>
+<p>在我们继续之前, 我们应当提及在 /proc 下添加文件是不鼓励的. /proc 文件系统在内核开发者看作是有点无法控制的混乱, 它已经远离它的本来目的了(是提供关于系统中运行的进程的信息). 建议新代码中使信息可获取的方法是利用 sysfs. 如同建议的, 使用 sysfs 需要对 Linux 设备模型的理解, 然而, 我们直到 14 章才接触它. 同时, /proc 下的文件稍稍容易创建, 并且它们完全适合调试目的, 所以我们在这里包含它们.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Implementingfileinproc"></a>4.3.1.1.&#160;在 /proc 里实现文件</h4></div></div></div>
+<p>所有使用 /proc 的模块应当包含 &lt;linux/proc_fs.h&gt; 来定义正确的函数.</p>
+<p>要创建一个只读 /proc 文件, 你的驱动必须实现一个函数来在文件被读时产生数据. 当某个进程读文件时(使用 read 系统调用), 这个请求通过这个函数到达你的模块. 我们先看看这个函数并在本章后面讨论注册接口.</p>
+<p>当一个进程读你的 /proc 文件, 内核分配了一页内存(就是说, PAGE_SIZE 字节), 驱动可以写入数据来返回给用户空间. 那个缓存区传递给你的函数, 是一个称为 read_proc 的方法:</p>
+<pre class="programlisting">
+				int (*read_proc)(char *page, char **start, off_t offset, int count, int *eof, void *data);
+</pre>
+<p>page 指针是你写你的数据的缓存区; start 是这个函数用来说有关的数据写在页中哪里(下面更多关于这个); offset 和 count 对于 read 方法有同样的含义. eof 参数指向一个整数, 必须由驱动设置来指示它不再有数据返回, data 是驱动特定的数据指针, 你可以用做内部用途.</p>
+<p>这个函数应当返回实际摆放于 page 缓存区的数据的字节数, 就象 read 方法对别的文件所作一样. 别的输出值是 *eof 和 *start. eof 是一个简单的标志, 但是 start 值的使用有些复杂; 它的目的是帮助实现大的(超过一页) /proc 文件.</p>
+<p>start 参数有些非传统的用法. 它的目的是指示哪里(哪一页)找到返回给用户的数据. 当调用你的 proc_read 方法, *start 将会是 NULL. 如果你保持它为 NULL, 内核假定数据已放进 page 偏移是 0; 换句话说, 它假定一个头脑简单的 proc_read 版本, 它安放虚拟文件的整个内容到 page, 没有注意 offset 参数. 如果, 相反, 你设置 *start 为一个 非NULL 值, 内核认为由 *start 指向的数据考虑了 offset, 并且准备好直接返回给用户. 通常, 返回少量数据的简单 proc_read 方法只是忽略 start. 更复杂的方法设置 *start 为 page 并且只从请求的 offset 那里开始安放数据.</p>
+<p>还有一段距离到 /proc 文件的另一个主要问题, 它也打算解答 start. 有时内核数据结构的 ASCII 表示在连续的 read 调用中改变, 因此读进程可能发现从一个调用到下一个有不一致的数据. 如果 *start 设成一个小的整数值, 调用者用它来递增 filp-&lt;f_pos 不依赖你返回的数据量, 因此使 f_pos 成为你的 read_proc 过程的一个内部记录数. 如果, 例如, 如果你的 read_proc 函数从一个大结构数组返回信息并且第一次调用返回了 5 个结构, *start可设成5. 下一个调用提供同一个数作为 offset; 驱动就知道从数组中第 6 个结构返回数据. 这是被它的作者承认的一个" hack ", 可以在 fs/proc/generic.c 见到.</p>
+<p>注意, 有更好的方法实现大的 /proc 文件; 它称为 seq_file, 我们很快会讨论它. 首先, 然而, 是时间举个例子了. 下面是一个简单的(有点丑陋) read_proc 实现, 为 scull 设备:</p>
+<pre class="programlisting">
+int scull_read_procmem(char *buf, char **start, off_t offset, int count, int *eof, void *data)
+{
+    int i, j, len = 0;
+    int limit = count - 80; /* Don't print more than this */
+
+    for (i = 0; i &lt; scull_nr_devs &amp;&amp; len &lt;= limit; i++) {
+        struct scull_dev *d = &amp;scull_devices[i];
+        struct scull_qset *qs = d-&gt;data;
+        if (down_interruptible(&amp;d-&gt;sem))
+            return -ERESTARTSYS;
+        len += sprintf(buf+len,"\nDevice %i: qset %i, q %i, sz %li\n", i, d-&gt;qset, d-&gt;quantum, d-&gt;size);
+        for (; qs &amp;&amp; len &lt;= limit; qs = qs-&gt;next) { /* scan the list */
+            len += sprintf(buf + len, " item at %p, qset at %p\n", qs, qs-&gt;data);
+            if (qs-&gt;data &amp;&amp; !qs-&gt;next) /* dump only the last item */
+                for (j = 0; j &lt; d-&gt;qset; j++) {
+                    if (qs-&gt;data[j])
+                        len += sprintf(buf + len, " % 4i: %8p\n", j, qs-&gt;data[j]);
+                }
+        }
+        up(&amp;scull_devices[i].sem);
+
+    }
+    *eof = 1;
+    return len;
+
+}
+</pre>
+<p>这是一个相当典型的 read_proc 实现. 它假定不会有必要产生超过一页数据并且因此忽略了 start 和 offset 值. 它是, 但是, 小心地不覆盖它的缓存, 只是以防万一.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Anolderinterface"></a>4.3.1.2.&#160;老接口</h4></div></div></div>
+<p>如果你阅览内核源码, 你会遇到使用老接口实现 /proc 的代码:</p>
+<pre class="programlisting">
+int (*get_info)(char *page, char **start, off_t offset, int count); 
+</pre>
+<p>所有的参数的含义同 read_proc 的相同, 但是没有 eof 和 data 参数. 这个接口仍然支持, 但是将来会消失; 新代码应当使用 read_proc 接口来代替.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Creatingyourprocfile"></a>4.3.1.3.&#160;创建你的 /proc 文件</h4></div></div></div>
+<p>一旦你有一个定义好的 read_proc 函数, 你应当连接它到 /proc 层次中的一个入口项. 使用一个 creat_proc_read_entry 调用:</p>
+<pre class="programlisting">
+struct proc_dir_entry *create_proc_read_entry(const char *name,mode_t mode, struct proc_dir_entry *base, read_proc_t *read_proc, void *data); 
+ </pre>
+<p>这里, name 是要创建的文件名子, mod 是文件的保护掩码(缺省系统范围时可以作为 0 传递), base 指出要创建的文件的目录( 如果 base 是 NULL, 文件在 /proc 根下创建 ), read_proc 是实现文件的 read_proc 函数, data 被内核忽略( 但是传递给 read_proc). 这就是 scull 使用的调用, 来使它的 /proc 函数可用做 /proc/scullmem:</p>
+<pre class="programlisting">
+create_proc_read_entry("scullmem", 0 /* default mode */,
+                       NULL /* parent dir */, scull_read_procmem,
+                       NULL /* client data */);
+</pre>
+<p>这里, 我们创建了一个名为 scullmem 的文件, 直接在 /proc 下, 带有缺省的, 全局可读的保护.</p>
+<p>目录入口指针可用来在 /proc 下创建整个目录层次. 但是, 注意, 一个入口放在 /proc 的子目录下会更容易, 通过简单地给出目录名子作为这个入口名子的一部分 -- 只要这个目录自身已经存在. 例如, 一个(常常被忽略)传统的是 /proc 中与设备驱动相连的入口应当在 driver/ 子目录下; scull 能够安放它的入口在那里, 简单地通过指定它为名子 driver/scullmem.</p>
+<p>/proc 中的入口, 当然, 应当在模块卸载后去除. remove_proc_entry 是恢复 create_proc_read_entry 所做的事情的函数:</p>
+<pre class="programlisting">
+remove_proc_entry("scullmem", NULL /* parent dir */); 
+</pre>
+<p>去除入口失败会导致在不希望的时间调用, 或者, 如果你的模块已被卸载, 内核崩掉.</p>
+<p>当如展示的使用 /proc 文件, 你必须记住几个实现的麻烦事 -- 不要奇怪现在不鼓励使用它.</p>
+<p>最重要的问题是关于去除 /proc 入口. 这样的去除很可能在文件使用时发生, 因为没有所有者关联到 /proc 入口, 因此使用它们不会作用到模块的引用计数. 这个问题可以简单的触发, 例如通过运行 sleep 100 &lt; /proc/myfile, 刚好在去除模块之前.</p>
+<p>另外一个问题时关于用同样的名子注册两个入口. 内核信任驱动, 不会检查名子是否已经注册了, 因此如果你不小心, 你可能会使用同样的名子注册两个或多个入口. 这是一个已知发生在教室中的问题, 这样的入口是不能区分的, 不但在你存取它们时, 而且在你调用 remove_proc_entry 时.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Theseqfileinterface"></a>4.3.1.4.&#160;seq_file 接口</h4></div></div></div>
+<p>如我们上面提到的, 在 /proc 下的大文件的实现有点麻烦. 一直以来, /proc 方法因为当输出数量变大时的错误实现变得声名狼藉. 作为一种清理 /proc 代码以及使内核开发者活得轻松些的方法, 添加了 seq_file 接口. 这个接口提供了简单的一套函数来实现大内核虚拟文件.</p>
+<p>set_file 接口假定你在创建一个虚拟文件, 它涉及一系列的必须返回给用户空间的项. 为使用 seq_file, 你必须创建一个简单的 "iterator" 对象, 它能在序列里建立一个位置, 向前进, 并且输出序列里的一个项. 它可能听起来复杂, 但是, 实际上, 过程非常简单. 我们一步步来创建 /proc 文件在 scull 驱动里, 来展示它是如何做的.</p>
+<p>第一步, 不可避免地, 是包含 &lt;linux/seq_file.h&gt;. 接着你必须创建 4 个 iterator 方法, 称为 start, next, stop, 和 show.</p>
+<p>start 方法一直是首先调用. 这个函数的原型是:</p>
+<pre class="programlisting">
+void *start(struct seq_file *sfile, loff_t *pos);
+</pre>
+<p>sfile 参数可以几乎是一直被忽略. pos 是一个整型位置值, 指示应当从哪里读. 位置的解释完全取决于实现; 在结果文件里不需要是一个字节位置. 因为 seq_file 实现典型地步进一系列感兴趣的项, position 常常被解释为指向序列中下一个项的指针. scull 驱动解释每个设备作为系列中的一项, 因此进入的 pos 简单地是一个 scull_device 数组的索引. 因此, scull 使用的 start 方法是:</p>
+<pre class="programlisting">
+static void *scull_seq_start(struct seq_file *s, loff_t *pos)
+{
+    if (*pos &gt;= scull_nr_devs)
+        return NULL;  /* No more to read */
+    return scull_devices + *pos;
+}
+</pre>
+<p>返回值, 如果非NULL, 是一个可以被 iterator 实现使用的私有值.</p>
+<p>next 函数应当移动 iterator 到下一个位置, 如果序列里什么都没有剩下就返回 NULL. 这个方法的原型是:</p>
+<pre class="programlisting">
+void *next(struct seq_file *sfile, void *v, loff_t *pos); 
+</pre>
+<p>这里, v 是从前一个对 start 或者 next 的调用返回的 iterator, pos 是文件的当前位置. next 应当递增有 pos 指向的值; 根据你的 iterator 是如何工作的, 你可能(尽管可能不会)需要递增 pos 不止是 1. 这是 scull 所做的:</p>
+<pre class="programlisting">
+static void *scull_seq_next(struct seq_file *s, void *v, loff_t *pos)
+{
+    (*pos)++;
+    if (*pos &gt;= scull_nr_devs)
+        return NULL;
+    return scull_devices + *pos;
+}
+</pre>
+<p>当内核处理完 iterator, 它调用 stop 来清理:</p>
+<pre class="programlisting">
+void stop(struct seq_file *sfile, void *v); 
+</pre>
+<p>scull 实现没有清理工作要做, 所以它的 stop 方法是空的.</p>
+<p>设计上, 值得注意 seq_file 代码在调用 start 和 stop 之间不睡眠或者进行其他非原子性任务. 你也肯定会看到在调用 start 后马上有一个 stop 调用. 因此, 对你的 start 方法来说请求信号量或自旋锁是安全的. 只要你的其他 seq_file 方法是原子的, 调用的整个序列是原子的. (如果这一段对你没有意义, 在你读了下一章后再回到这.)</p>
+<p>在这些调用中, 内核调用 show 方法来真正输出有用的东西给用户空间. 这个方法的原型是:</p>
+<pre class="programlisting">
+int show(struct seq_file *sfile, void *v); 
+</pre>
+<p>这个方法应当创建序列中由 iterator v 指示的项的输出. 不应当使用 printk, 但是; 有一套特殊的用作 seq_file 输出的函数:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>int seq_printf(struct seq_file *sfile, const char *fmt, ...);</span></span></dt>
+<dd><p>这是给 seq_file 实现的 printf 对等体; 它采用常用的格式串和附加值参数. 你必须也将给 show 函数的 set_file 结构传递给它, 然而. 如果seq_printf 返回非零值, 意思是缓存区已填充, 输出被丢弃. 大部分实现忽略了返回值, 但是.</p></dd>
+<dt><span class="term"><span>int seq_putc(struct seq_file *sfile, char c);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int seq_puts(struct seq_file *sfile, const char *s);</span></span></dt>
+<dd><p>它们是用户空间 putc 和 puts 函数的对等体.</p></dd>
+<dt><span class="term"><span>int seq_escape(struct seq_file *m, const char *s, const char *esc);</span></span></dt>
+<dd><p>这个函数是 seq_puts 的对等体, 除了 s 中的任何也在 esc 中出现的字符以八进制格式打印. esc 的一个通用值是"\t\n\\", 它使内嵌的空格不会搞乱输出和可能搞乱 shell 脚本.</p></dd>
+<dt><span class="term"><span>int seq_path(struct seq_file *sfile, struct vfsmount *m, struct dentry *dentry, char *esc);</span></span></dt>
+<dd><p>这个函数能够用来输出和给定命令项关联的文件名子. 它在设备驱动中不可能有用; 我们是为了完整在此包含它.</p></dd>
+</dl></div>
+<p>回到我们的例子; 在 scull 使用的 show 方法是:</p>
+<pre class="programlisting">
+static int scull_seq_show(struct seq_file *s, void *v)
+{
+    struct scull_dev *dev = (struct scull_dev *) v;
+    struct scull_qset *d;
+    int i;
+
+    if (down_interruptible (&amp;dev-&gt;sem))
+        return -ERESTARTSYS;
+
+    seq_printf(s, "\nDevice %i: qset %i, q %i, sz %li\n",
+               (int) (dev - scull_devices), dev-&gt;qset,
+               dev-&gt;quantum, dev-&gt;size);
+
+    for (d = dev-&gt;data; d; d = d-&gt;next) { /* scan the list */
+        seq_printf(s, " item at %p, qset at %p\n", d, d-&gt;data);
+        if (d-&gt;data &amp;&amp; !d-&gt;next) /* dump only the last item */
+
+            for (i = 0; i &lt; dev-&gt;qset; i++) {
+                if (d-&gt;data[i])
+                    seq_printf(s, " % 4i: %8p\n",
+                               i, d-&gt;data[i]);
+            }
+    }
+    up(&amp;dev-&gt;sem);
+    return 0;
+}
+</pre>
+<p>这里, 我们最终解释我们的" iterator" 值, 简单地是一个 scull_dev 结构指针.</p>
+<p>现在已有了一个完整的 iterator 操作的集合, scull 必须包装起它们, 并且连接它们到 /proc 中的一个文件. 第一步是填充一个 seq_operations 结构:</p>
+<pre class="programlisting">
+static struct seq_operations scull_seq_ops = {
+ .start = scull_seq_start,
+ .next = scull_seq_next,
+ .stop = scull_seq_stop,
+ .show = scull_seq_show
+}; 
+</pre>
+<p>有那个结构在, 我们必须创建一个内核理解的文件实现. 我们不使用前面描述过的 read_proc 方法; 在使用 seq_file 时, 最好在一个稍低的级别上连接到 /proc. 那意味着创建一个 file_operations 结构(是的, 和字符驱动使用的同样结构) 来实现所有内核需要的操作, 来处理文件上的读和移动. 幸运的是, 这个任务是简单的. 第一步是创建一个 open 方法连接文件到 seq_file 操作:</p>
+<pre class="programlisting">
+static int scull_proc_open(struct inode *inode, struct file *file)
+{
+    return seq_open(file, &amp;scull_seq_ops);
+}
+</pre>
+<p>调用 seq_open 连接文件结构和我们上面定义的序列操作. 事实证明, open 是我们必须自己实现的唯一文件操作, 因此我们现在可以建立我们的 file_operations 结构:</p>
+<pre class="programlisting">
+static struct file_operations scull_proc_ops = {
+ .owner = THIS_MODULE,
+ .open = scull_proc_open,
+ .read = seq_read,
+ .llseek = seq_lseek,
+ .release = seq_release 
+}; 
+</pre>
+<p>这里我们指定我们自己的 open 方法, 但是使用预装好的方法 seq_read, seq_lseek, 和 seq_release 给其他.</p>
+<p>最后的步骤是创建 /proc 中的实际文件:</p>
+<pre class="programlisting">
+entry = create_proc_entry("scullseq", 0, NULL);
+if (entry)
+    entry-&gt;proc_fops = &amp;scull_proc_ops;
+</pre>
+<p>不是使用 create_proc_read_entry, 我们调用低层的 create_proc_entry, 我们有这个原型:</p>
+<pre class="programlisting">
+struct proc_dir_entry *create_proc_entry(const char *name,mode_t mode,struct proc_dir_entry *parent); 
+</pre>
+<p>参数和它们的在 create_proc_read_entry 中的对等体相同: 文件名子, 它的位置, 以及父目录.</p>
+<p>有了上面代码, scull 有一个新的 /proc 入口, 看来很象前面的一个. 但是, 它是高级的, 因为它不管它的输出有多么大, 它正确处理移动, 并且通常它是易读和易维护的. 我们建议使用 seq_file , 来实现包含多个非常小数目的输出行数的文件.</p>
+</div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheioctlMethod.sect"></a>4.3.2.&#160;ioctl 方法</h3></div></div></div>
+<p>ioctl, 我们在第 1 章展示给你如何使用, 是一个系统调用, 作用于一个文件描述符; 它接收一个确定要进行的命令的数字和(可选地)另一个参数, 常常是一个指针. 作为一个使用 /proc 文件系统的替代, 你可以实现几个用来调试用的 ioctl 命令. 这些命令可以从驱动拷贝相关的数据结构到用户空间, 这里你可以检查它们.</p>
+<p>这种方式使用 ioctl 来获取信息有些比使用 /proc 困难, 因为你需要另一个程序来发出 ioctl 并且显示结果. 必须编写这个程序, 编译, 并且与你在测试的模块保持同步. 另一方面, 驱动侧代码可能容易过需要实现一个 /proc 文件的代码.</p>
+<p>有时候 ioctl 是获取信息最好的方法, 因为它运行比读取 /proc 快. 如果在数据写到屏幕之前必须做一些事情, 获取二进制形式的数据比读取一个文本文件要更有效. 另外, ioctl 不要求划分数据为小于一页的片段.</p>
+<p>ioctl 方法的另一个有趣的优点是信息获取命令可留在驱动中, 当调试被禁止时. 不象对任何查看目录的人(并且太多人可能奇怪"这个怪文件是什么")都可见的 /proc 文件, 不记入文档的 ioctl 命令可能保持不为人知. 另外, 如果驱动发生了怪异的事情, 它们仍将在那里. 唯一的缺点是模块可能会稍微大些.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id421348" href="#id421348">14</a>] </sup>连字号, 或者减号, 是一个"魔术"标识以阻止 syslogd 刷新文件到磁盘在每个新消息, 有关文档在 syslog.conf(5), 一个值得一读的 manpage.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch04s02.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch04.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch04s04.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">4.2.&#160;用打印调试&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;4.4.&#160;使用观察来调试</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

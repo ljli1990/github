@@ -1,0 +1,175 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>6.7.&#160;¿ìËÙ²Î¿¼-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch06.html" title="µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇı¶¯²Ù×÷">
+<link rel="prev" href="ch06s06.html" title="6.6.&#160;ÔÚÒ»¸öÉè±¸ÎÄ¼şÉÏµÄ´æÈ¡¿ØÖÆ">
+<link rel="next" href="ch07.html" title="µÚ&#160;7&#160;ÕÂ&#160;Ê±¼ä, ÑÓÊ±, ºÍÑÓºó¹¤×÷">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">6.7.&#160;¿ìËÙ²Î¿¼</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch06s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;6&#160;ÕÂ&#160;¸ß¼¶×Ö·ûÇı¶¯²Ù×÷</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="AdvancedCharDriverOperationsqr.sect1"></a>6.7.&#160;¿ìËÙ²Î¿¼</h2></div></div></div>
+<p>±¾ÕÂ½éÉÜÁËÏÂÃæµÄ·ûºÅºÍÍ·ÎÄ¼ş:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/ioctl.h&gt;</span></span></dt>
+<dd><p>ÉùÃ÷ÓÃÀ´¶¨Òå ioctl ÃüÁîµÄºê¶¨Òå. µ±Ç°±» &lt;linux/fs.h&gt; °üº¬.</p></dd>
+<dt><span class="term"><span>_IOC_NRBITS</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_TYPEBITS</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_SIZEBITS</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_DIRBITS </span></span></dt>
+<dd><p>ioctl ÃüÁîµÄ²»Í¬Î»¶ÎËùÊ¹ÓÃµÄÎ»Êı. »¹ÓĞ 4 ¸öºêÀ´Ö¸¶¨ MASK ºÍ 4 ¸öÖ¸¶¨ SHIFT, µ«ÊÇËüÃÇÖ÷ÒªÊÇ¸øÄÚ²¿Ê¹ÓÃ. _IOC_SIZEBIT ÊÇÒ»¸öÒª¼ì²éµÄÖØÒªµÄÖµ, ÒòÎªËü¿çÌåÏµ¸Ä±ä.</p></dd>
+<dt><span class="term"><span>_IOC_NONE</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_READ</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_WRITE </span></span></dt>
+<dd><p>"·½Ïò"Î»¶Î¿ÉÄÜµÄÖµ. "read" ºÍ "write" ÊÇ²»Í¬µÄÎ»²¢ÇÒ¿ÉÏà»òÀ´Ö¸¶¨ read/write. ÕâĞ©ÖµÊÇ»ùÓÚ 0 µÄ.</p></dd>
+<dt><span class="term"><span>_IOC(dir,type,nr,size)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IO(type,nr)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOR(type,nr,size)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOW(type,nr,size)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOWR(type,nr,size)</span></span></dt>
+<dd><p>ÓÃÀ´´´½¨ ioclt ÃüÁîµÄºê¶¨Òå.</p></dd>
+<dt><span class="term"><span>_IOC_DIR(nr)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_TYPE(nr)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_NR(nr)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>_IOC_SIZE(nr)</span></span></dt>
+<dd><p>ÓÃÀ´½âÂëÒ»¸öÃüÁîµÄºê¶¨Òå. ÌØ±ğµØ, _IOC_TYPE(nr) ÊÇ _IOC_READ ºÍ  _IOC_WRITE µÄ OR ½áºÏ.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/uaccess.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int access_ok(int type, const void *addr, unsigned long size);</span></span></dt>
+<dd><p>¼ì²éÒ»¸öÓÃ»§¿Õ¼äµÄÖ¸ÕëÊÇ¿ÉÓÃµÄ. access_ok ·µ»ØÒ»¸ö·ÇÁãÖµ, Èç¹ûÓ¦µ±ÔÊĞí´æÈ¡.</p></dd>
+<dt><span class="term"><span>VERIFY_READ </span></span></dt>
+<dd></dd>
+<dt><span class="term">VERIFY_WRITE <span></span></span></dt>
+<dd><p>access_ok ÖĞ type ²ÎÊıµÄ¿ÉÄÜÈ¡Öµ. VERIFY_WRITE ÊÇ VERIFY_READ µÄ³¬¼¯.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/uaccess.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int put_user(datum,ptr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int get_user(local,ptr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int __put_user(datum,ptr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int __get_user(local,ptr);</span></span></dt>
+<dd><p>ÓÃÀ´´æ´¢»ò»ñÈ¡Ò»¸öÊı¾İµ½»ò´ÓÓÃ»§¿Õ¼äµÄºê. ´«ËÍµÄ×Ö½ÚÊıÒÀÀµ sizeof(*ptr). ³£¹æµÄ°æ±¾µ÷ÓÃ access_ok , ¶ø³£¹æ°æ±¾( __put_user ºÍ __get_user ) ¼Ù¶¨ access_ok ÒÑ¾­±»µ÷ÓÃÁË.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/capability.h&gt;</span></span></dt>
+<dd><p>¶¨Òå¸÷ÖÖ CAP_ ·ûºÅ, ÃèÊöÒ»¸öÓÃ»§¿Õ¼ä½ø³Ì¿ÉÓĞµÄÄÜÁ¦.</p></dd>
+<dt><span class="term"><span>int capable(int capability);</span></span></dt>
+<dd><p>·µ»Ø·ÇÁãÖµÈç¹û½ø³ÌÓĞ¸ø¶¨µÄÄÜÁ¦.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/wait.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>typedef struct { /* ... */ } wait_queue_head_t;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void init_waitqueue_head(wait_queue_head_t *queue);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_WAIT_QUEUE_HEAD(queue);</span></span></dt>
+<dd><p>Linux µÈ´ı¶ÓÁĞµÄ¶¨ÒåÀàĞÍ. Ò»¸ö wait_queue_head_t ±ØĞë±»Ã÷È·ÔÚÔËĞĞÊ±Ê¹ÓÃ init_waitqueue_head »òÕß±àÒëÊ±Ê¹ÓÃ DEVLARE_WAIT_QUEUE_HEAD ½øĞĞ³õÊ¼»¯.</p></dd>
+<dt><span class="term"><span>void wait_event(wait_queue_head_t q, int condition);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int wait_event_interruptible(wait_queue_head_t q, int condition);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int wait_event_timeout(wait_queue_head_t q, int condition, int time);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int wait_event_interruptible_timeout(wait_queue_head_t q, int condition,int time);</span></span></dt>
+<dd><p>Ê¹½ø³ÌÔÚ¸ø¶¨¶ÓÁĞÉÏË¯Ãß, Ö±µ½¸ø¶¨Ìõ¼şÖµÎªÕæÖµ.</p></dd>
+<dt><span class="term"><span>void wake_up(struct wait_queue **q);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_interruptible(struct wait_queue **q);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_nr(struct wait_queue **q, int nr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_interruptible_nr(struct wait_queue **q, int nr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_all(struct wait_queue **q);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_interruptible_all(struct wait_queue **q);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void wake_up_interruptible_sync(struct wait_queue **q);</span></span></dt>
+<dd><p>»½ĞÑÔÚ¶ÓÁĞ q ÉÏË¯ÃßµÄ½ø³Ì. _interruptible µÄĞÎÊ½Ö»»½ĞÑ¿ÉÖĞ¶ÏµÄ½ø³Ì. Õı³£µØ, Ö»ÓĞÒ»¸ö»¥³âµÈ´ıÕß±»»½ĞÑ, µ«ÊÇÕâ¸öĞĞÎª¿É±» _nr »òÕß _all ĞÎÊ½Ëù¸Ä±ä. _sync °æ±¾ÔÚ·µ»ØÖ®Ç°²»ÖØĞÂµ÷¶È CPU.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/sched.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>set_current_state(int state);</span></span></dt>
+<dd><p>ÉèÖÃµ±Ç°½ø³ÌµÄÖ´ĞĞ×´Ì¬. TASK_RUNNING ÒâÎ¶×ÅËüÒÑ¾­ÔËĞĞ, ¶øË¯Ãß×´Ì¬ÊÇ TASK_INTERRUPTIBLE ºÍ TASK_UNINTERRUPTIBLE.</p></dd>
+<dt><span class="term"><span>void schedule(void);</span></span></dt>
+<dd><p>Ñ¡ÔñÒ»¸ö¿ÉÔËĞĞµÄ½ø³Ì´ÓÔËĞĞ¶ÓÁĞÖĞ. ±»Ñ¡ÖĞµÄ½ø³Ì¿ÉÊÇµ±Ç°½ø³Ì»òÕßÁíÍâÒ»¸ö.</p></dd>
+<dt><span class="term"><span>typedef struct { /* ... */ } wait_queue_t;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>init_waitqueue_entry(wait_queue_t *entry, struct task_struct *task);</span></span></dt>
+<dd><p>wait_queue_t ÀàĞÍÓÃÀ´·ÅÖÃÒ»¸ö½ø³Ìµ½Ò»¸öµÈ´ı¶ÓÁĞ.</p></dd>
+<dt><span class="term"><span>void prepare_to_wait(wait_queue_head_t *queue, wait_queue_t *wait, int state);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void prepare_to_wait_exclusive(wait_queue_head_t *queue, wait_queue_t *wait, int state);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void finish_wait(wait_queue_head_t *queue, wait_queue_t *wait);</span></span></dt>
+<dd><p>°ïÃ¦º¯Êı, ¿ÉÓÃÀ´±àÂëÒ»¸öÊÖ¹¤Ë¯Ãß.</p></dd>
+<dt><span class="term"><span>void sleep_on(wiat_queue_head_t *queue);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void interruptible_sleep_on(wiat_queue_head_t *queue);</span></span></dt>
+<dd><p>ÀÏÊ½µÄ²»ÍÆ¼öµÄº¯Êı, ËüÃÇÎŞÌõ¼şµØÊ¹µ±Ç°½ø³ÌË¯Ãß.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/poll.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void poll_wait(struct file *filp, wait_queue_head_t *q, poll_table *p);</span></span></dt>
+<dd><p>½«µ±Ç°½ø³Ì·ÅÈëÒ»¸öµÈ´ı¶ÓÁĞ, ²»Á¢¿Ìµ÷¶È. Ëü±»Éè¼ÆÀ´±»Éè±¸Çı¶¯µÄ poll ·½·¨Ê¹ÓÃ.</p></dd>
+<dt><span class="term"><span>int fasync_helper(struct inode *inode, struct file *filp, int mode, struct fasync_struct **fa);</span></span></dt>
+<dd><p>Ò»¸ö"°ïÃ¦Õß", À´ÊµÏÖ fasync Éè±¸·½·¨. mode ²ÎÊıÊÇ´«µİ¸ø·½·¨µÄÏàÍ¬µÄÖµ, ¶ø fa Ö¸ÕëÖ¸ÏòÒ»¸öÉè±¸ÌØ¶¨µÄ fasync_struct *.</p></dd>
+<dt><span class="term"><span>void kill_fasync(struct fasync_struct *fa, int sig, int band);</span></span></dt>
+<dd><p>Èç¹ûÕâ¸öÇı¶¯Ö§³ÖÒì²½Í¨Öª, Õâ¸öº¯Êı¿ÉÓÃÀ´·¢ËÍÒ»¸öĞÅºÅµ½µÇ¼ÇÔÚ fa ÖĞµÄ½ø³Ì.</p></dd>
+<dt><span class="term"><span>int nonseekable_open(struct inode *inode, struct file *filp);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>loff_t no_llseek(struct file *file, loff_t offset, int whence);</span></span></dt>
+<dd><p>nonseekable_open Ó¦µ±ÔÚÈÎºÎ²»Ö§³ÖÒÆÎ»µÄÉè±¸µÄ open ·½·¨ÖĞ±»µ÷ÓÃ. ÕâÑùµÄÉè±¸Ó¦µ±Ê¹ÓÃ no_llseek ×÷ÎªËüÃÇµÄ llseek ·½·¨.</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch06s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">6.6.&#160;ÔÚÒ»¸öÉè±¸ÎÄ¼şÉÏµÄ´æÈ¡¿ØÖÆ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;µÚ&#160;7&#160;ÕÂ&#160;Ê±¼ä, ÑÓÊ±, ºÍÑÓºó¹¤×÷</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

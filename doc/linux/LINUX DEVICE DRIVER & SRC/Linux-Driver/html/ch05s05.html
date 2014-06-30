@@ -1,0 +1,155 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>5.5.&#160;×ÔÐýËø-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch05.html" title="µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö">
+<link rel="prev" href="ch05s04.html" title="5.4.&#160;Completions »úÖÆ">
+<link rel="next" href="ch05s06.html" title="5.6.&#160;ËøÏÝÚå">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.5.&#160;×ÔÐýËø</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch05s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Spinlocks.sect"></a>5.5.&#160;×ÔÐýËø</h2></div></div></div>
+<p>¶ÔÓÚ»¥³â, Æì±êÊÇÒ»¸öÓÐÓÃµÄ¹¤¾ß, µ«ÊÇËüÃÇ²»ÊÇÄÚºËÌá¹©µÄÎ¨Ò»ÕâÑùµÄ¹¤¾ß. Ïà·´, ´ó²¿·Ö¼ÓËøÊÇÓÉÒ»ÖÖ³ÆÎª×ÔÐýËøµÄ»úÖÆÀ´ÊµÏÖ. ²»ÏóÆì±ê, ×ÔÐýËø¿ÉÓÃÔÚ²»ÄÜË¯ÃßµÄ´úÂëÖÐ, ÀýÈçÖÐ¶Ï´¦Àí. µ±ÕýÈ·µØÊ¹ÓÃÁË, Í¨³£×ÔÐýËøÌá¹©ÁË±ÈÆì±ê¸ü¸ßµÄÐÔÄÜ. È»¶ø, ËüÃÇÈ·Êµ´øÀ´¶ÔËüÃÇÓÃ·¨µÄÒ»Ì×²»Í¬µÄÏÞÖÆ.</p>
+<p>×ÔÐýËø¸ÅÄîÉÏ¼òµ¥. Ò»¸ö×ÔÐýËøÊÇÒ»¸ö»¥³âÉè±¸, Ö»ÄÜÓÐ 2 ¸öÖµ:"ÉÏËø"ºÍ"½âËø". Ëü³£³£ÊµÏÖÎªÒ»¸öÕûÊýÖµÖÐµÄÒ»¸öµ¥¸öÎ». Ïë»ñÈ¡Ò»¸öÌØÊâËøµÄ´úÂë²âÊÔÏà¹ØµÄÎ». Èç¹ûËøÊÇ¿ÉÓÃµÄ, Õâ¸ö"ÉÏËø"Î»±»ÖÃÎ»²¢ÇÒ´úÂë¼ÌÐø½øÈëÁÙ½çÇø. Ïà·´, Èç¹ûÕâ¸öËøÒÑ¾­±»±ðÈË»ñµÃ, ´úÂë½øÈëÒ»¸ö½ô´ÕµÄÑ­»·ÖÐ·´¸´¼ì²éÕâ¸öËø, Ö±µ½Ëü±äÎª¿ÉÓÃ. Õâ¸öÑ­»·¾ÍÊÇ×ÔÐýËøµÄ"×ÔÐý"²¿·Ö.</p>
+<p>µ±È», Ò»¸ö×ÔÐýËøµÄÕæÊµÊµÏÖ±ÈÉÏÃæÃèÊöµÄ¸´ÔÓÒ»µã. Õâ¸ö"²âÊÔ²¢ÖÃÎ»"²Ù×÷±ØÐëÒÔÔ­×Ó·½Ê½½øÐÐ, ÒÔ±ãÖ»ÓÐÒ»¸öÏß³ÌÄÜ¹»»ñµÃËø, ¾ÍËãÈç¹ûÓÐ¶à¸ö½ø³ÌÔÚÈÎºÎ¸ø¶¨Ê±¼ä×ÔÐý. ±ØÐëÐ¡ÐÄÒÔ±ÜÃâÔÚ³¬Ïß³Ì´¦ÀíÆ÷ÉÏËÀËø -- ÊµÏÖ¶à¸öÐéÄâ CPU ÒÔ¹²ÏíÒ»¸öµ¥¸ö´¦ÀíÆ÷ºËÐÄºÍ»º´æµÄÐ¾Æ¬. Òò´ËÊµ¼ÊµÄ×ÔÐýËøÊµÏÖÔÚÃ¿¸ö Linux Ö§³ÖµÄÌåÏµÉÏ¶¼²»Í¬. ºËÐÄµÄ¸ÅÄîÔÚËùÓÐÏµÍ³ÉÏÏàÍ¬, È»¶ø, µ±ÓÐ¶Ô×ÔÐýËøµÄ¾ºÕù, µÈ´ýµÄ´¦ÀíÆ÷ÔÚÒ»¸ö½ô´ÕÑ­»·ÖÐÖ´ÐÐ²¢ÇÒ²»×÷ÓÐÓÃµÄ¹¤×÷.</p>
+<p>ËüÃÇµÄÌØÐÔÉÏ, ×ÔÐýËøÊÇ´òËãÓÃÔÚ¶à´¦ÀíÆ÷ÏµÍ³ÉÏ, ¾¡¹ÜÒ»¸öÔËÐÐÒ»¸öÇÀÕ¼Ê½ÄÚºËµÄµ¥´¦ÀíÆ÷¹¤×÷Õ¾µÄÐÐÎªÈçÍ¬ SMP, Èç¹ûÖ»¿¼ÂÇµ½²¢·¢. Èç¹ûÒ»¸ö·ÇÇÀÕ¼µÄµ¥´¦ÀíÆ÷ÏµÍ³½øÈëÒ»¸öËøÉÏµÄ×ÔÐý, Ëü½«ÓÀÔ¶×ÔÐý; Ã»ÓÐÆäËûµÄÏß³ÌÔÙÄÜ¹»»ñµÃ CPU À´ÊÍ·ÅÕâ¸öËø. Òò´Ë, ×ÔÐýËøÔÚÃ»ÓÐ´ò¿ªÇÀÕ¼µÄµ¥´¦ÀíÆ÷ÏµÍ³ÉÏµÄ²Ù×÷±»ÓÅ»¯ÎªÊ²Ã´²»×÷, ³ýÁË¸Ä±ä IRQ ÆÁ±Î×´Ì¬µÄÄÇÐ©. ÓÉÓÚÇÀÕ¼, ÉõÖÁÈç¹ûÄã´Ó²»Ï£ÍûÄãµÄ´úÂëÔÚÒ»¸ö SMP ÏµÍ³ÉÏÔËÐÐ, ÄãÈÔÈ»ÐèÒªÊµÏÖÕýÈ·µÄ¼ÓËø.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="IntroductiontotheSpinlockAPI.sect"></a>5.5.1.&#160;×ÔÐýËø API ¼ò½é</h3></div></div></div>
+<p>×ÔÐýËøÔ­ÓïÒªÇóµÄ°üº¬ÎÄ¼þÊÇ &lt;linux/spinlock.h&gt;. Ò»¸öÊµ¼ÊµÄËøÓÐÀàÐÍ spinlock_t. ÏóÈÎºÎÆäËûÊý¾Ý½á¹¹, Ò»¸ö ×ÔÐýËø±ØÐë³õÊ¼»¯. Õâ¸ö³õÊ¼»¯¿ÉÒÔÔÚ±àÒëÊ±Íê³É, ÈçÏÂ:</p>
+<pre class="programlisting">
+spinlock_t my_lock = SPIN_LOCK_UNLOCKED; 
+</pre>
+<p>»òÕßÔÚÔËÐÐÊ±Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void spin_lock_init(spinlock_t *lock); 
+</pre>
+<p>ÔÚ½øÈëÒ»¸öÁÙ½çÇøÇ°, ÄãµÄ´úÂë±ØÐë»ñµÃÐèÒªµÄ lock , ÓÃ:</p>
+<pre class="programlisting">
+void spin_lock(spinlock_t *lock); 
+</pre>
+<p>×¢ÒâËùÓÐµÄ×ÔÐýËøµÈ´ýÊÇ, ÓÉÓÚËüÃÇµÄÌØÐÔ, ²»¿ÉÖÐ¶ÏµÄ. Ò»µ©Äãµ÷ÓÃ spin_lock, Äã½«×ÔÐýÖ±µ½Ëø±äÎª¿ÉÓÃ.</p>
+<p>ÎªÊÍ·ÅÒ»¸öÄãÒÑ»ñµÃµÄËø, ´«µÝËü¸ø:</p>
+<pre class="programlisting">
+void spin_unlock(spinlock_t *lock); 
+</pre>
+<p>ÓÐºÜ¶àÆäËûµÄ×ÔÐýËøº¯Êý, ÎÒÃÇ½«ºÜ¿ì¶¼¿´µ½. µ«ÊÇÃ»ÓÐÒ»¸ö±³ÀëÉÏÃæÁÐ³öµÄº¯ÊýËùÕ¹Ê¾µÄºËÐÄ¸ÅÄî. ³ýÁË¼ÓËøºÍÊÍ·Å, Ã»ÓÐÊ²Ã´¿É¶ÔÒ»¸öËøËù×÷µÄ. µ«ÊÇ, ÓÐ¼¸¸ö¹æÔò¹ØÓÚÄã±ØÐëÈçºÎÊ¹ÓÃ×ÔÐýËø. ÎÒÃÇ½«ÓÃÒ»µãÊ±¼äÀ´¿´ÕâÐ©, ÔÚ½øÈëÍêÕûµÄ×ÔÐýËø½Ó¿ÚÖ®Ç°.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="SpinlocksandAtomicContext.sect"></a>5.5.2.&#160;×ÔÐýËøºÍÔ­×ÓÉÏÏÂÎÄ</h3></div></div></div>
+<p>ÏëÏóÒ»»á¶ùÄãµÄÇý¶¯ÇëÇóÒ»¸ö×ÔÐýËø²¢ÇÒÔÚËüµÄÁÙ½çÇøÀï×öËüµÄÊÂÇé. ÔÚÖÐ¼äÄ³´¦, ÄãµÄÇý¶¯Ê§È¥ÁË´¦ÀíÆ÷. »òÐíËüÒÑµ÷ÓÃÁËÒ»¸öº¯Êý( copy_from_user, ¼ÙÉè) Ê¹½ø³Ì½øÈëË¯Ãß. »òÕß, Ò²Ðí, ÄÚºËÇÀÕ¼·¢Íþ, Ò»¸ö¸ü¸ßÓÅÏÈ¼¶µÄ½ø³Ì½«ÄãµÄ´úÂëÍÆµ½Ò»±ß. ÄãµÄ´úÂëÏÖÔÚ³ÖÓÐÒ»¸öËø, ÔÚ¿É¼ûµÄ½«À´µÄÈçºÎÊ±¼ä²»»áÊÍ·ÅÕâ¸öËø. Èç¹ûÄ³¸ö±ðµÄÏß³ÌÏë»ñµÃÍ¬Ò»¸öËø, Ëü»á, ÔÚ×îºÃµÄÇé¿öÏÂ, µÈ´ý( ÔÚ´¦ÀíÆ÷ÖÐ×ÔÐý )ºÜ³¤Ê±¼ä. ×î»µµÄÇé¿ö, ÏµÍ³¿ÉÄÜÍêÈ«ËÀËø.</p>
+<p>´ó²¿·Ö¶ÁÕß»áÍ¬ÒâÕâ¸ö³¡¾°×îºÃÊÇ±ÜÃâ. Òò´Ë, Ó¦ÓÃµ½×ÔÐýËøµÄºËÐÄ¹æÔòÊÇÈÎºÎ´úÂë±ØÐë, ÔÚ³ÖÓÐ×ÔÐýËøÊ±, ÊÇÔ­×ÓÐÔµÄ. Ëü²»ÄÜË¯Ãß; ÊÂÊµÉÏ, Ëü²»ÄÜÒòÎªÈÎºÎÔ­Òò·ÅÆú´¦ÀíÆ÷, ³ýÁË·þÎñÖÐ¶Ï(²¢ÇÒÓÐÊ±¼´±ã´ËÊ±Ò²²»ÐÐ)</p>
+<p>ÄÚºËÇÀÕ¼µÄÇé¿öÓÉ×ÔÐýËø´úÂë×Ô¼º´¦Àí. ÄÚºË´úÂë³ÖÓÐÒ»¸ö×ÔÐýËøµÄÈÎºÎÊ±¼ä, ÇÀÕ¼ÔÚÏà¹Ø´¦ÀíÆ÷ÉÏ±»½ûÖ¹. ¼´±ãµ¥´¦ÀíÆ÷ÏµÍ³±ØÐëÒÔÕâÖÖ·½Ê½½ûÖ¹ÇÀÕ¼ÒÔ±ÜÃâ¾ºÕùÇé¿ö. Õâ¾ÍÊÇÎªÊ²Ã´ÐèÒªÕýÈ·µÄ¼ÓËø, ¼´±ãÄã´Ó²»ÆÚÍûÄãµÄ´úÂëÔÚ¶à´¦ÀíÆ÷»úÆ÷ÉÏÔËÐÐ.</p>
+<p>ÔÚ³ÖÓÐÒ»¸öËøÊ±±ÜÃâË¯ÃßÊÇ¸ü¼ÓÀ§ÄÑ; ºÜ¶àÄÚºËº¯Êý¿ÉÄÜË¯Ãß, ²¢ÇÒÕâ¸öÐÐÎª²»ÊÇ¶¼±»Ã÷È·¼ÇÂ¼ÁË. ¿½±´Êý¾Ýµ½»ò´ÓÓÃ»§¿Õ¼äÊÇÒ»¸öÃ÷ÏÔµÄÀý×Ó: ÇëÇóµÄÓÃ»§¿Õ¼äÒ³¿ÉÄÜÐèÒªÔÚ¿½±´½øÐÐÇ°´Ó´ÅÅÌÉÏ»»Èë, Õâ¸ö²Ù×÷ÏÔÈ»ÐèÒªÒ»¸öË¯Ãß. ±ØÐë·ÖÅäÄÚ´æµÄÈÎºÎ²Ù×÷¶¼¿ÉÄÜË¯Ãß. kmalloc ÄÜ¹»¾ö¶¨·ÅÆú´¦ÀíÆ÷, ²¢ÇÒµÈ´ý¸ü¶àÄÚ´æ¿ÉÓÃ³ý·ÇËü±»Ã÷È·¸æÖª²»ÕâÑù×ö. Ë¯Ãß¿ÉÄÜ·¢ÉúÔÚÁîÈË¾ªÑÈµÄµØ·½; ±àÐ´»áÔÚ×ÔÐýËøÏÂÖ´ÐÐµÄ´úÂëÐèÒª×¢ÒâÄãµ÷ÓÃµÄÃ¿¸öº¯Êý.</p>
+<p>ÕâÓÐÁíÒ»¸ö³¡¾°: ÄãµÄÇý¶¯ÔÚÖ´ÐÐ²¢ÇÒÒÑ¾­»ñÈ¡ÁËÒ»¸öËøÀ´¿ØÖÆ¶ÔËüµÄÉè±¸µÄ´æÈ¡. µ±³ÖÓÐÕâ¸öËøÊ±, Éè±¸·¢³öÒ»¸öÖÐ¶Ï, Ê¹µÃÄãµÄÖÐ¶Ï´¦ÀíÔËÐÐ. ÖÐ¶Ï´¦Àí, ÔÚ´æÈ¡Éè±¸Ö®Ç°, ±ØÐë»ñµÃËø. ÔÚÒ»¸öÖÐ¶Ï´¦ÀíÖÐ»ñÈ¡Ò»¸ö×ÔÐýËøÊÇÒ»¸öÒª×öµÄºÏ·¨µÄÊÂÇé; ÕâÊÇ×ÔÐýËø²Ù×÷²»ÄÜË¯ÃßµÄÆäÖÐÒ»¸öÀíÓÉ. µ«ÊÇÈç¹ûÖÐ¶Ï´¦ÀíºÍÆð³õ»ñµÃËøµÄ´úÂëÔÚÍ¬Ò»¸ö´¦ÀíÆ÷ÉÏ»á·¢ÉúÊ²Ã´? µ±ÖÐ¶Ï´¦ÀíÔÚ×ÔÐý, ·ÇÖÐ¶Ï´úÂë²»ÄÜÔËÐÐÀ´ÊÍ·ÅËø. Õâ¸ö´¦ÀíÆ÷½«ÓÀÔ¶×ÔÐý.</p>
+<p>±ÜÃâÕâ¸öÏÝÚåÐèÒªÔÚ³ÖÓÐ×ÔÐýËøÊ±½ûÖ¹ÖÐ¶Ï( Ö»ÔÚ±¾µØ CPU ). ÓÐ¸÷ÖÖ×ÔÐýËøº¯Êý»áÎªÄã½ûÖ¹ÖÐ¶Ï( ÎÒÃÇ½«ÔÚÏÂÒ»½Ú¼ûµ½ËüÃÇ ). µ«ÊÇ, Ò»¸öÍêÕûµÄÖÐ¶ÏÌÖÂÛ±ØÐëµÈµ½µÚ 10 ÕÂÁË.</p>
+<p>¹ØÓÚ×ÔÐýËøÊ¹ÓÃµÄ×îºóÒ»¸öÖØÒª¹æÔòÊÇ×ÔÐýËø±ØÐëÒ»Ö±ÊÇ¾¡¿ÉÄÜ¶ÌÊ±¼äµÄ³ÖÓÐ. Äã³ÖÓÐÒ»¸öËøÔ½³¤, ÁíÒ»¸ö½ø³Ì¿ÉÄÜ²»µÃ²»×ÔÐýµÈ´ýÄãÊÍ·ÅËüµÄÊ±¼äÔ½³¤, Ëü²»µÃ²»ÍêÈ«×ÔÐýµÄ»ú»áÔ½´ó. ³¤Ê±¼ä³ÖÓÐËøÒ²×èÖ¹ÁËµ±Ç°´¦ÀíÆ÷µ÷¶È, ÒâÎ¶×Å¸ßÓÅÏÈ¼¶½ø³Ì -- ÕæÕýÓ¦µ±ÄÜ»ñµÃ CPU µÄ -- ¿ÉÄÜ²»µÃ²»µÈ´ý. ÄÚºË¿ª·¢Õß¾¡ÁËºÜ´óÅ¬Á¦À´¼õÉÙÄÚºË·´Ó¦Ê±¼ä( Ò»¸ö½ø³Ì¿ÉÄÜ²»µÃ²»µÈ´ýµ÷¶ÈµÄÊ±¼ä )ÔÚ 2.5 ¿ª·¢ÏµÁÐ. Ò»¸öÐ´µÄºÜ²îµÄÇý¶¯»á´Ý»ÙËùÓÐµÄ½ø³Ì, ½ö½öÍ¨¹ý³ÖÓÐÒ»¸öËøÌ«³¤Ê±¼ä. Îª±ÜÃâ²úÉúÕâÀàÎÊÌâ, ÖØÊÓÊ¹ÄãµÄËø³ÖÓÐÊ±¼ä¶Ì.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheSpinlockFunctions.sect"></a>5.5.3.&#160;×ÔÐýËøº¯Êý</h3></div></div></div>
+<p>ÎÒÃÇÒÑ¾­¿´µ½ 2 ¸öº¯Êý, spin_lock ºÍ spin_unlock, ¿ÉÒÔ²Ù×÷×ÔÐýËø. ÓÐÆäËû¼¸¸öº¯Êý, È»¶ø, ÓÐÀàËÆµÄÃû×ÓºÍÓÃÍ¾. ÎÒÃÇÏÖÔÚ»áÕ¹Ê¾È«Ì×. Õâ¸öÌÖÂÛ½«´øÎÒÃÇµ½Ò»¸öÎÒÃÇÎÞ·¨ÔÚ¼¸ÕÂÄÚÊÊµ±º­¸ÇµÄµØ·½; ×ÔÐýËø API µÄÍêÕûÀí½âÐèÒª¶ÔÖÐ¶Ï´¦ÀíºÍÏà¹Ø¸ÅÄîµÄÀí½â.</p>
+<p>Êµ¼ÊÉÏÓÐ 4 ¸öº¯Êý¿ÉÒÔ¼ÓËøÒ»¸ö×ÔÐýËø:</p>
+<pre class="programlisting">
+void spin_lock(spinlock_t *lock);
+void spin_lock_irqsave(spinlock_t *lock, unsigned long flags);
+void spin_lock_irq(spinlock_t *lock);
+void spin_lock_bh(spinlock_t *lock)
+</pre>
+<p>ÎÒÃÇÒÑ¾­¿´µ½×ÔÐýËøÈçºÎ¹¤×÷. spin_loc_irqsave ½ûÖ¹ÖÐ¶Ï(Ö»ÔÚ±¾µØ´¦ÀíÆ÷)ÔÚ»ñµÃ×ÔÐýËøÖ®Ç°; Ö®Ç°µÄÖÐ¶Ï×´Ì¬±£´æÔÚ flags Àï. Èç¹ûÄã¾ø¶ÔÈ·¶¨ÔÚÄãµÄ´¦ÀíÆ÷ÉÏÃ»ÓÐ½ûÖ¹ÖÐ¶ÏµÄ(»òÕß, »»¾ä»°Ëµ, ÄãÈ·ÐÅÄãÓ¦µ±ÔÚÄãÊÍ·ÅÄãµÄ×ÔÐýËøÊ±´ò¿ªÖÐ¶Ï), Äã¿ÉÒÔÊ¹ÓÃ spin_lock_irq ´úÌæ, ²¢ÇÒ²»±Ø±£³Ö¸ú×Ù flags. ×îºó, spin_lock_bh ÔÚ»ñÈ¡ËøÖ®Ç°½ûÖ¹Èí¼þÖÐ¶Ï, µ«ÊÇÓ²¼þÖÐ¶ÏÁô×÷´ò¿ªµÄ.</p>
+<p>Èç¹ûÄãÓÐÒ»¸ö¿ÉÄÜ±»ÔÚ(Ó²¼þ»òÈí¼þ)ÖÐ¶ÏÉÏÏÂÎÄÔËÐÐµÄ´úÂë»ñµÃµÄ×ÔÐýËø, Äã±ØÐëÊ¹ÓÃÒ»ÖÖ spin_lock ÐÎÊ½À´½ûÖ¹ÖÐ¶Ï. ÆäËû×ö·¨¿ÉÄÜËÀËøÏµÍ³, ³ÙÔç. Èç¹ûÄã²»ÔÚÓ²¼þÖÐ¶Ï´¦ÀíÀï´æÈ¡ÄãµÄËø, µ«ÊÇÄãÍ¨¹ýÈí¼þÖÐ¶Ï(ÀýÈç, ÔÚÒ»¸ö tasklet ÔËÐÐµÄ´úÂë, ÔÚµÚ 7 ÕÂÉæ¼°µÄÖ÷Ìâ ), Äã¿ÉÒÔÊ¹ÓÃ spin_lock_bh À´°²È«µØ±ÜÃâËÀËø, ¶øÈÔÈ»ÔÊÐíÓ²¼þÖÐ¶Ï±»·þÎñ.</p>
+<p>Ò²ÓÐ 4 ¸ö·½·¨À´ÊÍ·ÅÒ»¸ö×ÔÐýËø; ÄãÓÃµÄÄÇ¸ö±ØÐë¶ÔÓ¦ÄãÓÃÀ´»ñÈ¡ËøµÄº¯Êý.</p>
+<pre class="programlisting">
+void spin_unlock(spinlock_t *lock);
+void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags);
+void spin_unlock_irq(spinlock_t *lock);
+void spin_unlock_bh(spinlock_t *lock);
+</pre>
+<p>Ã¿¸ö spin_unlock ±äÌå»Ö¸´ÓÉ¶ÔÓ¦µÄ spin_lock º¯ÊýËø×öµÄ¹¤×÷. ´«µÝ¸ø spin_unlock_irqrestore µÄ flags ²ÎÊý±ØÐëÊÇ´«µÝ¸ø spin_lock_irqsave µÄÍ¬Ò»¸ö±äÁ¿. Äã±ØÐëÒ²µ÷ÓÃ spin_lock_irqsave ºÍ spin_unlock_irqrestore ÔÚÍ¬Ò»¸öº¯ÊýÀï. ·ñÔò, ÄãµÄ´úÂë¿ÉÄÜÆÆ»µÄ³Ð©ÌåÏµ.</p>
+<p>»¹ÓÐÒ»Ì×·Ç×èÈûµÄ×ÔÐýËø²Ù×÷:</p>
+<pre class="programlisting">
+int spin_trylock(spinlock_t *lock);
+int spin_trylock_bh(spinlock_t *lock);
+</pre>
+<p>ÕâÐ©º¯Êý³É¹¦Ê±·µ»Ø·ÇÁã( »ñµÃÁËËø ), ·ñÔò 0. Ã»ÓÐ"try"°æ±¾À´½ûÖ¹ÖÐ¶Ï.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ReaderWriterSpinlocks.sect"></a>5.5.4.&#160;¶ÁÕß/Ð´Õß×ÔÐýËø</h3></div></div></div>
+<p>ÄÚºËÌá¹©ÁËÒ»¸ö×ÔÐýËøµÄ¶ÁÕß/Ð´ÕßÐÎÊ½, Ö±½ÓÄ£·ÂÎÒÃÇÔÚ±¾ÕÂÇ°Ãæ¼ûµ½µÄ¶ÁÕß/Ð´ÕßÆì±ê. ÕâÐ©ËøÔÊÐíÈÎºÎÊýÄ¿µÄ¶ÁÕßÍ¬Ê±½øÈëÁÙ½çÇø, µ«ÊÇÐ´Õß±ØÐëÊÇÅÅËûµÄ´æÈ¡. ¶ÁÕßÐ´ÕßËøÓÐÒ»¸öÀàÐÍ rwlock_t, ÔÚ &lt;linux/spinlokc.h&gt; ÖÐ¶¨Òå. ËüÃÇ¿ÉÒÔÒÔ 2 ÖÖ·½Ê½±»ÉùÃ÷ºÍ±»³õÊ¼»¯:</p>
+<pre class="programlisting">
+rwlock_t my_rwlock = RW_LOCK_UNLOCKED; /* Static way */ 
+rwlock_t my_rwlock;
+rwlock_init(&amp;my_rwlock); /* Dynamic way */
+</pre>
+<p>¿ÉÓÃº¯ÊýµÄÁÐ±íÏÖÔÚÓ¦µ±¿´À´Ïàµ±ÀàËÆ. ¶ÔÓÚ¶ÁÕß, ÏÂÁÐº¯ÊýÊÇ¿ÉÓÃµÄ:</p>
+<pre class="programlisting">
+void read_lock(rwlock_t *lock);
+void read_lock_irqsave(rwlock_t *lock, unsigned long flags);
+void read_lock_irq(rwlock_t *lock);
+void read_lock_bh(rwlock_t *lock);
+
+void read_unlock(rwlock_t *lock);
+void read_unlock_irqrestore(rwlock_t *lock, unsigned long flags);
+void read_unlock_irq(rwlock_t *lock);
+void read_unlock_bh(rwlock_t *lock);
+</pre>
+<p>ÓÐÈ¤µØ, Ã»ÓÐ read_trylock. ¶ÔÓÚÐ´´æÈ¡µÄº¯ÊýÊÇÀàËÆµÄ:</p>
+<pre class="programlisting">
+void write_lock(rwlock_t *lock);
+void write_lock_irqsave(rwlock_t *lock, unsigned long flags);
+void write_lock_irq(rwlock_t *lock);
+void write_lock_bh(rwlock_t *lock);
+int write_trylock(rwlock_t *lock);
+
+void write_unlock(rwlock_t *lock);
+void write_unlock_irqrestore(rwlock_t *lock, unsigned long flags);
+void write_unlock_irq(rwlock_t *lock);
+void write_unlock_bh(rwlock_t *lock);
+</pre>
+<p>¶ÁÕß/Ð´ÕßËøÄÜ¹»¶ö»µ¶ÁÕß, ¾ÍÏñ rwsem Ò»Ñù. Õâ¸öÐÐÎªºÜÉÙÊÇÒ»¸öÎÊÌâ; È»¶ø, Èç¹ûÓÐ×ã¹»µÄËø¾ºÕùÀ´ÒýÆð¼¢¶ö, ÐÔÄÜÎÞÂÛÈçºÎ¶¼²»ÐÐ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch05s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.4.&#160;Completions »úÖÆ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;5.6.&#160;ËøÏÝÚå</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

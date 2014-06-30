@@ -1,0 +1,96 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;10&#160;ÕÂ&#160;ÖÐ¶Ï´¦Àí-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch09s05.html" title="9.5.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch10s02.html" title="10.2.&#160;°²×°Ò»¸öÖÐ¶Ï´¦Àí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;10&#160;ÕÂ&#160;ÖÐ¶Ï´¦Àí</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch09s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch10s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="InterruptHandling.chap"></a>µÚ&#160;10&#160;ÕÂ&#160;ÖÐ¶Ï´¦Àí</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch10.html#PreparingtheParallelPort.sect">10.1. ×¼±¸²¢¿Ú</a></span></dt>
+<dt><span class="sect1"><a href="ch10s02.html">10.2. °²×°Ò»¸öÖÐ¶Ï´¦Àí</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch10s02.html#TheprocInterface.sect">10.2.1. /proc ½Ó¿Ú</a></span></dt>
+<dt><span class="sect2"><a href="ch10s02.html#AutodetectingtheIRQNumber.sect">10.2.2. ×Ô¶¯¼ì²â IRQ ºÅ</a></span></dt>
+<dt><span class="sect2"><a href="ch10s02.html#FastandSlowHandlers.sect">10.2.3. ¿ìËÙºÍÂýËÙ´¦Àí</a></span></dt>
+<dt><span class="sect2"><a href="ch10s02.html#ImplementingaHandler.sect">10.2.4. ÊµÏÖÒ»¸ö´¦Àí</a></span></dt>
+<dt><span class="sect2"><a href="ch10s02.html#HandlerArgumentsandReturnValue.sect">10.2.5. ´¦ÀíÕßµÄ²ÎÊýºÍ·µ»ØÖµ</a></span></dt>
+<dt><span class="sect2"><a href="ch10s02.html#EnablingandDisablingInterrupts.sect">10.2.6. Ê¹ÄÜºÍ½ûÖ¹ÖÐ¶Ï</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch10s03.html">10.3. Ç°ºÍºó°ë²¿</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch10s03.html#Tasklet.sect">10.3.1. Tasklet ÊµÏÖ</a></span></dt>
+<dt><span class="sect2"><a href="ch10s03.html#Workqueues.sect">10.3.2. ¹¤×÷¶ÓÁÐ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch10s04.html">10.4. ÖÐ¶Ï¹²Ïí</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch10s04.html#InstallingaSharedHandler.sect">10.4.1. °²×°Ò»¸ö¹²ÏíµÄ´¦ÀíÕß</a></span></dt>
+<dt><span class="sect2"><a href="ch10s04.html#RunningtheHandler.sect">10.4.2. ÔËÐÐ´¦ÀíÕß</a></span></dt>
+<dt><span class="sect2"><a href="ch10s04.html#TheprocInterfaceandShardInterrupts.sect">10.4.3. /proc ½Ó¿ÚºÍ¹²ÏíÖÐ¶Ï</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch10s05.html">10.5. ÖÐ¶ÏÇý¶¯ I/O</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ch10s05.html#AWriteBufferingExample.sect">10.5.1. Ò»¸öÐ´»º´æÀý×Ó</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ch10s06.html">10.6. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>¾¡¹ÜÒ»Ð©Éè±¸¿ÉÖ»Ê¹ÓÃËüÃÇµÄ I/O ÇøÀ´¿ØÖÆ, ´ó²¿·ÖÕæÊµµÄÉè±¸±ÈÄÇ¸öÒª¸´ÔÓµã. Éè±¸²»µÃ²»ºÍÍâ²¿ÊÀ½ç´ò½»µÀ, ³£³£°üÀ¨ÖîÈçÐý×ªµÄ´ÅÅÌ, ÒÆ¶¯µÄ´Å´ø, Á¬µ½Ô¶´¦µÄÏßÀÂ, µÈµÈ. ºÜ¶à±ØÐëÔÚÒ»¸öÊ±¼äÆ¬ÖÐÍê³É, ²»Í¬ÓÚ, ²¢ÇÒÔ¶ÂýÓÚ´¦ÀíÆ÷. ÒòÎª¼¸ºõÒ»Ö±ÊÇ²»Ï£ÍûÊ¹´¦ÀíÆ÷µÈ´ýÍâ²¿ÊÂ¼þ, ¶ÔÓÚÉè±¸±ØÐëÓÐÒ»ÖÖ·½·¨Ê¹´¦ÀíÆ÷ÖªµÀÓÐÊÂÇé·¢ÉúÁË.</p>
+<p>µ±È», ÄÇÖÖ·½·¨ÊÇÖÐ¶Ï. Ò»¸öÖÐ¶Ï²»¹ýÊÇÒ»¸öÓ²¼þÔÚËüÐèÒª´¦ÀíÆ÷µÄ×¢ÒâÊ±ÄÜ¹»·¢³öµÄÐÅºÅ. Linux ´¦ÀíÖÐ¶Ï·Ç³£ÀàËÆËü´¦ÀíÓÃ»§¿Õ¼äÐÅºÅµÄ·½Ê½. ¶Ô´ó²¿·ÖÀ´Ëµ, Ò»¸öÇý¶¯Ö»ÐèÒªÎªËüµÄÉè±¸ÖÐ¶Ï×¢²áÒ»¸ö´¦Àíº¯Êý, ²¢ÇÒµ±ËüÃÇµ½À´Ê±ÕýÈ·´¦ÀíËüÃÇ. µ±È», ÔÚÕâ¸ö¼òµ¥Í¼ÏñÖ®ÏÂÓÐÒ»Ð©¸´ÔÓ; ÌØ±ðµØ, ÖÐ¶Ï´¦ÀíÓÐÐ©ÊÜÏÞÓÚËüÃÇÄÜ¹»½øÐÐµÄ¶¯×÷, ÕâÊÇËüÃÇÈçºÎÔËÐÐ¶øµ¼ÖÂµÄ½á¹û.</p>
+<p>Ã»ÓÐÒ»¸öÕæÊµµÄÓ²¼þÉè±¸À´²úÉúÖÐ¶Ï, ¾ÍÄÑÑÝÊ¾ÖÐ¶ÏµÄÊ¹ÓÃ. Òò´Ë, ±¾ÕÂÊ¹ÓÃµÄÀý×Ó´úÂëÊ¹ÓÃ²¢¿Ú¹¤×÷. ÕâÐ©¶Ë¿ÚÔÚÏÖ´úÓ²¼þÉÏ¿ªÊ¼±äµÃÏ¡ÉÙ, µ«ÊÇ, ÔËÆøµØ, ´ó²¿·ÖÈËÈÔÈ»ÄÜ¹»ÓÐÒ»¸öÓÐ¿ÉÓÃµÄ¶Ë¿ÚµÄÏµÍ³. ÎÒÃÇ½«Ê¹ÓÃÀ´×ÔÉÏÒ»ÕÂµÄ¼ò¶ÌÄ£¿é; Ìí¼ÓÒ»Ð¡²¿·ÖËüÄÜ¹»²úÉú²¢´¦ÀíÀ´×Ô²¢¿ÚµÄÖÐ¶Ï. Ä£¿éµÄÃû×Ó, short, Êµ¼ÊÉÏÒâÎ¶×Å short int ( ËüÊÇ C, ¶Ô²»?), À´ÌáÐÑÎÒÃÇËü´¦ÀíÖÐ¶Ï.</p>
+<p>µ«ÊÇ, ÔÚÎÒÃÇ½øÈëÖ÷ÌâÖ®Ç°, ÊÇÊ±ºòÌá³öÒ»¸ö×¢ÒâÊÂÏî. ÖÐ¶Ï´¦Àí, ÓÉÓÚËüÃÇµÄÌØÐÔ, ÓëÆäËûµÄ´úÂë²¢ÐÐµØÔËÐÐ. Òò´Ë, ËüÃÇ²»¿É±ÜÃâµØÒýÆð²¢·¢ÎÊÌâºÍ¶ÔÊý¾Ý½á¹¹ºÍÓ²¼þµÄ¾ºÕù. Èç¹ûÄãÇü·þÓÚÓÕ»óÒÔÔ½¹ýµÚ 5 ÕÂµÄÌÖÂÛ, ÎÒÃÇÀí½â. µ«ÊÇÎÒÃÇÒ²½¨ÒéÄã×ª»ØÈ¥²¢ÇÒÏÖÔÚ¿´Ò»ÏÂ. Ò»¸ö¼áÊµµÄ²¢·¢¿ØÖÆ¼¼ÊõµÄÀí½âÊÇÖØÒªµÄ, ÔÚÊ¹ÓÃÖÐ¶ÏÊ±.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PreparingtheParallelPort.sect"></a>10.1.&#160;×¼±¸²¢¿Ú</h2></div></div></div>
+<p>¾¡¹Ü²¢¿Ú¼òµ¥, ËüÄÜ¹»´¥·¢ÖÐ¶Ï. Õâ¸öÄÜÁ¦±»´òÓ¡»úÓÃÀ´Í¨Öª lp Çý¶¯Ëü×¼±¸ºÃ½ÓÊÕ»º´æÖÐµÄÏÂÒ»¸ö×Ö·û.</p>
+<p>ÈçÍ¬´ó²¿·ÖÉè±¸, ²¢¿ÚÊµ¼ÊÉÏ²»²úÉúÖÐ¶Ï, ÔÚËü±»Ö¸Ê¾ÕâÑù×÷Ö®Ç°; ²¢¿Ú±ê×¼¹æ¶¨ÉèÖÃ port 2 (0x37a, 0x27a, »òÕßÈÎºÎ)µÄ bit 4 ¾ÍÊ¹ÄÜÖÐ¶Ï±¨¸æ. short ÔÚÄ£¿é³õÊ¼»¯Ê±½øÐÐÒ»¸ö¼òµ¥µÄ outb µ÷ÓÃÀ´ÉèÖÃÕâ¸öÎ».</p>
+<p>Ò»µ©ÖÐ¶ÏÊ¹ÄÜ, ÈÎºÎÊ±ºòÔÚ¹Ü½Å 10 (ËùÎ½µÄ ACK Î»)ÉÏµÄµçÐÅºÅ´ÓµÍ±äµ½¸ß, ²¢¿Ú²úÉúÒ»¸öÖÐ¶Ï. ×î¼òµ¥µÄ·½·¨À´Ç¿ÖÆ½Ó¿Ú²úÉúÖÐ¶Ï( Ã»ÓÐ¹ÒÒ»¸ö´òÓ¡»úµ½¶Ë¿Ú )ÊÇÁ¬½Ó²¢¿ÚÁ¬½ÓÆ÷µÄ¹Ü½Å 9 ºÍ ¹Ü½Å 10. Ò»¸ù¶ÌÏß, ²åµ½ÄãµÄÏµÍ³ºóÃæµÄ²¢¿ÚÁ¬½ÓÆ÷µÄºÏÊÊµÄ¿×ÖÐ, ¾Í½¨Á¢Õâ¸öÁ¬½Ó. ²¢¿ÚÍâÃæµÄ¹Ü½ÅÍ¼Ê¾ÓÚÍ¼<a href="ch09s03.html#ldd3-9-1.fig" title="Í¼&#160;9.1.&#160;²¢¿ÚµÄ¹Ü½Å">²¢¿ÚµÄ¹Ü½Å</a></p>
+<p>¹Ü½Å 9 ÊÇ²¢¿ÚÊý¾Ý×Ö½ÚµÄ×î¸ßÎ». Èç¹ûÄãÐ´¶þ½øÖÆÊý¾Ýµ½ /dev/short0, Äã²úÉú¼¸¸öÖÐ¶Ï. È»¶ø, Ð´ ASCII ÎÄ±¾µ½Õâ¸ö¶Ë¿Ú²»»á²úÉúÈÎºÎÖÐ¶Ï, ÒòÎª ASCII ×Ö·û¼¯Ã»ÓÐ×î¸ßÎ»ÖÃÎ»µÄÏî.</p>
+<p>Èç¹ûÄãÄþÔ¸±ÜÃâÁ¬½Ó¹Ü½Åµ½Ò»Æð, ¶øÄãÊÖÉÏÈ·ÊµÓÐÒ»Ì¨´òÓ¡»ú, Äã¿ÉÓÃÊ¹ÓÃÒ»¸öÕæÕýµÄ´òÓ¡»úÀ´ÔËÐÐÀý×ÓÖÐ¶Ï´¦Àí, ÈçÍ¬ÏÂÃæÕ¹Ê¾µÄ. µ«ÊÇ, ×¢ÒâÎÒÃÇ½éÉÜµÄÌ½²âº¯ÊýÒÀÀµ¹Ü½Å 9 ºÍ¹Ü½Å 10 Ö®¼äµÄÌøÏßÔÚÎ»ÖÃÉÏ, ²¢ÇÒÄãÐèÒªËüÊ¹ÓÃÄãµÄ´úÂëÀ´ÊÔÑéÌ½²â.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch09s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch10s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">9.5.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;10.2.&#160;°²×°Ò»¸öÖÐ¶Ï´¦Àí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

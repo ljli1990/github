@@ -1,0 +1,175 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>16.5.&#160;¿ìËÙ²Î¿¼-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch16.html" title="µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯">
+<link rel="prev" href="ch16s04.html" title="16.4.&#160;Ò»Ğ©ÆäËûµÄÏ¸½Ú">
+<link rel="next" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">16.5.&#160;¿ìËÙ²Î¿¼</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch16s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="BlockDriversqr.sect1"></a>16.5.&#160;¿ìËÙ²Î¿¼</h2></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/fs.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int register_blkdev(unsigned int major, const char *name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int unregister_blkdev(unsigned int major, const char *name);</span></span></dt>
+<dd><p>register_blkdev ×¢²áÒ»¸ö¿éÇı¶¯µ½ÄÚºË, ²¢ÇÒ, ¿ÉÑ¡µØ, »ñµÃÒ»¸öÖ÷±àºÅ. Ò»¸öÇı¶¯¿É±»×¢Ïú, Ê¹ÓÃ unregister_blkdev.</p></dd>
+<dt><span class="term"><span>struct block_device_operations </span></span></dt>
+<dd><p>³ÖÓĞ´ó²¿·Ö¿éÇı¶¯µÄ·½·¨µÄ½á¹¹.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/genhd.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct gendisk;</span></span></dt>
+<dd><p>ÃèÊöÄÚºËÖĞµ¥¸ö¿éÉè±¸µÄ½á¹¹.</p></dd>
+<dt><span class="term"><span>struct gendisk *alloc_disk(int minors);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void add_disk(struct gendisk *gd);</span></span></dt>
+<dd><p>·ÖÅä gendisk ½á¹¹µÄº¯Êı, ²¢ÇÒ·µ»ØËüÃÇµ½ÏµÍ³. </p></dd>
+<dt><span class="term"><span>void set_capacity(struct gendisk *gd, sector_t sectors);</span></span></dt>
+<dd><p>´æ´¢Éè±¸ÄÜÁ¦(ÒÔ 512-×Ö½Ú)ÔÚ gendisk ½á¹¹ÖĞ. </p></dd>
+<dt><span class="term"><span>void add_disk(struct gendisk *gd);</span></span></dt>
+<dd><p>Ìí¼ÓÒ»¸ö´ÅÅÌµ½ÄÚºË. Ò»µ©µ÷ÓÃÕâ¸öº¯Êı, ÄãµÄ´ÅÅÌµÄ·½·¨¿É±»ÄÚºËµ÷ÓÃ. </p></dd>
+<dt><span class="term"><span>int check_disk_change(struct block_device *bdev);</span></span></dt>
+<dd><p>Ò»¸öÄÚºËº¯Êı, ¼ì²éÔÚ¸ø¶¨´ÅÅÌÇı¶¯Æ÷ÖĞµÄ½éÖÊ¸Ä±ä, ²¢ÇÒ²ÉÈ¡ÒªÇóµÄÇåÀí¶¯×÷µ±¼ì²âµ½ÕâÑùÒ»¸ö¸Ä±ä.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/blkdev.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>request_queue_t blk_init_queue(request_fn_proc *request, spinlock_t *lock);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_cleanup_queue(request_queue_t *);</span></span></dt>
+<dd><p>´¦Àí¿éÇëÇó¶ÓÁĞµÄ´´½¨ºÍÉ¾³ıµÄº¯Êı.</p></dd>
+<dt><span class="term"><span>struct request *elv_next_request(request_queue_t *queue);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void end_request(struct request *req, int success);</span></span></dt>
+<dd><p>elv_next_request ´ÓÒ»¸öÇëÇó¶ÓÁĞÖĞ»ñµÃÏÂÒ»¸öÇëÇó; end_request ¿ÉÓÃÔÚÃ¿¸ö¼òµ¥Çı¶¯Æ÷ÖĞÀ´±êÊ¶Ò»¸ö(»ò²¿·Ö)ÇëÇóÍê³É.</p></dd>
+<dt><span class="term"><span>void blkdev_dequeue_request(struct request *req);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void elv_requeue_request(request_queue_t *queue, struct request *req);</span></span></dt>
+<dd><p>´Ó¶ÓÁĞÖĞ³ıÈ¥Ò»¸öÇëÇó, ²¢ÇÒ·Å»ØËüµÄº¯ÊıÈç¹ûĞèÒª.</p></dd>
+<dt><span class="term"><span>void blk_stop_queue(request_queue_t *queue);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_start_queue(request_queue_t *queue);</span></span></dt>
+<dd><p>Èç¹ûÄãĞèÒª×èÖ¹¶ÔÄãµÄÇëÇóº¯ÊıµÄ½øÒ»²½µ÷ÓÃ, µ÷ÓÃ blk_stop_queue À´Íê³É. µ÷ÓÃ blk_start_queue À´Ê¹ÄãµÄÇëÇó·½·¨±»ÔÙ´Îµ÷ÓÃ.</p></dd>
+<dt><span class="term"><span>void blk_queue_bounce_limit(request_queue_t *queue, u64 dma_addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_max_sectors(request_queue_t *queue, unsigned short max);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_max_phys_segments(request_queue_t *queue, unsigned short max);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_max_hw_segments(request_queue_t *queue, unsigned short max);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_max_segment_size(request_queue_t *queue, unsigned int max);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>blk_queue_segment_boundary(request_queue_t *queue, unsigned long mask);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_dma_alignment(request_queue_t *queue, int mask);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_hardsect_size(request_queue_t *queue, unsigned short max);</span></span></dt>
+<dd><p>ÉèÖÃ¸÷ÖÖ¶ÓÁĞ²ÎÊıµÄº¯Êı, À´¿ØÖÆÇëÇóÈçºÎ±»´´½¨¸øÒ»¸öÌØÊâÉè±¸; ÕâĞ©²ÎÊıÔÚ"¶ÓÁĞ¿ØÖÆº¯Êı"Ò»½ÚÖĞÃèÊö.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/bio.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct bio;</span></span></dt>
+<dd><p>µÍ¼¶º¯Êı, ±íÊ¾Ò»¸ö¿é I/O ÇëÇóµÄÒ»²¿·Ö.</p></dd>
+<dt><span class="term"><span>bio_sectors(struct bio *bio);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>bio_data_dir(struct bio *bio);</span></span></dt>
+<dd><p>2 ¸öºê¶¨Òå, ±íÊ¾Ò»¸öÓÉ bio ½á¹¹ÃèÊöµÄ´«ËÍµÄ´óĞ¡ºÍ·½Ïò.</p></dd>
+<dt><span class="term"><span>bio_for_each_segment(bvec, bio, segno);</span></span></dt>
+<dd><p>Ò»¸öÎ±¿ØÖÆ½á¹¹, ÓÃÀ´Ñ­»·×é³ÉÒ»¸ö bio ½á¹¹µÄ¸÷¸ö¶Î.</p></dd>
+<dt><span class="term"><span>char *__bio_kmap_atomic(struct bio *bio, int i, enum km_type type);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void __bio_kunmap_atomic(char *buffer, enum km_type type);</span></span></dt>
+<dd><p>__bio_kmap_atomic ¿ÉÓÃÀ´´´½¨Ò»¸öÄÚºËĞéÄâµØÖ·¸øÒ»¸öÔÚ bio ½á¹¹ÖĞµÄ¸ø¶¨µÄ¶Î. Ó³Éä±ØĞëÊ¹ÓÃ __bio_kunmap_atomic À´»Ö¸´.</p></dd>
+<dt><span class="term"><span>struct page *bio_page(struct bio *bio);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int bio_offset(struct bio *bio);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int bio_cur_sectors(struct bio *bio);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>char *bio_data(struct bio *bio);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>char *bio_kmap_irq(struct bio *bio, unsigned long *flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void bio_kunmap_irq(char *buffer, unsigned long *flags);</span></span></dt>
+<dd><p>Ò»×é´æÈ¡Õßºê¶¨Òå, Ìá¹©¶ÔÒ»¸ö bio ½á¹¹ÖĞµÄ"µ±Ç°"¶ÎµÄ´æÈ¡.</p></dd>
+<dt><span class="term"><span>void blk_queue_ordered(request_queue_t *queue, int flag);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int blk_barrier_rq(struct request *req);</span></span></dt>
+<dd><p>Èç¹ûÄãµÄÇı¶¯ÊµÏÖÆÁÕÏÇëÇó, µ÷ÓÃ blk_queue_ordered -- ÈçÍ¬ËüÓ¦µ±×öµÄ. ºê blk_barrier_rq ·µ»ØÒ»¸ö·ÇÁãÖµÈç¹ûµ±Ç°ÇëÇóÊÇÒ»¸öÆÁÕÏÇëÇó.</p></dd>
+<dt><span class="term"><span>int blk_noretry_request(struct request *req);</span></span></dt>
+<dd><p>Õâ¸öºê·µ»ØÒ»¸ö·ÇÁãÖµ, Èç¹û¸ø¶¨µÄÇëÇó²»Ó¦µ±ÔÚ³ö´íÊ±ÖØĞÂ³¢ÊÔ.</p></dd>
+<dt><span class="term"><span>int end_that_request_first(struct request *req, int success, int count);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void end_that_request_last(struct request *req);</span></span></dt>
+<dd><p>Ê¹ÓÃ end_that_request_firest À´Ö¸Ê¾Ò»¸ö¿é I/O ÇëÇóµÄÒ»²¿·ÖÍê³É. µ±ÄÇ¸öº¯Êı·µ»Ø 0, ÇëÇóÍê³É²¢ÇÒÓ¦µ±±»´«µİ¸ø end_that_request_last.</p></dd>
+<dt><span class="term"><span>rq_for_each_bio(bio, request)</span></span></dt>
+<dd><p>ÁíÒ»¸öÓÃºê¶¨ÒåÀ´ÊµÏÖµÄ¿ØÖÆ½á¹¹; Ëü²½Èë¹¹³ÉÒ»¸öÇëÇóµÄÃ¿¸ö bio.</p></dd>
+<dt><span class="term"><span>int blk_rq_map_sg(request_queue_t *queue, struct request *req, struct scatterlist *list);</span></span></dt>
+<dd><p>ÎªÒ»´Î DMA ´«ËÍÌî³ä¸ø¶¨µÄÉ¢²¼±í, ÓÃĞèÒªÀ´Ó³Éä¸ø¶¨ÇëÇóÖĞµÄ»º³åµÄĞÅÏ¢</p></dd>
+<dt><span class="term"><span>typedef int (make_request_fn) (request_queue_t *q, struct bio *bio);</span></span></dt>
+<dd><p>make_request º¯ÊıµÄÔ­ĞÍ.</p></dd>
+<dt><span class="term"><span>void bio_endio(struct bio *bio, unsigned int bytes, int error);</span></span></dt>
+<dd><p>Ö¸Ê¾Ò»¸ö¸ø¶¨ bio µÄÍê³É. Õâ¸öº¯ÊıÓ¦µ±Ö»ÓÃÔÚÄãµÄÇı¶¯Ö±½Ó»ñÈ¡ bio , Í¨¹ı make_request º¯Êı´Ó¿é²ã.</p></dd>
+<dt><span class="term"><span>request_queue_t *blk_alloc_queue(int flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_make_request(request_queue_t *queue, make_request_fn *func);</span></span></dt>
+<dd><p>Ê¹ÓÃ blk_alloc_queue À´·ÖÅäÓÉ¶¨ÖÆµÄ make_request º¯ÊıÊ¹ÓÃµÄÇëÇó¶ÓÁĞ, . ÄÇ¸öº¯ÊıÓ¦µ±Ê¹ÓÃ blk_queue_make_request À´ÉèÖÃ.</p></dd>
+<dt><span class="term"><span>typedef int (prep_rq_fn) (request_queue_t *queue, struct request *req);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_prep_rq(request_queue_t *queue, prep_rq_fn *func);</span></span></dt>
+<dd><p>Ò»¸öÃüÁî×¼±¸º¯ÊıµÄÔ­ĞÍºÍÉèÖÃº¯Êı, Ëü¿ÉÓÃÀ´×¼±¸±ØÒªµÄÓ²¼şÃüÁî, ÔÚÇëÇó±»´«µİ¸øÄãµÄÇëÇóº¯ÊıÖ®Ç°.</p></dd>
+<dt><span class="term"><span>int blk_queue_init_tags(request_queue_t *queue, int depth, struct blk_queue_tag *tags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int blk_queue_resize_tags(request_queue_t *queue, int new_depth);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int blk_queue_start_tag(request_queue_t *queue, struct request *req);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_end_tag(request_queue_t *queue, struct request *req);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct request *blk_queue_find_tag(request_queue_t *qeue, int tag);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void blk_queue_invalidate_tags(request_queue_t *queue);</span></span></dt>
+<dd><p>Çı¶¯Ê¹ÓÃ±»±ê¼ÇµÄÃüÁî¶ÓÁĞµÄÖ§³Öº¯Êı.</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch16s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch16.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">16.4.&#160;Ò»Ğ©ÆäËûµÄÏ¸½Ú&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

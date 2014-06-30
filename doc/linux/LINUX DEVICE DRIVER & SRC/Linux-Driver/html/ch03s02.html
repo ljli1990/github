@@ -1,0 +1,190 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>3.2.&#160;Ö÷´Î±àºÅ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch03.html" title="µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯">
+<link rel="prev" href="ch03.html" title="µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯">
+<link rel="next" href="ch03s03.html" title="3.3.&#160;Ò»Ð©ÖØÒªÊý¾Ý½á¹¹">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">3.2.&#160;Ö÷´Î±àºÅ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch03s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="MajorandMinorNumbers.sect"></a>3.2.&#160;Ö÷´Î±àºÅ</h2></div></div></div>
+<p>×Ö·ûÉè±¸Í¨¹ýÎÄ¼þÏµÍ³ÖÐµÄÃû×ÓÀ´´æÈ¡. ÄÇÐ©Ãû×Ó³ÆÎªÎÄ¼þÏµÍ³µÄÌØÊâÎÄ¼þ, »òÕßÉè±¸ÎÄ¼þ, »òÕßÎÄ¼þÏµÍ³µÄ¼òµ¥½áµã; ¹ßÀýÉÏËüÃÇÎ»ÓÚ /dev Ä¿Â¼. ×Ö·ûÇý¶¯µÄÌØÊâÎÄ¼þÓÉÊ¹ÓÃ ls -l µÄÊä³öµÄµÚÒ»ÁÐµÄ"c"±êÊ¶. ¿éÉè±¸Ò²³öÏÖÔÚ /dev ÖÐ, µ«ÊÇËüÃÇÓÉ"b"±êÊ¶. ±¾ÕÂ¼¯ÖÐÔÚ×Ö·ûÉè±¸, µ«ÊÇÏÂÃæµÄºÜ¶àÐÅÏ¢Ò²ÊÊÓÃÓÚ¿éÉè±¸.</p>
+<p>Èç¹ûÄã·¢³ö ls -l ÃüÁî, Äã»á¿´µ½ÔÚÉè±¸ÎÄ¼þÏîÖÐÓÐ 2 ¸öÊý(ÓÉÒ»¸ö¶ººÅ·Ö¸ô)ÔÚ×îºóÐÞ¸ÄÈÕÆÚÇ°Ãæ, ÕâÀïÍ¨³£ÊÇÎÄ¼þ³¤¶È³öÏÖµÄµØ·½. ÕâÐ©Êý×ÖÊÇ¸øÌØÊâÉè±¸µÄÖ÷´ÎÉè±¸±àºÅ. ÏÂÃæµÄÁÐ±íÏÔÊ¾ÁËÒ»¸öµäÐÍÏµÍ³ÉÏ³öÏÖµÄ¼¸¸öÉè±¸. ËüÃÇµÄÖ÷±àºÅÊÇ 1, 4, 7, ºÍ 10, ¶ø´Î±àºÅÊÇ 1, 3, 5, 64, 65, ºÍ 129.</p>
+<pre class="screen">
+ crw-rw-rw- 1 root  root  1,  3 Apr 11  2002 null 
+ crw------- 1 root  root  10, 1 Apr 11  2002 psaux 
+ crw------- 1 root  root  4,  1 Oct 28 03:04 tty1 
+ crw-rw-rw- 1 root  tty   4, 64 Apr 11  2002 ttys0 
+ crw-rw---- 1 root  uucp  4, 65 Apr 11  2002 ttyS1 
+ crw--w---- 1 vcsa  tty   7,  1 Apr 11  2002 vcs1 
+ crw--w---- 1 vcsa  tty   7,129 Apr 11  2002 vcsa1 
+ crw-rw-rw- 1 root  root  1,  5 Apr 11  2002 zero  
+</pre>
+<p>´«Í³ÉÏ, Ö÷±àºÅ±êÊ¶Éè±¸ÏàÁ¬µÄÇý¶¯. ÀýÈç, /dev/null ºÍ /dev/zero ¶¼ÓÉÇý¶¯ 1 À´¹ÜÀí, ¶øÐéÄâ¿ØÖÆÌ¨ºÍ´®¿ÚÖÕ¶Ë¶¼ÓÉÇý¶¯ 4 ¹ÜÀí; Í¬Ñù, vcs1 ºÍ vcsa1 Éè±¸¶¼ÓÉÇý¶¯ 7 ¹ÜÀí. ÏÖ´ú Linux ÄÚºËÔÊÐí¶à¸öÇý¶¯¹²ÏíÖ÷±àºÅ, µ«ÊÇÄã¿´µ½µÄ´ó²¿·ÖÉè±¸ÈÔÈ»°´ÕÕÒ»¸öÖ÷±àºÅÒ»¸öÇý¶¯µÄÔ­ÔòÀ´×éÖ¯.</p>
+<p>´Î±àºÅ±»ÄÚºËÓÃÀ´¾ö¶¨ÒýÓÃÄÄ¸öÉè±¸. ÒÀ¾ÝÄãµÄÇý¶¯ÊÇÈçºÎ±àÐ´µÄ(ÈçÍ¬ÎÒÃÇÏÂÃæ¼ûµ½µÄ), Äã¿ÉÒÔ´ÓÄÚºËµÃµ½Ò»¸öÄãµÄÉè±¸µÄÖ±½ÓÖ¸Õë, »òÕß¿ÉÒÔ×Ô¼ºÊ¹ÓÃ´Î±àºÅ×÷Îª±¾µØÉè±¸Êý×éµÄË÷Òý. ²»ÂÛÄÄ¸ö·½·¨, ÄÚºË×Ô¼º¼¸ºõ²»ÖªµÀ´Î±àºÅµÄÈÎºÎÊÂÇé, ³ýÁËËüÃÇÖ¸ÏòÄãµÄÇý¶¯ÊµÏÖµÄÉè±¸.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheInternalRepresentationofDeviceNumber.sect"></a>3.2.1.&#160;Éè±¸±àºÅµÄÄÚ²¿±íÊ¾</h3></div></div></div>
+<p>ÔÚÄÚºËÖÐ, dev_t ÀàÐÍ(ÔÚ &lt;linux/types.h&gt;ÖÐ¶¨Òå)ÓÃÀ´³ÖÓÐÉè±¸±àºÅ -- Ö÷´Î²¿·Ö¶¼°üÀ¨. ¶ÔÓÚ 2.6.0 ÄÚºË, dev_t ÊÇ 32 Î»µÄÁ¿, 12 Î»ÓÃ×÷Ö÷±àºÅ, 20 Î»ÓÃ×÷´Î±àºÅ. ÄãµÄ´úÂëÓ¦µ±, µ±È», ¶ÔÓÚÉè±¸±àºÅµÄÄÚ²¿×éÖ¯´Ó²»×öÈÎºÎ¼ÙÉè; Ïà·´, Ó¦µ±ÀûÓÃÔÚ &lt;linux/kdev_t.h&gt;ÖÐµÄÒ»Ì×ºê¶¨Òå. Îª»ñµÃÒ»¸ö dev_t µÄÖ÷»òÕß´Î±àºÅ, Ê¹ÓÃ:</p>
+<pre class="screen">
+MAJOR(dev_t dev); 
+MINOR(dev_t dev);
+</pre>
+<p>Ïà·´, Èç¹ûÄãÓÐÖ÷´Î±àºÅ, ÐèÒª½«Æä×ª»»ÎªÒ»¸ö dev_t, Ê¹ÓÃ:</p>
+<pre class="screen">
+MKDEV(int major, int minor); 
+</pre>
+<p>×¢Òâ, 2.6 ÄÚºËÄÜÈÝÄÉÓÐ´óÁ¿Éè±¸, ¶øÒÔÇ°µÄÄÚºË°æ±¾ÏÞÖÆÔÚ 255 ¸öÖ÷±àºÅºÍ 255 ¸ö´Î±àºÅ. ÓÐÈËÈÏÎªÕâÃ´¿íµÄ·¶Î§ÔÚºÜ³¤Ê±¼äÄÚÊÇ×ã¹»µÄ, µ«ÊÇ¼ÆËãÁìÓò±»Õâ¸öÌØÐÔµÄ´íÎó¼ÙÉè¸ãÂÒÁË. Òò´ËÄãÓ¦µ±Ï£Íû dev_t µÄ¸ñÊ½½«À´¿ÉÄÜÔÙ´Î¸Ä±ä; µ«ÊÇ, Èç¹ûÄã×ÐÏ¸±àÐ´ÄãµÄÇý¶¯, ÕâÐ©±ä»¯²»»áÊÇÒ»¸öÎÊÌâ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AllocatingandFreeingDeviceNumbers.sect"></a>3.2.2.&#160;·ÖÅäºÍÊÍ·ÅÉè±¸±àºÅ</h3></div></div></div>
+<p>ÔÚ½¨Á¢Ò»¸ö×Ö·ûÇý¶¯Ê±ÄãµÄÇý¶¯ÐèÒª×öµÄµÚÒ»¼þÊÂÊÇ»ñÈ¡Ò»¸ö»ò¶à¸öÉè±¸±àºÅÀ´Ê¹ÓÃ. Îª´ËÄ¿µÄµÄ±ØÒªµÄº¯ÊýÊÇ register_chrdev_region, ÔÚ &lt;linux/fs.h&gt;ÖÐÉùÃ÷:</p>
+<pre class="programlisting">
+int register_chrdev_region(dev_t first, unsigned int count, char *name);
+</pre>
+<p>ÕâÀï, first ÊÇÄãÒª·ÖÅäµÄÆðÊ¼Éè±¸±àºÅ. first µÄ´Î±àºÅ²¿·Ö³£³£ÊÇ 0, µ«ÊÇÃ»ÓÐÒªÇóÊÇÄÇ¸öÐ§¹û. count ÊÇÄãÇëÇóµÄÁ¬ÐøÉè±¸±àºÅµÄ×ÜÊý. ×¢Òâ, Èç¹û count Ì«´ó, ÄãÒªÇóµÄ·¶Î§¿ÉÄÜÒç³öµ½ÏÂÒ»¸ö´Î±àºÅ; µ«ÊÇÖ»ÒªÄãÒªÇóµÄ±àºÅ·¶Î§¿ÉÓÃ, Ò»ÇÐ¶¼ÈÔÈ»»áÕýÈ·¹¤×÷. ×îºó, name ÊÇÓ¦µ±Á¬½Óµ½Õâ¸ö±àºÅ·¶Î§µÄÉè±¸µÄÃû×Ó; Ëü»á³öÏÖÔÚ /proc/devices ºÍ sysfs ÖÐ.</p>
+<p>ÈçÍ¬´ó²¿·ÖÄÚºËº¯Êý, Èç¹û·ÖÅä³É¹¦½øÐÐ, register_chrdev_region µÄ·µ»ØÖµÊÇ 0. ³ö´íµÄÇé¿öÏÂ, ·µ»ØÒ»¸ö¸ºµÄ´íÎóÂë, Äã²»ÄÜ´æÈ¡ÇëÇóµÄÇøÓò.</p>
+<p>Èç¹ûÄãÈ·ÊµÊÂÏÈÖªµÀÄãÐèÒªÄÄ¸öÉè±¸±àºÅ, register_chrdev_region ¹¤×÷µÃºÃ. È»¶ø, Äã³£³£²»»áÖªµÀÄãµÄÉè±¸Ê¹ÓÃÄÄ¸öÖ÷±àºÅ; ÔÚ Linux ÄÚºË¿ª·¢ÉçÍÅÖÐÒ»Ö±Å¬Á¦Ê¹ÓÃ¶¯Ì¬·ÖÅäÉè±¸±àºÅ. ÄÚºË»áÀÖÓÚ¶¯Ì¬ÎªÄã·ÖÅäÒ»¸öÖ÷±àºÅ, µ«ÊÇÄã±ØÐëÊ¹ÓÃÒ»¸ö²»Í¬µÄº¯ÊýÀ´ÇëÇóÕâ¸ö·ÖÅä.</p>
+<pre class="programlisting">
+int alloc_chrdev_region(dev_t *dev, unsigned int firstminor, unsigned int count, char *name);
+</pre>
+<p>Ê¹ÓÃÕâ¸öº¯Êý, dev ÊÇÒ»¸öÖ»Êä³öµÄ²ÎÊý, ËüÔÚº¯Êý³É¹¦Íê³ÉÊ±³ÖÓÐÄãµÄ·ÖÅä·¶Î§µÄµÚÒ»¸öÊý. fisetminor Ó¦µ±ÊÇÇëÇóµÄµÚÒ»¸öÒªÓÃµÄ´Î±àºÅ; Ëü³£³£ÊÇ 0. count ºÍ name ²ÎÊýÈçÍ¬¸ø request_chrdev_region µÄÒ»Ñù.</p>
+<p>²»¹ÜÄãÈÎºÎ·ÖÅäÄãµÄÉè±¸±àºÅ, ÄãÓ¦µ±ÔÚ²»ÔÙÊ¹ÓÃËüÃÇÊ±ÊÍ·ÅËü. Éè±¸±àºÅµÄÊÍ·ÅÊ¹ÓÃ:</p>
+<pre class="programlisting">
+void unregister_chrdev_region(dev_t first, unsigned int count); 
+</pre>
+<p>µ÷ÓÃ unregister_chrdev_region µÄµØ·½³£³£ÊÇÄãµÄÄ£¿éµÄ cleanup º¯Êý.</p>
+<p>ÉÏÃæµÄº¯Êý·ÖÅäÉè±¸±àºÅ¸øÄãµÄÇý¶¯Ê¹ÓÃ, µ«ÊÇËüÃÇ²»¸æËßÄÚºËÄãÊµ¼ÊÉÏ»á¶ÔÕâÐ©±àºÅ×öÊ²Ã´. ÔÚÓÃ»§¿Õ¼ä³ÌÐòÄÜ¹»´æÈ¡ÕâÐ©Éè±¸ºÅÖÐÒ»¸öÖ®Ç°, ÄãµÄÇý¶¯ÐèÒªÁ¬½ÓËüÃÇµ½ËüµÄÊµÏÖÉè±¸²Ù×÷µÄÄÚ²¿º¯ÊýÉÏ. ÎÒÃÇ½«ÃèÊöÈçºÎ¼ò¶ÌÍê³ÉÕâ¸öÁ¬½Ó, µ«Ê×ÏÈ¹Ë¼°Ò»Ð©±ØÒªµÄÖ¦½ÚÎÊÌâ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="DynamicAllocaionofMajorNumbers.sect"></a>3.2.3.&#160;Ö÷±àºÅµÄ¶¯Ì¬·ÖÅä</h3></div></div></div>
+<p>Ò»Ð©Ö÷Éè±¸±àºÅÊÇ¾²Ì¬·ÖÅÉ¸ø×îÆÕÍ¨µÄÉè±¸µÄ. Ò»¸öÕâÐ©Éè±¸µÄÁÐ±íÔÚÄÚºËÔ´ÂëÊ÷µÄ Documentation/devices.txt ÖÐ. ·ÖÅä¸øÄãµÄÐÂÇý¶¯Ê¹ÓÃÒ»¸öÒÑ¾­·ÖÅäµÄ¾²Ì¬±àºÅµÄ»ú»áºÜÐ¡, µ«ÊÇ, ²¢ÇÒÐÂ±àºÅÃ»ÔÚ·ÖÅä. Òò´Ë, ×÷ÎªÒ»¸öÇý¶¯±àÐ´Õß, ÄãÓÐÒ»¸öÑ¡Ôñ: Äã¿ÉÒÔ¼òµ¥µØ¼ñÒ»¸ö¿´À´Ã»ÓÐÓÃµÄ±àºÅ, »òÕßÄãÒÔ¶¯Ì¬·½Ê½·ÖÅäÖ÷±àºÅ. Ö»ÒªÄãÊÇÄãµÄÇý¶¯µÄÎ¨Ò»ÓÃ»§¾Í¿ÉÒÔ¼ñÒ»¸ö±àºÅÓÃ; Ò»µ©ÄãµÄÇý¶¯¸ü¹ã·ºµÄ±»Ê¹ÓÃÁË, Ò»¸öËæ»ú¼ñÀ´µÄÖ÷±àºÅ½«µ¼ÖÂ³åÍ»ºÍÂé·³.</p>
+<p>Òò´Ë, ¶ÔÓÚÐÂÇý¶¯, ÎÒÃÇÇ¿ÁÒ½¨ÒéÄãÊ¹ÓÃ¶¯Ì¬·ÖÅäÀ´»ñÈ¡ÄãµÄÖ÷Éè±¸±àºÅ, ¶ø²»ÊÇËæ»úÑ¡È¡Ò»¸öµ±Ç°¿ÕÏÐµÄ±àºÅ. »»¾ä»°Ëµ, ÄãµÄÇý¶¯Ó¦µ±¼¸ºõ¿Ï¶¨µØÊ¹ÓÃ alloc_chrdev_region, ²»ÊÇ register_chrdev_region.</p>
+<p>¶¯Ì¬·ÖÅäµÄÈ±µãÊÇÄãÎÞ·¨ÌáÇ°´´½¨Éè±¸½Úµã, ÒòÎª·ÖÅä¸øÄãµÄÄ£¿éµÄÖ÷±àºÅ»á±ä»¯. ¶ÔÓÚÇý¶¯µÄÕý³£Ê¹ÓÃ, Õâ²»ÊÇÎÊÌâ, ÒòÎªÒ»µ©±àºÅ·ÖÅäÁË, Äã¿É´Ó /proc/devices ÖÐ¶ÁÈ¡Ëü.<sup>[<a name="id414361" href="#ftn.id414361">6</a>]</sup></p>
+<p>ÎªÊ¹ÓÃ¶¯Ì¬Ö÷±àºÅÀ´¼ÓÔØÒ»¸öÇý¶¯, Òò´Ë, ¿ÉÊ¹ÓÃÒ»¸ö¼òµ¥µÄ½Å±¾À´´úÌæµ÷ÓÃ insmod, ÔÚµ÷ÓÃ insmod ºó, ¶ÁÈ¡ /proc/devices À´´´½¨ÌØÊâÎÄ¼þ.</p>
+<p>Ò»¸öµäÐÍµÄ /proc/devices ÎÄ¼þ¿´À´ÈçÏÂ:</p>
+<pre class="screen">
+Character devices:
+ 1 mem
+ 2 pty
+ 3 ttyp
+ 4 ttyS
+ 6 lp
+ 7 vcs
+ 10 misc
+ 13 input
+ 14 sound 
+ 21 sg
+ 180 usb
+
+Block devices:
+ 2 fd
+ 8 sd
+ 11 sr
+ 65 sd
+ 66 sd 
+</pre>
+<p>Òò´Ë¼ÓÔØÒ»¸öÒÑ¾­°²ÅÅÁËÒ»¸ö¶¯Ì¬±àºÅµÄÄ£¿éµÄ½Å±¾, ¿ÉÒÔÊ¹ÓÃÒ»¸ö¹¤¾ßÀ´±àÐ´, Èç awk , À´´Ó /proc/devices »ñÈ¡ÐÅÏ¢ÒÔ´´½¨ /dev ÖÐµÄÎÄ¼þ.</p>
+<p>ÏÂÃæµÄ½Å±¾, snull_load, ÊÇ scull ·¢²¼µÄÒ»²¿·Ö. ÒÔÄ£¿é·¢²¼µÄÇý¶¯µÄÓÃ»§¿ÉÒÔ´ÓÏµÍ³µÄ rc.local ÎÄ¼þÖÐµ÷ÓÃÕâÑùÒ»¸ö½Å±¾, »òÕßÔÚÐèÒªÄ£¿éÊ±ÊÖ¹¤µ÷ÓÃËü.</p>
+<pre class="programlisting">
+#!/bin/sh
+module="scull"
+device="scull"
+mode="664"
+
+# invoke insmod with all arguments we got
+# and use a pathname, as newer modutils don't look in . by default
+/sbin/insmod ./$module.ko $* || exit 1
+
+# remove stale nodes
+rm -f /dev/${device}[0-3]
+
+major=$(awk "\\$2==\"$module\" {print \\$1}" /proc/devices) 
+mknod /dev/${device}0 c $major 0
+mknod /dev/${device}1 c $major 1
+mknod /dev/${device}2 c $major 2
+mknod /dev/${device}3 c $major 3
+
+# give appropriate group/permissions, and change the group.
+# Not all distributions have staff, some have "wheel" instead.
+group="staff"
+grep -q '^staff:' /etc/group || group="wheel"
+
+chgrp $group /dev/${device}[0-3]
+chmod $mode /dev/${device}[0-3]
+</pre>
+<p>Õâ¸ö½Å±¾¿ÉÒÔÍ¨¹ýÖØ¶¨Òå±äÁ¿ºÍµ÷Õû mknod ÐÐÀ´ÊÊÓÃÓÚÁíÍâµÄÇý¶¯. Õâ¸ö½Å±¾½ö½öÕ¹Ê¾ÁË´´½¨ 4 ¸öÉè±¸, ÒòÎª 4 ÊÇ scull Ô´ÂëÖÐÈ±Ê¡µÄ.</p>
+<p>½Å±¾µÄ×îºó¼¸ÐÐ¿ÉÄÜÓÐÐ©Ä£ºý:ÎªÊ²Ã´¸Ä±äÉè±¸µÄ×éºÍÄ£Ê½? ÀíÓÉÊÇÕâ¸ö½Å±¾±ØÐëÓÉ³¬¼¶ÓÃ»§ÔËÐÐ, Òò´ËÐÂ½¨µÄÌØÊâÎÄ¼þÓÉ root ÓµÓÐ. Ðí¿ÉÎ»È±Ê¡µÄÊÇÖ»ÓÐ root ÓÐÐ´È¨ÏÞ, ¶øÈÎºÎÈË¿ÉÒÔ¶Á. Í¨³£, Ò»¸öÉè±¸½ÚµãÐèÒªÒ»¸ö²»Í¬µÄ´æÈ¡²ßÂÔ, Òò´ËÔÚÄ³Ð©·½Ãæ±ðÈËµÄ´æÈ¡È¨ÏÞ±ØÐë¸Ä±ä. ÎÒÃÇµÄ½Å±¾È±Ê¡ÊÇ¸øÒ»¸öÓÃ»§×é´æÈ¡, µ«ÊÇÄãµÄÐèÇó¿ÉÄÜ²»Í¬. ÔÚµÚ 6 ÕÂµÄ"Éè±¸ÎÄ¼þµÄ´æÈ¡¿ØÖÆ"Ò»½ÚÖÐ, sculluid µÄ´úÂëÑÝÊ¾ÁËÇý¶¯ÈçºÎÄÜ¹»Ç¿ÖÆËü×Ô¼ºµÄ¶ÔÉè±¸´æÈ¡µÄÊÚÈ¨.</p>
+<p>»¹ÓÐÒ»¸ö scull_unload ½Å±¾À´ÇåÀí /dev Ä¿Â¼²¢È¥³ýÄ£¿é.</p>
+<p>×÷Îª¶ÔÊ¹ÓÃÒ»¶Ô½Å±¾À´¼ÓÔØºÍÐ¶ÔØµÄÁíÍâÑ¡Ôñ, Äã¿ÉÒÔ±àÐ´Ò»¸ö init ½Å±¾, ×¼±¸ºÃ·ÅÔÚÄãµÄ·¢²¼Ê¹ÓÃÕâÐ©½Å±¾µÄÄ¿Â¼ÖÐ. <sup>[<a name="id414476" href="#ftn.id414476">7</a>]</sup>×÷Îª scull Ô´ÂëµÄÒ»²¿·Ö, ÎÒÃÇÌá¹©ÁËÒ»¸öÏàµ±ÍêÕûºÍ¿ÉÅäÖÃµÄ init ½Å±¾Àý×Ó, ³ÆÎª scull.init; Ëü½ÓÊÜ´«Í³µÄ²ÎÊý -- start, stop, ºÍ restart -- ²¢ÇÒÍê³É scull_load ºÍ scull_unload µÄ½ÇÉ«.</p>
+<p>Èç¹û·´¸´´´½¨ºÍÏú»Ù /dev ½Úµã, ÌýÀ´¹ý·ÖÁË, ÓÐÒ»¸öÓÐÓÃµÄ°ì·¨. Èç¹ûÄãÔÚ¼ÓÔØºÍÐ¶ÔØµ¥¸öÇý¶¯, Äã¿ÉÒÔÔÚÄãµÚÒ»´ÎÊ¹ÓÃÄãµÄ½Å±¾´´½¨ÌØÊâÎÄ¼þÖ®ºó, Ö»Ê¹ÓÃ rmmod ºÍ insmod: ÕâÑù¶¯Ì¬±àºÅ²»ÊÇËæ»úµÄ. <sup>[<a name="id414501" href="#ftn.id414501">8</a>]</sup>²¢ÇÒÄãÃ¿´Î¶¼¿ÉÒÔÊ¹ÓÃËùÑ¡µÄÍ¬Ò»¸ö±àºÅ, Èç¹ûÄã²»¼ÓÔØÈÎºÎ±ðµÄ¶¯Ì¬Ä£¿é. ÔÚ¿ª·¢ÖÐ±ÜÃâ³¤½Å±¾ÊÇÓÐÓÃµÄ. µ«ÊÇÕâ¸ö¼¼ÇÉ, ÏÔÈ»²»ÄÜÀ©Õ¹µ½Ò»´Î¶àÓÚÒ»¸öÇý¶¯.</p>
+<p>°²ÅÅÖ÷±àºÅ×îºÃµÄ·½Ê½, ÎÒÃÇÈÏÎª, ÊÇÈ±Ê¡Ê¹ÓÃ¶¯Ì¬·ÖÅä, ¶øÁô¸ø×Ô¼ºÔÚ¼ÓÔØÊ±Ö¸¶¨Ö÷±àºÅµÄÑ¡ÏîÈ¨, »òÕßÉõÖÁÔÚ±àÒëÊ±. scull ÊµÏÖÒÔÕâÖÖ·½Ê½¹¤×÷; ËüÊ¹ÓÃÒ»¸öÈ«¾Ö±äÁ¿, scull_major, À´³ÖÓÐÑ¡¶¨µÄ±àºÅ(»¹ÓÐÒ»¸ö scull_minor ¸ø´Î±àºÅ). Õâ¸ö±äÁ¿³õÊ¼»¯Îª SCULL_MAJOR, ¶¨ÒåÔÚ scull.h. ·¢²¼µÄÔ´ÂëÖÐµÄ SCULL_MAJOR µÄÈ±Ê¡ÖµÊÇ 0, ÒâË¼ÊÇ"Ê¹ÓÃ¶¯Ì¬·ÖÅä". ÓÃ»§¿ÉÒÔ½ÓÊÜÈ±Ê¡Öµ»òÕßÑ¡ÔñÒ»¸öÌØÊâÖ÷±àºÅ, »òÕßÔÚ±àÒëÇ°ÐÞ¸Äºê¶¨Òå»òÕßÔÚ insmod ÃüÁîÐÐÖ¸¶¨Ò»¸öÖµ¸ø scull_major. ×îºó, Í¨¹ýÊ¹ÓÃ scull_load ½Å±¾, ÓÃ»§¿ÉÒÔÔÚ scull_load µÄÃüÁîÐÐ´«µÝ²ÎÊý¸ø insmod.<sup>[<a name="id414535" href="#ftn.id414535">9</a>]</sup></p>
+<p>ÕâÊÇÎÒÃÇÓÃÔÚ scull µÄÔ´ÂëÖÐ»ñÈ¡Ö÷±àºÅµÄ´úÂë:</p>
+<pre class="programlisting">
+if (scull_major) {
+ dev = MKDEV(scull_major, scull_minor);
+ result = register_chrdev_region(dev, scull_nr_devs, "scull");
+} else {
+ result = alloc_chrdev_region(&amp;dev, scull_minor, scull_nr_devs, "scull");
+ scull_major = MAJOR(dev);
+}
+if (result &lt; 0) {
+ printk(KERN_WARNING "scull: can't get major %d\n", scull_major);
+ return result;
+}
+</pre>
+<p>±¾ÊéÊ¹ÓÃµÄ¼¸ºõËùÓÐÀý×ÓÇý¶¯Ê¹ÓÃÀàËÆµÄ´úÂëÀ´·ÖÅäËüÃÇµÄÖ÷±àºÅ.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id414361" href="#id414361">6</a>] </sup>´Ó sysfs ÖÐÄÜ»ñÈ¡¸üºÃµÄÉè±¸ÐÅÏ¢, ÔÚ»ùÓÚ 2.6 µÄÏµÍ³Í¨³£¼ÓÔØÓÚ /sys. µ«ÊÇÊ¹ scull Í¨¹ý sysfs Êä³öÐÅÏ¢³¬³öÁË±¾ÕÂµÄ·¶Î§; ÎÒÃÇÔÚ 14 ÕÂÖÐ»Øµ½Õâ¸öÖ÷Ìâ.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id414476" href="#id414476">7</a>] </sup>Linux Standard Base Ö¸³ö init ½Å±¾Ó¦µ±·ÅÔÚ /etc/init.d, µ«ÊÇÒ»Ð©·¢²¼ÈÔÈ»·ÅÔÚ±ð´¦. ÁíÍâ, Èç¹ûÄãµÄ½Å±¾ÔÚÆô¶¯Ê±ÔËÐÐ, ÄãÐèÒª´ÓºÏÊÊµÄÔËÐÐ¼¶±ðÄ¿Â¼×öÒ»¸öÁ¬½Ó¸øËü(Ò²¾ÍÊÇ, .../rc3.d).</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id414501" href="#id414501">8</a>] </sup>¾¡¹ÜÄ³Ð©ÄÚºË¿ª·¢ÕßÒÑ¾¯¸æËµ½«À´¾Í»áÕâÑù×ö.</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id414535" href="#id414535">9</a>] </sup>init ½Å±¾ scull.init ²»ÔÚÃüÁîÐÐÖÐ½ÓÊÜÇý¶¯Ñ¡Ïî, µ«ÊÇËüÖ§³ÖÒ»¸öÅäÖÃÎÄ¼þ, ÒòÎªËü±»Éè¼ÆÀ´ÔÚÆô¶¯ºÍ¹Ø»úÊ±×Ô¶¯Ê¹ÓÃ.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch03s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;3.3.&#160;Ò»Ð©ÖØÒªÊý¾Ý½á¹¹</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

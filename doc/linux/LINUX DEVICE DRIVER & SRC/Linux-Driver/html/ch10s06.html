@@ -1,0 +1,103 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>10.6.&#160;¿ìËÙ²Î¿¼-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch10.html" title="µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí">
+<link rel="prev" href="ch10s05.html" title="10.5.&#160;ÖĞ¶ÏÇı¶¯ I/O">
+<link rel="next" href="ch11.html" title="µÚ&#160;11&#160;ÕÂ&#160;ÄÚºËÖĞµÄÊı¾İÀàĞÍ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">10.6.&#160;¿ìËÙ²Î¿¼</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch10s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch11.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="InterruptHandlingqr.sect"></a>10.6.&#160;¿ìËÙ²Î¿¼</h2></div></div></div>
+<p>±¾ÕÂÖĞ½éÉÜÁËÕâĞ©¹ØÓÚÖĞ¶Ï¹ÜÀíµÄ·ûºÅ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/interrupt.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int request_irq(unsigned int irq, irqreturn_t (*handler)( ), unsigned long flags, const char *dev_name, void *dev_id);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void free_irq(unsigned int irq, void *dev_id);</span></span></dt>
+<dd><p>µ÷ÓÃÕâ¸ö×¢²áºÍ×¢ÏúÒ»¸öÖĞ¶Ï´¦Àí.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/irq.h.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int can_request_irq(unsigned int irq, unsigned long flags);</span></span></dt>
+<dd><p>Õâ¸öº¯Êı, ÔÚ i386 ºÍ x86_64 ÌåÏµÉÏÓĞ, ·µ»ØÒ»¸ö·ÇÁãÖµÈç¹ûÒ»¸ö·ÖÅä¸ø¶¨ÖĞ¶ÏÏßµÄÆóÍ¼³É¹¦.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/signal.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SA_INTERRUPT</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SA_SHIRQ</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SA_SAMPLE_RANDOM </span></span></dt>
+<dd><p>¸ø request_irq µÄ±êÖ¾. SA_INTERRUPT ÇëÇó°²×°Ò»¸ö¿ìËÙ´¦ÀíÕß( Ïà·´ÊÇÒ»¸öÂıËÙµÄ). SA_SHIRQ °²×°Ò»¸ö¹²ÏíµÄ´¦ÀíÕß, ²¢ÇÒµÚ 3 ¸ö flag Éù³ÆÖĞ¶ÏÊ±´Á¿ÉÓÃÀ´²úÉúÏµÍ³ìØ.</p></dd>
+<dt><span class="term"><span>/proc/interrupts</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>/proc/stat </span></span></dt>
+<dd><p>±¨¸æÓ²¼şÖĞ¶ÏºÍ°²×°µÄ´¦ÀíÕßµÄÎÄ¼şÏµÍ³½Úµã.</p></dd>
+<dt><span class="term"><span>unsigned long probe_irq_on(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int probe_irq_off(unsigned long);</span></span></dt>
+<dd><p>Çı¶¯Ê¹ÓÃµÄº¯Êı, µ±Ëü²»µÃ²»Ì½²âÀ´¾ö¶¨ÄÄ¸öÖĞ¶ÏÏß±»Éè±¸ÔÚÊ¹ÓÃ. probe_irq_on µÄ½á¹û±ØĞë´«»Ø¸ø probe_irq_off ÔÚÖĞ¶Ï²úÉúÖ®ºó. probe_irq_off µÄ·µ»ØÖµÊÇ±»Ì½²âµÄÖĞ¶ÏºÅ.</p></dd>
+<dt><span class="term"><span>IRQ_NONE</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>IRQ_HANDLED</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>IRQ_RETVAL(int x)</span></span></dt>
+<dd><p>´ÓÒ»¸öÖĞ¶Ï´¦Àí·µ»ØµÄ¿ÉÄÜÖµ, Ö¸Ê¾ÊÇ·ñÒ»¸öÀ´×ÔÉè±¸µÄÕæÕıµÄÖĞ¶Ï³öÏÖÁË.</p></dd>
+<dt><span class="term"><span>void disable_irq(int irq);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void disable_irq_nosync(int irq);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void enable_irq(int irq);</span></span></dt>
+<dd><p>Çı¶¯¿ÉÒÔÊ¹ÄÜºÍ½ûÖ¹ÖĞ¶Ï±¨¸æ. Èç¹ûÓ²¼şÊÔÍ¼ÔÚÖĞ¶Ï½ûÖ¹Ê±²úÉúÒ»¸öÖĞ¶Ï, Õâ¸öÖĞ¶ÏÓÀÔ¶¶ªÊ§ÁË. Ò»¸öÊ¹ÓÃÒ»¸ö¹²Ïí´¦ÀíÕßµÄÇı¶¯±ØĞë²»Ê¹ÓÃÕâ¸öº¯Êı.</p></dd>
+<dt><span class="term"><span>void local_irq_save(unsigned long flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void local_irq_restore(unsigned long flags);</span></span></dt>
+<dd><p>Ê¹ÓÃ local_irq_save À´½ûÖ¹±¾µØ´¦ÀíÆ÷µÄÖĞ¶Ï²¢ÇÒ¼Ç×¡ËüÃÇÖ®Ç°µÄ×´Ì¬. flags ¿ÉÒÔ±»´«µİ¸ø local_irq_restore À´»Ö¸´Ö®Ç°µÄÖĞ¶Ï×´Ì¬.</p></dd>
+<dt><span class="term"><span>void local_irq_disable(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void local_irq_enable(void);</span></span></dt>
+<dd><p>ÔÚµ±Ç°´¦ÀíÆ÷ìØÎŞÌõ¼ş½ûÖ¹ºÍÊ¹ÄÜÖĞ¶ÏµÄº¯Êı.</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch10s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch11.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.5.&#160;ÖĞ¶ÏÇı¶¯ I/O&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;µÚ&#160;11&#160;ÕÂ&#160;ÄÚºËÖĞµÄÊı¾İÀàĞÍ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

@@ -1,0 +1,65 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch05.html" title="µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö">
+<link rel="prev" href="ch05.html" title="µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö">
+<link rel="next" href="ch05s03.html" title="5.3.&#160;Æì±êºÍ»¥³âÌå">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch05s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ConcurrencyandItsManagement.sect"></a>5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí</h2></div></div></div>
+<p>ÔÚÏÖ´ú Linux ÏµÍ³, ÓÐ·Ç³£¶àµÄ²¢·¢Ô´, ²¢ÇÒÒò´Ë¶øÀ´µÄ¿ÉÄÜ¾ºÕùÇé¿ö. ¶à¸öÓÃ»§¿Õ¼ä½ø³ÌÔÚÔËÐÐ, ËüÃÇ¿ÉÄÜÒÔÁîÈË¾ªÑÈµÄ·½Ê½×éºÏ´æÈ¡ÄãµÄ´úÂë.  SMP ÏµÍ³ÄÜ¹»Í¬Ê±ÔÚ²»Í¬´¦ÀíÆ÷ÉÏÖ´ÐÐÄãµÄ´úÂë. ÄÚºË´úÂëÊÇ¿ÉÇÀÕ¼µÄ; ÄãµÄÇý¶¯´úÂë¿ÉÄÜÔÚÈÎºÎÊ±¼äÊ§È¥´¦ÀíÆ÷, ´úÌæËüµÄ½ø³Ì¿ÉÄÜÒ²ÔÚÄãµÄÇý¶¯ÖÐÔËÐÐ. Éè±¸ÖÐ¶ÏÊÇÄÜ¹»µ¼ÖÂÄãµÄ´úÂë²¢·¢Ö´ÐÐµÄÒì²½ÊÂ¼þ. ÄÚºËÒ²Ìá¹©¸÷ÖÖÑÓ³Ù´úÂëÖ´ÐÐµÄ»úÖÆ, ÀýÈç workqueue, tasklet, ÒÔ¼°¶¨Ê±Æ÷, ÕâÐ©ÄÜ¹»Ê¹ÄãµÄ´úÂëÔÚÈÎºÎÊ±¼äÒÔÒ»ÖÖÓëµ±Ç°½ø³ÌÔÚ×öµÄÊÂÇéÎÞ¹ØµÄ·½Ê½ÔËÐÐ. ÔÚÏÖ´úµÄ, ÈÈ²å°ÎµÄÊÀ½çÖÐ, ÄãµÄÉè±¸¿ÉÄÜÔÚÄãÊ¹ÓÃËüÃÇµÄÊ±ºòÇáÒ×µØÏûÊ§.</p>
+<p>±ÜÃâ¾ºÕùÇé¿ö¿ÉÄÜÊÇÒ»¸öÁîÈËº¦ÅÂµÄ¹¤×÷. ÔÚÒ»¸öÈÎºÎÊ±ºò¿ÉÄÜ·¢ÉúÈÎºÎÊÂµÄÊÀ½ç, Çý¶¯³ÌÐòÔ±ÈçºÎ±ÜÃâ²úÉú¾ø¶ÔµÄ»ìÂÒ? ÊÂÊµÖ¤Ã÷, ´ó²¿·Ö¾ºÕùÇé¿ö¿ÉÒÔ±ÜÃâ, Í¨¹ýÒ»Ð©Ïë·¨, ÄÚºË²¢·¢¿ØÖÆÔ­Óï, ÒÔ¼°¼¸¸ö»ù±¾Ô­ÔòµÄÓ¦ÓÃ. ÎÒÃÇ»áÏÈ´ÓÔ­Ôò¿ªÊ¼, ½Ó×Å½øÈëÈçºÎÊ¹ÓÃËüÃÇµÄÏ¸½ÚÖÐ</p>
+<p>¾ºÕùÇé¿öÀ´×Ô¶Ô×ÊÔ´µÄ¹²Ïí´æÈ¡µÄ½á¹û. µ± 2 ¸öÖ´ÐÐµÄÏßÂ·<sup>[<a name="id426884" href="#ftn.id426884">17</a>]</sup>ÓÐ»ú»á²Ù×÷Í¬Ò»¸öÊý¾Ý½á¹¹(»òÕßÓ²¼þ×ÊÔ´), »ìºÏµÄ¿ÉÄÜÐÔ¾ÍÒ»Ö±´æÔÚ. Òò´ËµÚÒ»¸ö¾­Ñé·¨ÔòÊÇÔÚÄãÉè¼ÆÇý¶¯Ê±ÔÚÈÎºÎ¿ÉÄÜµÄÊ±ºò¼Ç×¡±ÜÃâ¹²ÏíµÄ×ÊÔ´. Èç¹ûÃ»ÓÐ²¢·¢´æÈ¡, ¾ÍÃ»ÓÐ¾ºÕùÇé¿ö. Òò´ËÐ¡ÐÄ±àÐ´µÄÄÚºË´úÂëÓ¦µ±ÓÐ×îÐ¡µÄ¹²Ïí. Õâ¸öÏë·¨µÄ×îÃ÷ÏÔÓ¦ÓÃÊÇ±ÜÃâÊ¹ÓÃÈ«¾Ö±äÁ¿. Èç¹ûÄã½«Ò»¸ö×ÊÔ´·ÅÔÚ¶à¸öÖ´ÐÐÏßÂ·ÄÜ¹»ÕÒµ½ËüµÄµØ·½, Ó¦µ±ÓÐÒ»¸öºÜÇ¿µÄÀíÓÉÕâÑù×ö.</p>
+<p>ÊÂÊµÊÇ, È»¶ø, ÕâÑùµÄ¹²Ïí³£³£ÊÇÐèÒªµÄ. Ó²¼þ×ÊÔ´ÊÇ, ÓÉÓÚËüÃÇµÄÌØÐÔ, ¹²ÏíµÄ, Èí¼þ×ÊÔ´Ò²±ØÐë³£³£¹²Ïí¸ø¶à¸öÏß³Ì. Ò²Òª¼Ç×¡È«¾Ö±äÁ¿Ô¶Ô¶²»ÊÇ¹²ÏíÊý¾ÝµÄÎ¨Ò»·½Ê½; ÈÎºÎÊ±ºòÄãµÄ´úÂë´«µÝÒ»¸öÖ¸Õë¸øÄÚºËµÄÆäËû²¿·Ö, Ç±ÔÚµØËü´´ÔìÁËÒ»¸öÐÂµÄ¹²ÏíÇéÐÎ. ¹²ÏíÊÇÉú»îµÄÊÂÊµ.</p>
+<p>ÕâÊÇ×ÊÔ´¹²ÏíµÄÓ²¹æÔò: ÈÎºÎÊ±ºòÒ»¸öÓ²¼þ»òÈí¼þ×ÊÔ´±»³¬³öÒ»¸öµ¥¸öÖ´ÐÐÏß³Ì¹²Ïí, ²¢ÇÒ¿ÉÄÜ´æÔÚÒ»¸öÏß³Ì¿´µ½ÄÇ¸ö×ÊÔ´µÄ²»Ò»ÖÂÊ±, Äã±ØÐëÃ÷È·µØ¹ÜÀí¶ÔÄÇ¸ö×ÊÔ´µÄ´æÈ¡. ÔÚÉÏÃæµÄ scull Àý×Ó, Õâ¸öÇé¿öÔÚ½ø³Ì B ¿´À´ÊÇ²»Ò»ÖÂµÄ; ²»ÖªµÀ½ø³Ì A ÒÑ¾­Îª( ¹²ÏíµÄ ) Éè±¸·ÖÅäÁËÄÚ´æ, Ëü×öËü×Ô¼ºµÄ·ÖÅä²¢ÇÒ¸²¸ÇÁË A µÄ¹¤×÷. ÔÚÕâ¸öÀý×ÓÀï, ÎÒÃÇ±ØÐë¿ØÖÆ¶Ô scull Êý¾Ý½á¹¹µÄ´æÈ¡. ÎÒÃÇÐèÒª°²ÅÅ, ÕâÑù´úÂë»òÕß¿´µ½ÄÚ´æÒÑ¾­·ÖÅäÁË, »òÕßÖªµÀÃ»ÓÐÄÚ´æÒÑ¾­»òÕß½«Òª±»ÆäËûÈË·ÖÅä. ´æÈ¡¹ÜÀíµÄ³£ÓÃ¼¼ÊõÊÇ¼ÓËø»òÕß»¥³â -- È·±£ÔÚÈÎºÎÊ±¼äÖ»ÓÐÒ»¸öÖ´ÐÐÏß³Ì¿ÉÒÔ²Ù×÷Ò»¸ö¹²Ïí×ÊÔ´. ±¾ÕÂÊ£ÏÂµÄ´ó²¿·Ö½«×¨ÃÅ½éÉÜ¼ÓËø.</p>
+<p>È»¶ø, Ê×ÏÈ, ÎÒÃÇ±ØÐë¼ò¶Ì¿¼ÂÇÒ»ÏÂÁíÒ»¸öÖØÒª¹æÔò. µ±ÄÚºË´úÂë´´½¨Ò»¸ö»á±»ÄÚºËÆäËû²¿·Ö¹²ÏíµÄ¶ÔÏóÊ±, Õâ¸ö¶ÔÏó±ØÐëÒ»Ö±´æÔÚ(²¢ÇÒ¹¦ÄÜÕý³£)µ½ËüÖªµÀÃ»ÓÐ¶ÔËüµÄÍâ²¿ÒýÓÃ´æÔÚÎªÖ¹. scull Ê¹ËüµÄÉè±¸¿ÉÓÃµÄË²¼ä, Ëü±ØÐë×¼±¸ºÃ´¦Àí¶ÔÄÇÐ©Éè±¸µÄÇëÇó. ²¢ÇÒ scull ±ØÐëÒ»Ö±ÄÜ¹»´¦Àí¶ÔËüµÄÉè±¸µÄÇëÇóÖ±µ½ËüÖªµÀÃ»ÓÐ¶ÔÕâÐ©Éè±¸µÄÒýÓÃ(ÀýÈç´ò¿ªµÄÓÃ»§¿Õ¼äÎÄ¼þ)´æÔÚ. 2 ¸öÒªÇó³ö×ÔÕâ¸ö¹æÔò: ³ý·ÇËü´¦ÓÚ¿ÉÒÔÕýÈ·¹¤×÷µÄ×´Ì¬, ²»ÄÜÓÐ¶ÔÏóÄÜ¶ÔÄÚºË¿ÉÓÃ, ¶ÔÕâÑùµÄ¶ÔÏóµÄÒýÓÃ±ØÐë±»¸ú×Ù. ÔÚ´ó²¿·ÖÇé¿öÏÂ, Äã½«·¢ÏÖÄÚºËÎªÄã´¦ÀíÒýÓÃ¼ÆÊý, µ«ÊÇ³£³£ÓÐÀýÍâ.</p>
+<p>×ñÕÕÉÏÃæµÄ¹æÔòÐèÒª¼Æ»®ºÍ¶ÔÏ¸½ÚÐ¡ÐÄ×¢Òâ. ÈÝÒ×±»¶Ô×ÊÔ´µÄ²¢·¢´æÈ¡¶ø³Ô¾ª, ÄãÊÂÏÈ²¢Ã»ÓÐÈÏÊ¶µ½±»¹²Ïí. Í¨¹ýÒ»Ð©Å¬Á¦, È»¶ø, ´ó²¿·Ö¾ºÕùÇé¿öÄÜ¹»ÔÚËüÃÇÒ§µ½Äã»òÕßÄãµÄÓÃ»§Ç°±»ÏûÃð.</p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id426884" href="#id426884">17</a>] </sup>±¾ÕÂµÄÒâÍ¼, Ò»¸öÖ´ÐÐ"Ïß³Ì"ÊÇÈÎºÎÔËÐÐ´úÂëµÄÉÏÏÂÎÄ. Ã¿¸ö½ø³ÌÏÔÈ»ÊÇÒ»¸öÖ´ÐÐÏß³Ì, µ«ÊÇÒ»¸öÖÐ¶Ï´¦ÀíÒ²ÊÇ, »òÕßÆäËûÏìÓ¦Ò»¸öÒì²½ÄÚºËÊÂ¼þµÄ´úÂë.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch05s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;5.3.&#160;Æì±êºÍ»¥³âÌå</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

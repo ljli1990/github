@@ -1,0 +1,65 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>1.4.&#160;°²È«ÎÊÌâ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch01.html" title="µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é">
+<link rel="prev" href="ch01s03.html" title="1.3.&#160;Éè±¸ºÍÄ£¿éµÄ·ÖÀà">
+<link rel="next" href="ch01s05.html" title="1.5.&#160;°æ±¾±àºÅ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">1.4.&#160;°²È«ÎÊÌâ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch01s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SecurityIssues.sect1"></a>1.4.&#160;°²È«ÎÊÌâ</h2></div></div></div>
+<p>°²È«ÊÇµ±½ñÖØÒªÐÔ²»¶ÏÔö³¤µÄ¹Ø×¢µã. ÎÒÃÇ½«ÌÖÂÛ°²È«Ïà¹ØµÄÎÊÌâ, ÔÚËüÃÇÔÚ±¾ÊéÖÐ³öÏÖÊ±. ÓÐ¼¸¸öÍ¨ÓÃµÄ¸ÅÄî, È´ÖµµÃÏÖÔÚÌáÒ»ÏÂ.</p>
+<p>ÏµÍ³ÖÐÈÎºÎ°²È«¼ì²é¶¼ÓÉÄÚºË´úÂëÇ¿¼ÓÉÏÈ¥. Èç¹ûÄÚºËÓÐ°²È«Â©¶´, ÏµÍ³×÷ÎªÒ»¸öÕûÌå¾ÍÓÐÂ©¶´. ÔÚ¹Ù·½µÄÄÚºË·¢²¼Àï, Ö»ÓÐÒ»¸öÓÐÊÚÈ¨µÄÓÃ»§¿ÉÒÔ¼ÓÔØÄ£¿é; ÏµÍ³µ÷ÓÃ init_module ¼ì²éµ÷ÓÃ½ø³ÌÊÇ·ñÊÇÓÐÈ¨¼ÓÔØÄ£¿éµ½ÄÚºËÀï. Òò´Ë, µ±ÔËÐÐÒ»¸ö¹Ù·½ÄÚºËÊ±, Ö»ÓÐ³¬¼¶ÓÃ»§<sup>[<a name="id407079" href="#ftn.id407079">1</a>]</sup>»òÕßÒ»¸ö³É¹¦»ñµÃÌØÈ¨µÄÈëÇÖÕß, ²Å¿ÉÒÔÀûÓÃÌØÈ¨´úÂëµÄÄÜÁ¦.</p>
+<p>ÔÚ¿ÉÄÜÊ±, Çý¶¯±àÐ´ÕßÓ¦µ±±ÜÃâ½«°²È«²ßÂÔ±àµ½ËûÃÇµÄ´úÂëÖÐ. °²È«ÊÇÒ»¸ö²ßÂÔÎÊÌâ, ×îºÃÔÚÄÚºË¸ß²ãÀ´´¦Àí, ÔÚÏµÍ³¹ÜÀíÔ±µÄ¿ØÖÆÏÂ. µ«ÊÇ, ³£ÓÐÀýÍâ.</p>
+<p>×÷ÎªÒ»¸öÉè±¸Çý¶¯±àÐ´Õß, ÄãÓ¦µ±ÖªµÀÔÚÊ²Ã´ÇéÐÎÏÂ, Ä³Ð©ÀàÐÍµÄÉè±¸´æÈ¡¿ÉÄÜ·´ÃæµØÓ°ÏìÏµÍ³×÷ÎªÒ»¸öÕûÌå, ²¢ÇÒÓ¦µ±Ìá¹©×ã¹»µØ¿ØÖÆ. ÀýÈç, »áÓ°ÏìÈ«¾Ö×ÊÔ´µÄÉè±¸²Ù×÷( ÀýÈçÉèÖÃÒ»ÌõÖÐ¶ÏÏß ), ¿ÉÄÜ»áËð»µÓ²¼þ( ÀýÈç, ¼ÓÔØ¹Ì¼þ ), »òÕßËü¿ÉÄÜ»áÓ°ÏìÆäËûÓÃ»§( ÀýÈçÉèÖÃÒ»¸ö´Å´øÇý¶¯µÄÈ±Ê¡µÄ¿é´óÐ¡ ), ³£³£ÊÇÖ»¶ÔÓÐ×ã¹»ÊÚÈ¨µÄÓÃ»§, ²¢ÇÒÕâÖÖ¼ì²é±ØÐëÓÉÇý¶¯×ÔÉí½øÐÐ.</p>
+<p>Çý¶¯±àÐ´ÕßÒ²±ØÐëÒªÐ¡ÐÄ, µ±È», À´±ÜÃâÒýÈë°²È« bug. C ±à³ÌÓïÑÔÊ¹µÃÒ×ÓÚ·¸ÏÂ¼¸ÀàµÄ´íÎó. ÀýÈç, Ðí¶àÏÖ½ñµÄ°²È«ÎÊÌâÊÇÓÉÓÚ»º³åÇø¸²¸ÇÒýÆð, ËüÊÇÓÉÓÚ³ÌÐòÔ±Íü¼Ç¼ì²éÓÐ¶àÉÙÊý¾ÝÐ´Èë»º³åÇø, Êý¾ÝÔÚ»º³åÇø½áÎ²Ö®Íâ½áÊø, Òò´Ë¸²¸ÇÁËÎÞ¹ØµÄÊý¾Ý. ÕâÑùµÄ´íÎó¿ÉÄÜ»áÎ£¼°Õû¸öÏµÍ³µÄ°²È«, ±ØÐë±ÜÃâ. ÐÒÔËµÄÊÇ, ÔÚÉè±¸Çý¶¯ÉÏÏÂÎÄÖÐ±ÜÃâÕâÑùµÄ´íÎó¾­³£ÊÇÏà¶ÔÈÝÒ×µÄ, ÕâÀï¶ÔÓÃ»§µÄ½Ó¿Ú¾­¹ý¾«Ï¸¶¨Òå²¢±»¸ß¶ÈµØ¿ØÖÆ.</p>
+<p>Ò»Ð©ÆäËûµÄÍ¨ÓÃµÄ°²È«¹ÛÄîÒ²ÖµµÃÀÎ¼Ç. ÈÎºÎ´ÓÓÃ»§½ø³Ì½ÓÊÕµÄÊäÈëÓ¦µ±ÒÔ¼«´óµÄ»³ÒÉÌ¬¶ÈÀ´¶Ô´ý; ³ý·ÇÄãÄÜºËÊµËü, ·ñÔò²»ÒªÐÅÈÎËü. Ð¡ÐÄ¶Ô´ýÎ´³õÊ¼»¯µÄÄÚ´æ; ´ÓÄÚºË»ñÈ¡µÄÈÎºÎÄÚ´æÓ¦µ±ÇåÁã»òÕßÔÚÆä¶ÔÓÃ»§½ø³Ì»òÉè±¸¿ÉÓÃÖ®Ç°½øÐÐ³õÊ¼»¯. ·ñÔò, ¿ÉÄÜ·¢ÉúÐÅÏ¢Ð¹Â©( Êý¾Ý, ÃÜÂëµÄ±©Â¶µÈµÈ ). Èç¹ûÄãµÄÉè±¸½âÎö·¢ËÍ¸øËüµÄÊý¾Ý, ÒªÈ·±£ÓÃ»§²»ÄÜ·¢ËÍÈÎºÎÄÜÎ£¼°ÏµÍ³µÄ¶«Î÷. ×îºó, ¿¼ÂÇÒ»ÏÂÉè±¸²Ù×÷µÄ¿ÉÄÜºó¹û; Èç¹ûÓÐÌØ¶¨µÄ²Ù×÷( ÀýÈç, ¼ÓÔØÒ»¸öÊÊÅä¿¨µÄ¹Ì¼þ»òÕß¸ñÊ½»¯Ò»¸ö´ÅÅÌ ), ÄÜÓ°Ïìµ½ÏµÍ³µÄ, ÕâÐ©²Ù×÷Ó¦¸ÃÍêÈ«È·¶¨µØÒªÏÞÖÆÔÚÊÚÈ¨µÄÓÃ»§ÖÐ.</p>
+<p>Ò²ÒªÐ¡ÐÄ, µ±´ÓµÚÈý·½½ÓÊÕÈí¼þÊ±, ÌØ±ðÊÇÓëÄÚºËÓÐ¹Ø: ÒòÎªÃ¿¸öÈË¶¼¿ÉÒÔ½Ó´¥µ½Ô´Âë, Ã¿¸öÈË¶¼¿ÉÒÔ·Ö²ðºÍÖØ×é¶«Î÷. ¾¡¹ÜÄãÄÜ¹»ÐÅÈÎÔÚÄãµÄ·¢²¼ÖÐµÄÔ¤±àÒëµÄÄÚºË, ÄãÓ¦µ±±ÜÃâÔËÐÐÒ»¸öÓÉ²»ÄÜÐÅÈÎµÄÅóÓÑ±àÒëµÄÄÚºË -- Èç¹ûÄã²»ÄÜ×÷Îª root ÔËÐÐÔ¤±àÒëµÄ¶þ½øÖÆÎÄ¼þ, ÄÇÃ´Äã×îºÃ²»ÒªÔËÐÐÒ»¸öÔ¤±àÒëµÄÄÚºË. ÀýÈç, Ò»¸ö¾­¹ýÁË¶ñÒâÐÞ¸ÄµÄÄÚºË¿ÉÄÜ»áÔÊÐíÈÎºÎÈË¼ÓÔØÄ£¿é, ÕâÑù¾ÍÍ¨¹ý init_module ¿ªÆôÁËÒ»¸ö²»ÏëÒªµÄºóÃÅ.</p>
+<p>×¢Òâ, Linux ÄÚºË¿ÉÒÔ±àÒë³É²»Ö§³ÖÈÎºÎÊôÓÚÄ£¿éµÄ¶«Î÷, Òò´Ë¹Ø±ÕÁËÈÎºÎÄ£¿éÏà¹ØµÄ°²È«Â©¶´. ÔÚÕâÖÖÇé¿öÏÂ, µ±È», ËùÓÐÐèÒªµÄÇý¶¯±ØÐëÖ±½Ó½¨Á¢µ½ÄÚºË×ÔÉíÄÚ²¿. ÔÚ 2.2 ºÍÒÔºóµÄÄÚºË, Ò²¿ÉÒÔÔÚÏµÍ³Æô¶¯Ö®ºó, Í¨¹ý capability »úÖÆÀ´½ûÖ¹ÄÚºËÄ£¿éµÄ¼ÓÔØ.</p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id407079" href="#id407079">1</a>] </sup>´Ó¼¼ÊõÉÏ½², Ö»ÓÐ¾ßÓÐ CAP_SYS_MODULE È¨ÀûµÄÈË²Å¿ÉÒÔ½øÐÐÕâ¸ö²Ù×÷. ÎÒÃÇµÚ 6 ÕÂÌÖÂÛ capabilities .</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch01s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">1.3.&#160;Éè±¸ºÍÄ£¿éµÄ·ÖÀà&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;1.5.&#160;°æ±¾±àºÅ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

@@ -1,0 +1,108 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>3.6.&#160;scull µÄÄÚ´æÊ¹ÓÃ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch03.html" title="µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯">
+<link rel="prev" href="ch03s05.html" title="3.5.&#160;open ºÍ release">
+<link rel="next" href="ch03s07.html" title="3.7.&#160;¶ÁºÍÐ´">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">3.6.&#160;scull µÄÄÚ´æÊ¹ÓÃ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch03s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="scullsMemoryUsage.sect"></a>3.6.&#160;scull µÄÄÚ´æÊ¹ÓÃ</h2></div></div></div>
+<p>ÔÚ½éÉÜ¶ÁÐ´²Ù×÷Ç°, ÎÒÃÇ×îºÃ¿´¿´ÈçºÎÒÔ¼°ÎªÊ²Ã´ scull ½øÐÐÄÚ´æ·ÖÅä. "ÈçºÎ"ÊÇÐèÒªÈ«ÃæÀí½â´úÂë, "ÎªÊ²Ã´"ÑÝÊ¾ÁËÇý¶¯±àÐ´ÕßÐèÒª×öµÄÑ¡Ôñ, ¾¡¹Ü scull Ã÷È·µØ²»ÊÇµäÐÍÉè±¸.</p>
+<p>±¾½ÚÖ»´¦Àí scull ÖÐµÄÄÚ´æ·ÖÅä²ßÂÔ, ²»Õ¹Ê¾¸øÄã±àÐ´ÕæÕýÇý¶¯ÐèÒªµÄÓ²¼þ¹ÜÀí¼¼ÄÜ. ÕâÐ©¼¼ÄÜÔÚµÚ 9 ÕÂºÍµÚ 10 ÕÂ½éÉÜ. Òò´Ë, Äã¿ÉÌø¹ý±¾ÕÂ, Èç¹ûÄã²»¸ÐÐËÈ¤ÓÚÀí½âÃæÏòÄÚ´æµÄ scull Çý¶¯µÄÄÚ²¿¹¤×÷.</p>
+<p>scull Ê¹ÓÃµÄÄÚ´æÇø, Ò²³ÆÎªÒ»¸öÉè±¸, ³¤¶È¿É±ä. ÄãÐ´µÄÔ½¶à, ËüÔö³¤Ô½¶à; Í¨¹ýÊ¹ÓÃÒ»¸ö¶ÌÎÄ¼þ¸²¸ÇÉè±¸À´½øÐÐÐÞÕû.</p>
+<p>scull Çý¶¯ÒýÈë 2 ¸öºËÐÄº¯ÊýÀ´¹ÜÀí Linux ÄÚºËÖÐµÄÄÚ´æ. ÕâÐ©º¯Êý, ¶¨ÒåÔÚ &lt;linux/slab.h&gt;, ÊÇ:</p>
+<pre class="programlisting">
+void *kmalloc(size_t size, int flags); 
+void kfree(void *ptr);
+</pre>
+<p>¶Ô kmalloc µÄµ÷ÓÃÊÔÍ¼·ÖÅä size ×Ö½ÚµÄÄÚ´æ; ·µ»ØÖµÊÇÖ¸ÏòÄÇ¸öÄÚ´æµÄÖ¸Õë»òÕßÈç¹û·ÖÅäÊ§°ÜÎªNULL. flags ²ÎÊýÓÃÀ´ÃèÊöÄÚ´æÓ¦µ±ÈçºÎ·ÖÅä; ÎÒÃÇÔÚµÚ 8 ÕÂÏêÏ¸²é¿´ÕâÐ©±êÖ¾. ¶ÔÓÚÏÖÔÚ, ÎÒÃÇÒ»Ö±Ê¹ÓÃ GFP_KERNEL. ·ÖÅäµÄÄÚ´æÓ¦µ±ÓÃ kfree À´ÊÍ·Å. ÄãÓ¦µ±´Ó²»´«µÝÈÎºÎ²»ÊÇ´Ó kmalloc »ñµÃµÄ¶«Î÷¸ø kfree. µ«ÊÇ, ´«µÝÒ»¸ö NULL Ö¸Õë¸ø kfree ÊÇºÏ·¨µÄ.</p>
+<p>kmalloc ²»ÊÇ×îÓÐÐ§µÄ·ÖÅä´óÄÚ´æÇøµÄ·½·¨(¼ûµÚ 8 ÕÂ), ËùÒÔÌôÑ¡¸ø scull µÄÊµÏÖ²»ÊÇÒ»¸öÌØ±ðÇÉÃîµÄ. Ò»¸öÇÉÃîµÄÔ´ÂëÊµÏÖ¿ÉÄÜ¸üÄÑÔÄ¶Á, ¶ø±¾½ÚµÄÄ¿±êÊÇÕ¹Ê¾¶ÁºÍÐ´, ²»ÊÇÄÚ´æ¹ÜÀí. ÕâÊÇÎªÊ²Ã´´úÂëÖ»ÊÇÊ¹ÓÃ kmalloc ºÍ kfree ¶ø²»ÒÀ¿¿ÕûÒ³µÄ·ÖÅä, ¾¡¹ÜÕâ¸ö·½·¨»á¸üÓÐÐ§.</p>
+<p>ÔÚ flip Ò»±ß, ÎÒÃÇ²»ÏëÏÞÖÆ"Éè±¸"ÇøµÄ´óÐ¡, ÓÉÓÚÀíÂÛÉÏµÄºÍÊµ¼ùÉÏµÄÀíÓÉ. ÀíÂÛÉÏ, ¸øÔÚ±»¹ÜÀíµÄÊý¾ÝÏîÊ©¼ÓÎä¶ÏµÄÏÞÖÆ×ÜÊÇ¸ö»µÏë·¨. Êµ¼ùÉÏ, scull ¿ÉÓÃÀ´ÔÝÊ±µØ³Ô¹âÄãÏµÍ³ÖÐµÄÄÚ´æ, ÒÔ±ãÔËÐÐÔÚµÍÄÚ´æÌõ¼þÏÂµÄ²âÊÔ. ÔËÐÐÕâÑùµÄ²âÊÔ¿ÉÄÜ»á°ïÖúÄãÀí½âÏµÍ³µÄÄÚ²¿. Äã¿ÉÒÔÊ¹ÓÃÃüÁî cp /dev/zero /dev/scull0 À´ÓÃ scull ³ÔµôËùÓÐµÄÕæÊµ RAM, ²¢ÇÒÄã¿ÉÒÔÊ¹ÓÃ dd ¹¤¾ßÀ´Ñ¡Ôñ±´¶àÉÙÊý¾Ý¸ø scull Éè±¸.</p>
+<p>ÔÚ scull, Ã¿¸öÉè±¸ÊÇÒ»¸öÖ¸ÕëÁ´±í, Ã¿¸ö¶¼Ö¸ÏòÒ»¸ö scull_dev ½á¹¹. Ã¿¸öÕâÑùµÄ½á¹¹, È±Ê¡µØ, Ö¸Ïò×î¶à 4 Õ××Ö½Ú, Í¨¹ýÒ»¸öÖÐ¼äÖ¸ÕëÊý×é. ·¢ÐÐ´úÂëÊ¹ÓÃÒ»¸ö 1000 ¸öÖ¸ÕëµÄÊý×éÖ¸ÏòÃ¿¸ö 4000 ×Ö½ÚµÄÇøÓò. ÎÒÃÇ³ÆÃ¿¸öÄÚ´æÇøÓòÎªÒ»¸öÁ¿×Ó, Êý×é(»òÕßËüµÄ³¤¶È) ÎªÒ»¸öÁ¿×Ó¼¯. Ò»¸ö scull Éè±¸ºÍËüµÄÄÚ´æÇøÈçÍ¼<a href="ch03s06.html#ldd3-3-1.fig" title="Í¼&#160;3.1.&#160;Ò»¸ö scull Éè±¸µÄ²¼¾Ö">Ò»¸ö scull Éè±¸µÄ²¼¾Ö</a>ËùÊ¾.</p>
+<div class="figure">
+<a name="ldd3-3-1.fig"></a><p class="title"><b>Í¼&#160;3.1.&#160;Ò»¸ö scull Éè±¸µÄ²¼¾Ö</b></p>
+<div><img src="images/snagitldd3/ldd3-3-1.png" alt="Ò»¸ö scull Éè±¸µÄ²¼¾Ö"></div>
+</div>
+<p>Ñ¡¶¨µÄÊý×ÖÊÇÕâÑù, ÔÚ scull ÖÐÐ´µ¥¸öÒ»¸ö×Ö½ÚÏûºÄ 8000 »ò 12,000 KB ÄÚ´æ: 4000 ÊÇÁ¿×Ó, 4000 »òÕß 8000 ÊÇÁ¿×Ó¼¯(¸ù¾ÝÖ¸ÕëÔÚÄ¿±êÆ½Ì¨ÉÏÊÇÓÃ 32Î»»¹ÊÇ 64Î»±íÊ¾). Ïà·´, Èç¹ûÄãÐ´Èë´óÁ¿Êý¾Ý, Á´±íµÄ¿ªÏú²»ÊÇÌ«»µ. Ã¿ 4 MB Êý¾ÝÖ»ÓÐÒ»¸öÁ´±íÔªËØ, Éè±¸µÄ×î´ó³ß´çÊÜÏÞÓÚ¼ÆËã»úµÄÄÚ´æ´óÐ¡.</p>
+<p>ÎªÁ¿×ÓºÍÁ¿×Ó¼¯Ñ¡ÔñºÏÊÊµÄÖµÊÇÒ»¸ö²ßÂÔÎÊÌâ, ¶ø²»ÊÇ»úÖÆ, ²¢ÇÒÓÅ»¯µÄÖµÒÀÀµÓÚÉè±¸ÈçºÎÊ¹ÓÃ. Òò´Ë, scull Çý¶¯²»Ó¦µ±Ç¿ÖÆ¸øÁ¿×ÓºÍÁ¿×Ó¼¯Ê¹ÓÃÈÎºÎÌØ±ðµÄÖµ. ÔÚ scull ÖÐ, ÓÃ»§¿ÉÒÔÕÆ¹Ü¸Ä±äÕâÐ©Öµ, ÓÐ¼¸¸öÍ¾¾¶:±àÒëÊ±¼äÍ¨¹ý¸Ä±ä scull.h ÖÐµÄºê SCULL_QUANTUM ºÍ SCULL_QSET, ÔÚÄ£¿é¼ÓÔØÊ±Éè¶¨ÕûÊýÖµ scull_quantum ºÍ scull_qset, »òÕßÊ¹ÓÃ ioctl ÔÚÔËÐÐÊ±¸Ä±äµ±Ç°ÖµºÍÈ±Ê¡Öµ.</p>
+<p>Ê¹ÓÃºê¶¨ÒåºÍÒ»¸öÕûÊýÖµÀ´½øÐÐ±àÒëÊ±ºÍ¼ÓÔØÊ±ÅäÖÃ, ÊÇ¶ÔÓÚÈçºÎÑ¡ÔñÖ÷±àºÅµÄ»ØÒä. ÎÒÃÇÔÚÇý¶¯ÖÐÈÎºÎÓë²ßÂÔÏà¹Ø»ò×¨¶ÏµÄÖµÉÏÔËÓÃÕâ¸ö¼¼Êõ.</p>
+<p>ÓàÏÂµÄÎ¨Ò»ÎÊÌâÊÇÈç¹ûÑ¡ÔñÈ±Ê¡Öµ. ÔÚÕâ¸öÌØÊâÇé¿öÏÂ, ÎÊÌâÊÇÕÒµ½×îºÃµÄÆ½ºâ, ÓÉÌî³äÁËÒ»°ëµÄÁ¿×ÓºÍÁ¿×Ó¼¯µ¼ÖÂÄÚ´æÀË·Ñ, Èç¹ûÁ¿×ÓºÍÁ¿×Ó¼¯Ð¡µÄÇé¿öÏÂ·ÖÅäÊÍ·ÅºÍÖ¸ÕëÁ¬½ÓÒýÆð¿ªÏú. ÁíÍâ, kmalloc µÄÄÚ²¿Éè¼ÆÓ¦µ±¿¼ÂÇ½øÈ¥. (ÏÖÔÚÎÒÃÇ²»×·ÇóÕâµã, ²»¹ý; kmalloc µÄÄÚ²¿ÔÚµÚ 8 ÕÂÌ½Ë÷.) È±Ê¡ÖµµÄÑ¡ÔñÀ´×Ô¼ÙÉè²âÊÔÊ±¿ÉÄÜÓÐ´óÁ¿Êý¾ÝÐ´½ø scull, ¾¡¹ÜÉè±¸µÄÕý³£Ê¹ÓÃ×î¿ÉÄÜÖ»´«ËÍ¼¸ KB Êý¾Ý.</p>
+<p>ÎÒÃÇÒÑ¾­¼û¹ýÄÚ²¿´ú±íÎÒÃÇÉè±¸µÄ scull_dev ½á¹¹. ½á¹¹µÄ quantum ºÍ qset ·Ö±ð´ú±íÉè±¸µÄÁ¿×ÓºÍÁ¿×Ó¼¯´óÐ¡. Êµ¼ÊÊý¾Ý, µ«ÊÇ, ÊÇÓÉÒ»¸ö²»Í¬µÄ½á¹¹¸ú×Ù, ÎÒÃÇ³ÆÎª struct scull_qset:</p>
+<pre class="programlisting">
+struct scull_qset {
+ void **data;
+ struct scull_qset *next; 
+}; 
+</pre>
+<p>ÏÂÒ»¸ö´úÂëÆ¬¶ÎÕ¹Ê¾ÁËÊµ¼ÊÖÐ struct scull_dev ºÍ struct scull_qset ÊÇÈçºÎ±»ÓÃÀ´³ÖÓÐÊý¾ÝµÄ. sucll_trim º¯Êý¸ºÔðÊÍ·ÅÕû¸öÊý¾ÝÇø, ÓÉ scull_open ÔÚÎÄ¼þÎªÐ´¶ø´ò¿ªÊ±µ÷ÓÃ. Ëü¼òµ¥µØ±éÀúÁÐ±í²¢ÇÒÊÍ·ÅËü·¢ÏÖµÄÈÎºÎÁ¿×ÓºÍÁ¿×Ó¼¯.</p>
+<pre class="programlisting">
+int scull_trim(struct scull_dev *dev)
+{
+        struct scull_qset *next, *dptr;
+        int qset = dev-&gt;qset; /* "dev" is not-null */
+        int i;
+        for (dptr = dev-&gt;data; dptr; dptr = next)
+        { /* all the list items */
+                if (dptr-&gt;data) {
+                        for (i = 0; i &lt; qset; i++)
+                                kfree(dptr-&gt;data[i]);
+                        kfree(dptr-&gt;data);
+                        dptr-&gt;data = NULL;
+                }
+
+                next = dptr-&gt;next;
+                kfree(dptr);
+        }
+        dev-&gt;size = 0;
+        dev-&gt;quantum = scull_quantum;
+        dev-&gt;qset = scull_qset;
+        dev-&gt;data = NULL;
+        return 0;
+}
+</pre>
+<p>scull_trim Ò²ÓÃÔÚÄ£¿éÇåÀíº¯ÊýÖÐ, À´¹é»¹ scull Ê¹ÓÃµÄÄÚ´æ¸øÏµÍ³.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch03s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">3.5.&#160;open ºÍ release&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;3.7.&#160;¶ÁºÍÐ´</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

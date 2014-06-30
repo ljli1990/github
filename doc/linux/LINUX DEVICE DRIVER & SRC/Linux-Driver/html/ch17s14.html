@@ -1,0 +1,142 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.14.&#160;¶à²¥-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17s13.html" title="17.13.&#160;Í³¼ÆĞÅÏ¢">
+<link rel="next" href="ch17s15.html" title="17.15.&#160;¼¸¸öÆäËûÏ¸½Ú">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.14.&#160;¶à²¥</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s13.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s15.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Multicast"></a>17.14.&#160;¶à²¥</h2></div></div></div>
+<p>Ò»¸ö¶à²¥±¨ÎÄÊÇÒ»¸ö»á±»¶à¸öÖ÷»ú½ÓÊÕµÄÍøÂç±¨ÎÄ, µ«²»ÊÇËùÓĞÖ÷»ú. Õâ¸ö¹¦ÄÜÍ¨¹ı¸øÒ»×éÖ÷»ú·ÖÅäÌØÊâµÄÓ²¼şµØÖ·À´»ñµÃ. ·¢ÏòÒ»¸öÌØÊâµØÖ·µÄ±¨ÎÄÓ¦µ±±»ÄÇ¸ö×éµ±ÖĞµÄËùÓĞÖ÷»ú½ÓÊÕ. ÔÚÒÔÌ«ÍøµÄÇé¿öÏÂ, Ò»¸ö¶à²¥µØÖ·ÔÚÄ¿µÄµØÖ·µÄµÚÒ»¸ö×Ö½ÚµÄ×îµÍÎ»Îª 1, ¶øÃ¿¸öÉè±¸°åÔÚËü×Ô¼ºµÄÓ²¼şµØÖ·µÄÕâÒ»Î»ÉÏÎª 0.</p>
+<p>´¦ÀíÖ÷»ú×éºÍÓ²¼şµØÖ·µÄ¼¼ÇÉÓÉÓ¦ÓÃ³ÌĞòºÍÄÚºË´¦Àí, ½Ó¿ÚÇı¶¯²»±Ø´¦ÀíÕâ¸öÎÊÌâ.</p>
+<p>¶à²¥±¨ÎÄµÄ´«ËÍÊÇÒ»¸ö¼òµ¥ÎÊÌâ, ÒòÎªËüÃÇ¿´ÆğÀ´¾ÍÈçÍ¬ÆäËûµÄ±¨ÎÄ. ½Ó¿Ú·¢ËÍËüÃÇÍ¨¹ıÍ¨Ñ¶Ã½½é, ²»²é¿´Ä¿µÄµØÖ·. ÄÚºË±ØĞëÒª°²ÅÅÒ»¸öÕıÈ·µÄÓ²¼şÄ¿µÄµØÖ·; hard_header Éè±¸·½·¨, Èç¹û¶¨ÒåÁË, ²»±Ø²é¿´Ëü°²ÅÅµÄÊı¾İ.</p>
+<p>ÄÚºËÀ´¸ú×ÙÔÚÈÎºÎ¸ø¶¨Ê±¼ä¶ÔÄÄĞ©¶à²¥µØÖ·¸ĞĞËÈ¤. Õâ¸öÁĞ±í¿ÉÄÜ¾­³£¸Ä±ä, ÒòÎªËüÊÇÔÚÈÎºÎ¸ø¶¨Ê±¼äºÍ°´ÕÕÓÃ»§ÒâÔ¸ÔËĞĞµÄÓ¦ÓÃ³ÌĞòµÄ¹¦ÄÜ. Çı¶¯µÄ¹¤×÷ÊÇ½ÓÊÕ¸ĞĞËÈ¤µÄ¶à²¥µØÖ·ÁĞ±í²¢µİ½»¸øÄÚºËÈÎºÎ·¢ÏòÕâĞ©µØÖ·µÄ±¨ÎÄ. Çı¶¯ÈçºÎÊµÏÖ¶à²¥ÁĞ±íÊÇÒÀÀµÓÚµ×²ãÓ²¼şÊÇÈçºÎ¹¤×÷µÄ. µäĞÍµØ, ÔÚ¶à²¥µÄ½Ç¶ÈÉÏ, Ó²¼şÊôÓÚ 3 ÀàÖĞµÄ 1 ÖÖ:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>²»ÄÜ´¦Àí¶à²¥µÄ½Ó¿Ú. ÕâÑùµÄ½Ó¿ÚÒªÃ´½ÓÊÕÌØ±ğµØ·¢ÏòËüÃÇµÄÓ²¼şµØÖ·(¼ÓÉÏ¹ã²¥±¨ÎÄ)µÄ±¨ÎÄ, ÒªÃ´½ÓÊÕÃ¿Ò»¸ö±¨ÎÄ. ËüÃÇÖ»ÄÜÍ¨¹ı½ÓÊÕÃ¿Ò»¸ö±¨ÎÄÀ´½ÓÊÕ¶à²¥±¨ÎÄ, Òò´Ë, Ç±ÔÚµØÑ¹¿å²Ù×÷ÏµÍ³, Ê¹ÓÃ´óÁ¿µÄ"²»¸ĞĞËÈ¤"±¨ÎÄ. Äã²»¾­³£ÈÏÎªÕâÑùµÄ½Ó¿ÚÊÇÓĞ¶à²¥ÄÜÁ¦µÄ, Çı¶¯²»»áÔÚ dev-&gt;flags ÉèÖÃ IFF_MULTICAST.</p>
+<p>µã¶Ôµã½Ó¿ÚÊÇÌØÊâÇé¿ö, ÒòÎªËüÃÇÒ»Ö±½ÓÊÕÃ¿¸ö±¨ÎÄ, ²»½øĞĞÈÎºÎÓ²¼ş¹ıÂË.</p>
+</li>
+<li><p>ÄÜ¹»Çø±ğ¶à²¥±¨ÎÄºÍÆäËû±¨ÎÄ(Ö÷»úµ½Ö÷»ú, »òÕß¹ã²¥). ÕâĞ©½Ó¿ÚÄÜ¹»±»ÃüÁîÀ´½ÓÊÕÃ¿¸ö¶à²¥±¨ÎÄ, ÈÃÈí¼ş¾ö¶¨µØÖ·ÊÇ·ñÊÇÖ÷»ú¸ĞĞËÈ¤µÄ. ÕâÖÖÇé¿öÏÂµÄ¿ªÏúÊÇ¿É½ÓÊÜµÄ, ÒòÎªÔÚÒ»¸öµäĞÍÍøÂçÉÏµÄ¶à²¥±¨ÎÄµÄÊıÄ¿ÊÇÉÙµÄ.</p></li>
+<li><p>¿ÉÒÔ½øĞĞÓ²¼ş¼ì²â¶à²¥µØÖ·µÄ½Ó¿Ú. ¿ÉÒÔ´«µİÒ»¸ö¶à²¥µØÖ·µÄÁĞ±í¸øÕâĞ©½Ó¿Ú, ÕâĞ©µØÖ·µÄ±¨ÎÄ½ÓÊÕ, ²¢ºöÂÔÆäËû¶à²¥µØÖ·µÄ±¨ÎÄ. ¶ÔÄÚºËÕâÊÇÓÅ»¯µÄÇé¿ö, ÒòÎªËü²»ÀË·Ñ´¦ÀíÆ÷Ê±¼äÀ´¶ªÆú½Ó¿ÚÊÕµ½µÄ"²»¸ĞĞËÈ¤"µÄ±¨ÎÄ.</p></li>
+</ul></div>
+<p>ÄÚºË¾¡Á¦ÀûÓÃ¸ß¼¶½Ó¿ÚµÄÄÜÁ¦, Í¨¹ıÖ§³ÖµÚ 3 ÖÖÉè±¸ÀàĞÍ, ËüÊÇ×îÍ¨ÓÃµÄ. Òò´Ë, ÄÚºËÍ¨ÖªÇı¶¯, ÔÚÈÎºÎÓĞĞ§¶à²¥µØÖ·ÁĞ±í·¢Éú¸Ä±äÊ±, ²¢ÇÒËü´«µİĞÂµÄÁĞ±í¸øÇı¶¯, Òò´ËËüÄÜ¹»¸ù¾İĞÂµÄĞÅÏ¢À´¸üĞÂÓ²¼ş¹ıÂËÆ÷.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="KernelSupportforMulticasting"></a>17.14.1.&#160;¶à²¥µÄÄÚºËÖ§³Ö</h3></div></div></div>
+<p>¶Ô¶à²¥±¨ÎÄµÄÖ§³ÖÓĞ¼¸Ïî×é³É:Ò»¸öÉè±¸·½·¨, Ò»¸öÊı¾İ½á¹¹, ÒÔ¼°Éè±¸±êÊ¶:</p>
+<div class="variablelist"><dl>
+<dt><span class="term">void (*dev-&gt;set_multicast_list)(struct net_device *dev);<span></span></span></dt>
+<dd><p>Éè±¸·½·¨, ÔÚÓëÉè±¸Ïà¹ØµÄ»úÆ÷µØÖ·¸Ä±äÊ±µ÷ÓÃ. ËüÒ²ÔÚ dev-&gt;flags ±»ĞŞ¸ÄÊ±µ÷ÓÃ, ÒòÎªÒ»Ğ©±êÖ¾(ÀıÈç, IFF_PROMISC) ¿ÉÄÜÒ²ÒªÇóÄãÖØĞÂ±à³ÌÓ²¼ş¹ıÂËÆ÷. Õâ¸ö·½·¨½ÓÊÕÒ»¸ö struct net_device Ö¸Õë×÷ÎªÒ»¸ö²ÎÊı, ²¢·µ»Ø void. Ò»¸ö¶ÔÊµÏÖÕâ¸ö·½·¨²»¸ĞĞËÈ¤µÄÇı¶¯¿ÉÒÔÌıÈÎËüÎª NULL.</p></dd>
+<dt><span class="term"><span>struct dev_mc_list *dev-&gt;mc_list;</span></span></dt>
+<dd><p>ËùÓĞÉè±¸Ïà¹ØµÄ¶à²¥µØÖ·µÄÁĞ±í. Õâ¸ö½á¹¹µÄÊµ¼Ê¶¨ÒåÔÚ±¾½ÚµÄÄ©Î²½éÉÜ.</p></dd>
+<dt><span class="term"><span>int dev-&gt;mc_count;</span></span></dt>
+<dd><p>Á´±íÀïµÄÏîÊı. Õâ¸öĞÅÏ¢ÓĞĞ©ÖØ¸´, µ«ÊÇÓÃ 0 À´¼ì²é mc_count ÊÇ¼ì²éÕâ¸öÁĞ±íµÄÓĞÓÃµÄ·½·¨.</p></dd>
+<dt><span class="term"><span>IFF_MULTICAST </span></span></dt>
+<dd><p>³ı·ÇÇı¶¯ÔÚ dev-&gt;flags ÖĞÉèÖÃÕâ¸ö±êÖ¾, ½Ó¿Ú²»»á±»ÒªÇóÀ´´¦Àí¶à²¥±¨ÎÄ. È»¶ø, ÄÚºËµ÷ÓÃÇı¶¯µÄ set_multicast_list ·½·¨, µ± dev-&gt;flags ¸Ä±äÊ±, ÒòÎª¶à²¥ÁĞ±í¿ÉÄÜÔÚ½Ó¿ÚÎ´¼¤»îÊ±¸Ä±äÁË.</p></dd>
+<dt><span class="term"><span>IFF_ALLMULTI</span></span></dt>
+<dd><p>ÔÚ dev-&gt;flags ÖĞÉèÖÃµÄ±êÖ¾, ÍøÂçÈí¼şÀ´¸æÖªÇı¶¯´ÓÍøÂçÉÏ½ÓÊÕËùÓĞ¶à²¥±¨ÎÄ. Õâ·¢ÉúÔÚµ±¶à²¥Â·ÓÉ¼¤»îÊ±. Èç¹û±êÖ¾ÉèÖÃÁË, dev-&gt;ma_list ²»¸ÃÓÃÀ´¹ıÂË¶à²¥±¨ÎÄ.</p></dd>
+<dt><span class="term"><span>IFF_PROMISC</span></span></dt>
+<dd>
+<p></p>ÔÚ dev-&gt;flags ÖĞÉèÖÃµÄ±êÖ¾, µ±½Ó¿ÚÔÚ»ìÔÓÄ£Ê½ÏÂ. ½Ó¿ÚÓ¦µ±½ÓÊÕÃ¿¸ö±¨ÎÄ, ²»¹Ü dev-&gt;ma_list.</dd>
+</dl></div>
+<p>Çı¶¯¿ª·¢ÕßĞèÒªµÄ×îºóÒ»µãĞÅÏ¢ÊÇ struct dev_mc_list µÄ¶¨Òå, ÔÚ &lt;linux/netdevice.h&gt;:</p>
+<pre class="programlisting">
+struct dev_mc_list { struct dev_mc_list *next; /* Next address in list */
+    __u8 dmi_addr[MAX_ADDR_LEN]; /* Hardware address */
+    unsigned char  dmi_addrlen;  /* Address length */
+    int  dmi_users;  /* Number of users */
+    int  dmi_gusers;  /* Number of groups */
+};
+</pre>
+<p>ÒòÎª¶à²¥ºÍÓ²¼şµØÖ·ÊÇ¶ÀÁ¢ÓÚÕæÕıµÄ±¨ÎÄ·¢ËÍ, Õâ¸ö½á¹¹ÔÚÍøÂçÊµÏÖÖĞÊÇ¿ÉÒÆÖ²µÄ, Ã¿¸öµØÖ·ÓÉÒ»¸ö×Ö·û´®ºÍÒ»¸ö³¤¶È±êÊ¶, ¾ÍÏñ dev-&gt;dev_addr.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ATypicalImplementation"></a>17.14.2.&#160;µäĞÍÊµÏÖ</h3></div></div></div>
+<p>ÃèÊö set_multicast_list µÄÉè¼ÆµÄ×îºÃ·½·¨ÊÇ¸øÄã¿´Ò»Ğ©Î±Âë.</p>
+<p>ÏÂÃæµÄº¯ÊıÊÇÒ»¸öµäĞÍº¯ÊıÊµÏÖÔÚÒ»¸öÈ«ÌØĞÔ(ff)Çı¶¯ÖĞ. Õâ¸öÇı¶¯ÊÇÈ«Ä£Ê½µÄ, Ëü¿ØÖÆµÄ½Ó¿ÚÓĞÒ»¸ö¸´ÔÓµÄÓ²¼ş±¨ÎÄ¹ıÂËÆ÷, ËüÄÜ¹»³ÖÓĞÒ»¸öÖ÷»úÒª½ÓÊÕµÄ¶à²¥µØÖ·±í. ±íµÄ×î´ó³ß´çÊÇ FF_TABLE_SIZE.</p>
+<p>ËùÓĞÒÔ ff_ Ç°×ºµÄº¯ÊıÊÇ¸øÌØ¶¨Ó²¼ş²Ù×÷µÄÕ¼Î»Õß:</p>
+<pre class="programlisting">
+void ff_set_multicast_list(struct net_device *dev) { struct dev_mc_list *mcptr;
+    if (dev-&gt;flags &amp; IFF_PROMISC) {
+        ff_get_all_packets();
+        return;
+
+    }
+    /* If there's more addresses than we handle, get all multicast
+    packets and sort them out in software. */
+    if (dev-&gt;flags &amp; IFF_ALLMULTI || dev-&gt;mc_count &gt; FF_TABLE_SIZE) {
+
+        ff_get_all_multicast_packets();
+        return;
+    }
+    /* No multicast? Just get our own stuff */
+    if (dev-&gt;mc_count == 0) {
+        ff_get_only_own_packets();
+        return;
+    }
+    /* Store all of the multicast addresses in the hardware filter */
+    ff_clear_mc_list();
+    for (mc_ptr = dev-&gt;mc_list; mc_ptr; mc_ptr = mc_ptr-&gt;next)
+        ff_store_mc_address(mc_ptr-&gt;dmi_addr);
+    ff_get_packets_in_multicast_list();
+}
+</pre>
+<p>Õâ¸öÊµÏÖ¿ÉÒÔ¼ò»¯, Èç¹û½Ó¿Ú²»ÄÜÎª½øÈë±¨ÎÄ´æ´¢¶à²¥±íÔÚÓ²¼ş¹ıÂËÆ÷ÖĞ. ÕâÖÖÇé¿öÏÂ, FF_TABLE_SIZE ¼õÎª 0, ²¢ÇÒ´úÂëµÄ×îºó 4 ĞĞ²»ĞèÒªÁË.</p>
+<p>ÈçÍ¬Ç°ÃæÌá¹ıµÄ, ²»ÄÜ´¦Àí¶à²¥±¨ÎÄµÄ½Ó¿Ú²»ĞèÒªÊµÏÖ set_multicast_list ·½·¨À´»ñÈ¡ dev-&gt;flags ¸Ä±äµÄÍ¨Öª. Õâ¸ö°ì·¨¿ÉÄÜ±»³ÆÎªÒ»¸ö"·ÇÌØĞÔµÄ"(nf)ÊµÏÖ. ÊµÏÖ·Ç³£¼òµ¥, ÈçÏÂÃæ´úÂëËùÊ¾:</p>
+<pre class="programlisting">
+void nf_set_multicast_list(struct net_device *dev)
+{
+    if (dev-&gt;flags &amp; IFF_PROMISC)
+        nf_get_all_packets();
+    else
+        nf_get_only_own_packets();
+}
+</pre>
+<p>ÊµÏÖ IFF_PROMISC ÊÇ·Ç³£ÖØÒªµÄ, ÒòÎª²»ÕâÑùÓÃ»§¾Í²»ÄÜÔËĞĞ tcpdump »òÈÎºÎÆäËûÍøÂç·ÖÎöÆ÷. Èç¹û½Ó¿ÚÔËĞĞÒ»¸öµã¶ÔµãÁ¬½Ó, ÁíÒ»·½Ãæ, ¸ù±¾Ã»ÓĞ±ØÒªÊµÏÖ set_multicast_list, ÒòÎªÓÃ»§½ÓÊÕÃ¿¸ö±¨ÎÄ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s13.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s15.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.13.&#160;Í³¼ÆĞÅÏ¢&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.15.&#160;¼¸¸öÆäËûÏ¸½Ú</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

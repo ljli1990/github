@@ -1,0 +1,107 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.3.&#160;ÄÚºËÄ£¿éÏà±ÈÓÚÓ¦ÓÃ³ÌÐò-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch02.html" title="µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é">
+<link rel="prev" href="ch02s02.html" title="2.2.&#160;Hello World Ä£¿é">
+<link rel="next" href="ch02s04.html" title="2.4.&#160;±àÒëºÍ¼ÓÔØ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.3.&#160;ÄÚºËÄ£¿éÏà±ÈÓÚÓ¦ÓÃ³ÌÐò</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="KernelModulesVersusApplications.sect1"></a>2.3.&#160;ÄÚºËÄ£¿éÏà±ÈÓÚÓ¦ÓÃ³ÌÐò</h2></div></div></div>
+<p> ÔÚÎÒÃÇÉîÈëÖ®Ç°, ÓÐ±ØÒªÇ¿µ÷Ò»ÏÂÄÚºËÄ£¿éºÍÓ¦ÓÃ³ÌÐòÖ®¼äµÄ¸÷ÖÖ²»Í¬.  </p>
+<p> ²»Í¬ÓÚ´ó²¿·ÖµÄÐ¡µÄºÍÖÐÐÍµÄÓ¦ÓÃ³ÌÐò´ÓÍ·ÖÁÎ²´¦ÀíÒ»¸öµ¥¸öÈÎÎñ, Ã¿¸öÄÚºËÄ£¿éÖ»×¢²á×Ô¼ºÒÔ±ãÀ´·þÎñ½«À´µÄÇëÇó, ²¢ÇÒËüµÄ³õÊ¼»¯º¯ÊýÁ¢¿ÌÖÕÖ¹. »»¾ä»°Ëµ, Ä£¿é³õÊ¼»¯º¯ÊýµÄÈÎÎñÊÇÎªÒÔºóµ÷ÓÃÄ£¿éµÄº¯Êý×ö×¼±¸; ºÃÏñÊÇÄ£¿éËµ, " ÎÒÔÚÕâÀï, ÕâÊÇÎÒÄÜ×öµÄ."Ä£¿éµÄÍË³öº¯Êý( Àý×ÓÀïÊÇ hello_exit )¾ÍÔÚÄ£¿é±»Ð¶ÔØÊ±µ÷ÓÃ. ËüºÃÏñ¸æËßÄÚºË, "ÎÒ²»ÔÙÔÚÄÇÀïÁË, ²»ÒªÒªÇóÎÒ×öÈÎºÎÊÂÁË."ÕâÖÖ±à³ÌµÄ·½·¨ÀàËÆÓÚÊÂ¼þÇý¶¯µÄ±à³Ì, µ«ÊÇËäÈ»²»ÊÇËùÓÐµÄÓ¦ÓÃ³ÌÐò¶¼ÊÇÊÂ¼þÇý¶¯µÄ, Ã¿¸öÄÚºËÄ£¿é¶¼ÊÇ. ÁíÍâÒ»¸öÖ÷ÒªµÄ²»Í¬, ÔÚÊÂ¼þÇý¶¯µÄÓ¦ÓÃ³ÌÐòºÍÄÚºË´úÂëÖ®¼ä, ÊÇÍË³öº¯Êý: Ò»¸öÖÕÖ¹µÄÓ¦ÓÃ³ÌÐò¿ÉÒÔÔÚÊÍ·Å×ÊÔ´·½ÃæÀÁ¶è, »òÕßÍêÈ«²»×öÇåÀí¹¤×÷, µ«ÊÇÄ£¿éµÄÍË³öº¯Êý±ØÐëÐ¡ÐÄ»Ö¸´Ã¿¸öÓÉ³õÊ¼»¯º¯Êý½¨Á¢µÄ¶«Î÷, ·ñÔò»á±£ÁôÒ»Ð©¶«Î÷Ö±µ½ÏµÍ³ÖØÆô.  </p>
+<p> Å¼È»µØ, Ð¶ÔØÄ£¿éµÄÄÜÁ¦ÊÇÄã½«×îÐÀÉÍµÄÄ£¿é»¯µÄÆäÖÐÒ»¸öÌØÉ«, ÒòÎªËüÓÐÖúÓÚ¼õÉÙ¿ª·¢Ê±¼ä; Äã¿É²âÊÔÄãµÄÐÂÇý¶¯µÄÁ¬ÐøµÄ°æ±¾, ¶ø²»ÓÃÃ¿´Î¾­ÀúÂþ³¤µÄ¹Ø»ú/ÖØÆôÖÜÆÚ.  </p>
+<p>×÷ÎªÒ»¸ö³ÌÐòÔ±, ÄãÖªµÀÒ»¸öÓ¦ÓÃ³ÌÐò¿ÉÒÔµ÷ÓÃËüÃ»ÓÐ¶¨ÒåµÄº¯Êý: Á¬½Ó½×¶ÎÊ¹ÓÃºÏÊÊµÄº¯Êý¿â½â¾öÁËÍâ²¿ÒýÓÃ. printf ÊÇÒ»¸öÕâÖÖ¿Éµ÷ÓÃµÄº¯Êý²¢ÇÒÔÚ libc ÀïÃæ¶¨Òå. Ò»¸öÄ£¿é, ÔÚÁíÒ»·½Ãæ, Ö»Á¬½Óµ½ÄÚºË, ËüÄÜ¹»µ÷ÓÃµÄÎ¨Ò»µÄº¯ÊýÊÇÄÚºËÊä³öµÄÄÇÐ©; Ã»ÓÐ¿âÀ´Á¬½Ó.ÔÚ hello.c ÖÐÊ¹ÓÃµÄ printk º¯Êý, ÀýÈç, ÊÇÔÚÄÚºËÖÐ¶¨ÒåµÄ printf °æ±¾²¢ÇÒÊä³ö¸øÄ£¿é. Ëü±íÏÖÀàËÆÓÚÔ­Ê¼µÄº¯Êý, Ö»ÓÐ¼¸¸öÐ¡µÄ²»Í¬, Ê×ÒªµÄÒ»¸öÊÇÈ±·¦¸¡µãµÄÖ§³Ö.  </p>
+<p> Í¼ <a href="ch02s03.html#ldd3-2-1.fig" title="Í¼&#160;2.1.&#160;Á¬½ÓÒ»¸öÄ£¿éµ½ÄÚºË">Á¬½ÓÒ»¸öÄ£¿éµ½ÄÚºË</a> Õ¹Ê¾ÁËº¯Êýµ÷ÓÃºÍº¯ÊýÖ¸ÕëÔÚÄ£¿éÖÐÈçºÎÊ¹ÓÃÀ´Ôö¼ÓÐÂ¹¦ÄÜµ½Ò»¸öÔËÐÐÖÐµÄÄÚºË.  </p>
+<div class="figure">
+<a name="ldd3-2-1.fig"></a><p class="title"><b>Í¼&#160;2.1.&#160;Á¬½ÓÒ»¸öÄ£¿éµ½ÄÚºË</b></p>
+<div><img src="images/snagitldd3/ldd3-2-1.png" alt="Á¬½ÓÒ»¸öÄ£¿éµ½ÄÚºË"></div>
+</div>
+<p> ÒòÎªÃ»ÓÐ¿âÁ¬½Óµ½Ä£¿éÖÐ, Ô´ÎÄ¼þ²»Ó¦µ±°üº¬Í¨³£µÄÍ·ÎÄ¼þ, &lt;stdarg.h&gt;ºÍ·Ç³£ÌØÊâµÄÇé¿öÊÇ½öÓÐµÄÀýÍâ. Ö»ÓÐÊµ¼ÊÉÏÊÇÄÚºËµÄÒ»²¿·ÖµÄº¯Êý²Å¿ÉÒÔÔÚÄÚºËÄ£¿éÀïÊ¹ÓÃ. ÄÚºËÏà¹ØµÄÈÎºÎ¶«Î÷¶¼ÔÚÍ·ÎÄ¼þÀïÉùÃ÷, ÕâÐ©Í·ÎÄ¼þÔÚÄãÒÑ½¨Á¢ºÍÅäÖÃµÄÄÚºËÔ´ÂëÊ÷Àï; ´ó²¿·ÖÏà¹ØµÄÍ·ÎÄ¼þÎ»ÓÚ include/linux ºÍ include/asm, µ«ÊÇ±ðµÄ include µÄ×ÓÄ¿Â¼ÒÑ¾­Ìí¼Óµ½¹ØÁªÌØ¶¨ÄÚºË×ÓÏµÍ³µÄ²ÄÁÏÀïÁË.  </p>
+<p> µ¥¸öÄÚºËÍ·ÎÄ¼þµÄ×÷ÓÃÔÚÊéÖÐÐèÒªËüÃÇµÄÊ±ºò½øÐÐ½éÉÜ.  </p>
+<p> ÁíÍâÒ»¸öÔÚÄÚºË±à³ÌºÍÓ¦ÓÃ³ÌÐò±à³ÌÖ®¼äµÄÖØÒª²»Í¬ÊÇÃ¿Ò»¸ö»·¾³ÊÇÈçºÎ´¦Àí´íÎó: ÔÚÓ¦ÓÃ³ÌÐò¿ª·¢ÖÐ¶Î´íÎóÊÇÎÞº¦µÄ, Ò»¸öµ÷ÊÔÆ÷³£³£ÓÃÀ´×·×Ù´íÎóµ½Ô´ÂëÖÐµÄÎÊÌâ, ¶øÒ»¸öÄÚºË´íÎóÖÁÉÙ»áÉ±µôµ±Ç°½ø³Ì, Èç¹û²»ÖÕÖ¹Õû¸öÏµÍ³. ÎÒÃÇ»áÔÚµÚ 4 ÕÂ¿´µ½ÈçºÎ¸ú×ÙÄÚºË´íÎó.  </p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="UserSpaceandKernelSpace.sect2"></a>2.3.1.&#160;ÓÃ»§¿Õ¼äºÍÄÚºË¿Õ¼ä</h3></div></div></div>
+
+A module runs in kernel space, whereas applications run in user space. This concept is at the base of operating systems theory. 
+Ò»¸öÄ£¿éÔÚÄÚºË¿Õ¼äÔËÐÐ, ¶øÓ¦ÓÃ³ÌÐòÔÚÓÃ»§¿Õ¼äÔËÐÐ. Õâ¸ö¸ÅÄîÊÇ²Ù×÷ÏµÍ³ÀíÂÛµÄ»ù´¡.
+<p> ²Ù×÷ÏµÍ³µÄ½ÇÉ«, Êµ¼ÊÉÏ, ÊÇ¸ø³ÌÐòÌá¹©Ò»¸öÒ»ÖÂµÄ¼ÆËã»úÓ²¼þµÄÊÓ½Ç. ÁíÍâ, ²Ù×÷ÏµÍ³±ØÐë³Ðµ£³ÌÐòµÄ¶ÀÁ¢²Ù×÷ºÍ±£»¤¶ÔÓÚ·ÇÊÚÈ¨µÄ×ÊÔ´´æÈ¡. ÕâÒ»²»Æ½·²µÄÈÎÎñÖ»ÓÐ CPU ÔöÇ¿ÏµÍ³Èí¼þ¶ÔÓ¦ÓÃ³ÌÐòµÄ±£»¤²ÅÓÐ¿ÉÄÜ.  
+</p>
+<p> Ã¿ÖÖÏÖ´ú´¦ÀíÆ÷¶¼ÄÜ¹»¼ÓÇ¿ÕâÖÖÐÐÎª. Ñ¡ÖÐµÄ·½·¨ÊÇ CPU ×Ô¼ºÊµÏÖ²»Í¬µÄ²Ù×÷ÐÎÌ¬(»òÕß¼¶±ð). ÕâÐ©¼¶±ðÓÐ²»Í¬µÄ½ÇÉ«, Ò»Ð©²Ù×÷ÔÚµÍÐ©¼¶±ðÖÐ²»ÔÊÐí; ³ÌÐò´úÂëÖ»ÄÜÍ¨¹ýÓÐÏÞµÄ¼¸¸öÃÅ´ÓÒ»ÖÖ¼¶±ðÇÐ»»µ½ÁíÒ»¸ö. Unix ÏµÍ³Éè¼Æ³ÉÀûÓÃÁËÕâÖÖÓ²¼þÌØÐÔ, Ê¹ÓÃÁËÁ½¸öÕâÑùµÄ¼¶±ð. ËùÓÐµ±½ñµÄ´¦ÀíÆ÷ÖÁÉÙÓÐÁ½¸ö±£»¤¼¶±ð, ²¢ÇÒÄ³Ð©, ÀýÈç x86 ¼Ò×å, ÓÐ¸ü¶à¼¶±ð; µ±¼¸¸ö¼¶±ð´æÔÚÊ±, Ê¹ÓÃ×î¸ßºÍ×îµÍ¼¶±ð. ÔÚ Unix ÏÂ, ÄÚºËÔÚ×î¸ß¼¶ÔËÐÐ( Ò²³ÆÖ®Îª³¬¼¶Ä£Ê½ ), ÕâÀïÈÎºÎÊÂÇé¶¼ÔÊÐí, ¶øÓ¦ÓÃ³ÌÐòÔÚ×îµÍ¼¶ÔËÐÐ(ËùÎ½µÄÓÃ»§Ä£Ê½), ÕâÀï´¦ÀíÆ÷¿ØÖÆÁË¶ÔÓ²¼þµÄÖ±½Ó´æÈ¡ÒÔ¼°¶ÔÄÚ´æµÄ·Ç·¨´æÈ¡.  </p>
+<p> ÎÒÃÇ³£³£Ìáµ½ÔËÐÐÄ£Ê½×÷ÎªÄÚºË¿Õ¼äºÍÓÃ»§¿Õ¼ä. ÕâÐ©ÊõÓï²»½ö°üº¬´æÔÚÓÚÕâÁ½¸öÄ£Ê½ÖÐ²»Í¬ÌØÈ¨¼¶±ð, »¹°üº¬ÓÐÕâÑùµÄÊÂÊµ, ¼´Ã¿¸öÄ£Ê½ÓÐËü×Ô¼ºµÄÄÚ´æÓ³Éä -- Ëü×Ô¼ºµÄµØÖ·¿Õ¼ä.  </p>
+<p> Unix ´ÓÓÃ»§¿Õ¼ä×ª»»Ö´ÐÐµ½ÄÚºË¿Õ¼ä, ÎÞÂÛºÎÊ±Ò»¸öÓ¦ÓÃ³ÌÐò·¢³öÒ»¸öÏµÍ³µ÷ÓÃ»òÕß±»Ó²¼þÖÐ¶Ï¹ÒÆðÊ±. Ö´ÐÐÏµÍ³µ÷ÓÃµÄÄÚºË´úÂëÔÚ½ø³ÌµÄÉÏÏÂÎÄÖÐ¹¤×÷ -- Ëü´ú±íµ÷ÓÃ½ø³Ì²¢ÇÒ¿ÉÒÔ´æÈ¡¸Ã½ø³ÌµÄµØÖ·¿Õ¼ä. »»¾ä»°Ëµ, ´¦ÀíÖÐ¶ÏµÄ´úÂë¶Ô½ø³ÌÀ´ËµÊÇÒì²½µÄ, ²»ºÍÈÎºÎÌØ±ðµÄ½ø³ÌÓÐ¹Ø.  </p>
+<p> Ä£¿éµÄ½ÇÉ«ÊÇÀ©Õ¹ÄÚºËµÄ¹¦ÄÜ; Ä£¿é»¯µÄ´úÂëÔÚÄÚºË¿Õ¼äÔËÐÐ. ¾­³£µØÒ»¸öÇý¶¯½øÐÐÖ®Ç°Ìáµ½µÄÁ½ÖÖÈÎÎñ: Ä£¿éÖÐÒ»Ð©µÄº¯Êý×÷ÎªÏµÍ³µ÷ÓÃµÄÒ»²¿·ÖÖ´ÐÐ, Ò»Ð©¸ºÔðÖÐ¶Ï´¦Àí.  
+</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ConcurrencyintheKernel.sect2"></a>2.3.2.&#160;ÄÚºËµÄ²¢·¢</h3></div></div></div>
+<p> ÄÚºË±à³ÌÓë´«Í³Ó¦ÓÃ³ÌÐò±à³Ì·½Ê½ºÜ´ó²»Í¬µÄÊÇ²¢·¢ÎÊÌâ. ´ó²¿·ÖÓ¦ÓÃ³ÌÐò, ¶àÏß³ÌµÄÓ¦ÓÃ³ÌÐòÊÇÒ»¸öÃ÷ÏÔµÄÀýÍâ, µäÐÍµØÊÇË³ÐòÔËÐÐµÄ, ´ÓÍ·ÖÁÎ², ²»±ØÒªµ£ÐÄÆäËûÊÂÇé»á·¢Éú¶ø¸Ä±äËüÃÇµÄ»·¾³. ÄÚºË´úÂëÃ»ÓÐÔËÐÐÔÚÕâÑùµÄ¼òµ¥ÊÀ½çÖÐ, ¼´±ã×î¼òµ¥µÄÄÚºËÄ£¿é±ØÐëÔÚÕâÑùµÄ¸ÅÄîÏÂ±àÐ´, ºÜ¶àÊÂÇé¿ÉÄÜÂíÉÏ·¢Éú.</p>
+<p> ÄÚºË±à³ÌÖÐÓÐ¼¸¸ö²¢·¢µÄÀ´Ô´. ×ÔÈ»µÄ, Linux ÏµÍ³ÔËÐÐ¶à¸ö½ø³Ì, ÔÚÍ¬Ò»Ê±¼ä, ²»Ö¹Ò»¸ö½ø³ÌÄÜ¹»ÊÔÍ¼Ê¹ÓÃÄãµÄÇý¶¯. ´ó²¿·ÖÉè±¸ÄÜ¹»ÖÐ¶Ï´¦ÀíÆ÷; ÖÐ¶Ï´¦ÀíÒì²½ÔËÐÐ, ²¢ÇÒ¿ÉÄÜÔÚÄãµÄÇý¶¯ÊÔÍ¼×öÆäËûÊÂÇéµÄÍ¬Ò»Ê±¼ä±»µ÷ÓÃ. ¼¸¸öÈí¼þ³éÏó( ÀýÈçÄÚºË¶¨Ê±Æ÷, µÚ 7 ÕÂ½éÉÜ )Ò²Òì²½ÔËÐÐ. ¶øÇÒ, µ±È», Linux ¿ÉÒÔÔÚ¶Ô³Æ¶à´¦ÀíÆ÷ÏµÍ³( SMP )ÉÏÔËÐÐ, ½á¹ûÊÇÄãµÄÇý¶¯¿ÉÄÜÔÚ¶à¸ö CPU ÉÏ²¢·¢Ö´ÐÐ. ×îºó, ÔÚ 2.6, ÄÚºË´úÂëÒÑ¾­ÊÇ¿ÉÇÀÕ¼µÄÁË; Õâ¸ö±ä»¯Ê¹µÃ¼´±ãÊÇµ¥´¦ÀíÆ÷»áÓÐÐí¶àÓë¶à´¦ÀíÆ÷ÏµÍ³Í¬ÑùµÄ²¢·¢ÎÊÌâ.</p>
+<p> ½á¹û, Linux ÄÚºË´úÂë, °üÀ¨Çý¶¯´úÂë, ±ØÐëÊÇ¿ÉÖØÈëµÄ -- Ëü±ØÐëÄÜ¹»Í¬Ê±ÔÚ¶à¸öÉÏÏÂÎÄÖÐÔËÐÐ. Êý¾Ý½á¹¹±ØÐëÐ¡ÐÄÉè¼ÆÒÔ±£³Ö¶à¸öÖ´ÐÐÏß³Ì·Ö¿ª, ²¢ÇÒ´úÂë±ØÐëÐ¡ÐÄ´æÈ¡¹²ÏíÊý¾Ý, ±ÜÃâÊý¾ÝµÄÆÆ»µ. ±àÐ´´¦Àí²¢·¢ºÍ±ÜÃâ¾ºÕùÇé¿ö( Ò»¸ö²»ÐÒµÄÖ´ÐÐË³Ðòµ¼ÖÂ²»Ï£ÍûµÄÐÐÎªµÄÇéÐÎ )µÄ´úÂëÐèÒª×ÐÏ¸¿¼ÂÇ²¢¿ÉÄÜÊÇÎ¢ÃîµÄ. ÕýÈ·µÄ²¢·¢¹ÜÀíÔÚ±àÐ´ÕýÈ·µÄÄÚºË´úÂëÊ±ÊÇ±ØÐëµÄ; ÓÉÓÚÕâ¸öÀíÓÉ, ±¾ÊéµÄÃ¿Ò»¸öÀý×ÓÇý¶¯¶¼ÊÇ¿¼ÂÇÁË²¢·¢ÏÂ±àÐ´µÄ. ÓÃµ½µÄ¼¼ÊõÔÚÎÒÃÇÓöµ½ËüÃÇÊ±ÔÙ½²½â; µÚ 5 ÕÂÒ²×¨ÃÅ½²ÊöÕâ¸öÎÊÌâ, ÒÔ¼°²¢·¢¹ÜÀíµÄ¿ÉÓÃµÄÄÚºËÔ­Óï.  </p>
+<p> Çý¶¯³ÌÐòÔ±µÄÒ»¸öÍ¨³£µÄ´íÎóÊÇ¼Ù¶¨²¢·¢²»ÊÇÒ»¸öÎÊÌâ, Ö»ÒªÒ»¶ÎÌØ±ðµÄ´úÂëÃ»ÓÐ½øÈëË¯Ãß( »òÕß "×èÈû" ). ¼´±ãÔÚÖ®Ç°µÄÄÚºË( ²»¿ÉÇÀÕ¼), ÕâÖÖ¼ÙÉèÔÚ¶à´¦ÀíÆ÷ÏµÍ³ÖÐÒ²²»³ÉÁ¢. ÔÚ 2.6, ÄÚºË´úÂë²»ÄÜ(¼«ÉÙ)¼Ù¶¨ËüÄÜÔÚÒ»¶Î¸ø¶¨´úÂëÉÏ³ÖÓÐ´¦ÀíÆ÷. Èç¹ûÄã²»¿¼ÂÇ²¢·¢À´±àÐ´ÄãµÄ´úÂë, ¾Í¼«ÓÐ¿ÉÄÜµ¼ÖÂÑÏÖØÊ§Ð§, ÒÔÖÁÓÚ·Ç³£ÄÑÓÚµ÷ÊÔ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheCurrentProcess.sect2"></a>2.3.3.&#160;µ±Ç°½ø³Ì</h3></div></div></div>
+<p> ¾¡¹ÜÄÚºËÄ£¿é²»ÏóÓ¦ÓÃ³ÌÐòÒ»ÑùË³ÐòÖ´ÐÐ, ÄÚºË×öµÄ´ó²¿·Ö¶¯×÷ÊÇ´ú±íÒ»¸öÌØ¶¨½ø³ÌµÄ. ÄÚºË´úÂë¿ÉÒÔÒýÓÃµ±Ç°½ø³Ì, Í¨¹ý´æÈ¡È«¾ÖÏî current, ËüÔÚ &lt;asm/current.h&gt; ÖÐ¶¨Òå, Ëü²úÉúÒ»¸öÖ¸ÕëÖ¸Ïò½á¹¹ task_struct, ÔÚ &lt;linux/sched.h&gt; ¶¨Òå. current Ö¸ÕëÖ¸Ïòµ±Ç°ÔÚÔËÐÐµÄ½ø³Ì. ÔÚÒ»¸öÏµÍ³µ÷ÓÃÖ´ÐÐÆÚ¼ä, ÀýÈç open »òÕß read, µ±Ç°½ø³ÌÊÇ·¢³öµ÷ÓÃµÄ½ø³Ì. ÄÚºË´úÂë¿ÉÒÔÍ¨¹ýÊ¹ÓÃ current À´Ê¹ÓÃ½ø³ÌÌØ¶¨µÄÐÅÏ¢, Èç¹ûËüÐèÒªÕâÑù. ÕâÖÖ¼¼ÊõµÄÒ»¸öÀý×ÓÔÚµÚ 6 ÕÂÕ¹Ê¾.  </p>
+<p> Êµ¼ÊÉÏ, current ²»ÕæÕýµØÊÇÒ»¸öÈ«¾Ö±äÁ¿. Ö§³Ö SMP ÏµÍ³µÄÐèÒªÇ¿ÆÈÄÚºË¿ª·¢ÕßÈ¥¿ª·¢Ò»ÖÖ»úÖÆ, ÔÚÏà¹ØµÄ CPU ÉÏÀ´ÕÒµ½µ±Ç°½ø³Ì. ÕâÖÖ»úÖÆÒ²±ØÐë¿ìËÙ, ÒòÎª¶Ô current µÄÒýÓÃ·Ç³£Æµ·±µØ·¢Éú. ½á¹û¾ÍÊÇÒ»¸öÒÀÀµÌåÏµµÄ»úÖÆ, ³£³£, Òþ²ØÁËÒ»¸öÖ¸Ïò task_struct µÄÖ¸ÕëÔÚÄÚºË¶ÑÕ»ÄÚ. ÊµÏÖµÄÏ¸½Ú¶Ô±ðµÄÄÚºË×ÓÏµÍ³±£³ÖÒþ²Ø, Ò»¸öÉè±¸Çý¶¯¿ÉÒÔÖ»°üº¬ &lt;linux/sched.h&gt; ²¢ÇÒÒýÓÃµ±Ç°½ø³Ì. ÀýÈç, ÏÂÃæµÄÓï¾ä´òÓ¡ÁËµ±Ç°½ø³ÌµÄ½ø³Ì ID ºÍÃüÁîÃû³Æ, Í¨¹ý´æÈ¡½á¹¹ task_struct ÖÐµÄÄ³Ð©×Ö¶Î.  </p>
+<pre class="programlisting">
+printk(KERN_INFO "The process is \"%s\" (pid %i)\n", current-&gt;comm, current-&gt;pid);
+</pre>
+<p> ´æÓÚ current-&gt;comm µÄÃüÁîÃû³ÆÊÇÓÉµ±Ç°½ø³ÌÖ´ÐÐµÄ³ÌÐòÎÄ¼þµÄ»ù±¾Ãû³Æ( ½Ø¶Ìµ½ 15 ¸ö×Ö·û, Èç¹ûÐèÒª ).  
+</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AFewOtherDetails.sect2"></a>2.3.4.&#160;¼¸¸ö±ðµÄÏ¸½Ú</h3></div></div></div>
+<p> ÄÚºË±à³ÌÓëÓÃ»§¿Õ¼ä±à³ÌÔÚÐí¶à·½Ãæ²»Í¬. ÎÒÃÇ½«ÔÚ±¾ÊéµÄ¹ý³ÌÖÐÖ¸³öËüÃÇ, µ«ÊÇÓÐ¼¸¸ö»ù´¡ÐÔµÄÎÊÌâ, ¾¡¹ÜÃ»ÓÐ±£Ö¤ËüÃÇ×Ô¼ºÓÐÒ»½ÚÄÚÈÝ, Ò²ÖµµÃÒ»Ìá. Òò´Ë, µ±ÄãÉîÈëÄÚºËÊ±, ÏÂÃæµÄÊÂÏîÓ¦µ±ÀÎ¼Ç.  </p>
+<p> Ó¦ÓÃ³ÌÐò´æÔÚÓÚÐéÄâÄÚ´æÖÐ, ÓÐÒ»¸ö·Ç³£´óµÄ¶ÑÕ»Çø. ¶ÑÕ», µ±È», ÊÇÓÃÀ´±£´æº¯Êýµ÷ÓÃÀúÊ·ÒÔ¼°ËùÓÐµÄÓÉµ±Ç°»îÔ¾µÄº¯Êý´´½¨µÄ×Ô¶¯±äÁ¿. ÄÚºË, Ïà·´, ÓÐÒ»¸ö·Ç³£Ð¡µÄ¶ÑÕ»; Ëü¿ÉÄÜÐ¡µ½Ò»¸ö, 4096 ×Ö½ÚµÄÒ³. ÄãµÄº¯Êý±ØÐëÓëÕâ¸öÄÚºË¿Õ¼äµ÷ÓÃÁ´¹²ÏíÕâ¸ö¶ÑÕ». Òò´Ë, ÉùÃ÷Ò»¸ö¾Þ´óµÄ×Ô¶¯±äÁ¿´ÓÀ´¾Í²»ÊÇÒ»¸öºÃÖ÷Òâ; Èç¹ûÄãÐèÒª´óµÄ½á¹¹, ÄãÓ¦µ±ÔÚµ÷ÓÃÊ±¼äÄÚ¶¯Ì¬·ÖÅä.  </p>
+<p> ³£³£, µ±Äã²é¿´ÄÚºË API Ê±, Äã»áÓöµ½ÒÔË«ÏÂ»®Ïß(__)¿ªÊ¼µÄº¯ÊýÃû. ÕâÑù±êÖ¾µÄº¯ÊýÃûÍ¨³£ÊÇÒ»¸öµÍ²ãµÄ½Ó¿Ú×é¼þ, Ó¦µ±Ð¡ÐÄÊ¹ÓÃ. ±¾ÖÊÉÏ½², Ë«ÏÂ»®Ïß¸æËß³ÌÐòÔ±:" Èç¹ûÄãµ÷ÓÃÕâ¸öº¯Êý, È·ÐÅÄãÖªµÀÄãÔÚ×öÊ²Ã´." </p>
+<p> ÄÚºË´úÂë²»ÄÜ×ö¸¡µãËãÊõ. Ê¹ÄÜ¸¡µã½«ÒªÇóÄÚºËÔÚÃ¿´Î½ø³öÄÚºË¿Õ¼äµÄÊ±ºò±£´æºÍ»Ö¸´¸¡µã´¦ÀíÆ÷µÄ×´Ì¬ -- ÖÁÉÙ, ÔÚÄ³Ð©ÌåÏµÉÏ. ÔÚÕâÖÖÇé¿öÏÂ, ÄÚºË´úÂëÕæµÄÃ»ÓÐ±ØÒª°üº¬¸¡µã, ¶îÍâµÄ¸ºµ£²»ÖµµÃ.  
+</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.2.&#160;Hello World Ä£¿é&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;2.4.&#160;±àÒëºÍ¼ÓÔØ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

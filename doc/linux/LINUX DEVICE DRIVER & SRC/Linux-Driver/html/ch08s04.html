@@ -1,0 +1,103 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>8.4.&#160;Ã¿-CPU µÄ±äÁ¿-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch08.html" title="µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ">
+<link rel="prev" href="ch08s03.html" title="8.3.&#160;get_free_page ºÍÆäÓÑ">
+<link rel="next" href="ch08s05.html" title="8.5.&#160;»ñµÃ´óÁ¿»º³å">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.4.&#160;Ã¿-CPU µÄ±äÁ¿</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch08s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch08s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PerCPUVariables.sect"></a>8.4.&#160;Ã¿-CPU µÄ±äÁ¿</h2></div></div></div>
+<p>Ã¿-CPU ±äÁ¿ÊÇÒ»¸öÓÐÈ¤µÄ 2.6 ÄÚºËµÄÌØÐÔ. µ±Äã´´½¨Ò»¸öÃ¿-CPU±äÁ¿, ÏµÍ³ÖÐÃ¿¸ö´¦ÀíÆ÷»ñµÃËü×Ô¼ºµÄÕâ¸ö±äÁ¿¿½±´. Õâ¸ö¿ÉÄÜÏóÒ»¸öÏë×öµÄÆæ¹ÖµÄÊÂÇé, µ«ÊÇËüÓÐ×Ô¼ºµÄÓÅµã. ´æÈ¡Ã¿-CPU±äÁ¿²»ÐèÒª(¼¸ºõ)¼ÓËø, ÒòÎªÃ¿¸ö´¦ÀíÆ÷Ê¹ÓÃËü×Ô¼ºµÄ¿½±´. Ã¿-CPU ±äÁ¿Ò²¿É´æÔÚÓÚËüÃÇ¸÷×ÔµÄ´¦ÀíÆ÷»º´æÖÐ, ÕâÑù¶ÔÓÚÆµ·±¸üÐÂµÄÁ¿×Ó´øÀ´ÁËÏÔÖøµÄ¸üºÃÐÔÄÜ.</p>
+<p>Ò»¸öÃ¿-CPU±äÁ¿µÄºÃµÄÊ¹ÓÃÀý×Ó¿ÉÔÚÍøÂç×ÓÏµÍ³ÖÐÕÒµ½. ÄÚºËÎ¬»¤ÎÞ½áÎ²µÄ¼ÆÊýÆ÷À´¸ú×ÙÓÐÃ¿ÖÖ±¨ÎÄÀàÐÍÓÐ¶àÉÙ±»½ÓÊÕ; ÕâÐ©¼ÆÊýÆ÷¿ÉÄÜÃ¿Ãë¼¸Ç§´ÎµØ±»¸üÐÂ. ²»È¥´¦Àí»º´æºÍ¼ÓËøÎÊÌâ, ÍøÂç¿ª·¢Õß½«Í³¼Æ¼ÆÊýÆ÷·Å½øÃ¿-CPU±äÁ¿. ÏÖÔÚ¸üÐÂÊÇÎÞËø²¢ÇÒ¿ìµÄ. ÔÚºÜÉÙµÄ»ú»áÓÃ»§¿Õ¼äÇëÇó¿´µ½¼ÆÊýÆ÷µÄÖµ, Ïà¼ÓÃ¿¸ö´¦ÀíÆ÷µÄ°æ±¾²¢ÇÒ·µ»Ø×ÜÊýÊÇÒ»¸ö¼òµ¥µÄÊÂÇé.</p>
+<p>Ã¿-CPU±äÁ¿µÄÉùÃ÷¿ÉÔÚ &lt;linux/percpu.h&gt; ÖÐÕÒµ½. ÎªÔÚ±àÒëÊ±¼ä´´½¨Ò»¸öÃ¿-CPU±äÁ¿, Ê¹ÓÃÕâ¸öºê¶¨Òå:</p>
+<pre class="programlisting">
+DEFINE_PER_CPU(type, name);
+</pre>
+<p>Èç¹ûÕâ¸ö±äÁ¿(³ÆÎª name µÄ)ÊÇÒ»¸öÊý×é, °üº¬Õâ¸öÀàÐÍµÄÎ¬ÊýÐÅÏ¢. Òò´Ë, Ò»¸öÓÐ 3 ¸öÕûÊýµÄÃ¿-CPU Êý×éÓ¦µ±±»´´½¨Ê¹ÓÃ:</p>
+<pre class="programlisting">
+DEFINE_PER_CPU(int[3], my_percpu_array); 
+</pre>
+<p>Ã¿-CPU±äÁ¿¼¸ºõ²»±ØÊ¹ÓÃÃ÷È·µÄ¼ÓËøÀ´²Ù×÷. ¼Ç×¡ 2.6 ÄÚºËÊÇ¿ÉÇÀÕ¼µÄ; ¶ÔÓÚÒ»¸ö´¦ÀíÆ÷, ÔÚÐÞ¸ÄÒ»¸öÃ¿-CPU±äÁ¿µÄÁÙ½çÇøÖÐ²»Ó¦µ±±»ÇÀÕ¼. ²¢ÇÒÈç¹ûÄãµÄ½ø³ÌÔÚ¶ÔÒ»¸öÃ¿-CPU±äÁ¿´æÈ¡Ê±½«, Òª±»ÒÆ¶¯µ½ÁíÒ»¸ö´¦ÀíÆ÷ÉÏ, Ò²²»ºÃ. ÒòÎªÕâ¸öÔ­Òò, Äã±ØÐëÏÔÊ½Ê¹ÓÃ get_cpu_var ºêÀ´´æÈ¡µ±Ç°´¦ÀíÆ÷µÄ¸ø¶¨±äÁ¿¿½±´, ²¢ÇÒµ±ÄãÍê³ÉÊ±µ÷ÓÃ put_cpu_var. ¶Ô get_cpu_var µÄµ÷ÓÃ·µ»ØÒ»¸ö lvalue ¸øµ±Ç°´¦ÀíÆ÷µÄ±äÁ¿°æ±¾²¢ÇÒ½ûÖ¹ÇÀÕ¼. ÒòÎªÒ»¸ö lvalue ±»·µ»Ø, Ëü¿É±»¸³Öµ¸ø»òÕßÖ±½Ó²Ù×÷. ÀýÈç, Ò»¸öÍøÂç´úÂëÖÐµÄ¼ÆÊýÆ÷Ê±Ê¹ÓÃÕâ 2 ¸öÓï¾äÀ´µÝÔöµÄ:</p>
+<pre class="programlisting">
+get_cpu_var(sockets_in_use)++;
+put_cpu_var(sockets_in_use);
+</pre>
+<p>Äã¿ÉÒÔ´æÈ¡ÁíÒ»¸ö´¦ÀíÆ÷µÄ±äÁ¿¿½±´, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+per_cpu(variable, int cpu_id); 
+</pre>
+<p>Èç¹ûÄã±àÐ´Ê¹´¦ÀíÆ÷Éæ¼°µ½¶Ô·½µÄÃ¿-CPU±äÁ¿µÄ´úÂë, Äã, µ±È», Ò»¶¨ÒªÊµÏÖÒ»¸ö¼ÓËø»úÖÆÀ´Ê¹´æÈ¡°²È«.</p>
+<p>¶¯Ì¬·ÖÅäÃ¿-CPU±äÁ¿Ò²ÊÇ¿ÉÄÜµÄ. ÕâÐ©±äÁ¿¿É±»·ÖÅä, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void *alloc_percpu(type);
+void *__alloc_percpu(size_t size, size_t align);
+</pre>
+<p>ÔÚ´ó²¿·ÖÇé¿ö, alloc_percpu ×öµÄ²»´í; Äã¿ÉÒÔµ÷ÓÃ __alloc_percpu ÔÚÐèÒªÒ»¸öÌØ±ðµÄ¶ÔÆëµÄÇé¿öÏÂ. ÔÚÈÎÒ»Çé¿öÏÂ, Ò»¸ö Ã¿-CPU ±äÁ¿¿ÉÒÔÊ¹ÓÃ free_percpu ±»·µ»Ø¸øÏµÍ³. ´æÈ¡Ò»¸ö¶¯Ì¬·ÖÅäµÄÃ¿-CPU±äÁ¿Í¨¹ý per_cpu_ptr À´Íê³É:</p>
+<pre class="programlisting">
+per_cpu_ptr(void *per_cpu_var, int cpu_id);
+</pre>
+<p>Õâ¸öºê·µ»ØÒ»¸öÖ¸ÕëÖ¸Ïò per_cpu_var ¶ÔÓ¦ÓÚ¸ø¶¨ cpu_id µÄ°æ±¾. Èç¹ûÄãÔÚ¼òµ¥µØ¶ÁÁíÒ»¸ö CPU µÄÕâ¸ö±äÁ¿µÄ°æ±¾, Äã¿ÉÒÔ½âÒýÓÃÕâ¸öÖ¸Õë²¢ÇÒÓÃËüÀ´Íê³É. Èç¹û, µ«ÊÇ, ÄãÔÚ²Ù×÷µ±Ç°´¦ÀíÆ÷µÄ°æ±¾, Äã¿ÉÄÜÐèÒªÊ×ÏÈ±£Ö¤Äã²»ÄÜ±»ÒÆ³öÄÇ¸ö´¦ÀíÆ÷. Èç¹ûÄã´æÈ¡Õâ¸öÃ¿-CPU±äÁ¿µÄÈ«²¿¶¼³ÖÓÐÒ»¸ö×ÔÐýËø, ÍòÊÂ´ó¼ª. ³£³£, µ«ÊÇ, ÄãÐèÒªÊ¹ÓÃ get_cpu À´×èÖ¹ÔÚÊ¹ÓÃ±äÁ¿Ê±µÄÇÀÕ¼. Òò´Ë, Ê¹ÓÃ¶¯Ì¬Ã¿-CPU±äÁ¿µÄ´úÂë»á¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+int cpu; 
+cpu = get_cpu()
+ptr = per_cpu_ptr(per_cpu_var, cpu);
+/* work with ptr */
+put_cpu();
+</pre>
+<p>µ±Ê¹ÓÃ±àÒëÊ±Ã¿-CPU ±äÁ¿Ê±, get_cpu_var ºÍ put_cpu_var ºêÀ´ÕÕ¿´ÕâÐ©Ï¸½Ú. ¶¯Ì¬Ã¿-CPU±äÁ¿ÐèÒª¸ü¶àµÄÏÔÊ½µÄ±£»¤.</p>
+<p>Ã¿-CPU±äÁ¿ÄÜ¹»Êä³ö¸øÃ¿¸öÄ£¿é, µ«ÊÇÄã±ØÐëÊ¹ÓÃÒ»¸öÌØÊâµÄºê°æ±¾:</p>
+<pre class="programlisting">
+EXPORT_PER_CPU_SYMBOL(per_cpu_var);
+EXPORT_PER_CPU_SYMBOL_GPL(per_cpu_var);
+</pre>
+<p>ÎªÔÚÒ»¸öÄ£¿éÄÚ´æÈ¡ÕâÑùÒ»¸ö±äÁ¿, ÉùÃ÷Ëü, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+DECLARE_PER_CPU(type, name); 
+</pre>
+<p>DECLARE_PER_CPU µÄÊ¹ÓÃ(²»ÊÇ DEFINE_PER_CPU)¸æÖª±àÒëÆ÷½øÐÐÒ»¸öÍâ²¿ÒýÓÃ.</p>
+<p>Èç¹ûÄãÏëÊ¹ÓÃÃ¿-CPU±äÁ¿À´´´½¨Ò»¸ö¼òµ¥µÄÕûÊý¼ÆÊýÆ÷, ¿´Ò»ÏÂÔÚ &lt;linux/percpu_counter.h&gt; ÖÐµÄÏÖ³ÉµÄÊµÏÖ. ×îºó, ×¢ÒâÒ»Ð©ÌåÏµÓÐÓÐÏÞÊýÁ¿µÄµØÖ·¿Õ¼ä±äÁ¿¸øÃ¿-CPU±äÁ¿. Èç¹ûÄã´´½¨Ã¿-CPU±äÁ¿ÔÚÄã×Ô¼ºµÄ´úÂë, ÄãÓ¦µ±¾¡Á¿Ê¹ËüÃÇÐ¡.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch08s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch08s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.3.&#160;get_free_page ºÍÆäÓÑ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;8.5.&#160;»ñµÃ´óÁ¿»º³å</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

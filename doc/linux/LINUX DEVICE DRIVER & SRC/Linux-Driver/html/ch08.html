@@ -1,0 +1,155 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch07s07.html" title="7.7.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch08s02.html" title="8.2.&#160;ºó±¸»º´æ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch07s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch08s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="AllocatingMemory.chap"></a>µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch08.html#TheRealStoryofkmalloc.sect">8.1. kmalloc µÄÕæÊµ¹ÊÊÂ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch08.html#TheFlagsArgument.sect">8.1.1. flags ²ÎÊý</a></span></dt>
+<dt><span class="sect2"><a href="ch08.html#TheSizeArgument.sect">8.1.2.  size ²ÎÊý</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch08s02.html">8.2. ºó±¸»º´æ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch08s02.html#AscullBasedontheSlabCachesscullc.sect">8.2.1. Ò»¸ö»ùÓÚ Slab »º´æµÄ scull: scullc</a></span></dt>
+<dt><span class="sect2"><a href="ch08s02.html#MemoryPools.sect">8.2.2. ÄÚ´æ³Ø</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch08s03.html">8.3. get_free_page ºÍÆäÓÑ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch08s03.html#AscullUsingWholePagesscullp.sect">8.3.1. Ò»¸öÊ¹ÓÃÕûÒ³µÄ scull: scullp</a></span></dt>
+<dt><span class="sect2"><a href="ch08s03.html#TheallocpagesInterface.sect">8.3.2. alloc_pages ½Ó¿Ú</a></span></dt>
+<dt><span class="sect2"><a href="ch08s03.html#vallocandFriends.sect">8.3.3. vmalloc ºÍ ÆäÓÑ</a></span></dt>
+<dt><span class="sect2"><a href="ch08s03.html#AscullUsingVirtualAddressesscullv.sect">8.3.4. Ò»¸öÊ¹ÓÃÐéÄâµØÖ·µÄ scull : scullv</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch08s04.html">8.4. Ã¿-CPU µÄ±äÁ¿</a></span></dt>
+<dt><span class="sect1"><a href="ch08s05.html">8.5. »ñµÃ´óÁ¿»º³å</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ch08s05.html#AcquiringaDedicatedBufferatBootTime.sect">8.5.1. ÔÚÆô¶¯Ê±»ñµÃ×¨ÓÃµÄ»º³å</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ch08s06.html">8.6. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>ÖÁ´Ë, ÎÒÃÇÒÑ¾­Ê¹ÓÃ kmalloc ºÍ kfree À´·ÖÅäºÍÊÍ·ÅÄÚ´æ. Linux ÄÚºËÌá¹©ÁË¸ü·á¸»µÄÒ»Ì×ÄÚ´æ·ÖÅäÔ­Óï, µ«ÊÇ. ÔÚ±¾ÕÂ, ÎÒÃÇ²é¿´ÔÚÉè±¸Çý¶¯ÖÐÊ¹ÓÃÄÚ´æµÄÆäËû·½·¨ºÍÈçºÎÓÅ»¯ÄãµÄÏµÍ³µÄÄÚ´æ×ÊÔ´. ÎÒÃÇ²»Éæ¼°²»Í¬µÄÌåÏµÊµ¼ÊÉÏÈçºÎ¹ÜÀíÄÚ´æ. Ä£¿é²»Ç£³¶ÔÚ·Ö¶Î, ·ÖÒ³µÈÎÊÌâÖÐ, ÒòÎªÄÚºËÌá¹©Ò»¸öÍ³Ò»µÄÄÚ´æ¹ÜÀíÇý¶¯½Ó¿Ú. ÁíÍâ, ÎÒÃÇ²»»áÔÚ±¾ÕÂÃèÊöÄÚ´æ¹ÜÀíµÄÄÚ²¿Ï¸½Ú, µ«ÊÇÍÆ³ÙÔÚ 15 ÕÂ.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheRealStoryofkmalloc.sect"></a>8.1.&#160;kmalloc µÄÕæÊµ¹ÊÊÂ</h2></div></div></div>
+<p>kmalloc ·ÖÅäÒýÇæÊÇÒ»¸öÓÐÁ¦µÄ¹¤¾ß²¢ÇÒÈÝÒ×Ñ§Ï°ÒòÎªËü¶Ô malloc µÄÏàËÆÐÔ. Õâ¸öº¯Êý¿ì(³ý·ÇËü×èÈû)²¢ÇÒ²»ÇåÁãËü»ñµÃµÄÄÚ´æ; ·ÖÅäµÄÇøÈÔÈ»³ÖÓÐËüÔ­À´µÄÄÚÈÝ.<sup>[<a name="id450180" href="#ftn.id450180">28</a>]</sup> ·ÖÅäµÄÇøÒ²ÊÇÔÚÎïÀíÄÚ´æÖÐÁ¬Ðø. ÔÚÏÂÃæ¼¸½Ú, ÎÒÃÇÏêÏ¸ÌÖÂÛ kmalloc, Òò´ËÄãÄÜ±È½ÏËüºÍÎÒÃÇºóÀ´ÒªÌÖÂÛµÄÄÚ´æ·ÖÅä¼¼Êõ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheFlagsArgument.sect"></a>8.1.1.&#160;flags ²ÎÊý</h3></div></div></div>
+<p>¼Ç×¡ kmalloc Ô­ÐÍÊÇ:</p>
+<pre class="programlisting">
+#include &lt;linux/slab.h&gt; 
+void *kmalloc(size_t size, int flags); 
+</pre>
+<p>¸ø kmalloc µÄµÚÒ»¸ö²ÎÊýÊÇÒª·ÖÅäµÄ¿éµÄ´óÐ¡. µÚ 2 ¸ö²ÎÊý, ·ÖÅä±êÖ¾, ·Ç³£ÓÐÈ¤, ÒòÎªËüÒÔ¼¸¸ö·½Ê½¿ØÖÆ kmalloc µÄÐÐÎª.</p>
+<p>×îÒ»°ãÊ¹ÓÃµÄ±êÖ¾, GFP_KERNEL, ÒâË¼ÊÇÕâ¸ö·ÖÅä((ÄÚ²¿×îÖÕÍ¨¹ýµ÷ÓÃ __get_free_pages À´½øÐÐ, ËüÊÇ GFP_ Ç°×ºµÄÀ´Ô´) ´ú±íÔËÐÐÔÚÄÚºË¿Õ¼äµÄ½ø³Ì¶ø½øÐÐµÄ. »»¾ä»°Ëµ, ÕâÒâÎ¶×Åµ÷ÓÃº¯ÊýÊÇ´ú±íÒ»¸ö½ø³ÌÔÚÖ´ÐÐÒ»¸öÏµÍ³µ÷ÓÃ. Ê¹ÓÃ GFP_KENRL ÒâÎ¶×Å kmalloc ÄÜ¹»Ê¹µ±Ç°½ø³ÌÔÚÉÙÄÚ´æµÄÇé¿öÏÂË¯ÃßÀ´µÈ´ýÒ»Ò³. Ò»¸öÊ¹ÓÃ GFP_KERNEL À´·ÖÅäÄÚ´æµÄº¯Êý±ØÐë, Òò´Ë, ÊÇ¿ÉÖØÈëµÄ²¢ÇÒ²»ÄÜÔÚÔ­×ÓÉÏÏÂÎÄÖÐÔËÐÐ. µ±µ±Ç°½ø³ÌË¯Ãß, ÄÚºË²ÉÈ¡ÕýÈ·µÄ¶¯×÷À´¶¨Î»Ò»Ð©¿ÕÏÐÄÚ´æ, »òÕßÍ¨¹ýË¢ÐÂ»º´æµ½´ÅÅÌ»òÕß½»»»³öÈ¥Ò»¸öÓÃ»§½ø³ÌµÄÄÚ´æ.</p>
+<p>GFP_KERNEL ²»Ò»Ö±ÊÇÊ¹ÓÃµÄÕýÈ··ÖÅä±êÖ¾; ÓÐÊ± kmalloc ´ÓÒ»¸ö½ø³ÌµÄÉÏÏÂÎÄµÄÍâ²¿µ÷ÓÃ. ÀýÈç, ÕâÀàµÄµ÷ÓÃ¿ÉÄÜ·¢ÉúÔÚÖÐ¶Ï´¦Àí, tasklet, ºÍÄÚºË¶¨Ê±Æ÷ÖÐ. ÔÚÕâ¸öÇé¿öÏÂ, µ±Ç°½ø³Ì²»Ó¦µ±±»ÖÃÎªË¯Ãß, ²¢ÇÒÇý¶¯Ó¦µ±Ê¹ÓÃÒ»¸ö GFP_ATOMIC ±êÖ¾À´´úÌæ. ÄÚºËÕý³£µØÊÔÍ¼±£³ÖÒ»Ð©¿ÕÏÐÒ³ÒÔ±ãÀ´Âú×ãÔ­×ÓµÄ·ÖÅä. µ±Ê¹ÓÃ GFP_ATOMIC Ê±, kmalloc ÄÜ¹»Ê¹ÓÃÉõÖÁ×îºóÒ»¸ö¿ÕÏÐÒ³. Èç¹ûÕâ×îºóÒ»¸ö¿ÕÏÐÒ³²»´æÔÚ, µ«ÊÇ, ·ÖÅäÊ§°Ü.</p>
+<p>ÆäËûÓÃÀ´´úÌæ»òÕßÔöÌí GFP_KERNEL ºÍ GFP_ATOMIC µÄ±êÖ¾, ¾¡¹ÜËüÃÇ 2 ¸öº­¸Ç´ó²¿·ÖÉè±¸Çý¶¯µÄÐèÒª. ËùÓÐµÄ±êÖ¾¶¨ÒåÔÚ &lt;linux/gfp.h&gt;, ²¢ÇÒÃ¿¸ö±êÖ¾ÓÃÒ»¸öË«ÏÂ»®Ïß×öÇ°×º, ÀýÈç __GFP_DMA. ÁíÍâ, ÓÐ·ûºÅ´ú±í³£³£Ê¹ÓÃµÄ±êÖ¾×éºÏ; ÕâÐ©È±·¦Ç°×º²¢ÇÒÓÐÊ±±»³ÆÎª·ÖÅäÓÅÏÈ¼¶. ºóÕß°üÀ¨:</p>
+<div class="variablelist"><dl>
+<dt><span class="term">GFP_ATOMIC <span></span></span></dt>
+<dd><p>ÓÃÀ´´ÓÖÐ¶Ï´¦ÀíºÍ½ø³ÌÉÏÏÂÎÄÖ®ÍâµÄÆäËû´úÂëÖÐ·ÖÅäÄÚ´æ. ´Ó²»Ë¯Ãß.</p></dd>
+<dt><span class="term">GFP_KERNEL <span></span></span></dt>
+<dd><p>ÄÚºËÄÚ´æµÄÕý³£·ÖÅä. ¿ÉÄÜË¯Ãß.</p></dd>
+<dt><span class="term">GFP_USER <span></span></span></dt>
+<dd><p>ÓÃÀ´ÎªÓÃ»§¿Õ¼äÒ³À´·ÖÅäÄÚ´æ; Ëü¿ÉÄÜË¯Ãß.</p></dd>
+<dt><span class="term">GFP_HIGHUSER <span></span></span></dt>
+<dd><p>ÈçÍ¬ GFP_USER, µ«ÊÇ´Ó¸ß¶ËÄÚ´æ·ÖÅä, Èç¹ûÓÐ. ¸ß¶ËÄÚ´æÔÚÏÂÒ»¸ö×Ó½ÚÃèÊö.</p></dd>
+<dt><span class="term">GFP_NOIO <span></span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_NOFS <span></span></span></dt>
+<dd><p>Õâ¸ö±êÖ¾¹¦ÄÜÈçÍ¬ GFP_KERNEL, µ«ÊÇËüÃÇÔö¼ÓÏÞÖÆµ½ÄÚºËÄÜ×öµÄÀ´Âú×ãÇëÇó. Ò»¸ö GFP_NOFS ·ÖÅä²»ÔÊÐí½øÐÐÈÎºÎÎÄ¼þÏµÍ³µ÷ÓÃ, ¶ø GFP_NOIO ¸ù±¾²»ÔÊÐíÈÎºÎ I/O ³õÊ¼»¯. ËüÃÇÖ÷ÒªµØÓÃÔÚÎÄ¼þÏµÍ³ºÍÐéÄâÄÚ´æ´úÂë, ÄÇÀïÔÊÐíÒ»¸ö·ÖÅäË¯Ãß, µ«ÊÇµÝ¹éµÄÎÄ¼þÏµÍ³µ÷ÓÃ»áÊÇÒ»¸ö»µ×¢Òâ.</p></dd>
+</dl></div>
+<p>ÉÏÃæÁÐ³öµÄÕâÐ©·ÖÅä±êÖ¾¿ÉÒÔÊÇÏÂÁÐ±êÖ¾µÄÏà»òÀ´×÷Îª²ÎÊý, ÕâÐ©±êÖ¾¸Ä±äÕâÐ©·ÖÅäÈçºÎ½øÐÐ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term">__GFP_DMA <span></span></span></dt>
+<dd><p>Õâ¸ö±êÖ¾ÒªÇó·ÖÅäÔÚÄÜ¹» DMA µÄÄÚ´æÇø. È·ÇÐµÄº¬ÒåÊÇÆ½Ì¨ÒÀÀµµÄ²¢ÇÒÔÚÏÂÃæÕÂ½ÚÀ´½âÊÍ.</p></dd>
+<dt><span class="term">__GFP_HIGHMEM <span></span></span></dt>
+<dd><p>Õâ¸ö±êÖ¾Ö¸Ê¾·ÖÅäµÄÄÚ´æ¿ÉÒÔÎ»ÓÚ¸ß¶ËÄÚ´æ.</p></dd>
+<dt><span class="term">__GFP_COLD <span></span></span></dt>
+<dd><p>Õý³£µØ, ÄÚ´æ·ÖÅäÆ÷¾¡Á¦·µ»Ø"»º³åÈÈ"µÄÒ³ -- ¿ÉÄÜÔÚ´¦ÀíÆ÷»º³åÖÐÕÒµ½µÄÒ³. Ïà·´, Õâ¸ö±êÖ¾ÇëÇóÒ»¸ö"Àä"Ò³, ËüÔÚÒ»¶ÎÊ±¼äÃ»±»Ê¹ÓÃ. Ëü¶Ô·ÖÅäÒ³×÷ DMA ¶ÁÊÇÓÐÓÃµÄ, ´ËÊ±ÔÚ´¦ÀíÆ÷»º³åÖÐ³öÏÖÊÇÎÞÓÃµÄ. Ò»¸öÍêÕûµÄ¶ÔÈçºÎ·ÖÅä DMA »º´æµÄÌÖÂÛ¿´"Ö±½ÓÄÚ´æ´æÈ¡"Ò»½ÚÔÚµÚ 1 ÕÂ.</p></dd>
+<dt><span class="term">__GFP_NOWARN <span></span></span></dt>
+<dd><p>Õâ¸öºÜÉÙÓÃµ½µÄ±êÖ¾×èÖ¹ÄÚºËÀ´·¢³ö¾¯¸æ(Ê¹ÓÃ printk ), µ±Ò»¸ö·ÖÅäÎÞ·¨Âú×ã.</p></dd>
+<dt><span class="term">__GFP_HIGH <span></span></span></dt>
+<dd><p>Õâ¸ö±êÖ¾±êÊ¶ÁËÒ»¸ö¸ßÓÅÏÈ¼¶ÇëÇó, Ëü±»ÔÊÐíÀ´ÏûºÄÉõÖÁ±»ÄÚºË±£Áô¸ø½ô¼±×´¿öµÄ×îºóµÄÄÚ´æÒ³.</p></dd>
+<dt><span class="term">__GFP_REPEAT<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">__GFP_NOFAIL<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">__GFP_NORETRY <span></span></span></dt>
+<dd><p>ÕâÐ©±êÖ¾ÐÞ¸Ä·ÖÅäÆ÷ÈçºÎ¶¯×÷, µ±ËüÓÐÀ§ÄÑÂú×ãÒ»¸ö·ÖÅä. __GFP_REPEAT ÒâË¼ÊÇ" ¸ü¾¡Á¦Ð©³¢ÊÔ" Í¨¹ýÖØ¸´³¢ÊÔ -- µ«ÊÇ·ÖÅä¿ÉÄÜÈÔÈ»Ê§°Ü. __GFP_NOFAIL ±êÖ¾¸æËß·ÖÅäÆ÷²»ÒªÊ§°Ü; Ëü¾¡×î´óÅ¬Á¦À´Âú×ãÒªÇó. Ê¹ÓÃ __GFP_NOFAIL ÊÇÇ¿ÁÒ²»ÍÆ¼öµÄ; ¿ÉÄÜ´Ó²»»áÓÐÓÐÐ§µÄÀíÓÉÔÚÒ»¸öÉè±¸Çý¶¯ÖÐÊ¹ÓÃËü. ×îºó, __GFP_NORETRY ¸æÖª·ÖÅäÆ÷Á¢¼´·ÅÆúÈç¹ûµÃ²»µ½ÇëÇóµÄÄÚ´æ.</p></dd>
+</dl></div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Memoryzones.sect"></a>8.1.1.1.&#160;ÄÚ´æÇø</h4></div></div></div>
+<p>__GFP_DMA ºÍ __GFP_HIGHMEM ¶¼ÓÐÒ»¸öÆ½Ì¨Ïà¹ØµÄ½ÇÉ«, ¾¡¹Ü¶ÔËùÓÐÆ½Ì¨ËüÃÇµÄÊ¹ÓÃ¶¼ÓÐÐ§.</p>
+<p>Linux ÄÚºËÖªµÀ×îÉÙ 3 ¸öÄÚ´æÇø: DMA-ÄÜ¹» ÄÚ´æ, ÆÕÍ¨ÄÚ´æ, ºÍ¸ß¶ËÄÚ´æ. ¾¡¹ÜÍ¨³£µØ·ÖÅä¶¼·¢ÉúÓÚÆÕÍ¨Çø, ÉèÖÃÕâÐ©¸Õ¸ÕÌá¼°µÄÎ»µÄÈÎÒ»¸öÇëÇó´Ó²»Í¬µÄÇøÀ´·ÖÅäÄÚ´æ. Õâ¸öÏë·¨ÊÇ, Ã¿¸ö±ØÐëÖªµÀÌØÊâÄÚ´æ·¶Î§(²»ÊÇÈÏÎªËùÓÐµÄ RAM µÈÍ¬)µÄ¼ÆËã»úÆ½Ì¨½«ÂäÈëÕâ¸ö³éÏóÖÐ.</p>
+<p>DMA-ÄÜ¹» µÄÄÚ´æÊÇÎ»ÓÚÒ»¸öÓÅÏÈµÄµØÖ··¶Î§, ÍâÉè¿ÉÒÔÔÚÕâÀï½øÐÐ DMA ´æÈ¡. ÔÚ´ó²¿·ÖµÄ½¡È«µÄÆ½Ì¨, ËùÓÐµÄÄÚ´æ¶¼ÔÚÕâ¸öÇø. ÔÚ x86, DMA ÇøÓÃÔÚ RAM µÄÇ° 16 MB, ÕâÀï´«Í³µÄ ISA Éè±¸¿ÉÒÔ½øÐÐ DMA; PCI Éè±¸Ã»ÓÐÕâ¸öÏÞÖÆ.</p>
+<p>¸ß¶ËÄÚ´æÊÇÒ»¸ö»úÖÆÓÃÀ´ÔÊÐíÔÚ 32-Î» Æ½Ì¨´æÈ¡(Ïà¶ÔµØ)´óÁ¿ÄÚ´æ. Èç¹ûÃ»ÓÐÊ×ÏÈÉèÖÃÒ»¸öÌØÊâµÄÓ³ÉäÕâ¸öÄÚ´æÎÞ·¨Ö±½Ó´ÓÄÚºË´æÈ¡²¢ÇÒÍ¨³£¸üÄÑÊ¹ÓÃ. Èç¹ûÄãµÄÇý¶¯Ê¹ÓÃ´óÁ¿ÄÚ´æ, µ«ÊÇ, Èç¹ûËüÄÜ¹»Ê¹ÓÃ¸ß¶ËÄÚ´æËü½«ÔÚ´óÏµÍ³ÖÐ¹¤×÷µÄ¸üºÃ. ¸ß¶ËÄÚ´æÈçºÎ¹¤×÷ÒÔ¼°ÈçºÎÊ¹ÓÃËüµÄÏêÇé¼ûµÚ 1 ÕÂµÄ"¸ß¶ËºÍµÍ¶ËÄÚ´æ"Ò»½Ú.</p>
+<p>ÎÞÂÛºÎÊ±·ÖÅäÒ»¸öÐÂÒ³À´Âú×ãÒ»¸öÄÚ´æ·ÖÅäÇëÇó, ÄÚºË¶¼½¨Á¢Ò»¸öÄÜ¹»ÔÚËÑË÷ÖÐÊ¹ÓÃµÄÄÚ´æÇøµÄÁÐ±í. Èç¹û __GFP_DMA Ö¸¶¨ÁË, Ö»ÓÐ DMA Çø±»ËÑË÷: Èç¹ûÔÚµÍ¶ËÃ»ÓÐÄÚ´æ¿ÉÓÃ, ·ÖÅäÊ§°Ü. Èç¹ûÃ»ÓÐÌØ±ðµÄ±êÖ¾´æÈ¡, ÆÕÍ¨ºÍ DMA ÄÚ´æ¶¼±»ËÑË÷; Èç¹û __GFP_HIGHMEM ÉèÖÃÁË, ËùÓÐµÄ 3 ¸öÇø¶¼ÓÃÀ´ËÑË÷Ò»¸ö¿ÕÏÐµÄÒ³. (×¢Òâ, µ«ÊÇ, kmalloc  ²»ÄÜ·ÖÅä¸ß¶ËÄÚ´æ.)</p>
+<p>Çé¿öÔÚ·ÇÍ³Ò»ÄÚ´æ´æÈ¡(NUMA)ÏµÍ³ÉÏ¸ü¼Ó¸´ÔÓ. ×÷ÎªÒ»¸öÍ¨ÓÃµÄ¹æÔò, ·ÖÅäÆ÷ÊÔÍ¼¶¨Î»½øÐÐ·ÖÅäµÄ´¦ÀíÆ÷µÄ±¾µØµÄÄÚ´æ, ¾¡¹ÜÓÐ¼¸¸ö·½·¨À´¸Ä±äÕâ¸öÐÐÎª.</p>
+<p>ÄÚ´æÇøºóÃæµÄ»úÖÆÔÚ mm/page_alloc.c ÖÐÊµÏÖ, ¶øÄÚ´æÇøµÄ³õÊ¼»¯ÔÚÆ½Ì¨ÌØ¶¨µÄÎÄ¼þÖÐ, ³£³£ÔÚ arch Ä¿Â¼Ê÷µÄ mm/init.c. ÎÒÃÇ½«ÔÚµÚ 15 ÕÂÔÙ´ÎÌÖÂÛÕâÐ©Ö÷Ìâ.</p>
+</div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheSizeArgument.sect"></a>8.1.2.&#160; size ²ÎÊý</h3></div></div></div>
+<p>ÄÚºË¹ÜÀíÏµÍ³µÄÎïÀíÄÚ´æ, ÕâÐ©ÎïÀíÄÚ´æÖ»ÊÇÒÔÒ³´óÐ¡µÄ¿éÀ´Ê¹ÓÃ. ½á¹ûÊÇ, kmalloc ¿´À´·Ç³£²»Í¬ÓÚÒ»¸öµäÐÍµÄÓÃ»§¿Õ¼ä malloc ÊµÏÖ. Ò»¸ö¼òµ¥µÄ, ÃæÏò¶ÑµÄ·ÖÅä¼¼Êõ¿ÉÄÜºÜ¿ìÓÐÂé·³; Ëü¿ÉÄÜÔÚ½â¾öÒ³±ß½çÊ±ÓÐÀ§ÄÑ. Òò¶ø, ÄÚºËÊ¹ÓÃÒ»¸öÌØÊâµÄÃæÏòÒ³µÄ·ÖÅä¼¼ÊõÀ´×îºÃµØÀûÓÃÏµÍ³ RAM.</p>
+<p>Linux ´¦ÀíÄÚ´æ·ÖÅäÍ¨¹ý´´½¨Ò»Ì×¹Ì¶¨´óÐ¡µÄÄÚ´æ¶ÔÏó³Ø. ·ÖÅäÇëÇó±»ÕâÑùÀ´´¦Àí, ½øÈëÒ»¸ö³ÖÓÐ×ã¹»´óµÄ¶ÔÏóµÄ³Ø×Ó²¢ÇÒ½«Õû¸öÄÚ´æ¿éµÝ½»¸øÇëÇóÕß. ÄÚ´æ¹ÜÀí·½°¸ÊÇ·Ç³£¸´ÔÓ, ²¢ÇÒÏ¸½ÚÍ¨³£²»ÊÇÈ«²¿Éè±¸Çý¶¯±àÐ´Õß¶¼¸ÐÐËÈ¤µÄ.</p>
+<p>È»¶ø, Çý¶¯¿ª·¢ÕßÓ¦µ±¼Ç×¡µÄÒ»¼þÊÂÇéÊÇ, ÄÚºËÖ»ÄÜ·ÖÅäÄ³Ð©Ô¤¶¨ÒåµÄ, ¹Ì¶¨´óÐ¡µÄ×Ö½ÚÊý×é. Èç¹ûÄãÇëÇóÒ»¸öÈÎÒâÊýÁ¿ÄÚ´æ, Äã¿ÉÄÜµÃµ½ÉÔÎ¢¶àÓÚÄãÇëÇóµÄ, ÖÁ¶àÊÇ 2 ±¶ÊýÁ¿. Í¬Ñù, ³ÌÐòÔ±Ó¦µ±¼Ç×¡ kmalloc ÄÜ¹»´¦ÀíµÄ×îÐ¡·ÖÅäÊÇ 32 »òÕß 64 ×Ö½Ú, ÒÀÀµÏµÍ³µÄÌåÏµËùÊ¹ÓÃµÄÒ³´óÐ¡.</p>
+<p>kmalloc ÄÜ¹»·ÖÅäµÄÄÚ´æ¿éµÄ´óÐ¡ÓÐÒ»¸öÉÏÏÞ. Õâ¸öÏÞÖÆËæ×ÅÌåÏµºÍÄÚºËÅäÖÃÑ¡Ïî¶ø±ä»¯. Èç¹ûÄãµÄ´úÂëÊÇÒªÍêÈ«¿ÉÒÆÖ², Ëü²»ÄÜÖ¸Íû¿ÉÒÔ·ÖÅäÈÎºÎ´óÓÚ 128 KB. Èç¹ûÄãÐèÒª¶àÓÚ¼¸¸ö KB, µ«ÊÇ, ÓÐ¸ö±È kmalloc ¸üºÃµÄ·½·¨À´»ñµÃÄÚ´æ, ÎÒÃÇÔÚ±¾ÕÂºóÃæÃèÊö.</p>
+</div>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id450180" href="#id450180">28</a>] </sup>ÔÚÆäËûµÄÖ®ÖÐ, Õâ°µº¬×ÅÄãÓ¦µ±Ã÷È·µØÇåÁã¿ÉÄÜ±©Â¶¸øÓÃ»§¿Õ¼ä»òÕßÐ´ÈëÉè±¸µÄÄÚ´æ; ·ñÔò, Äã¿ÉÄÜÃ°ÏÕ½«Ó¦µ±±£ÃÜµÄÐÅÏ¢Í¸Â¶³öÈ¥.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch07s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch08s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.7.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;8.2.&#160;ºó±¸»º´æ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

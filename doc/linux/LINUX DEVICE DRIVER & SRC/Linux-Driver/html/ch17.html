@@ -1,0 +1,190 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>第&#160;17&#160;章&#160;网络驱动-Linux设备驱动第三版（中文版）</title>
+<meta name="description" content="驱动开发" />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发,开发频道" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="prev" href="ch16s05.html" title="16.5.&#160;快速参考">
+<link rel="next" href="ch17s02.html" title="17.2.&#160;连接到内核">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">第&#160;17&#160;章&#160;网络驱动</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch16s05.html">上一页</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s02.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="NetworkDrivers"></a>第&#160;17&#160;章&#160;网络驱动</h2></div></div></div>
+<div class="toc">
+<p><b>目录</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch17.html#HowsnullIsdesigned">17.1. snull 是如何设计的</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17.html#AssigningIPNumbers">17.1.1. 分配 IP 号</a></span></dt>
+<dt><span class="sect2"><a href="ch17.html#ThePhysicalTransportofPacket">17.1.2. 报文的物理传送</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s02.html">17.2. 连接到内核</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s02.html#DeviceRegistration">17.2.1. 设备注册</a></span></dt>
+<dt><span class="sect2"><a href="ch17s02.html#InitializingEachDevice">17.2.2. 初始化每一个设备</a></span></dt>
+<dt><span class="sect2"><a href="ch17s02.html#ModuleUnloading">17.2.3. 模块卸载</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s03.html">17.3. net_device 结构的详情</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s03.html#GlobalInformation">17.3.1. 全局信息</a></span></dt>
+<dt><span class="sect2"><a href="ch17s03.html#HardwareInformation">17.3.2. 硬件信息</a></span></dt>
+<dt><span class="sect2"><a href="ch17s03.html#InterfaceInformation">17.3.3. 接口信息</a></span></dt>
+<dt><span class="sect2"><a href="ch17s03.html#TheDeviceMethods">17.3.4. 设备方法</a></span></dt>
+<dt><span class="sect2"><a href="ch17s03.html#UtilityFields">17.3.5. 公用成员</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s04.html">17.4. 打开与关闭</a></span></dt>
+<dt><span class="sect1"><a href="ch17s05.html">17.5. 报文传送</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s05.html#ControllingTransmissionConcurrency">17.5.1. 控制发送并发</a></span></dt>
+<dt><span class="sect2"><a href="ch17s05.html#TransmissionTimeouts">17.5.2. 传送超时</a></span></dt>
+<dt><span class="sect2"><a href="ch17s05.html#ScatterGathreIO">17.5.3. 发散/汇聚 I/O</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s06.html">17.6. 报文接收</a></span></dt>
+<dt><span class="sect1"><a href="ch17s07.html">17.7. 中断处理</a></span></dt>
+<dt><span class="sect1"><a href="ch17s08.html">17.8. 接收中断缓解</a></span></dt>
+<dt><span class="sect1"><a href="ch17s09.html">17.9. 连接状态的改变</a></span></dt>
+<dt><span class="sect1"><a href="ch17s10.html">17.10. Socket 缓存</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s10.html#TheImportFields">17.10.1. 重要成员变量</a></span></dt>
+<dt><span class="sect2"><a href="ch17s10.html#FunctionsActingonSocketBuffers">17.10.2. 作用于 socket 缓存的函数</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s11.html">17.11. MAC 地址解析</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s11.html#UsingARPwithEthernet">17.11.1. 以太网使用 ARP</a></span></dt>
+<dt><span class="sect2"><a href="ch17s11.html#OverridingARP">17.11.2. 不考虑 ARP</a></span></dt>
+<dt><span class="sect2"><a href="ch17s11.html#NonEthernetHeader">17.11.3. 非以太网头部</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s12.html">17.12. 定制 ioctl 命令</a></span></dt>
+<dt><span class="sect1"><a href="ch17s13.html">17.13. 统计信息</a></span></dt>
+<dt><span class="sect1"><a href="ch17s14.html">17.14. 多播</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s14.html#KernelSupportforMulticasting">17.14.1. 多播的内核支持</a></span></dt>
+<dt><span class="sect2"><a href="ch17s14.html#ATypicalImplementation">17.14.2. 典型实现</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s15.html">17.15. 几个其他细节</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch17s15.html#MediaIndependentInterfaceSupport">17.15.1. 独立于媒介的接口支持</a></span></dt>
+<dt><span class="sect2"><a href="ch17s15.html#EthtoolSupport">17.15.2. ethtool 支持</a></span></dt>
+<dt><span class="sect2"><a href="ch17s15.html#Netpoll">17.15.3. netpoll</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch17s16.html">17.16. 快速参考</a></span></dt>
+</dl>
+</div>
+<p>我们已经讨论了字符和块驱动, 现在准备好转移到网络世界里. 网络接口是第 3 类标准的 Linux 设备, 本章描述它们如何与内核其他部分交互.</p>
+<p>一个网络接口的在系统内的角色与一个被加载的块设备的角色类似. 一个块设备注册它的磁盘和工作方法到内核, 随之通过它的请求函数按需求"发送"和"接收"块. 类似的, 一个网络接口必须注册它自己到特定的内核数据结构中, 以便在与外部世界交换报文时被调用.</p>
+<p>在被加载的磁盘和报文递送接口之间有几个重要的区别. 首先, 磁盘作为一个特殊的文件存在于 /dev 目录下, 然而一个网络接口没有这样的入口点. 正常的文件操作( read, write, 等等 )对于网络接口没有意义, 因此不可能适用 Unix 的"一切皆文件"的方法给它们. 从而, 网络接口存在于它们自己的名子空间里, 并且对外输出了一套不同的操作.</p>
+<p>尽管你可能会反驳说, 应用程序在使用 socket 时可以使用 read 和 write 系统调用, 这些系统调用作用于一个软件对象上, 而它与接口是明显不同的. 几百个 socket 可以在同一个物理接口上复用.</p>
+<p>但是两者最重要的不同在于, 块驱动的运行只是响应来自内核的请求, 但是网络驱动从外边异步地接收报文. 因此, 不同于一个块驱动被要求向内核发送一个缓存区, 网络设备要求向内核推送进入的报文. 网络驱动使用的内核接口为这个不同的操作模式而设计.</p>
+<p>网络驱动也不得不准备支持很多的管理任务, 例如设置地址, 修改发送参数, 以及维护流量和错误统计. 网络驱动使用的 API 反映了这种需要, 并且因此, 能看出一些与我们之前看到的接口的不同.</p>
+<p>Linux 内核的网络子系统被设计成是完全独立于协议的. 这适用于网络协议( 互联网协议 [IP], 相对于 IPX, 或者其他协议 )和硬件协议( 以太网, 相对的令牌环, 等等 ). 一个网络驱动和内核互相作用在同一时间正确处理一个网络报文; 这允许对驱动巧妙地隐藏了协议的信息, 以及对协议隐藏了物理发送.</p>
+<p>本章描述了网络接口如何适用于 Linux 内核的其他部分, 并以一个基于内存模块化网络接口的形式提供了例子, 它称做( 你猜一下 ) snull. 为简化讨论, 这个接口使用以太网硬件协议和发送 IP 报文.  你从测验 snull 中获得的知识已能够应用到非 IP 的协议上, 并且编写一个非以太网驱动只是有极小的与实际网络协议相关的区别.</p>
+<p>本章不讨论 IP 编号方案, 网络协议, 以及其他通用的网络概念. 这样的话题不是( 常常地 )驱动编写者所关心的, 并且不可能提供一个满意的网络技术的概述在不足几百页里面. 建议感兴趣的读者去参考其他的描述网络方面的书籍.</p>
+<p>在进入网络设备之前, 提及一个技术方面的注意问题. 网络世界使用术语 octet 来表示一个 8 个位的组, 它通常是网络设备和协议能理解的最小单元. 术语 byte 在这个上下文中极少遇到. 为紧跟标准用法, 我们将使用 octet, 在谈论网络设备的时候.</p>
+<p>术语" header "也值得一提. 一个 header 是一组字节(错了, 是 octet), 要安排到一个报文里, 当它穿过网络子系统的各层时. 当一个应用程序通过一个 TCP socket 发送了一个数据块, 网络子系统拆开数据, 填充到报文里, 在报文开始安上一个 TCP header 来描述每个报文在流里面的位置. 下面的协议层接着在 TCP header 之前安上一个 IP header, 用来路由这个报文到它的目的地. 如果这个报文在类似以太网的介质上移动, 一个以太网 header, 由硬件来解析的, 加在在余下的前面. 网络驱动(常常)不需要让自己去理睬高层的 header, 但是它们经常必须参与硬件级别的 header 的创建.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="HowsnullIsdesigned"></a>17.1.&#160;snull 是如何设计的</h2></div></div></div>
+<p>本节谈论产生 snull 网络接口的设计概念. 尽管这个信息可能看来是边缘的使用, 不理解它在你运行例子代码时可能会导致问题.</p>
+<p>首先, 也是最重要的, 设计的决定是例子接口应该保持独立于真实的硬件, 就像本书使用的大部分例子. 这个限制导致了一些构成环回接口的东西. snull 不是一个环回接口; 但是, 它模拟了与真实的远端主机间的对话, 以便更好演示编写一个网络驱动的任务. Linux 环回驱动实际是非常简单的; 它可在 drivers/net/lookback.c 找到.</p>
+<p>snull 的另一个特性是它只支持 IP 通讯. 这是接口的内部工作的结果 -- snull 不得不查看里面并且解析报文来正确模拟一对硬件接口. 实际的接口不依赖于被发送的协议, 并且 snull 的这种限制不影响本章展示的代码片断.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AssigningIPNumbers"></a>17.1.1.&#160;分配 IP 号</h3></div></div></div>
+<p>snull 模块创建了两个接口. 这些接口与一个简单的环回不同, 因为无论你通过其中一个接口发送什么都环回到另外一个, 而不是它自己. 它看起来好像你有两个外部连接, 但实际上是你的计算机在回答它自己.</p>
+<p>不幸的是, 这个效果不能仅仅通过 IP 号码分配来完成, 因为内核不会通过接口 A 发送一个报文给它自己的接口 B, 它会利用环回通道而不是通过 snull. 为了能建立一个通过 snull 接口的通讯, 源和目的地址在实际传送中需要修改. 换句话说, 通过其中一个接口发送的报文应该被另一个收到, 但是外出报文的接受者不应当被认做是本地主机. 同样适用于接收到的报文的源地址.</p>
+<p>为获得这种"隐藏的环回", snull 接口翻转源地址和目的地址的第 3 个 octet 的最低有效位; 就是说, 它改变了 C 类 IP 编号的网络编号和主机编号. 网络方面的效果是发给网络 A( 连接在 sn0 上, 第一个接口 )的报文作为属于网络 B 的报文出现在 sn1 接口.</p>
+<p>为避免处理太多编号, 我们分配符号名子给涉及到的 IP 编号:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>snullnet0 是连接到 sn0 接口的网络. 同样, snullnet1 是连接到 sn1. 这些网络的地址应当仅仅在第 3 个 octet 的最低有效位不同. 这些网络必须有 24 位的子网掩码.</p></li>
+<li><p>local0 是分配给 sn0 接口的 IP 地址; 它属于 snullnet0. 陪伴 sn1 的地址是 local1. local0 和 local1 必须在它们的第 3 octet 的最低有效位和第 4 octet 上不同.</p></li>
+<li><p>remote0 是在 snullnet0 的主机, 并且它的第 4 octet 与 local1 的相同. 任何发送给 remote0 的报文到达 local1, 在它的网络地址被接口代码改变之后. 主机 remote1 属于 snullnet1, 它的第 4 octet 与 local0 相同.</p></li>
+</ul></div>
+<p>snull 接口的操作在图 <a href="ch17.html#ldd3-17-1.fig" title="图&#160;17.1.&#160;主机如何看它的接口">主机如何看它的接口</a>中描述, 其中每个接口的关联的主机名印在接口名的旁边.</p>
+<div class="figure">
+<a name="ldd3-17-1.fig"></a><p class="title"><b>图&#160;17.1.&#160;主机如何看它的接口</b></p>
+<div><img src="images/snagitldd3/ldd3-17-1.png" alt="主机如何看它的接口"></div>
+</div>
+<p>下面是网络编号的可能值. 一旦你把这些行放进 /etc/networks, 你可以使用名子来调用你的网络. 这些值选自保留做私人用途的编号范围.</p>
+<pre class="screen">
+snullnet0 192.168.0.0
+snullnet1 192.168.1.0
+</pre>
+<p>下面的是一些可能的主机编号, 可放进 /etc/hosts 里面:</p>
+<pre class="screen">
+192.168.0.1  local0  
+192.168.0.2  remote0  
+192.168.1.2  local1  
+192.168.1.1  remote1  
+</pre>
+<p>这些编号的重要特性是 local0 的主机部分与 remote1 的主机部分相同, local1 的主机部分和 remote0 的主机部分相同. 你可以使用完全不同的编号, 只要保持着这种关系.</p>
+<p>但是要小心, 如果你的计算机以及连接到一个网络上. 你选择的编号可能是真实的互联网或者内联网的编号, 把它们安排给你的接口会阻止和这些真实的主机间的通讯. 例如, 尽管刚刚展示的这些编号不是可以路由的互联网编号, 它们也可能被你的私有网络已经在使用.</p>
+<p>不管你选择什么编号, 你可以正确设置这些接口来操作, 通过发出下面的命令:</p>
+<pre class="screen">
+ifconfig sn0 local0 
+ifconfig sn1 local1 
+</pre>
+<p>你可能需要添加网络掩码 255.255.255.0 参数, 如果选择的地址范围不是 C 类范围.</p>
+<p>在此, 接口的"远程"端点能够到达了. 下面的屏幕拷贝显示了一个主机如何到达 remote0 和 remote1 的, 通过 snull 接口.</p>
+<pre class="screen">
+morgana% ping -c 2 remote0 
+64 bytes from 192.168.0.99: icmp_seq=0 ttl=64 time=1.6 ms 
+64 bytes from 192.168.0.99: icmp_seq=1 ttl=64 time=0.9 ms 
+2 packets transmitted, 2 packets received, 0% packet loss 
+morgana% ping -c 2 remote1
+64 bytes from 192.168.1.88: icmp_seq=0 ttl=64 time=1.8 ms
+64 bytes from 192.168.1.88: icmp_seq=1 ttl=64 time=0.9 ms
+2 packets transmitted, 2 packets received, 0% packet loss
+</pre>
+<p>注意, 你不能到达属于这两个网络的任何其他主机, 因为报文被你的计算机丢弃了, 在地址被修改和收到报文之后. 例如, 一个发向 192.168.0.32 的报文将离开 sn0 并以 192.168.1.32 的目的地址出现在 sn1, 这并不是这台主机的本地地址.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ThePhysicalTransportofPacket"></a>17.1.2.&#160;报文的物理传送</h3></div></div></div>
+<p>只考虑数据传送的话, snull 接口属于以太网一类的.</p>
+<p>snull 模拟以太网是因为大量的现存网络 -- 至少一个工作站所连接的网段 -- 是基于以太网技术的, 它可能是 10base-T, 100base-T, 或者 千兆网. 另外, 内核为以太网设备提供了一些通用的接口, 没有理由不用它. 一个以太网设备的优势是如此的强以至于 plip 接口( 使用打印机端口的接口 )都声明自己是一个以太网设备.</p>
+<p>snull 使用以太网设置的最后一个优势是你可以运行 tcpdump 在接口上来观察过往的报文. 使用 tcpdump 来观察接口是得知两个接口如何工作的有用途径.</p>
+<p>如同我们之前提到的, snull 只处理 IP 报文. 这个限制来自这样的事实, snull 监听报文并且甚至修改它们, 以便使代码工作. 代码修改了每个报文的源, 目的和 IP header 的校验和, 并不检查它是否实际承载着 IP 信息.</p>
+<p>这种快而脏的数据修改毁坏了非 IP 报文. 如果你想通过 snull 递交其他协议, 你必须修改模块的源代码.</p>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch16s05.html">上一页</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s02.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">16.5.&#160;快速参考&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;17.2.&#160;连接到内核</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

@@ -1,0 +1,98 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.8.&#160;Ä£¿é²ÎÊý-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch02.html" title="µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é">
+<link rel="prev" href="ch02s07.html" title="2.7.&#160;³õÊ¼»¯ºÍ¹ØÍ£">
+<link rel="next" href="ch02s09.html" title="2.9.&#160;ÔÚÓÃ»§¿Õ¼ä×ö">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.8.&#160;Ä£¿é²ÎÊý</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ModuleParameters.sect1"></a>2.8.&#160;Ä£¿é²ÎÊý</h2></div></div></div>
+<p>Çý¶¯ÐèÒªÖªµÀµÄ¼¸¸ö²ÎÊýÒò²»Í¬µÄÏµÍ³¶ø²»Í¬. ´ÓÊ¹ÓÃµÄÉè±¸ºÅ( ÈçÎÒÃÇÔÚÏÂÒ»ÕÂ¼ûµ½µÄ )µ½Çý¶¯Ó¦µ±ÈÎºÎ²Ù×÷µÄ¼¸¸ö·½Ãæ. ÀýÈç, SCSI ÊÊÅäÆ÷µÄÇý¶¯³£³£ÓÐÑ¡Ïî¿ØÖÆ±ê¼ÇÃüÁî¶ÓÁÐµÄÊ¹ÓÃ, IDE Çý¶¯ÔÊÐíÓÃ»§¿ØÖÆ DMA ²Ù×÷. Èç¹ûÄãµÄÇý¶¯¿ØÖÆÀÏµÄÓ²¼þ, »¹ÐèÒª±»Ã÷È·¸æÖªÄÄÀïÈ¥ÕÒÓ²¼þµÄ I/O ¶Ë¿Ú»òÕß I/O ÄÚ´æµØÖ·. ÄÚºËÍ¨¹ýÔÚ¼ÓÔØÇý¶¯µÄÄ£¿éÊ±Ö¸¶¨¿É±ä²ÎÊýµÄÖµ, Ö§³ÖÕâÐ©ÒªÇó.  </p>
+<p> ÕâÐ©²ÎÊýµÄÖµ¿ÉÓÉ insmod »òÕß modprobe ÔÚ¼ÓÔØÊ±Ö¸¶¨; ºóÕßÒ²¿ÉÒÔ´ÓËüµÄÅäÖÃÎÄ¼þ(/etc/modprobe.conf)¶ÁÈ¡²ÎÊýµÄÖµ. ÕâÐ©ÃüÁîÔÚÃüÁîÐÐÀï½ÓÊÜ¼¸Àà¹æ¸ñµÄÖµ. ×÷ÎªÑÝÊ¾ÕâÖÖÄÜÁ¦µÄÒ»ÖÖ·½·¨, ÏëÏóÒ»¸öÌØ±ðÐèÒªµÄ¶Ô±¾ÕÂ¿ªÊ¼µÄ"hello world"Ä£¿é(³ÆÎª hellop)µÄ¸Ä½ø. ÎÒÃÇÔö¼Ó 2 ¸ö²ÎÊý: Ò»¸öÕûÐÍÖµ, ³ÆÎª howmany, Ò»¸ö×Ö·û´®³ÆÎª whom. ÎÒÃÇµÄÌØ±ð¶à¹¦ÄÜµÄÄ£¿é¾ÍÔÚ¼ÓÔØÊ±, »¶Ó­ whom ²»Ö¹Ò»´Î, ¶øÊÇ howmany ´Î. ÕâÑùÒ»¸öÄ£¿é¿ÉÒÔÓÃÕâÑùµÄÃüÁîÐÐ¼ÓÔØ: </p>
+<pre class="screen">
+insmod hellop howmany=10 whom="Mom" 
+</pre>
+<p> Ò»µ©ÒÔÄÇÑùµÄ·½Ê½¼ÓÔØ, hellop »áËµ "hello, Mom" 10 ´Î.  </p>
+<p> µ«ÊÇ, ÔÚ insmod ¿ÉÒÔÐÞ¸ÄÄ£¿é²ÎÊýÇ°, Ä£¿é±ØÐëÊ¹ËüÃÇ¿ÉÓÃ. ²ÎÊýÓÃ moudle_param ºê¶¨ÒåÀ´ÉùÃ÷, Ëü¶¨ÒåÔÚ moduleparam.h. module_param Ê¹ÓÃÁË 3 ¸ö²ÎÊý: ±äÁ¿Ãû, ËüµÄÀàÐÍ, ÒÔ¼°Ò»¸öÈ¨ÏÞÑÚÂëÓÃÀ´×öÒ»¸ö¸¨ÖúµÄ sysfs Èë¿Ú. Õâ¸öºê¶¨ÒåÓ¦µ±·ÅÔÚÈÎºÎº¯ÊýÖ®Íâ, µäÐÍµØÊÇ³öÏÖÔÚÔ´ÎÄ¼þµÄÇ°Ãæ. Òò´Ë hellop ½«ÉùÃ÷ËüµÄ²ÎÊý, ²¢ÈçÏÂÊ¹µÃ¶Ô insmod ¿ÉÓÃ: </p>
+<pre class="programlisting">
+static char *whom = "world";
+static int howmany = 1;
+module_param(howmany, int, S_IRUGO);
+module_param(whom, charp, S_IRUGO);
+</pre>
+<p> Ä£¿é²ÎÊýÖ§³ÖÐí¶àÀàÐÍ: </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>bool </span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>invbool </span></span></dt>
+<dd><p>Ò»¸ö²¼¶ûÐÍ( true »òÕß false)Öµ(Ïà¹ØµÄ±äÁ¿Ó¦µ±ÊÇ int ÀàÐÍ). invbool ÀàÐÍµßµ¹ÁËÖµ, ËùÒÔÕæÖµ±ä³É false, ·´Ö®ÒàÈ».  </p></dd>
+<dt><span class="term"><span>charp </span></span></dt>
+<dd><p>Ò»¸ö×Ö·ûÖ¸ÕëÖµ. ÄÚ´æÎªÓÃ»§Ìá¹©µÄ×Ö´®·ÖÅä, Ö¸ÕëÒò´ËÉèÖÃ.  </p></dd>
+<dt><span class="term"><span>int</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>long</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>short</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>uint</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>ulong</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>ushort </span></span></dt>
+<dd><p>»ù±¾µÄ±ä³¤ÕûÐÍÖµ. ÒÔ u ¿ªÍ·µÄÊÇÎÞ·ûºÅÖµ.  </p></dd>
+</dl></div>
+<p>Êý×é²ÎÊý, ÓÃ¶ººÅ¼ä¸ôµÄÁÐ±íÌá¹©µÄÖµ, Ä£¿é¼ÓÔØÕßÒ²Ö§³Ö. ÉùÃ÷Ò»¸öÊý×é²ÎÊý, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+module_param_array(name,type,num,perm);
+</pre>
+<p>ÕâÀï name ÊÇÄãµÄÊý×éµÄÃû×Ó(Ò²ÊÇ²ÎÊýÃû), type ÊÇÊý×éÔªËØµÄÀàÐÍ, num ÊÇÒ»¸öÕûÐÍ±äÁ¿, perm ÊÇÍ¨³£µÄÈ¨ÏÞÖµ. Èç¹ûÊý×é²ÎÊýÔÚ¼ÓÔØÊ±ÉèÖÃ, num ±»ÉèÖÃ³ÉÌá¹©µÄÊýµÄ¸öÊý. Ä£¿é¼ÓÔØÕß¾Ü¾ø±ÈÊý×éÄÜ·ÅÏÂµÄ¶àµÄÖµ.</p>
+<p> Èç¹ûÄãÈ·ÊµÐèÒªÒ»¸öÃ»ÓÐ³öÏÖÔÚÉÏÃæÁÐ±íÖÐµÄÀàÐÍ, ÔÚÄ£¿é´úÂëÀïÓÐ¹³×Ó»áÔÊÐíÄãÀ´¶¨ÒåËüÃÇ; ÈÎºÎÊ¹ÓÃËüÃÇµÄÏ¸½Ú¼û moduleparam.h. ËùÓÐµÄÄ£¿é²ÎÊýÓ¦µ±¸ø¶¨Ò»¸öÈ±Ê¡Öµ; insmod Ö»ÔÚÓÃ»§Ã÷È·¸æÖªËüµÄÊ±ºò²Å¸Ä±äÕâÐ©Öµ. Ä£¿é¿É¼ì²éÃ÷ÏÔµÄ²ÎÊý, Í¨¹ý¶ÔÓ¦ËüÃÇµÄÈ±Ê¡Öµ¼ì²éÕâÐ©²ÎÊý.  </p>
+<p> ×îºóµÄ module_param ×Ö¶ÎÊÇÒ»¸öÈ¨ÏÞÖµ; ÄãÓ¦µ±Ê¹ÓÃ &lt;linux/stat.h&gt; ÖÐ¶¨ÒåµÄÖµ. Õâ¸öÖµ¿ØÖÆË­¿ÉÒÔ´æÈ¡ÕâÐ©Ä£¿é²ÎÊýÔÚ sysfs ÖÐµÄ±íÊ¾. Èç¹û perm ±»ÉèÎª 0, ¾Í¸ù±¾Ã»ÓÐ sysfs Ïî. ·ñÔò, Ëü³öÏÖÔÚ /sys/module<sup>[<a name="id410890" href="#ftn.id410890">5</a>]</sup> ÏÂÃæ, ´øÓÐ¸ø¶¨µÄÈ¨ÏÞ. Ê¹ÓÃ S_IRUGO ×÷Îª²ÎÊý¿ÉÒÔ±»ËùÓÐÈË¶ÁÈ¡, µ«ÊÇ²»ÄÜ¸Ä±ä; S_IRUGO|S_IWUSR ÔÊÐí root À´¸Ä±ä²ÎÊý. ×¢Òâ, Èç¹ûÒ»¸ö²ÎÊý±» sysfs ÐÞ¸Ä, ÄãµÄÄ£¿é¿´µ½µÄ²ÎÊýÖµÒ²¸Ä±äÁË, µ«ÊÇÄãµÄÄ£¿éÃ»ÓÐÈÎºÎÆäËûµÄÍ¨Öª. ÄãÓ¦µ±²»ÒªÊ¹Ä£¿é²ÎÊý¿ÉÐ´, ³ý·ÇÄã×¼±¸ºÃ¼ì²âÕâ¸ö¸Ä±ä²¢ÇÒÒò¶ø×÷³ö·´Ó¦.</p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id410890" href="#id410890">5</a>] </sup> È»¶ø, ÔÚ±¾ÊéÐ´×÷Ê±, ÓÐÌÖÂÛ½«²ÎÊýÒÆ³ö sysfs.  </p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.7.&#160;³õÊ¼»¯ºÍ¹ØÍ£&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;2.9.&#160;ÔÚÓÃ»§¿Õ¼ä×ö</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

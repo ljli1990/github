@@ -1,0 +1,74 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>12.4.&#160;ÆäËûµÄ PC ×ÜÏß-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch12.html" title="µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯">
+<link rel="prev" href="ch12s03.html" title="12.3.&#160;PC/104 ºÍ PC/104+">
+<link rel="next" href="ch12s05.html" title="12.5.&#160;SBus">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">12.4.&#160;ÆäËûµÄ PC ×ÜÏß</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch12s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch12s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="OtherPCBuses.sect1"></a>12.4.&#160;ÆäËûµÄ PC ×ÜÏß</h2></div></div></div>
+<p>PCI ºÍ ISA ÊÇÔÚ PC ÊÀ½çÖÐ×î³£ÓÃµÄÍâÉè½Ó¿Ú, µ«ÊÇËüÃÇ²»ÊÇÎ¨Ò»µÄ. ÕâÀïÊÇ¶ÔÔÚ PC ÊÐ³¡ÉÏµÄÆäËû×ÜÏßµÄÌØÐÔµÄ×Ü½á.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="MCA.sect2"></a>12.4.1.&#160;MCA ×ÜÏß</h3></div></div></div>
+<p>Î¢Í¨µÀÌåÏµ(MCA)ÊÇÒ»¸ö IBM ±ê×¼, ÓÃÔÚ PS/2 ¼ÆËã»úºÍÒ»Ð©±Ê¼Ç±¾µçÄÔ. ÔÚÓ²¼þ¼¶±ð, Î¢Í¨µÀ±È ISA ÓÐ¸ü¶àÌØÐÔ. ËüÖ§³Ö¶àÖ÷ DMA, 32-Î»µØÖ·ºÍÊý¾ÝÏß, ¹²ÏíÖÐ¶ÏÏß, ºÍµØÀíÊ½Ñ°Ö·À´´æÈ¡Ã¿¿é°åµÄÅäÖÃ¼Ä´æÆ÷. ÕâÑùµÄ¼Ä´æÆ÷±»³ÆÎª¿É±à³ÌÑ¡ÏîÑ¡Ôñ(POS), µ«ÊÇËüÃÇÃ»ÓÐ PCI ¼Ä´æÆ÷µÄÈ«²¿ÌØµã. Linux ¶Ô Î¢Í¨µÀµÄÖ§³Ö°üÀ¨Êä³ö¸øÄ£¿éµÄº¯Êý.</p>
+<p>Ò»¸öÉè±¸Çý¶¯¿É¶ÁÕûÊýÖµ MCA_bus À´¿´ÊÇ·ñËüÔÚÒ»¸öÎ¢Í¨µÀ¼ÆËã»úÉÏÔËÐÐ. Èç¹ûÕâ¸ö·ûºÅÊÇÒ»¸öÔ¤´¦Àíºê, ºê MCA_bus__is_a_ ºêÒ²±»¶¨Òå. Èç¹û MCA_bus__is_a_ ºê±»È¡Ïû¶¨Òå, ÄÇÃ´ MCA_bus ÊÇÒ»¸ö±»Êä³ö¸øÄ£¿é»¯´úÂëµÄÕûÊýÖµ. MCA_BUS ºÍ MCA_bus__is_a_macro Ò²¶¨ÒåÔÚ &lt;asm/processor.h&gt;. </p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="EISA.sect2"></a>12.4.2.&#160;EISA ×ÜÏß</h3></div></div></div>
+<p>À©Õ¹ ISA (EISA) ×ÜÏßÊÇÒ»¸ö¶Ô ISA µÄ 32-Î» À©Õ¹, ´øÓÐÒ»¸ö¼æÈÝµÄ½Ó¿ÚÁ¬½ÓÆ÷; ISA Éè±¸°å¿É±»²åÈëÒ»¸ö EISA Á¬½ÓÆ÷. Ôö¼ÓµÄÏßÔÚ ISA ½Ó´¥Ö®ÏÂ±»Á¬½Ó.</p>
+<p>ÈçÍ¬ PCI ºÍ MCA, EISA ×ÜÏß±»Éè¼Æ¸øÎÞÌøÏßµÄÉè±¸, ²¢ÇÒËüÓÐºÍ MCA ÏàÍ¬µÄÌØÐÔ: 32-Î»µØÖ·ºÍÊý¾ÝÏß, ¶àÖ÷ DMA, ºÍ¹²ÏíÖÐ¶ÏÏß.  EISA Éè±¸±»Èí¼þÅäÖÃ, µ«ÊÇËüÃÇ²»ÐèÒªÈÎºÎÌØÊâµÄ²Ù×÷ÏµÍ³Ö§³Ö. EISA Çý¶¯ÒÑ¾­´æÔÚÓÚ Linux ÄÚºË¸øÒÔÌ«ÍøÇý¶¯ºÍ SCSI ¿ØÖÆÆ÷.</p>
+<p>Ò»¸ö EISA Çý¶¯¼ì²éÖµ EISA_bus À´¾ö¶¨ÊÇ·ñÖ÷»úÓÐÒ»¸ö EISA ×ÜÏß. Ïó MCA_bus, EISA_bus »òÕßÊÇÒ»¸öºê¶¨Òå»òÕßÊÇÒ»¸ö±äÁ¿, ÒÀÀµÊÇ·ñ EISA_bus__is_a_macro ±»¶¨Òå. 2 ¸ö·ûºÅ¶¼¶¨ÒåÔÚ &lt;asm/processor.h&gt;</p>
+<p>ÄÚºË¶ÔÓÐ sysfs ºÍ×ÊÔ´¹ÜÀíÄÜÁ¦µÄÉè±¸ÓÐÍêÕûµÄ EISA Ö§³Ö. ÕâÎ»ÓÚ driver/eisa Ä¿Â¼.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="VLB.sect2"></a>12.4.3.&#160;VLB ×ÜÏß</h3></div></div></div>
+<p>ÁíÒ»¸ö¶Ô ISA µÄÀ©Õ¹ÊÇ VESA Local Bus(VLB)	½Ó¿Ú×ÜÏß, ËüÀ©Õ¹ÁË ISA Á¬½ÓÆ÷, Í¨¹ýÌí¼ÓµÚ 3 ¸öÖªµÀ³¤¶ÈµÄ²ÛÎ». Ò»¸öÉè±¸¿ÉÖ»²åÈëÕâ¸ö¶îÍâµÄÁ¬½ÓÆ÷(²»ÓÃ²åÈë 2 ¸ö¹ØÁªµÄ ISA Á¬½ÓÆ÷), ÒòÎª VLB ²ÛÎ»´Ó ISA Á¬½ÓÆ÷¸´ÖÆÁËËùÓÐµÄÖØÒªÐÅºÅ. ÕâÑù"¶ÀÁ¢"µÄ VLB ÍâÉè²»Ê¹ÓÃ ISA ²ÛÎ»ÊÇÉÙ¼ûµÄ, ÒòÎª´ó²¿·ÖÉè±¸ÐèÒªÉìµ½ºóÃæ°å, Ê¹ËüÃÇµÄÍâ²¿Á¬½ÓÆ÷ÊÇ¿ÉÓÃµÄ.</p>
+<p>VESA ×ÜÏß±È EISA , MCA, ºÍ PCI ×ÜÏßÔÚËüµÄÄÜÁ¦·½Ãæ¸ü¼ÓÏÞÖÆ, ²¢ÇÒÕýÔÚ´ÓÊÐ³¡ÉÏÏûÊ§. Ã»ÓÐÌØÊâµÄÄÚºËÖ§³ÖÎ» VLB ¶ø´æÔÚ. µ«ÊÇ, ÔÚ Linux 2.0 ÖÐµÄ Lance ÒÔÌ«ÍøÇý¶¯ºÍ IDA ´ÅÅÌÇý¶¯¿É´¦Àí VLB °æ±¾µÄÉè±¸.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch12s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch12.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch12s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">12.3.&#160;PC/104 ºÍ PC/104+&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;12.5.&#160;SBus</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

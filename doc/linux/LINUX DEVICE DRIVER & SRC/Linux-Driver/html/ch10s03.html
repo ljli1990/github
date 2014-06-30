@@ -1,0 +1,142 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>10.3.&#160;Ç°ºÍºó°ë²¿-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch10.html" title="µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí">
+<link rel="prev" href="ch10s02.html" title="10.2.&#160;°²×°Ò»¸öÖĞ¶Ï´¦Àí">
+<link rel="next" href="ch10s04.html" title="10.4.&#160;ÖĞ¶Ï¹²Ïí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">10.3.&#160;Ç°ºÍºó°ë²¿</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch10s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch10s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TopandBottomHalves.sect"></a>10.3.&#160;Ç°ºÍºó°ë²¿</h2></div></div></div>
+<p>ÖĞ¶Ï´¦ÀíµÄÒ»¸öÖ÷ÒªÎÊÌâÊÇÈçºÎÔÚ´¦ÀíÖĞ½øĞĞ³¤Ê±¼äµÄÈÎÎñ. ³£³£´óÁ¿µÄ¹¤×÷±ØĞëÏìÓ¦Ò»¸öÉè±¸ÖĞ¶ÏÀ´Íê³É, µ«ÊÇÖĞ¶Ï´¦ÀíĞèÒªºÜ¿ìÍê³É²¢ÇÒ²»Ê¹ÖĞ¶Ï×èÈûÌ«³¤. Õâ 2 ¸öĞèÒª(¹¤×÷ºÍËÙ¶È)±Ë´Ë³åÍ», Áô¸øÇı¶¯±àĞ´ÕßÒ»µãÀ§ÈÅ.</p>
+<p>Linux (Ğí¶àÆäËûÏµÍ³Ò»Æğ)½â¾öÕâ¸öÎÊÌâÍ¨¹ı½«ÖĞ¶Ï´¦Àí·ÖÎª 2 °ë. ËùÎ½µÄÇ°°ë²¿ÊÇÊµ¼ÊÏìÓ¦ÖĞ¶ÏµÄº¯Êı -- ÄãÊ¹ÓÃ request_irq ×¢²áµÄÄÇ¸ö. ºó°ë²¿ÊÇÓÉÇ°°ë²¿µ÷¶ÈÀ´ÑÓºóÖ´ĞĞµÄº¯Êı, ÔÚÒ»¸ö¸ü°²È«µÄÊ±¼ä. ×î´óµÄ²»Í¬ÔÚÇ°°ë²¿´¦ÀíºÍºó°ë²¿Ö®¼äÊÇËùÓĞµÄÖĞ¶ÏÔÚºó°ë²¿Ö´ĞĞÊ±¶¼Ê¹ÄÜ -- Õâ¾ÍÊÇÎªÊ²Ã´ËüÔÚÒ»¸ö¸ü°²È«Ê±¼äÔËĞĞ. ÔÚµäĞÍµÄ³¡¾°ÖĞ, Ç°°ë²¿±£´æÉè±¸Êı¾İµ½Ò»¸öÉè±¸ÌØ¶¨µÄ»º´æ, µ÷¶ÈËüµÄºó°ë²¿, ²¢ÇÒÍË³ö: Õâ¸ö²Ù×÷·Ç³£¿ì. ºó°ë²¿½Ó×Å½øĞĞÈÎºÎÆäËûĞèÒªµÄ¹¤×÷, ÀıÈç»½ĞÑ½ø³Ì, Æô¶¯ÁíÒ»¸ö I/O ²Ù×÷, µÈµÈ. ÕâÖÖÉèÖÃÔÊĞíÇ°°ë²¿À´·şÎñÒ»¸öĞÂÖĞ¶Ï¶øÍ¬Ê±ºó°ë²¿ÈÔÈ»ÔÚ¹¤×÷.</p>
+<p>¼¸ºõÃ¿¸öÈÏÕæµÄÖĞ¶Ï´¦Àí¶¼ÕâÑù»®·Ö. ÀıÈç, µ±Ò»¸öÍøÂç½Ó¿Ú±¨¸æÓĞĞÂ±¨ÎÄµ½´ï, ´¦ÀíÕßÖ»ÊÇ»ñÈ¡Êı¾İ²¢ÇÒÉÏÍÆ¸øĞ­Òé²ã; ±¨ÎÄµÄÊµ¼Ê´¦ÀíÔÚºó°ë²¿½øĞĞ.</p>
+<p>Linux ÄÚºËÓĞ 2 ¸ö²»Í¬µÄ»úÖÆ¿ÉÓÃÀ´ÊµÏÖºó°ë²¿´¦Àí, ÎÒÃÇ¶¼ÔÚµÚ 7 ÕÂ½éÉÜ. tasklet ³£³£ÊÇºó°ë²¿´¦ÀíµÄÊ×Ñ¡»úÖÆ; ËüÃÇ·Ç³£¿ì, µ«ÊÇËùÓĞµÄ tasklet ´úÂë±ØĞëÊÇÔ­×ÓµÄ. tasklet µÄ¿ÉÑ¡ÏîÊÇ¹¤×÷¶ÓÁĞ, Ëü¿ÉÄÜÓĞÒ»¸ö¸ü¸ßµÄÔËĞĞÖÜÆÚµ«ÊÇÔÊĞíË¯Ãß.</p>
+<p>ÏÂÃæµÄÌÖÂÛÔÙ´ÎÊ¹ÓÃ short Çı¶¯. µ±Ê¹ÓÃÒ»¸öÄ£¿éÑ¡Ïî¼ÓÔØÊ±, short ÄÜ¹»±»¸æÖªÔÚÇ°/ºó°ë²¿Ä£Ê½Ê¹ÓÃÒ»¸ö tasklet »òÕß¹¤×÷¶ÓÁĞ´¦ÀíÕßÀ´½øĞĞÖĞ¶Ï´¦Àí. ÔÚÕâ¸öÇé¿öÏÂ, Ç°°ë²¿¿ìËÙµØÖ´ĞĞ; Ëü¼òµ¥µØ¼Ç×¡µ±Ç°Ê±¼ä²¢ÇÒµ÷¶Èºó°ë²¿´¦Àí. ºó°ë²¿½Ó×Å¸ºÔğ½«Ê±¼ä±àÂë²¢ÇÒ»½ĞÑÈÎºÎ¿ÉÄÜÔÚµÈ´ıÊı¾İµÄÓÃ»§½ø³Ì.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Tasklet.sect"></a>10.3.1.&#160;Tasklet ÊµÏÖ</h3></div></div></div>
+<p>¼Ç×¡ tasklet ÊÇÒ»¸öÌØÊâµÄº¯Êı, ¿ÉÄÜ±»µ÷¶ÈÀ´ÔËĞĞ, ÔÚÈíÖĞ¶ÏÉÏÏÂÎÄ, ÔÚÒ»¸öÏµÍ³¾ö¶¨µÄ°²È«Ê±¼äÖĞ. ËüÃÇ¿ÉÄÜ±»µ÷¶ÈÔËĞĞ¶à´Î, µ«ÊÇ tasklet µ÷¶È²»ÀÛ»ı; ; tasklet Ö»ÔËĞĞÒ»´Î, ¼´±ãËüÔÚ±»Í¶·ÅÇ°±»ÖØ¸´ÇëÇó. Ã»ÓĞ tasklet »áºÍËü×Ô¼º²¢ĞĞÔËĞĞ, ÒòÎªËüÖ»ÔËĞĞÒ»´Î, µ«ÊÇ tasklet ¿ÉÒÔÓë SMP ÏµÍ³ÉÏµÄÆäËû tasklet ²¢ĞĞÔËĞĞ. Òò´Ë, Èç¹ûÄãµÄÇı¶¯ÓĞ¶à¸ö tasklet, ËüÃÇ±ØĞë²ÉÈ¡Ä³Àà¼ÓËøÀ´±ÜÃâ±Ë´Ë³åÍ».</p>
+<p>tasklet Ò²±£Ö¤×÷Îªº¯ÊıÔËĞĞÔÚµÚÒ»¸öµ÷¶ÈËüÃÇµÄÍ¬Ò»¸ö CPU ÉÏ. Òò´Ë, Ò»¸öÖĞ¶Ï´¦Àí¿ÉÒÔÈ·±£Ò»¸ö tasklet ÔÚ´¦ÀíÕß½áÊøÇ°²»»á¿ªÊ¼Ö´ĞĞ. µ«ÊÇ, ÁíÒ»¸öÖĞ¶Ïµ±È»¿ÉÄÜÔÚ tasklet ÔÚÔËĞĞÊ±±»µİ½», Òò´Ë, tasklet ºÍÖĞ¶Ï´¦ÀíÖ®¼ä¼ÓËø¿ÉÄÜÈÔÈ»ĞèÒª.</p>
+<p>tasklet ±ØĞëÊ¹ÓÃ DECLARE_TASKLET ºêÀ´ÉùÃ÷:</p>
+<pre class="programlisting">
+DECLARE_TASKLET(name, function, data);
+</pre>
+<p>name ÊÇ¸ø tasklet µÄÃû×Ó, function ÊÇµ÷ÓÃÀ´Ö´ĞĞ tasklet (Ëü´øÒ»¸ö unsigned long ²ÎÊı²¢ÇÒ·µ»Ø void )µÄº¯Êı, ÒÔ¼° data ÊÇÒ»¸ö unsigned long ÖµÀ´´«µİ¸ø tasklet º¯Êı.</p>
+<p>short Çı¶¯ÉùÃ÷ËüµÄ tasklet ÈçÏÂ:</p>
+<pre class="programlisting">
+void short_do_tasklet(unsigned long);
+DECLARE_TASKLET(short_tasklet, short_do_tasklet, 0);
+</pre>
+<p>º¯Êı tasklet_schedule ÓÃÀ´µ÷¶ÈÒ»¸ö tasklet ÔËĞĞ. Èç¹û short Ê¹ÓÃ tasklet=1 À´¼ÓÔØ, Ëü°²×°Ò»¸ö²»Í¬µÄÖĞ¶Ï´¦ÀíÀ´±£´æÊı¾İ²¢ÇÒµ÷¶È tasklet ÈçÏÂ:</p>
+<pre class="programlisting">
+irqreturn_t short_tl_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+{
+        do_gettimeofday((struct timeval *) tv_head); /* cast to stop 'volatile' warning
+                         */
+        short_incr_tv(&amp;tv_head);
+        tasklet_schedule(&amp;short_tasklet);
+        short_wq_count++; /* record that an interrupt arrived */
+        return IRQ_HANDLED;
+}
+</pre>
+<p>Êµ¼ÊµÄ tasklet º¯Êı, short_do_tasklet, ½«ÔÚÏµÍ³·½±ãÊ±ºÜ¿ìÖ´ĞĞ. ÈçÍ¬Ç°ÃæÌá¹ı, Õâ¸öº¯Êı½øĞĞ´¦ÀíÖĞ¶ÏµÄ´óÁ¿¹¤×÷; Ëü¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+void short_do_tasklet (unsigned long unused)
+{
+        int savecount = short_wq_count, written;
+        short_wq_count = 0; /* we have already been removed from the queue */
+        /*
+        * The bottom half reads the tv array, filled by the top half,
+        * and prints it to the circular text buffer, which is then consumed
+        * by reading processes */
+        /* First write the number of interrupts that occurred before this bh */
+        written = sprintf((char *)short_head,"bh after %6i\n",savecount);
+        short_incr_bp(&amp;short_head, written);
+        /*
+        * Then, write the time values. Write exactly 16 bytes at a time,
+        * so it aligns with PAGE_SIZE */
+
+        do {
+                written = sprintf((char *)short_head,"%08u.%06u\n",
+                                  (int)(tv_tail-&gt;tv_sec % 100000000),
+                                  (int)(tv_tail-&gt;tv_usec));
+                short_incr_bp(&amp;short_head, written);
+                short_incr_tv(&amp;tv_tail);
+        } while (tv_tail != tv_head);
+
+        wake_up_interruptible(&amp;short_queue); /* awake any reading process */
+}
+</pre>
+<p>ÔÚ±ğµÄ¶«Î÷ÖĞ, Õâ¸ö tasklet ¼ÇÂ¼ÁË´ÓËüÉÏ´Î±»µ÷ÓÃÒÔÀ´ÓĞ¶àÉÙÖĞ¶Ïµ½´ï. Ò»¸öÈç short Ò»ÑùµÄÉè±¸ÄÜ¹»ÔÚ¶ÌÊ±¼äÄÚ²úÉú´óÁ¿ÖĞ¶Ï, Òò´ËÔÚºó°ë²¿Ö´ĞĞÇ°ÓĞ¼¸¸öÖĞ¶Ïµ½´ï¾Í²»ÊÇ²»Ñ°³£µÄ. Çı¶¯±ØĞëÒ»Ö±×¼±¸ÕâÖÖ¿ÉÄÜĞÔ²¢ÇÒ±ØĞëÄÜ¹»´ÓÇ°°ë²¿ÁôÏÂµÄĞÅÏ¢ÖĞ¾ö¶¨ÓĞ¶àÉÙ¹¤×÷Òª×ö.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Workqueues.sect"></a>10.3.2.&#160;¹¤×÷¶ÓÁĞ</h3></div></div></div>
+<p>»ØÏë, ¹¤×÷¶ÓÁĞÔÚ½«À´Ä³¸öÊ±ºòµ÷ÓÃÒ»¸öº¯Êı, ÔÚÒ»¸öÌØÊâ¹¤×÷Õß½ø³ÌµÄÉÏÏÂÎÄÖĞ. ÒòÎªÕâ¸ö¹¤×÷¶ÓÁĞº¯ÊıÔÚ½ø³ÌÉÏÏÂÎÄÔËĞĞ, ËüÔÚĞèÒªÊ±ÄÜ¹»Ë¯Ãß. µ«ÊÇ, Äã²»ÄÜ´ÓÒ»¸ö¹¤×÷¶ÓÁĞ¿½±´Êı¾İµ½ÓÃ»§¿Õ¼ä, ³ı·ÇÄãÊ¹ÓÃÎÒÃÇÔÚ 15 ÕÂÑİÊ¾µÄ¸ß¼¶¼¼Êõ; ¹¤×÷Õß½ø³Ì²»´æÈ¡ÈÎºÎÆäËû½ø³ÌµÄµØÖ·¿Õ¼ä.</p>
+<p>short Çı¶¯, Èç¹ûÉèÖÃ wq Ñ¡ÏîÎªÒ»¸ö·ÇÁãÖµÀ´¼ÓÔØ, ÎªËüµÄºó°ë²¿´¦ÀíÊ¹ÓÃÒ»¸ö¹¤×÷¶ÓÁĞ. ËüÊ¹ÓÃÏµÍ³È±Ê¡µÄ¹¤×÷¶ÓÁĞ, Òò´Ë²»ÒªÇóÌØÊâµÄÉèÖÃ´úÂë; Èç¹ûÄãµÄÇı¶¯ÓĞÌØ±ğµÄÔËĞĞÖÜÆÚÒªÇó(»òÕß¿ÉÄÜÔÚ¹¤×÷¶ÓÁĞº¯Êı³¤Ê±¼äË¯Ãß), Äã¿ÉÄÜĞèÒª´´½¨Äã×Ô¼ºµÄ, ×¨ÓÃµÄ¹¤×÷¶ÓÁĞ. ÎÒÃÇÈ·ÊµĞèÒªÒ»¸ö work_struct ½á¹¹, ËüÉùÃ÷ºÍ³õÊ¼»¯Ê¹ÓÃÏÂÁĞ:</p>
+<pre class="programlisting">
+static struct work_struct short_wq;
+/* this line is in short_init() */
+INIT_WORK(&amp;short_wq, (void (*)(void *)) short_do_tasklet, NULL);
+</pre>
+<p>ÎÒÃÇµÄ¹¤×÷Õßº¯ÊıÊÇ short_do_tasklet, ÎÒÃÇÒÑ¾­ÔÚÇ°ÃæÒ»½Ú¿´µ½.</p>
+<p>µ±Ê¹ÓÃÒ»¸ö¹¤×÷¶ÓÁĞ, short »¹½¨Á¢ÁíÒ»¸öÖĞ¶Ï´¦Àí, ¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+irqreturn_t short_wq_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+{
+        /* Grab the current time information. */
+        do_gettimeofday((struct timeval *) tv_head);
+        short_incr_tv(&amp;tv_head);
+        /* Queue the bh. Don't worry about multiple enqueueing */
+        schedule_work(&amp;short_wq);
+        short_wq_count++; /* record that an interrupt arrived */
+        return IRQ_HANDLED;
+}
+</pre>
+<p>ÈçÄãËù¼û, ÖĞ¶Ï´¦Àí¿´À´·Ç³£ÏóÕâ¸ö tasklet °æ±¾, ³ıÁËËüµ÷ÓÃ schedule_work À´°²ÅÅºó°ë²¿´¦Àí.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch10s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch10s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.2.&#160;°²×°Ò»¸öÖĞ¶Ï´¦Àí&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;10.4.&#160;ÖĞ¶Ï¹²Ïí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

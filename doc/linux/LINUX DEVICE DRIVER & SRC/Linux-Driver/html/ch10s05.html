@@ -1,0 +1,202 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>10.5.&#160;ÖĞ¶ÏÇı¶¯ I/O-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch10.html" title="µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí">
+<link rel="prev" href="ch10s04.html" title="10.4.&#160;ÖĞ¶Ï¹²Ïí">
+<link rel="next" href="ch10s06.html" title="10.6.&#160;¿ìËÙ²Î¿¼">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">10.5.&#160;ÖĞ¶ÏÇı¶¯ I/O</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch10s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;10&#160;ÕÂ&#160;ÖĞ¶Ï´¦Àí</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch10s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="InterruptDrivenIO.sect"></a>10.5.&#160;ÖĞ¶ÏÇı¶¯ I/O</h2></div></div></div>
+<p>ÎŞÂÛºÎÊ±Ò»¸öÊı¾İ´«ËÍµ½»ò×Ô±»¹ÜÀíµÄÓ²¼ş¿ÉÄÜÒòÎªÈÎºÎÔ­Òò¶øÑÓ³Ù, Çı¶¯±àĞ´ÕßÓ¦µ±ÊµÏÖ»º´æ. Êı¾İ»º´æ°ïÖúÀ´·ÖÀëÊı¾İ´«ËÍºÍ½ÓÊÕ´ÓĞ´ºÍ¶ÁÏµÍ³µ÷ÓÃ, ²¢ÇÒÕû¸öÏµÍ³ĞÔÄÜÊÜÒæ.</p>
+<p>Ò»¸öºÃµÄ»º´æ»úÖÆ²úÉúÁËÖĞ¶ÏÇı¶¯µÄ I/O, Ò»¸öÊäÈë»º´æÔÚÖĞ¶ÏÊ±Ìî³ä²¢ÇÒ±»¶ÁÈ¡Éè±¸µÄ½ø³ÌÇå¿Õ; Ò»¸öÊä³ö»º´æÓÉĞ´Éè±¸µÄ½ø³ÌÌî³ä²¢ÇÒÔÚÖĞ¶ÏÊ±Çå¿Õ. Ò»¸öÖĞ¶ÏÇı¶¯µÄÊä³öµÄÀı×ÓÊÇ /dev/shortprint µÄÊµÏÖ.</p>
+<p>ÎªÊ¹ÖĞ¶ÏÇı¶¯µÄÊı¾İ´«ËÍ³É¹¦·¢Éú, Ó²¼şÓ¦µ±ÄÜ¹»²úÉúÖĞ¶Ï, Ê¹ÓÃÏÂÁĞÓïÒå:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>¶ÔÓÚÊäÈë, Éè±¸ÖĞ¶Ï´¦ÀíÆ÷, µ±ĞÂÊı¾İµ½´ïÊ±, ²¢ÇÒ×¼±¸ºÃ±»ÏµÍ³´¦ÀíÆ÷»ñÈ¡. ½øĞĞµÄÊµ¼Ê¶¯×÷ÒÀÀµÊÇ·ñÉè±¸Ê¹ÓÃ I/O ¶Ë¿Ú, ÄÚ´æÓ³Éä, »òÕß DMA.</p></li>
+<li>¶ÔÓÚÊä³ö, Éè±¸µİ½»Ò»¸öÖĞ¶Ï, »òÕßµ±Ëü×¼±¸ºÃ½ÓÊÜĞÂÊı¾İ, »òÕßÈ·ÈÏÒ»¸ö³É¹¦µÄÊı¾İ´«ËÍ. ÄÚ´æÓ³ÉäµÄºÍÄÜDMAµÄÉè±¸³£³£²úÉúÖĞ¶ÏÀ´¸æËßÏµÍ³ËüÃÇÍê³ÉÁËÕâ¸ö»º´æ.<p></p>
+</li>
+</ul></div>
+<p>ÔÚÒ»¸ö¶Á»òĞ´ÓëÊµ¼ÊÊı¾İµ½´ïÖ®¼äµÄÊ±¼ä¹ØÏµÔÚµÚ 6 ÕÂµÄ"×èÈûºÍ·Ç×èÈû²Ù×÷"Ò»½ÚÖĞ½éÉÜ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AWriteBufferingExample.sect"></a>10.5.1.&#160;Ò»¸öĞ´»º´æÀı×Ó</h3></div></div></div>
+<p>ÎÒÃÇÒÑ¾­¼¸´ÎÌá¼° shortprint Çı¶¯; ÏÖÔÚÊÇÊ±ºòÕæÕı¿´¿´. Õâ¸öÄ£¿éÎª²¢¿ÚÊµÏÖÒ»¸ö·Ç³£¼òµ¥, ÃæÏòÊä³öµÄÇı¶¯; ËüÊÇ×ã¹»µÄ, µ«ÊÇ, À´Ê¹ÄÜÎÄ¼ş´òÓ¡. Èç¹ûÄãÑ¡ÔñÀ´²âÊÔÕâ¸öÇı¶¯, µ«ÊÇ, ¼Ç×¡Äã±ØĞë´«µİ¸ø´òÓ¡»úÒ»¸öÎÄ¼şÒÔËüÀí½âµÄ¸ñÊ½; ²»ÊÇËùÓĞµÄ´òÓ¡»úÔÚ¸øÒ»¸öÈÎÒâÊı¾İµÄÁ÷Ê±ºÜºÃÏìÓ¦.</p>
+<p>shortprint Çı¶¯Î¬»¤Ò»¸öÒ»Ò³µÄ»·ĞÎÊä³ö»º´æ. µ±Ò»¸öÓÃ»§¿Õ¼ä½ø³ÌĞ´Êı¾İµ½Õâ¸öÉè±¸, Êı¾İ±»ÌîÈë»º´æ, µ«ÊÇĞ´·½·¨Êµ¼ÊÃ»ÓĞ½øĞĞÈÎºÎ I/O. Ïà·´, shortp_write µÄºËĞÄ¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+while (written &lt; count)
+{
+        /* Hang out until some buffer space is available. */
+        space = shortp_out_space();
+        if (space &lt;= 0) {
+                if (wait_event_interruptible(shortp_out_queue,
+                                             (space = shortp_out_space()) &gt; 0))
+                        goto out;
+        }
+
+        /* Move data into the buffer. */
+        if ((space + written) &gt; count)
+                space = count - written;
+
+        if (copy_from_user((char *) shortp_out_head, buf, space)) {
+                up(&amp;shortp_out_sem);
+                return -EFAULT;
+        }
+        shortp_incr_out_bp(&amp;shortp_out_head, space);
+        buf += space;
+        written += space;
+
+        /* If no output is active, make it active. */
+        spin_lock_irqsave(&amp;shortp_out_lock, flags);
+        if (! shortp_output_active)
+                shortp_start_output();
+        spin_unlock_irqrestore(&amp;shortp_out_lock, flags);
+}
+
+out:
+*f_pos += written;
+</pre>
+<p>Ò»¸öÆì±ê ( shortp_out_sem ) ¿ØÖÆ¶ÔÕâ¸ö»·ĞÎ»º´æµÄ´æÈ¡; shortp_write ¾ÍÔÚÉÏÃæµÄ´úÂëÆ¬¶ÎÖ®Ç°»ñµÃÕâ¸öÆì±ê. µ±³ÖÓĞÕâ¸öÆì±ê, ËüÊÔÍ¼ÊäÈëÊı¾İµ½Õâ¸ö»·ĞÎ»º´æ. º¯Êı shortp_out_space ·µ»Ø¿ÉÓÃµÄÁ¬Ğø¿Õ¼äµÄÊıÁ¿(Òò´Ë, Ã»ÓĞ±ØÒªµ£ĞÄ»º´æ»ØÈÆ); Èç¹ûÕâ¸öÁ¿ÊÇ 0, Çı¶¯µÈµ½ÊÍ·ÅÒ»Ğ©¿Õ¼ä. Ëü½Ó×Å¿½±´ËüÄÜ¹»µÄÊıÁ¿µÄÊı¾İµ½»º´æÖĞ.</p>
+<p>Ò»µ©ÓĞÊı¾İÊä³ö, shortp_write ±ØĞëÈ·±£Êı¾İ±»Ğ´µ½Éè±¸. Êı¾İµÄĞ´ÊÇÍ¨¹ıÒ»¸ö¹¤×÷¶ÓÁĞº¯ÊıÍê³ÉµÄ; shortp_write ±ØĞëÆô¶¯Õâ¸öº¯ÊıÈç¹ûËü»¹Î´ÔÚÔËĞĞ. ÔÚ»ñÈ¡ÁËÒ»¸öµ¥¶ÀµÄ, ¿ØÖÆ´æÈ¡Êä³ö»º´æµÄÏû·ÑÕßÒ»²à(°üÀ¨ shortp_output_active)µÄÊı¾İµÄ×ÔĞıËøºó, Ëüµ÷ÓÃ shortp_start_output Èç¹ûĞèÒª. ½Ó×ÅÖ»ÊÇ×¢Òâ¶àÉÙÊı¾İ±»Ğ´µ½»º´æ²¢ÇÒ·µ»Ø.</p>
+<p>Æô¶¯Êä³ö½ø³ÌµÄº¯Êı¿´À´ÈçÏÂ:</p>
+<pre class="programlisting">
+static void shortp_start_output(void)
+{
+        if (shortp_output_active) /* Should never happen */
+                return;
+
+        /* Set up our 'missed interrupt' timer */
+        shortp_output_active = 1;
+        shortp_timer.expires = jiffies + TIMEOUT;
+        add_timer(&amp;shortp_timer);
+
+        /* And get the process going. */
+        queue_work(shortp_workqueue, &amp;shortp_work);
+}
+</pre>
+<p>´¦ÀíÓ²¼şµÄÊÂÊµÊÇ, Äã¿ÉÒÔ, Å¼¶û, ¶ªÊ§À´×ÔÉè±¸µÄÖĞ¶Ï. µ±·¢ÉúÕâ¸ö, ÄãÈ·Êµ²»ÏëÄãµÄÇı¶¯Ò»Ö±Í£Ö¹Ö±µ½ÏµÍ³ÖØÆô; Õâ²»ÊÇÒ»¸öÓÃ»§ÓÑºÃµÄ×öÊÂ·½Ê½. ×îºÃÊÇÈÏÊ¶µ½Ò»¸öÖĞ¶ÏÒÑ¾­¶ªÊ§, ÊÕÊ°²Ğ¾Ö, ¼ÌĞø. Îª´Ë, shortprint ÉõÖÁÒ»¸öÄÚºË¶¨Ê±Æ÷ÎŞÂÛºÎÊ±ËüÊä³öÊı¾İ¸øÉè±¸. Èç¹ûÊ±ÖÓ³¬Ê±, ÎÒÃÇ¿ÉÄÜ¶ªÊ§Ò»¸öÖĞ¶Ï. ÎÒÃÇºÜ¿ì»á¿´µ½¶¨Ê±Æ÷º¯Êı, µ«ÊÇ, ÔİÊ±, ÈÃÎÒÃÇ¼á³ÖÔÚÖ÷Êä³ö¹¦ÄÜÉÏ. ÄÇÊÇÔÚÎÒÃÇµÄ¹¤×÷¶ÓÁĞº¯ÊıÀïÊµÏÖµÄ, Ëü, ÈçÍ¬ÄãÉÏÃæ¿´µ½µÄ, ÔÚÕâÀï±»µ÷¶È. ÄÇ¸öº¯ÊıµÄºËĞÄ¿´À´ÈçÏÂ:</p>
+<pre class="programlisting">
+spin_lock_irqsave(&amp;shortp_out_lock, flags);
+/* Have we written everything? */
+if (shortp_out_head == shortp_out_tail)
+{ /* empty */
+        shortp_output_active = 0;
+        wake_up_interruptible(&amp;shortp_empty_queue);
+        del_timer(&amp;shortp_timer);
+
+}
+/* Nope, write another byte */
+else
+        shortp_do_write();
+/* If somebody's waiting, maybe wake them up. */
+if (((PAGE_SIZE + shortp_out_tail -shortp_out_head) % PAGE_SIZE) &gt; SP_MIN_SPACE)
+{
+        wake_up_interruptible(&amp;shortp_out_queue);
+}
+spin_unlock_irqrestore(&amp;shortp_out_lock, flags);
+</pre>
+<p>ÒòÎªÎÒÃÇÔÚÊ¹ÓÃ¹²Ïí±äÁ¿µÄÊä³öÒ»²à, ÎÒÃÇ±ØĞë»ñµÃ×ÔĞıËø. ½Ó×ÅÎÒÃÇ¿´ÊÇ·ñÓĞ¸ü¶àµÄÊı¾İÒª·¢ËÍ; Èç¹ûÎŞ, ÎÒÃÇ×¢ÒâÊä³ö²»ÔÙ¼¤»î, É¾³ı¶¨Ê±Æ÷, ²¢ÇÒ»½ĞÑÈÎºÎÔÚµÈ´ı¶ÓÁĞÈ«¿ÕµÄ½ø³Ì(ÕâÖÖµÈ´ıµ±Éè±¸±»¹Ø±ÕÊ±½áÊø). Èç¹û, Ïà·´, ÓĞÊı¾İÒªĞ´, ÎÒÃÇµ÷ÓÃ shortp_do_write À´Êµ¼Ê·¢ËÍÒ»¸ö×Ö½Úµ½Ó²¼ş.</p>
+<p>½Ó×Å, ÒòÎªÎÒÃÇ¿ÉÄÜÔÚÊä³ö»º´æÖĞÓĞ¿ÕÏĞ¿Õ¼ä, ÎÒÃÇ¿¼ÂÇ»½ĞÑÈÎºÎµÈ´ıÔö¼Ó¸ü¶àÊı¾İ¸øÄÇ¸ö»º´æµÄ½ø³Ì. µ«ÊÇÎÒÃÇ²»ÊÇÎŞÌõ¼ş½øĞĞ»½ĞÑ; Ïà·´, ÎÒÃÇµÈµ½ÓĞÒ»¸ö×îµÍÊıÁ¿µÄ¿Õ¼ä. Ã¿´ÎÎÒÃÇ´Ó»º´æÄÃ³öÒ»¸ö×Ö½Ú¾Í»½ĞÑÒ»¸öĞ´ÕßÊÇÎŞÒâÒåµÄ; »½ĞÑ½ø³ÌµÄ´ú¼Û, µ÷¶ÈËüÔËĞĞ, ²¢ÇÒÊ¹ËüÖØ»ØË¯Ãß, Ì«¸ßÁË. Ïà·´, ÎÒÃÇÓ¦µ±µÈµ½½ø³ÌÄÜ¹»Á¢¿ÌÒÆ¶¯Ïàµ±ÊıÁ¿µÄÊı¾İµ½»º´æ. Õâ¸ö¼¼ÊõÔÚ»º´æµÄ, ÖĞ¶ÏÇı¶¯µÄÇı¶¯ÖĞÊÇÆÕÍ¨µÄ.</p>
+<p>ÎªÍêÕûÆğ¼û, ÕâÊÇÊµ¼ÊĞ´Êı¾İµ½¶Ë¿ÚµÄ´úÂë:</p>
+<pre class="programlisting">
+static void shortp_do_write(void)
+{
+        unsigned char cr = inb(shortp_base + SP_CONTROL);
+        /* Something happened; reset the timer */
+        mod_timer(&amp;shortp_timer, jiffies + TIMEOUT);
+        /* Strobe a byte out to the device */
+        outb_p(*shortp_out_tail, shortp_base+SP_DATA);
+        shortp_incr_out_bp(&amp;shortp_out_tail, 1);
+        if (shortp_delay)
+                udelay(shortp_delay);
+        outb_p(cr | SP_CR_STROBE, shortp_base+SP_CONTROL);
+        if (shortp_delay)
+                udelay(shortp_delay);
+        outb_p(cr &amp; ~SP_CR_STROBE, shortp_base+SP_CONTROL);
+}
+</pre>
+<p>ÕâÀï, ÎÒÃÇ¸´Î»¶¨Ê±Æ÷À´·´Ó³Ò»¸öÊÂÊµ, ÎÒÃÇÒÑ¾­×÷ÁËÒ»Ğ©´¦Àí, ÊäËÍ×Ö½Úµ½Éè±¸, ²¢ÇÒ¸üĞÂÁË»·ĞÎ»º´æÖ¸Õë.</p>
+<p>¹¤×÷¶ÓÁĞº¯ÊıÃ»ÓĞÖ±½ÓÖØĞÂÌá½»Ëü×Ô¼º, Òò´ËÖ»ÓĞÒ»¸öµ¥¸ö×Ö½Ú»á±»Ğ´ÈëÉè±¸. ÔÚÄ³Ò»´¦, ´òÓ¡»ú½«, ÒÔËüµÄ»ºÂı·½Ê½, ÏûºÄÕâ¸ö×Ö½Ú²¢ÇÒ×¼±¸ºÃÏÂÒ»¸ö; Ëü½«½Ó×ÅÖĞ¶Ï´¦ÀíÆ÷. shortprint ÖĞÊ¹ÓÃµÄÖĞ¶Ï´¦ÀíÊÇ¼ò¶ÌµÄ:</p>
+<pre class="programlisting">
+static irqreturn_t shortp_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+{
+        if (! shortp_output_active)
+                return IRQ_NONE;
+        /* Remember the time, and farm off the rest to the workqueue function */
+        do_gettimeofday(&amp;shortp_tv);
+        queue_work(shortp_workqueue, &amp;shortp_work);
+        return IRQ_HANDLED;
+}
+</pre>
+<p>ÒòÎª²¢¿Ú²»ÒªÇóÒ»¸öÃ÷ÏÔµÄÖĞ¶ÏÈ·ÈÏ, ÖĞ¶Ï´¦ÀíËùÓĞÕæÕıĞèÒª×öµÄÊÇ¸æÖªÄÚºËÀ´ÔÙ´ÎÔËĞĞ¹¤×÷¶ÓÁĞº¯Êı.</p>
+<p>Èç¹ûÖĞ¶ÏÓÀÔ¶²»À´ÈçºÎ? ÖÁ´ËÎÒÃÇÒÑ¼ûµ½µÄÇı¶¯´úÂë½«¼òµ¥µØÍ£Ö¹. Îª±ÜÃâ·¢ÉúÕâ¸ö, ÎÒÃÇÉèÖÃÁËÒ»¸ö¶¨Ê±Æ÷ÔÚ¼¸Ò³Ç°. µ±¶¨Ê±Æ÷³¬Ê±ÔËĞĞµÄº¯ÊıÊÇ:</p>
+<pre class="programlisting">
+static void shortp_timeout(unsigned long unused) 
+{
+        unsigned long flags;
+        unsigned char status;
+        if (! shortp_output_active)
+                return;
+        spin_lock_irqsave(&amp;shortp_out_lock, flags);
+        status = inb(shortp_base + SP_STATUS);
+
+        /* If the printer is still busy we just reset the timer */
+        if ((status &amp; SP_SR_BUSY) == 0 || (status &amp; SP_SR_ACK)) {
+
+                shortp_timer.expires = jiffies + TIMEOUT;
+                add_timer(&amp;shortp_timer);
+                spin_unlock_irqrestore(&amp;shortp_out_lock, flags);
+                return;
+        }
+        /* Otherwise we must have dropped an interrupt. */
+        spin_unlock_irqrestore(&amp;shortp_out_lock, flags);
+        shortp_interrupt(shortp_irq, NULL, NULL);
+}
+</pre>
+<p>Èç¹ûÃ»ÓĞÊä³öÒª±»¼¤»î, ¶¨Ê±Æ÷º¯Êı¼òµ¥µØ·µ»Ø. Õâ±ÜÃâÁË¶¨Ê±Æ÷ÖØĞÂÌá½»×Ô¼º, µ±ÊÂÇéÔÚ±»¹Ø±ÕÊ±. ½Ó×Å, ÔÚ»ñµÃÁËËøÖ®ºó, ÎÒÃÇ²éÑ¯¶Ë¿ÚµÄ×´Ì¬; Èç¹ûËüÉù³ÆÃ¦, ËüÍêÈ«»¹Ã»ÓĞÊ±¼äÀ´ÖĞ¶ÏÎÒÃÇ, Òò´ËÎÒÃÇ¸´Î»¶¨Ê±Æ÷²¢ÇÒ·µ»Ø. ´òÓ¡»úÄÜ¹», ÓĞÊ±, »¨ºÜ³¤Ê±¼äÀ´Ê¹×Ô¼º×¼±¸; ¿¼ÂÇÒ»ÏÂÈ±Ö½µÄ´òÓ¡»ú, ¶øÃ¿¸öÈËÔÚÒ»¸ö³¤ÖÜÄ©¶¼²»ÔÚ. ÔÚÕâÖÖÇé¿öÏÂ, Ö»ÓĞÄÍĞÄµÈ´ıÖ±µ½ÊÂÇé¸Ä±ä.</p>
+<p>µ«ÊÇ, Èç¹û´òÓ¡»úÉù³Æ×¼±¸ºÃÁË, ÎÒÃÇÒ»¶¨¶ªÊ§ÁËËüµÄÖĞ¶Ï. Õâ¸öÇé¿öÏÂ, ÎÒÃÇ¼òµ¥µØÊÖ¶¯µ÷ÓÃÎÒÃÇµÄÖĞ¶Ï´¦ÀíÀ´Ê¹Êä³ö´¦ÀíÔÙ¶¯ÆğÀ´.</p>
+<p>shortpirnt Çı¶¯²»Ö§³Ö´Ó¶Ë¿Ú¶ÁÊı¾İ; Ïà·´, ËüÏó shortint ²¢ÇÒ·µ»ØÖĞ¶ÏÊ±¼äĞÅÏ¢. µ«ÊÇÒ»¸öÖĞ¶ÏÇı¶¯µÄ¶Á·½·¨µÄÊµÏÖ¿ÉÄÜ·Ç³£ÀàËÆÎÒÃÇÒÑ¾­¼ûµ½µÄ. ´ÓÉè±¸À´µÄÊı¾İ¿ÉÄÜ±»¶ÁÈëÇı¶¯»º´æ; Ëü¿ÉÄÜ±»¿½±´µ½ÓÃ»§¿Õ¼äÖ»ÔÚ»º´æÖĞÒÑ¾­ÀÛ»ıÁËÏàµ±ÊıÁ¿µÄÊı¾İ, ÍêÕûµÄ¶ÁÇëÇóÒÑ±»Âú×ã, »òÕßÄ³ÖÖ³¬Ê±·¢Éú.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch10s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch10s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.4.&#160;ÖĞ¶Ï¹²Ïí&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;10.6.&#160;¿ìËÙ²Î¿¼</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

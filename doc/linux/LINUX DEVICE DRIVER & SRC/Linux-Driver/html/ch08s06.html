@@ -1,0 +1,193 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>8.6.&#160;¿ìËÙ²Î¿¼-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch08.html" title="µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ">
+<link rel="prev" href="ch08s05.html" title="8.5.&#160;»ñµÃ´óÁ¿»º³å">
+<link rel="next" href="ch09.html" title="µÚ&#160;9&#160;ÕÂ&#160;ÓëÓ²¼şÍ¨Ñ¶">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.6.&#160;¿ìËÙ²Î¿¼</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch08s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;8&#160;ÕÂ&#160;·ÖÅäÄÚ´æ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="AllocatingMemoryqr.sect"></a>8.6.&#160;¿ìËÙ²Î¿¼</h2></div></div></div>
+<p>Ïà¹ØÓÚÄÚ´æ·ÖÅäµÄº¯ÊıºÍ·ûºÅÊÇ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/slab.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *kmalloc(size_t size, int flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void kfree(void *obj);</span></span></dt>
+<dd><p>ÄÚ´æ·ÖÅäµÄ×î³£ÓÃ½Ó¿Ú.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/mm.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_USER<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_KERNEL<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_NOFS<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_NOIO<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">GFP_ATOMIC <span></span></span></dt>
+<dd><p>¿ØÖÆÄÚ´æ·ÖÅäÈçºÎ½øĞĞµÄ±êÖ¾, ´Ó×îÉÙÏŞÖÆµÄµ½×î¶àµÄ. GFP_USER ºÍ GFP_KERNEL ÓÅÏÈ¼¶ÔÊĞíµ±Ç°½ø³Ì±»ÖÃÎªË¯ÃßÀ´Âú×ãÇëÇó. GFP_NOFS ºÍ GFP_NOIO ½ûÖ¹ÎÄ¼şÏµÍ³²Ù×÷ºÍËùÓĞµÄ I/O ²Ù×÷, ·Ö±ğµØ, ¶ø GFP_ATOMIC ·ÖÅä¸ù±¾²»ÄÜË¯Ãß.</p></dd>
+<dt><span class="term">__GFP_DMA<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">__GFP_HIGHMEM<span></span></span></dt>
+<dd></dd>
+<dt><span class="term">__GFP_COLD<span></span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>__GFP_NOWARN</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>__GFP_HIGH</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>__GFP_REPEAT</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>__GFP_NOFAIL</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>__GFP_NORETRY </span></span></dt>
+<dd><p>ÕâĞ©±êÖ¾ĞŞ¸ÄÄÚºËµÄĞĞÎª, µ±·ÖÅäÄÚ´æÊ±.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/malloc.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>kmem_cache_t *kmem_cache_create(char *name, size_t size, size_t offset,  unsigned long flags, constructor(), destructor( ));</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int kmem_cache_destroy(kmem_cache_t *cache);</span></span></dt>
+<dd><p>´´½¨ºÍÏú»ÙÒ»¸ö slab »º´æ. Õâ¸ö»º´æ¿É±»ÓÃÀ´·ÖÅä¼¸¸öÏàÍ¬´óĞ¡µÄ¶ÔÏó.</p></dd>
+<dt><span class="term"><span>SLAB_NO_REAP</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SLAB_HWCACHE_ALIGN</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SLAB_CACHE_DMA </span></span></dt>
+<dd><p>ÔÚ´´½¨Ò»¸ö»º´æÊ±¿ÉÖ¸¶¨µÄ±êÖ¾.</p></dd>
+<dt><span class="term"><span>SLAB_CTOR_ATOMIC</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>SLAB_CTOR_CONSTRUCTOR </span></span></dt>
+<dd><p>·ÖÅäÆ÷¿ÉÓÃ´«µİ¸ø¹¹Ôìº¯ÊıºÍÎö¹¹º¯ÊıµÄ±êÖ¾.</p></dd>
+<dt><span class="term"><span>void *kmem_cache_alloc(kmem_cache_t *cache, int flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void kmem_cache_free(kmem_cache_t *cache, const void *obj);</span></span></dt>
+<dd><p>´Ó»º´æÖĞ·ÖÅäºÍÊÍ·ÅÒ»¸öµ¥¸ö¶ÔÏó. /proc/slabinfo Ò»¸ö°üº¬¶Ô slab »º´æÊ¹ÓÃÇé¿öÍ³¼ÆµÄĞéÄâÎÄ¼ş.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/mempool.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>mempool_t *mempool_create(int min_nr, mempool_alloc_t *alloc_fn, mempool_free_t *free_fn, void *data);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void mempool_destroy(mempool_t *pool);</span></span></dt>
+<dd><p>´´½¨ÄÚ´æ³ØµÄº¯Êı, ËüÊÔÍ¼±ÜÃâÄÚ´æ·ÖÅäÉè±¸, Í¨¹ı±£³ÖÒ»¸öÒÑ·ÖÅäÏîµÄ"½ô¼±ÁĞ±í".</p></dd>
+<dt><span class="term"><span>void *mempool_alloc(mempool_t *pool, int gfp_mask);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void mempool_free(void *element, mempool_t *pool);</span></span></dt>
+<dd><p>´Ó(²¢ÇÒ·µ»ØËüÃÇ¸ø)ÄÚ´æ³Ø·ÖÅäÏîµÄº¯Êı.</p></dd>
+<dt><span class="term"><span>unsigned long get_zeroed_page(int flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long __get_free_page(int flags);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long __get_free_pages(int flags, unsigned long order);</span></span></dt>
+<dd><p>ÃæÏòÒ³µÄ·ÖÅäº¯Êı. get_zeroed_page ·µ»ØÒ»¸öµ¥¸öµÄ, ÁãÌî³äµÄÒ³. Õâ¸öµ÷ÓÃµÄËùÓĞµÄÆäËû°æ±¾²»³õÊ¼»¯·µ»ØÒ³µÄÄÚÈİ.</p></dd>
+<dt><span class="term"><span>int get_order(unsigned long size);</span></span></dt>
+<dd><p>·µ»Ø¹ØÁªÔÚµ±Ç°Æ½Ì¨µÄ´óĞ¡µÄ·ÖÅä¼¶±ğ, ¸ù¾İ PAGE_SIZE. Õâ¸ö²ÎÊı±ØĞëÊÇ 2 µÄÃİ, ²¢ÇÒ·µ»ØÖµÖÁÉÙÊÇ 0.</p></dd>
+<dt><span class="term"><span>void free_page(unsigned long addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void free_pages(unsigned long addr, unsigned long order);</span></span></dt>
+<dd><p>ÊÍ·ÅÃæÏòÒ³·ÖÅäµÄº¯Êı.</p></dd>
+<dt><span class="term"><span>struct page *alloc_pages_node(int nid, unsigned int flags, unsigned int order);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct page *alloc_pages(unsigned int flags, unsigned int order);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct page *alloc_page(unsigned int flags);</span></span></dt>
+<dd><p>Linux ÄÚºËÖĞ×îµ×²ãÒ³·ÖÅäÆ÷µÄËùÓĞ±äÌå.</p></dd>
+<dt><span class="term"><span>void __free_page(struct page *page);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void __free_pages(struct page *page, unsigned int order);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void free_hot_page(struct page *page);</span></span></dt>
+<dd><p>Ê¹ÓÃÒ»¸ö alloc_page ĞÎÊ½·ÖÅäµÄÒ³µÄ¸÷ÖÖÊÍ·Å·½·¨.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/vmalloc.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void * vmalloc(unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void vfree(void * addr);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>#include &lt;asm/io.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void * ioremap(unsigned long offset, unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void iounmap(void *addr);</span></span></dt>
+<dd><p>·ÖÅä»òÊÍ·ÅÒ»¸öÁ¬ĞøĞéÄâµØÖ·¿Õ¼äµÄº¯Êı. iormap ´æÈ¡ÎïÀíÄÚ´æÍ¨¹ıĞéÄâµØÖ·, ¶ø vmalloc ·ÖÅä¿ÕÏĞÒ³. Ê¹ÓÃ ioreamp Ó³ÉäµÄÇøÊÇ iounmap ÊÍ·Å, ¶ø´Ó vmalloc »ñµÃµÄÒ³Ê¹ÓÃ vfree À´ÊÍ·Å.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/percpu.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DEFINE_PER_CPU(type, name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_PER_CPU(type, name);</span></span></dt>
+<dd><p>¶¨ÒåºÍÉùÃ÷Ã¿-CPU±äÁ¿µÄºê.</p></dd>
+<dt><span class="term"><span>per_cpu(variable, int cpu_id)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>get_cpu_var(variable)</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>put_cpu_var(variable)</span></span></dt>
+<dd><p>Ìá¹©¶Ô¾²Ì¬ÉùÃ÷µÄÃ¿-CPU±äÁ¿´æÈ¡µÄºê.</p></dd>
+<dt><span class="term"><span>void *alloc_percpu(type);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *__alloc_percpu(size_t size, size_t align);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void free_percpu(void *variable);</span></span></dt>
+<dd><p>½øĞĞÔËĞĞÊ±·ÖÅäºÍÊÍ·ÅÃ¿-CPU±äÁ¿µÄº¯Êı.</p></dd>
+<dt><span class="term"><span>int get_cpu( );</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void put_cpu( );</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>per_cpu_ptr(void *variable, int cpu_id)</span></span></dt>
+<dd><p>get_cpu »ñµÃ¶Ôµ±Ç°´¦ÀíÆ÷µÄÒıÓÃ(Òò´Ë, ×èÖ¹ÇÀÕ¼ºÍÒÆ¶¯µ½ÁíÒ»¸ö´¦ÀíÆ÷)²¢ÇÒ·µ»Ø´¦ÀíÆ÷µÄID; put_cpu ·µ»ØÕâ¸öÒıÓÃ. Îª´æÈ¡Ò»¸ö¶¯Ì¬·ÖÅäµÄÃ¿-CPU±äÁ¿, ÓÃÓ¦µ±±»´æÈ¡°æ±¾ËùÔÚµÄ CPU µÄ ID À´Ê¹ÓÃ per_cpu_ptr. ¶ÔÒ»¸ö¶¯Ì¬µÄÃ¿-CPU ±äÁ¿µ±Ç° CPU °æ±¾µÄ²Ù×÷, Ó¦µ±ÓÃ¶Ô get_cpu ºÍ put_cpu µÄµ÷ÓÃÀ´°üÎ§. </p></dd>
+<dt><span class="term"><span>#include &lt;linux/bootmem.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *alloc_bootmem(unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *alloc_bootmem_low(unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *alloc_bootmem_pages(unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void *alloc_bootmem_low_pages(unsigned long size);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void free_bootmem(unsigned long addr, unsigned long size);</span></span></dt>
+<dd><p>ÔÚÏµÍ³Æô¶¯Ê±½øĞĞ·ÖÅäºÍÊÍ·ÅÄÚ´æµÄº¯Êı(Ö»ÄÜ±»Ö±½ÓÁ¬½Óµ½ÄÚºËÖĞÈ¥µÄÇı¶¯Ê¹ÓÃ)</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch08s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.5.&#160;»ñµÃ´óÁ¿»º³å&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;µÚ&#160;9&#160;ÕÂ&#160;ÓëÓ²¼şÍ¨Ñ¶</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

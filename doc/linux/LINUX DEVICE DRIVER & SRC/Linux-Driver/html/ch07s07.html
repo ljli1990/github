@@ -1,0 +1,231 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>7.7.&#160;快速参考-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch07.html" title="第&#160;7&#160;章&#160;时间, 延时, 和延后工作">
+<link rel="prev" href="ch07s06.html" title="7.6.&#160;工作队列">
+<link rel="next" href="ch08.html" title="第&#160;8&#160;章&#160;分配内存">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.7.&#160;快速参考</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch07s06.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;7&#160;章&#160;时间, 延时, 和延后工作</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch08.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="timedelayanddefferedworkqk.sect"></a>7.7.&#160;快速参考</h2></div></div></div>
+<p>本章介绍了下面的符号.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Timekeeping.sect"></a>7.7.1.&#160;时间管理</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/param.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term">HZ <span></span></span></dt>
+<dd><p>HZ 符号指定了每秒产生的时钟嘀哒的数目.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/jiffies.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>volatile unsigned long jiffies;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>u64 jiffies_64;</span></span></dt>
+<dd><p>jiffies_64 变量每个时钟嘀哒时被递增; 因此, 它是每秒递增 HZ 次. 内核代码几乎常常引用 jiffies, 它在 64-位平台和 jiffies_64 相同并且在 32-位平台是它低有效的一半.</p></dd>
+<dt><span class="term"><span>int time_after(unsigned long a, unsigned long b);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int time_before(unsigned long a, unsigned long b);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int time_after_eq(unsigned long a, unsigned long b);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int time_before_eq(unsigned long a, unsigned long b);</span></span></dt>
+<dd><p>这些布尔表达式以一种安全的方式比较 jiffies, 没有万一计数器溢出的问题和不需要存取 jiffies_64.</p></dd>
+<dt><span class="term"><span>u64 get_jiffies_64(void);</span></span></dt>
+<dd><p>获取 jiffies_64 而没有竞争条件.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/time.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long timespec_to_jiffies(struct timespec *value);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void jiffies_to_timespec(unsigned long jiffies, struct timespec *value);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long timeval_to_jiffies(struct timeval *value);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void jiffies_to_timeval(unsigned long jiffies, struct timeval *value);</span></span></dt>
+<dd><p>在 jiffies 和其他表示之间转换时间表示.</p></dd>
+<dt><span class="term"><span>#include &lt;asm/msr.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>rdtsc(low32,high32);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>rdtscl(low32);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>rdtscll(var32);</span></span></dt>
+<dd><p>x86-特定的宏定义来读取时戳计数器. 它们作为 2 半 32-位来读取, 只读低一半, 或者全部读到一个 long long 变量.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/timex.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>cycles_t get_cycles(void);</span></span></dt>
+<dd><p>以平台独立的方式返回时戳计数器. 如果 CPU 没提供时戳特性, 返回 0.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/time.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long mktime(year, mon, day, h, m, s);</span></span></dt>
+<dd><p>返回自 Epoch  以来的秒数, 基于 6 个 unsigned int 参数.</p></dd>
+<dt><span class="term"><span>void do_gettimeofday(struct timeval *tv);</span></span></dt>
+<dd><p>返回当前时间, 作为自 Epoch 以来的秒数和微秒数, 用硬件能提供的最好的精度. 在大部分的平台这个解决方法是一个微秒或者更好, 尽管一些平台只提供 jiffies 精度.</p></dd>
+<dt><span class="term"><span>struct timespec current_kernel_time(void);</span></span></dt>
+<dd><p>返回当前时间, 以一个 jiffy 的精度.</p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Delays.sect"></a>7.7.2.&#160;延迟</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/wait.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>long wait_event_interruptible_timeout(wait_queue_head_t *q, condition, signed long timeout);</span></span></dt>
+<dd><p>使当前进程在等待队列进入睡眠, 安装一个以 jiffies 表达的超时值. 使用 schedule_timeout( 下面) 给不可中断睡眠.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/sched.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>signed long schedule_timeout(signed long timeout);</span></span></dt>
+<dd><p>调用调度器, 在确保当前进程在超时到的时候被唤醒后. 调用者首先必须调用 set_curret_state 来使自己进入一个可中断的或者不可中断的睡眠状态.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/delay.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void ndelay(unsigned long nsecs);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void udelay(unsigned long usecs);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void mdelay(unsigned long msecs);</span></span></dt>
+<dd><p>引入一个整数纳秒, 微秒和毫秒的延迟. 获得的延迟至少是请求的值, 但是可能更多. 每个函数的参数必须不超过一个平台特定的限制(常常是几千).</p></dd>
+<dt><span class="term"><span>void msleep(unsigned int millisecs);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned long msleep_interruptible(unsigned int millisecs);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void ssleep(unsigned int seconds);</span></span></dt>
+<dd><p>使进程进入睡眠给定的毫秒数(或者秒, 如果使 ssleep).</p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="KernelTimers.sect"></a>7.7.3.&#160;内核定时器</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;asm/hardirq.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int in_interrupt(void);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int in_atomic(void);</span></span></dt>
+<dd><p>返回一个布尔值告知是否调用代码在中断上下文或者原子上下文执行. 中断上下文是在一个进程上下文之外, 或者在硬件或者软件中断处理中. 原子上下文是当你不能调度一个中断上下文或者一个持有一个自旋锁的进程的上下文.</p></dd>
+<dt><span class="term"><span>#include &lt;linux/timer.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void init_timer(struct timer_list * timer);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct timer_list TIMER_INITIALIZER(_function, _expires, _data);</span></span></dt>
+<dd><p>这个函数和静态的定时器结构的声明是初始化一个 timer_list 数据结构的 2 个方法.</p></dd>
+<dt><span class="term"><span>void add_timer(struct timer_list * timer);</span></span></dt>
+<dd><p>注册定时器结构来在当前 CPU 上运行.</p></dd>
+<dt><span class="term"><span>int mod_timer(struct timer_list *timer, unsigned long expires);</span></span></dt>
+<dd><p>改变一个已经被调度的定时器结构的超时时间. 它也能作为一个 add_timer 的替代.</p></dd>
+<dt><span class="term"><span>int timer_pending(struct timer_list * timer);</span></span></dt>
+<dd><p>宏定义, 返回一个布尔值说明是否这个定时器结构已经被注册运行.</p></dd>
+<dt><span class="term"><span>void del_timer(struct timer_list * timer);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void del_timer_sync(struct timer_list * timer);</span></span></dt>
+<dd><p>从激活的定时器链表中去除一个定时器. 后者保证这定时器当前没有在另一个 CPU 上运行.</p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="Taskletsqr.sect"></a>7.7.4.&#160;Tasklets 机制</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/interrupt.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_TASKLET(name, func, data);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>DECLARE_TASKLET_DISABLED(name, func, data);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void tasklet_init(struct tasklet_struct *t, void (*func)(unsigned long), unsigned long data);</span></span></dt>
+<dd><p>前 2 个宏定义声明一个 tasklet 结构, 而 tasklet_init 函数初始化一个已经通过分配或其他方式获得的 tasklet 结构. 第 2 个 DECLARE 宏标识这个 tasklet 为禁止的.</p></dd>
+<dt><span class="term"><span>void tasklet_disable(struct tasklet_struct *t);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void tasklet_disable_nosync(struct tasklet_struct *t);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void tasklet_enable(struct tasklet_struct *t);</span></span></dt>
+<dd><p>禁止和使能一个 tasklet. 每个禁止必须配对一个使能( 你可以禁止这个 tasklet 即便它已经被禁止). 函数 tasklet_disable 等待 tasklet 终止如果它在另一个 CPU 上运行. 这个非同步版本不采用这个额外的步骤.</p></dd>
+<dt><span class="term"><span>void tasklet_schedule(struct tasklet_struct *t);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void tasklet_hi_schedule(struct tasklet_struct *t);</span></span></dt>
+<dd><p>调度一个 tasklet 运行, 或者作为一个"正常" tasklet 或者一个高优先级的. 当软中断被执行, 高优先级 tasklets 被首先处理, 而正常 tasklet 最后执行.</p></dd>
+<dt><span class="term"><span>void tasklet_kill(struct tasklet_struct *t);</span></span></dt>
+<dd><p>从激活的链表中去掉 tasklet, 如果它被调度执行. 如同 tasklet_disable, 这个函数可能在 SMP 系统中阻塞等待 tasklet 终止, 如果它当前在另一个 CPU 上运行.</p></dd>
+</dl></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="workqueueskr.sect"></a>7.7.5.&#160;工作队列</h3></div></div></div>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>#include &lt;linux/workqueue.h&gt;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct workqueue_struct;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct work_struct;</span></span></dt>
+<dd><p>这些结构分别表示一个工作队列和一个工作入口.</p></dd>
+<dt><span class="term"><span>struct workqueue_struct *create_workqueue(const char *name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct workqueue_struct *create_singlethread_workqueue(const char *name);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void destroy_workqueue(struct workqueue_struct *queue);</span></span></dt>
+<dd><p>创建和销毁工作队列的函数. 一个对 create_workqueue 的调用创建一个有一个工作者线程在系统中每个处理器上的队列; 相反, create_singlethread_workqueue 创建一个有一个单个工作者进程的工作队列.</p></dd>
+<dt><span class="term"><span>DECLARE_WORK(name, void (*function)(void *), void *data);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>INIT_WORK(struct work_struct *work, void (*function)(void *), void *data);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>PREPARE_WORK(struct work_struct *work, void (*function)(void *), void *data);</span></span></dt>
+<dd><p>声明和初始化工作队列入口的宏.</p></dd>
+<dt><span class="term"><span>int queue_work(struct workqueue_struct *queue, struct work_struct *work);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int queue_delayed_work(struct workqueue_struct *queue, struct work_struct *work, unsigned long delay);</span></span></dt>
+<dd><p>从一个工作队列对工作进行排队执行的函数.</p></dd>
+<dt><span class="term"><span>int cancel_delayed_work(struct work_struct *work);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void flush_workqueue(struct workqueue_struct *queue);</span></span></dt>
+<dd><p>使用 cancel_delayed_work 来从一个工作队列中去除入口; flush_workqueue 确保没有工作队列入口在系统中任何地方运行.</p></dd>
+<dt><span class="term"><span>int schedule_work(struct work_struct *work);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>int schedule_delayed_work(struct work_struct *work, unsigned long delay);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void flush_scheduled_work(void);</span></span></dt>
+<dd><p>使用共享队列的函数.</p></dd>
+</dl></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch07s06.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch08.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.6.&#160;工作队列&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;第&#160;8&#160;章&#160;分配内存</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

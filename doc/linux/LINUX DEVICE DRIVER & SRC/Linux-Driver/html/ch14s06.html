@@ -1,0 +1,187 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>14.6.&#160;¼¯³ÉÆğÀ´-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ĞÍ">
+<link rel="prev" href="ch14s05.html" title="14.5.&#160;Àà">
+<link rel="next" href="ch14s07.html" title="14.7.&#160;ÈÈ²å°Î">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">14.6.&#160;¼¯³ÉÆğÀ´</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch14s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ĞÍ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PuttingItAllTogether.sect1"></a>14.6.&#160;¼¯³ÉÆğÀ´</h2></div></div></div>
+<p>Îª¸üºÃÀí½âÇı¶¯Ä£ĞÍ×öÊ²Ã´, ÈÃÎÒÃÇÍ¨ÀÀÒ»¸öÉè±¸ÔÚÄÚºËÖĞµÄÉúÃüÖÜÆÚµÄ½×¶Î. ÎÒÃÇÃèÊö PCI ×ÓÏµÍ³ÈçºÎÓëÇı¶¯Ä£ĞÍ½»»¥, Ò»¸öÇı¶¯ÈçºÎ±»¼ÓÈëºÍÈ¥³ıµÄ»ù±¾¸ÅÄî, ÒÔ¼°Ò»¸öÉè±¸ÈçºÎ´ÓÏµÍ³ÖĞ±»¼ÓÈëºÍÈ¥³ı. ÕâĞ©Ï¸½Ú, ¼´±ãÌØ±ğµØÃèÊö PCI ÄÚºË´úÂë, ÊÊÓÃËùÓĞÆäËûµÄÊ¹ÓÃÇı¶¯ºËĞÄÀ´¹ÜÀíËüÃÇµÄÇı¶¯ºÍÉè±¸µÄ×ÓÏµÍ³.</p>
+<p>PCI ºËĞÄ, Çı¶¯ºËĞÄºÍµ¥¶ÀµÄ PCI Çı¶¯Ö®¼äµÄ½»»¥ÊÇ·Ç³£¸´ÔÓ, ÈçÍ¬Í¼ <a href="ch14s06.html#ldd3-14-3.fig" title="Í¼&#160;14.3.&#160;´´½¨Éè±¸¹ı³Ì">´´½¨Éè±¸¹ı³Ì</a>ËùÊ¾.</p>
+<div class="figure">
+<a name="ldd3-14-3.fig"></a><p class="title"><b>Í¼&#160;14.3.&#160;´´½¨Éè±¸¹ı³Ì</b></p>
+<div><img src="images/snagitldd3/ldd3-14-3.png" alt="´´½¨Éè±¸¹ı³Ì"></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AddaDevice.sect2"></a>14.6.1.&#160;Ìí¼ÓÒ»¸öÉè±¸</h3></div></div></div>
+<p>PCI ×ÓÏµÍ³ÉùÃ÷Ò»¸öµ¥¸ö struct bus_type ³ÆÎª pci_bus_type, ËüÊ¹ÓÃÏÂÁĞÖµ³õÊ¼»¯:</p>
+<pre class="programlisting">
+struct bus_type pci_bus_type = {
+ .name  = "pci", 
+ .match  = pci_bus_match, 
+ .hotplug  = pci_hotplug, 
+ .suspend  = pci_device_suspend, 
+ .resume  = pci_device_resume, 
+ .dev_attrs = pci_dev_attrs, };
+</pre>
+<p>Õâ¸ö pci_bus_type ±äÁ¿±»×¢²áµ½Çı¶¯ÄÚºË, µ± PCI ×ÓÏµÍ³Í¨¹ı¶Ô bus_register µÄµ÷ÓÃ±»¼ÓÔØÈëÄÚºËÊ±. µ±Õâ¸ö·¢ÉúÊ±, Çı¶¯ºËĞÄ´´½¨Ò»¸ö sysfs Ä¿Â¼ÔÚ /sys/bus/pci Àï, Ëü°üº¬ 2 ¸öÄ¿Â¼: devices ºÍ drivers.</p>
+<p>ËùÓĞµÄ PCI Çı¶¯±ØĞë¶¨ÒåÒ»¸ö struct pci_driver ±äÁ¿, Ëü¶¨ÒåÁËÕâ¸ö PCI Çı¶¯ÄÜ¹»×öµÄ²»Í¬µÄ¹¦ÄÜ(¸ü¶àµÄ¹ØÓÚ PCI ×ÓÏµÍ³ºÍÈçºÎ±àĞ´Ò»¸ö PCI Çı¶¯µÄĞÅÏ¢, ¼û 12 ÕÂ). ÄÇ¸ö½á¹¹°üº¬Ò»¸ö struct device_driver, Ëü½Ó×Å±» PCI ºËĞÄ³õÊ¼»¯, µ± PCI Çı¶¯±»×¢²áÊ±.</p>
+<pre class="programlisting">
+/* initialize common driver fields */
+drv-&gt;driver.name = drv-&gt;name;
+drv-&gt;driver.bus = &amp;pci_bus_type;
+drv-&gt;driver.probe = pci_device_probe;
+drv-&gt;driver.remove = pci_device_remove; 
+drv-&gt;driver.kobj.ktype = &amp;pci_driver_kobj_type;
+</pre>
+<p>Õâ¸ö´úÂëÎªÇı¶¯½¨Á¢×ÜÏßÀ´Ö¸Ïò pci_bus_type ÒÔ¼°Ê¹ probe ºÍ remove º¯ÊıÀ´Ö¸Ïò PCI ºËĞÄÄÚµÄº¯Êı. Çı¶¯µÄ kobject µÄ ktype ±»ÉèÖÃÎª±äÁ¿ pci_driver_kobj_type, ÎªÊ¹ PCI Çı¶¯µÄÊôĞÔÎÄ¼şÕı³£¹¤×÷. ½Ó×Å PCI ºËĞÄ×¢²á PCI Çı¶¯µ½Çı¶¯ºËĞÄ:</p>
+<pre class="programlisting">
+/* register with core */
+error = driver_register(&amp;drv-&gt;driver);
+</pre>
+<p>Çı¶¯ÏÖÔÚ×¼±¸ºÃ±»°ó¶¨µ½ÈÎºÎÒ»¸öËüÖ§³ÖµÄ PCI Éè±¸.</p>
+<p>PCI ºËĞÄ, ÔÚÀ´×ÔÌØ¶¨½á¹¹µÄÊµ¼ÊºÍ PCI ×ÜÏß½»Ì¸µÄ´úÂëµÄ°ïÖúÏÂ, ¿ªÊ¼Ì½²â PCI µØÖ·¿Õ¼ä, ²éÕÒËùÓĞµÄ PCI Éè±¸. µ±Ò»¸öPCI Éè±¸±»·¢ÏÖ, PCI ºËĞÄÔÚÄÚ´æÖĞ´´½¨Ò»¸ö struct pci_dev ÀàĞÍµÄĞÂ±äÁ¿. struct pci_dev ½á¹¹µÄÒ»²¿·Ö¿´À´ÈçÏÂ:</p>
+<pre class="programlisting">
+struct pci_dev {
+ /* ... */
+ unsigned int devfn;
+ unsigned short vendor;
+ unsigned short device;
+ unsigned short subsystem_vendor;
+ unsigned short subsystem_device;
+ unsigned int class;
+ /* ... */
+ struct pci_driver *driver;
+ /* ... */
+ struct device dev;
+ /* ... */
+
+}; 
+</pre>
+<p>Õâ¸ö PCI Éè±¸µÄ×ÜÏßÌØ¶¨µÄ³ÉÔ±±» PCI ºËĞÄ³õÊ¼»¯( devfn, vendor, device, ºÍÆäËû³ÉÔ±), ²¢ÇÒ struct device ±äÁ¿µÄ parent ±äÁ¿±»ÉèÖÃÎªÕâ¸ö PCI Éè±¸ËùÔÚµÄ PCI ×ÜÏßÉè±¸. bus ±äÁ¿±»ÉèÖÃÖ¸Ïò pci_bus_type ½á¹¹. ½ÓÏÂÀ´ name ºÍ bus_id ±äÁ¿±»ÉèÖÃ, ¸ù¾İ¶Á×Ô PCI Éè±¸µÄ name ºÍ ID.</p>
+<p>ÔÚ PCI Éè±¸½á¹¹±»³õÊ¼»¯Ö®ºó, Éè±¸±»×¢²áµ½Çı¶¯ºËĞÄ, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+device_register(&amp;dev-&gt;dev); 
+</pre>
+<p>ÔÚ device_register º¯ÊıÖĞ, Çı¶¯ºËĞÄ³õÊ¼»¯Éè±¸µÄĞí¶à³ÉÔ±, ×¢²áÉè±¸µÄ kobject µ½ kobject ºËĞÄ( Ëüµ¼ÖÂÒ»¸öÈÈ²å°ÎÊÂ¼ş²úÉú, µ«ÊÇÎÒÃÇÔÚ±¾ÕÂºóÃæÌÖÂÛ), ½Ó×ÅÌí¼ÓÉè±¸µ½Çı¶¯µÄ parent Ëù³ÖÓĞµÄÉè±¸ÁĞ±íÖĞ. Íê³ÉÕâ¸öÊ¹ËùÓĞµÄÉè±¸¿É±»ÒÔÕıÈ·µÄË³Ğòä¯ÀÀ, Ò»Ö±ÖªµÀÃ¿Ò»¸öÎ»ÓÚÉè±¸²ã´ÎÖĞÄÄÀï.</p>
+<p>Éè±¸½Ó×Å±»Ìí¼Óµ½ËùÓĞÉè±¸µÄ×ÜÏßÌØ¶¨µÄÁĞ±íÖĞ, ÔÚ±¾ÀıÖĞ, pci_bus_type ÁĞ±í. ½Ó×Å×¢²áµ½Õâ¸ö×ÜÏßµÄËùÓĞÇı¶¯µÄÁĞ±í±»¼ì²é, ²¢ÇÒ×ÜÏßµÄÆ¥Åä¹¦ÄÜ±»µ÷ÓÃ¸øÃ¿¸öÇı¶¯, Ö¸¶¨Õâ¸öÉè±¸. ¶ÔÓÚ pci_bus_type ×ÜÏß, Æ¥Åäº¯Êı±» PCI ºËĞÄÉè¶¨ÎªÖ¸Ïò pci_bus_match º¯Êı, ÔÚÉè±¸±»Ìá½»¸øÇı¶¯ºËĞÄÇ°.</p>
+<p>pci_bus_match º¯Êı×ª»»Çı¶¯ºËĞÄ´«µİ¸øËüµÄ struct device ÎªÒ»¸ö struct pci_dev. Ëü»¹×ª»» struct device_driver ÎªÒ»¸ö struct pci_driver , ²¢½Ó×Å²é¿´Éè±¸µÄ PCI Éè±¸ÌØ¶¨ĞÅÏ¢ºÍÇı¶¯, ¿´ÊÇ·ñÕâ¸öÇı¶¯ÉùÃ÷ËüÄÜ¹»Ö§³ÖÕâÀàÉè±¸. Èç¹ûÆ¥Åä²»³É¹¦, º¯Êı·µ»Ø 0 ¸øÇı¶¯ºËĞÄ, ²¢ÇÒÇı¶¯ºËĞÄÒÆÏòÁĞ±íÖĞµÄÏÂÒ»¸öÇı¶¯.</p>
+<p>Èç¹ûÆ¥Åä³É¹¦, º¯Êı·µ»Ø 1 ¸øÇı¶¯ºËĞÄ. ÕâÊ¹Çı¶¯ºËĞÄÉèÖÃstruct device ÖĞµÄÇı¶¯Ö¸ÕëÖ¸ÏòÕâ¸öÇı¶¯, ²¢ÇÒ½Ó×Åµ÷ÓÃÔÚ struct device_driver ÖĞÌØ¶¨µÄ probe º¯Êı.</p>
+<p>ÔçĞ©Ê±ºò, ÔÚ PCI Çı¶¯×¢²áµ½Çı¶¯ºËĞÄÖ®Ç°, probe ±äÁ¿±»ÉèÎªÖ¸Ïò pci_device_probe º¯Êı. Õâ¸öº¯Êı×ª»»(ÓÖÒ»´Î) struct device ÎªÒ»¸östruct pci_dev, ÔÚÉè±¸ÖĞÉèÖÃµÄ struct driver ÎªÒ»¸ö struct pci_driver. ËüÔÙ´ÎÑéÖ¤Õâ¸öÇı¶¯ÉùÃ÷Ëü¿ÉÒÔÖ§³ÖÕâ¸öÉè±¸( ÕâÒâÎ¶×ÅÒ»¸öÖØ¸´µÄ¶îÍâ¼ì²é, Ä³Ğ©Î´ÖªµÄÔ­Òò), µİÔöÉè±¸µÄÒıÓÃ¼ÆÊı, ²¢ÇÒ½Ó×Åµ÷ÓÃ PCI Çı¶¯µÄ probe º¯Êı, ÓÃÒ»¸öÖ¸ÏòËüÓ¦µ±±»°ó¶¨µ½µÄ struct pci_dev ½á¹¹µÄÖ¸Õë.</p>
+<p>Èç¹ûÕâ¸ö PCI Çı¶¯µÄ probe º¯ÊıÈÏÎªËü²»ÄÜ´¦ÀíÕâ¸öÉè±¸ÓÉÓÚÄ³Ğ©Ô­Òò, Ëü·µ»ØÒ»¸ö¸ºµÄ´íÎóÖµ, Õâ¸öÖµ±»´«µİ»ØÇı¶¯ºËĞÄ²¢ÇÒÊ¹Ëü¼ÌĞøÉîÈëÉè±¸ÁĞ±íÀ´ºÍÕâ¸öÉè±¸Æ¥ÅäÒ»¸ö. Èç¹ûÕâ¸ö probe º¯ÊıÄÜ¹»ÈÏÁìÕâ¸öÉè±¸, Ëü×öËùÓĞµÄĞèÒªµÄ³õÊ¼»¯À´ÕıÈ·´¦ÀíÕâ¸öÉè±¸, ²¢ÇÒ½Ó×ÅËü·µ»Ø 0 ¸øÇı¶¯ºËĞÄ. ÕâÊ¹Çı¶¯ºËĞÄÀ´Ìí¼ÓÉè±¸µ½µ±Ç°±»Õâ¸öÌØ¶¨Çı¶¯Ëù°ó¶¨µÄËùÓĞÉè±¸ÁĞ±í, ²¢ÇÒ´´½¨Ò»¸ö·ûºÅÁ¬½Óµ½Õâ¸öËüÏÖÔÚ¿ØÖÆµÄÉè±¸, ÔÚÕâ¸öÇı¶¯ÔÚ sysfs µÄÄ¿Â¼. Õâ¸ö·ûºÅÁ¬½ÓÔÊĞíÓÃ»§×¼È·¼ûµ½ÄÄ¸öÉè±¸±»°ó¶¨µ½ÄÄ¸öÉè±¸. Õâ¿É±»¼ûµ½, Èç:</p>
+<pre class="screen">
+$ tree /sys/bus/pci
+/sys/bus/pci/
+|-- devices
+|  |-- 0000:00:00.0 -&gt; ../../../devices/pci0000:00/0000:00:00.0  
+|  |-- 0000:00:00.1 -&gt; ../../../devices/pci0000:00/0000:00:00.1  
+|  |-- 0000:00:00.2 -&gt; ../../../devices/pci0000:00/0000:00:00.2  
+|  |-- 0000:00:02.0 -&gt; ../../../devices/pci0000:00/0000:00:02.0  
+|  |-- 0000:00:04.0 -&gt; ../../../devices/pci0000:00/0000:00:04.0  
+|  |-- 0000:00:06.0 -&gt; ../../../devices/pci0000:00/0000:00:06.0  
+|  |-- 0000:00:07.0 -&gt; ../../../devices/pci0000:00/0000:00:07.0  
+|  |-- 0000:00:09.0 -&gt; ../../../devices/pci0000:00/0000:00:09.0  
+|  |-- 0000:00:09.1 -&gt; ../../../devices/pci0000:00/0000:00:09.1  
+|  |-- 0000:00:09.2 -&gt; ../../../devices/pci0000:00/0000:00:09.2  
+|  |-- 0000:00:0c.0 -&gt; ../../../devices/pci0000:00/0000:00:0c.0  
+|  |-- 0000:00:0f.0 -&gt; ../../../devices/pci0000:00/0000:00:0f.0  
+|  |-- 0000:00:10.0 -&gt; ../../../devices/pci0000:00/0000:00:10.0  
+|  |-- 0000:00:12.0 -&gt; ../../../devices/pci0000:00/0000:00:12.0  
+|  |-- 0000:00:13.0 -&gt; ../../../devices/pci0000:00/0000:00:13.0  
+|  `-- 0000:00:14.0 -&gt; ../../../devices/pci0000:00/0000:00:14.0  
+`-- drivers
+ |-- ALI15x3_IDE
+ | `-- 0000:00:0f.0 -&gt; ../../../../devices/pci0000:00/0000:00:0f.0
+ |-- ehci_hcd
+ | `-- 0000:00:09.2 -&gt; ../../../../devices/pci0000:00/0000:00:09.2
+ |-- ohci_hcd
+ | |-- 0000:00:02.0 -&gt; ../../../../devices/pci0000:00/0000:00:02.0
+ | |-- 0000:00:09.0 -&gt; ../../../../devices/pci0000:00/0000:00:09.0
+ | `-- 0000:00:09.1 -&gt; ../../../../devices/pci0000:00/0000:00:09.1
+ |-- orinoco_pci
+ | `-- 0000:00:12.0 -&gt; ../../../../devices/pci0000:00/0000:00:12.0
+ |-- radeonfb
+ | `-- 0000:00:14.0 -&gt; ../../../../devices/pci0000:00/0000:00:14.0
+ |-- serial
+ `-- trident
+ `-- 0000:00:04.0 -&gt; ../../../../devices/pci0000:00/0000:00:04.0 
+</pre>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="RemoveaDevice.sect2"></a>14.6.2.&#160;È¥³ıÒ»¸öÉè±¸</h3></div></div></div>
+<p>Ò»¸ö PCI ¿ÉÓÃ¶à¸ö²»Í¬µÄ·½·¨±»´ÓÏµÍ³ÖĞÈ¥³ı. ËùÓĞµÄ card-bus Éè±¸ÔÚÒ»¸ö²»Í¬µÄÎïÀíÒòËØÉÏÊÇÕæÕıµÄ PCI Éè±¸, ²¢ÇÒÄÚºË PCI ºËĞÄ²»Çø·ÖËüÃÇ. ÔÊĞíÔÚ»úÆ÷ÔËĞĞÊ±¼Ó¼õ PCI Éè±¸µÄÏµÍ³Õı±äµÃ¸ü¼ÓÆÕ±é, ²¢ÇÒ Linux Ö§³ÖËüÃÇ. »¹ÓĞÒ»¸öÎ± PCI ÈÈ²å°ÎÇı¶¯ÔÊĞí¿ª·¢ÕßÀ´²âÊÔ¿´ÊÇ·ñËûÃÇµÄ PCI Çı¶¯ÕıÈ·´¦ÀíÏµÍ³ÔËĞĞÖĞµÄÉè±¸È¥³ı. Õâ¸öÄ£¿é³ÆÎª fakephp ²¢ÇÒÊ¹ÄÚºËÈÏÎª PCI Éè±¸ÒÑÏûÊ§, µ«ÊÇËü²»ÔÊĞíÓÃ»§ÎïÀíÉÏ´ÓÏµÍ³ÖĞÈ¥³ıÒ»¸ö PCI Éè±¸, Õâ¸öÏµÍ³Ã»ÓĞºÏÊÊµÄÓ²¼şÀ´ÕâÑù×ö. ¼ûÕâ¸öÇı¶¯µÄÎÄµµÀ´»ñÈ¡¸ü¶à¹ØÓÚÈçºÎÊ¹ÓÃËü²âÊÔÄãµÄ PCI Çı¶¯µÄĞÅÏ¢.</p>
+<p>PCI ºËĞÄ·¢»ÓÁË²»ÉÙÓÚËüÔö¼ÓÉè±¸µÄÅ¬Á¦µ½È¥³ıËü. µ±Ò»¸ö PCI Éè±¸Òª±»È¥³ı, pci_remove_bus_device º¯Êı±»µ÷ÓÃ. Õâ¸öº¯Êı×öÒ»Ğ© PCI-ÌØ¶¨ µÄÇåÀíºÍÈÕ³£¹¤×÷, ²¢ÇÒ½Ó×ÅÊ¹ÓÃÒ»¸öÖ¸Ïò struct pci_dev µÄ struct device ³ÉÔ±µÄÖ¸Õëµ÷ÓÃ device_unregister º¯Êı.</p>
+<p>ÔÚ device_unregister º¯ÊıÖĞ, Çı¶¯ºËĞÄÖ»´Ó°ó¶¨µ½Õâ¸öÉè±¸(Èç¹ûÓĞ)µÄÇı¶¯½â³ıÁ¬½Ó sysfs ÎÄ¼ş, ´ÓËüµÄÄÚ²¿Éè±¸ÁĞ±íÖĞÈ¥³ıÕâ¸öÉè±¸, ²¢ÇÒÊ¹ÓÃÖ¸Ïò°üº¬ÔÚ struct device ½á¹¹ÖĞµÄ struct kobject µÄÖ¸Õëµ÷ÓÃ kobject_del. Õâ¸öº¯ÊıÓÃÒ»¸ö hotplug µ÷ÓÃµ½ÓÃ»§¿Õ¼äÀ´ÉùÃ÷ kobject ÏÖÔÚ±»´ÓÏµÍ³ÖĞÈ¥³ı, ²¢ÇÒ½Ó×ÅËüÉ¾³ıËùÓĞµÄºÍ kobject ¹ØÁªµÄ sysfs ÎÄ¼şÒÔ¼°Õâ¸ö kobject Æğ³õÒÑ´´½¨µÄ sysfs Ä¿Â¼×ÔÉí.</p>
+<p>kobject_del º¯ÊıÒ²È¥³ıÉè±¸×ÔÉíµÄ kobject ÒıÓÃ. Èç¹ûÄÇ¸öÒıÓÃÊÇ×îºóÒ»¸ö( ÒâÎ¶×ÅÃ»ÓĞÓÃ»§¿Õ¼äÎÄ¼şÎªÕâ¸ö sysfs µÄÉè±¸Èë¿Ú¶ø´ò¿ª ), ½Ó×ÅÊÇ PCI Éè±¸×ÔÉíµÄ release º¯Êı, pci_release_dev, ±»µ÷ÓÃ. Õâ¸öº¯ÊıÖ»ÊÍ·Å struct pci_dev Õ¼ÓÃµÄÄÚ´æ.</p>
+<p>´Ëºó, ËùÓĞµÄºÍÕâ¸öÉè±¸¹ØÁªµÄ sysfs Èë¿Ú±»È¥³ı, ²¢ÇÒºÍÕâ¸öÉè±¸¹ØÁªµÄÄÚ´æ±»ÊÍ·Å. PCI Éè±¸ÏÖÔÚÍêÈ«´ÓÏµÍ³ÖĞ±»È¥³ı.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AddaDriver.sect2"></a>14.6.3.&#160;Ìí¼ÓÒ»¸öÇı¶¯</h3></div></div></div>
+<p>Ò»¸ö PCI Çı¶¯±»Ìí¼Óµ½ PCI ºËĞÄ, µ±Ëüµ÷ÓÃ pci_register_driver º¯ÊıÊ±. Õâ¸öº¯ÊıÖ»³õÊ¼»¯ struct device_driver ½á¹¹, Õâ¸ö½á¹¹°üº¬ÔÚ struct pci_driver ½á¹¹ÀïÃæ, ÈçÍ¬Ö®Ç°ÔÚ¹ØÓÚÌí¼ÓÉè±¸µÄÒ»½ÚÖĞÌá¹ıµÄ. ½Ó×Å PCI ºËĞÄÊ¹ÓÃÖ¸Ïò°üº¬ÔÚ struct pci_driver ½á¹¹ÖĞµÄ sturct device_driver ½á¹¹µÄÖ¸Õëµ÷ÓÃÔÚÇı¶¯ºËĞÄµÄ driver_register º¯Êı.</p>
+<p>driver_register º¯Êı³õÊ¼»¯ÔÚ struct device_driver ½á¹¹ÖĞµÄ¼¸¸öËø, ²¢ÇÒ½Ó×Åµ÷ÓÃ bus_add_driver º¯Êı. Õâ¸öº¯Êı½øĞĞÏÂÃæµÄ²½Öè:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>²éÕÒÇı¶¯Òª±»¹ØÁªµÄ×ÜÏß. Èç¹ûÕâ¸ö×ÜÏß±»·¢ÏÖ, º¯ÊıÁ¢¿Ì·µ»Ø.</p></li>
+<li><p>Çı¶¯µÄ sysfs Ä¿Â¼±»´´½¨, »ùÓÚÇı¶¯µÄÃû×ÓºÍËü±»¹ØÁªµÄ×ÜÏß.</p></li>
+<li><p>×ÜÏßµÄÄÚ²¿Ëø±»»ñÈ¡, ½Ó×ÅËùÓĞµÄÒÑ¾­×¢²áµ½×ÜÏßµÄÉè±¸±»¼ì²é, Æ¥Åäº¯ÊıÎªËüÃÇ±»µ÷ÓÃ, ¾ÍÏóµ±Ò»¸öĞÂÉè±¸±»Ìí¼ÓÊ±. Èç¹ûÄÇ¸öÆ¥Åäº¯Êı³É¹¦, ½Ó×ÅÊ£ÏÂµÄ°ó¶¨¹ı³Ì·¢Éú, ÈçÍ¬ÔÚÇ°ÃæÕÂ½ÚÃèÊö¹ıµÄ.</p></li>
+</ul></div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="RemoveaDriver.sect2"></a>14.6.4.&#160;È¥³ıÒ»¸öÇı¶¯</h3></div></div></div>
+<p>È¥³ıÒ»¸öÇı¶¯ÊÇÒ»¸ö·Ç³£ÈİÒ×µÄ¶¯×÷. ¶ÔÓÚÒ»¸ö PCI Çı¶¯, Çı¶¯µ÷ÓÃ pci_unregister_driver º¯Êı. Õâ¸öº¯ÊıÖ»µ÷ÓÃÇı¶¯ºËĞÄº¯Êı driver_unregister, Ê¹ÓÃÒ»¸öÖ¸Ïò´«µİ¸øËüµÄ struct pci_driver µÄ struct devie_driver µÄÖ¸Õë.</p>
+<p>deiver_unregister º¯Êı´¦ÀíÒ»Ğ©»ù±¾µÄÈÕ³£¹¤×÷, Í¨¹ıÇåÀíÄ³Ğ©ÔÚ sysfs Ê÷ÖĞÁ¬½Óµ½Õâ¸öÇı¶¯Èë¿ÚµÄ sysfs ÊôĞÔ. Ëü½Ó×ÅÁĞ¾ÙËùÓĞµÄÁ¬½Óµ½Õâ¸öÇı¶¯µÄÉè±¸²¢ÇÒÎªËüµ÷ÓÃ release º¯Êı. ·¢ÉúÕâ¸öÇ¡ºÃÏóÇ°ÃæÌá¹ıµÄ release º¯Êı, µ±Ò»¸öÉè±¸´ÓÏµÍ³ÖĞÈ¥³ıÊ±.</p>
+<p>ÔÚËùÓĞµÄÉè±¸´ÓÇı¶¯ÖĞ±»½â°ó¶¨ºó, Çı¶¯´úÂëÍê³ÉÕâ¸ö¶ÀÌØµÄÂß¼­:</p>
+<pre class="programlisting">
+down(&amp;drv-&gt;unload_sem);
+up(&amp;drv-&gt;unload_sem);
+</pre>
+<p>Õâ¾ÍÔÚ·µ»Øº¯ÊıµÄµ÷ÓÃÕßÖ®Ç°Íê³É. Õâ¸öËø±»»ñÈ¡ÒòÎª´úÂëĞèÒªµÈ´ıËùÓĞµÄ¶ÔÕâ¸öÇı¶¯µÄÒıÓÃ¼ÆÊıÔÚËü¿É°²È«·µ»ØÇ°µôµ½ 0. ĞèÒªÕâÑùÊÇÒòÎª driver_unregister º¯Êı×îÆÕ±é±»×÷ÎªÒ»¸öÒªĞ¶ÔØµÄÄ£¿éÍË³öµÄÂ·¾¶À´µ÷ÓÃ. Ä£¿éĞèÒª±£ÁôÔÚÄÚ´æÖ»ÒªÇı¶¯±»Éè±¸ÒıÓÃ²¢ÇÒµÈ´ıÕâ¸öËø±»ÊÍ·Å, ÕâÔÊĞíÄÚºËÖªµÀµ±¿ÉÒÔ°²È«´ÓÄÚ´æÈ¥³ıÇı¶¯Ê±.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch14s05.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch14.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s07.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">14.5.&#160;Àà&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;14.7.&#160;ÈÈ²å°Î</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

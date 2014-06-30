@@ -1,0 +1,125 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>3.5.&#160;open ºÍ release-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch03.html" title="µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇı¶¯">
+<link rel="prev" href="ch03s04.html" title="3.4.&#160;×Ö·ûÉè±¸×¢²á">
+<link rel="next" href="ch03s06.html" title="3.6.&#160;scull µÄÄÚ´æÊ¹ÓÃ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">3.5.&#160;open ºÍ release</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch03s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="openandrelease.sect"></a>3.5.&#160;open ºÍ release</h2></div></div></div>
+<p>µ½´ËÎÒÃÇÒÑ¾­¿ìËÙä¯ÀÀÁËÕâĞ©³ÉÔ±, ÎÒÃÇ¿ªÊ¼ÔÚÕæÊµµÄ scull º¯ÊıÖĞÊ¹ÓÃËüÃÇ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheopenMethod.sect"></a>3.5.1.&#160;open ·½·¨</h3></div></div></div>
+<p>open ·½·¨Ìá¹©¸øÇı¶¯À´×öÈÎºÎµÄ³õÊ¼»¯À´×¼±¸ºóĞøµÄ²Ù×÷. ÔÚ´ó²¿·ÖÇı¶¯ÖĞ, open Ó¦µ±½øĞĞÏÂÃæµÄ¹¤×÷:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>¼ì²éÉè±¸ÌØ¶¨µÄ´íÎó(ÀıÈçÉè±¸Ã»×¼±¸ºÃ, »òÕßÀàËÆµÄÓ²¼ş´íÎó</p></li>
+<li><p>Èç¹ûËüµÚÒ»´Î´ò¿ª, ³õÊ¼»¯Éè±¸</p></li>
+<li><p>Èç¹ûĞèÒª, ¸üĞÂ f_op Ö¸Õë.</p></li>
+<li><p>·ÖÅä²¢Ìî³äÒª·Å½ø filp-&gt;private_data µÄÈÎºÎÊı¾İ½á¹¹</p></li>
+</ul></div>
+<p>µ«ÊÇ, ÊÂÇéµÄµÚÒ»²½³£³£ÊÇÈ·¶¨´ò¿ªÄÄ¸öÉè±¸. ¼Ç×¡ open ·½·¨µÄÔ­ĞÍÊÇ:</p>
+<pre class="programlisting">
+int (*open)(struct inode *inode, struct file *filp);
+</pre>
+<p>inode ²ÎÊıÓĞÎÒÃÇĞèÒªµÄĞÅÏ¢,ÒÔËüµÄ i_cdev ³ÉÔ±µÄĞÎÊ½, ÀïÃæ°üº¬ÎÒÃÇÖ®Ç°½¨Á¢µÄ cdev ½á¹¹. Î¨Ò»µÄÎÊÌâÊÇÍ¨³£ÎÒÃÇ²»ÏëÒª cdev ½á¹¹±¾Éí, ÎÒÃÇĞèÒªµÄÊÇ°üº¬ cdev ½á¹¹µÄ scull_dev ½á¹¹. C ÓïÑÔÊ¹³ÌĞòÔ±ÍæÅª¸÷ÖÖ¼¼ÇÉÀ´×öÕâÖÖ×ª»»; µ«ÊÇ, ÕâÖÖ¼¼ÇÉ±à³ÌÊÇÒ×³ö´íµÄ, ²¢ÇÒµ¼ÖÂ±ğÈËÄÑÓÚÔÄ¶ÁºÍÀí½â´úÂë. ĞÒÔËµÄÊÇ, ÔÚÕâÖÖÇé¿öÏÂ, ÄÚºË hacker ÒÑ¾­ÎªÎÒÃÇÊµÏÖÁËÕâ¸ö¼¼ÇÉ, ÒÔ container_of ºêµÄĞÎÊ½, ÔÚ &lt;linux/kernel.h&gt; ÖĞ¶¨Òå:</p>
+<pre class="programlisting">
+container_of(pointer, container_type, container_field); 
+</pre>
+<p>Õâ¸öºêÊ¹ÓÃÒ»¸öÖ¸Ïò container_field ÀàĞÍµÄ³ÉÔ±µÄÖ¸Õë, ËüÔÚÒ»¸ö container_type ÀàĞÍµÄ½á¹¹ÖĞ, ²¢ÇÒ·µ»ØÒ»¸öÖ¸ÕëÖ¸Ïò°üº¬½á¹¹. ÔÚ scull_open, Õâ¸öºêÓÃÀ´ÕÒµ½ÊÊµ±µÄÉè±¸½á¹¹:</p>
+<pre class="programlisting">
+struct scull_dev *dev; /* device information */ 
+dev = container_of(inode-&gt;i_cdev, struct scull_dev, cdev);
+filp-&gt;private_data = dev; /* for other methods */
+</pre>
+<p>Ò»µ©ËüÕÒµ½ scull_dev ½á¹¹, scull ÔÚÎÄ¼ş½á¹¹µÄ private_data ³ÉÔ±ÖĞ´æ´¢Ò»¸öËüµÄÖ¸Õë, ÎªÒÔºó¸üÒ×´æÈ¡.</p>
+<p>Ê¶±ğ´ò¿ªµÄÉè±¸µÄÁíÍâµÄ·½·¨ÊÇ²é¿´´æ´¢ÔÚ inode ½á¹¹µÄ´Î±àºÅ. Èç¹ûÄãÊ¹ÓÃ register_chrdev ×¢²áÄãµÄÉè±¸, Äã±ØĞëÊ¹ÓÃÕâ¸ö¼¼Êõ. È·ÈÏÊ¹ÓÃ iminor ´Ó inode ½á¹¹ÖĞ»ñÈ¡´Î±àºÅ, ²¢ÇÒÈ·¶¨Ëü¶ÔÓ¦Ò»¸öÄãµÄÇı¶¯ÕæÕı×¼±¸ºÃ´¦ÀíµÄÉè±¸.</p>
+<p>scull_open µÄ´úÂë(ÉÔÎ¢¼ò»¯¹ı)ÊÇ:</p>
+<pre class="programlisting">
+int scull_open(struct inode *inode, struct file *filp)
+{
+        struct scull_dev *dev; /* device information */
+        dev = container_of(inode-&gt;i_cdev, struct scull_dev, cdev);
+        filp-&gt;private_data = dev; /* for other methods */
+
+        /* now trim to 0 the length of the device if open was write-only */
+        if ( (filp-&gt;f_flags &amp; O_ACCMODE) == O_WRONLY)
+        {
+                scull_trim(dev); /* ignore errors */
+        }
+        return 0; /* success */
+}
+</pre>
+<p>´úÂë¿´À´Ïàµ±Ï¡Êè, ÒòÎªÔÚµ÷ÓÃ open Ê±ËüÃ»ÓĞ×öÈÎºÎÌØ±ğµÄÉè±¸´¦Àí. Ëü²»ĞèÒª, ÒòÎª scull Éè±¸Éè¼ÆÎªÈ«¾ÖµÄºÍÓÀ¾ÃµÄ. ÌØ±ğµØ, Ã»ÓĞÈç"ÔÚµÚÒ»´Î´ò¿ªÊ±³õÊ¼»¯Éè±¸"µÈ¶¯×÷, ÒòÎªÎÒÃÇ²»Îª scull ±£³Ö´ò¿ª¼ÆÊı.</p>
+<p>Î¨Ò»ÔÚÉè±¸ÉÏµÄÕæÊµ²Ù×÷ÊÇµ±Éè±¸ÎªĞ´¶ø´ò¿ªÊ±½«Ëü½ØÈ¡Îª³¤¶ÈÎª 0. ÕâÑù×öÊÇÒòÎª, ÔÚÉè¼ÆÉÏ, ÓÃÒ»¸ö¶ÌµÄÎÄ¼ş¸²¸ÇÒ»¸ö scull Éè±¸µ¼ÖÂÒ»¸ö¶ÌµÄÉè±¸Êı¾İÇø. ÕâÀàËÆÓÚÎªĞ´¶ø´ò¿ªÒ»¸ö³£¹æÎÄ¼ş, ½«Æä½Ø¶ÌÎª 0. Èç¹ûÉè±¸Îª¶Á¶ø´ò¿ª, Õâ¸ö²Ù×÷Ê²Ã´¶¼²»×ö.</p>
+<p>ÔÚÎÒÃÇ²é¿´ÆäËû scull ÌØĞÔµÄ´úÂëÊ±½«¿´µ½Ò»¸öÕæÊµµÄ³õÊ¼»¯ÈçºÎÆğ×÷ÓÃµÄ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ThereleaseMethod.sect"></a>3.5.2.&#160;release ·½·¨</h3></div></div></div>
+<p>release ·½·¨µÄ½ÇÉ«ÊÇ open µÄ·´Ãæ. ÓĞÊ±Äã»á·¢ÏÖ·½·¨µÄÊµÏÖ³ÆÎª device_close, ¶ø²»ÊÇ device_release. ÈÎÒ»·½Ê½, Éè±¸·½·¨Ó¦µ±½øĞĞÏÂÃæµÄÈÎÎñ:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>ÊÍ·Å open ·ÖÅäÔÚ filp-&gt;private_data ÖĞµÄÈÎºÎ¶«Î÷</p></li>
+<li><p>ÔÚ×îºóµÄ close ¹Ø±ÕÉè±¸</p></li>
+</ul></div>
+<p>scull µÄ»ù±¾ĞÎÊ½Ã»ÓĞÓ²¼şÈ¥¹Ø±Õ, Òò´ËĞèÒªµÄ´úÂëÊÇ×îÉÙµÄ:<sup>[<a name="id415980" href="#ftn.id415980">12</a>]</sup></p>
+<pre class="programlisting">
+int scull_release(struct inode *inode, struct file *filp)
+{
+ return 0;
+}
+</pre>
+<p>Äã¿ÉÄÜÏëÖªµÀµ±Ò»¸öÉè±¸ÎÄ¼ş¹Ø±Õ´ÎÊı³¬¹ıËü±»´ò¿ªµÄ´ÎÊı»á·¢ÉúÊ²Ã´. ±Ï¾¹, dup ºÍ fork ÏµÍ³µ÷ÓÃ²»µ÷ÓÃ open À´´´½¨´ò¿ªÎÄ¼şµÄ¿½±´; Ã¿¸ö¿½±´½Ó×ÅÔÚ³ÌĞòÖÕÖ¹Ê±±»¹Ø±Õ. ÀıÈç, ´ó²¿·Ö³ÌĞò²»´ò¿ªËüÃÇµÄ stdin ÎÄ¼ş(»òÉè±¸), µ«ÊÇËüÃÇ¶¼ÒÔ¹Ø±ÕËü½áÊø. µ±Ò»¸ö´ò¿ªµÄÉè±¸ÎÄ¼şÒÑ¾­ÕæÕı±»¹Ø±ÕÊ±Çı¶¯ÈçºÎÖªµÀ?</p>
+<p>´ğ°¸¼òµ¥: ²»ÊÇÃ¿¸ö close ÏµÍ³µ÷ÓÃÒıÆğµ÷ÓÃ release ·½·¨. Ö»ÓĞÕæÕıÊÍ·ÅÉè±¸Êı¾İ½á¹¹µÄµ÷ÓÃ»áµ÷ÓÃÕâ¸ö·½·¨ -- Òò´ËµÃÃû. ÄÚºËÎ¬³ÖÒ»¸öÎÄ¼ş½á¹¹±»Ê¹ÓÃ¶àÉÙ´ÎµÄ¼ÆÊı. fork ºÍ dup ¶¼²»´´½¨ĞÂÎÄ¼ş(Ö»ÓĞ open ÕâÑù); ËüÃÇÖ»µİÔöÕı´æÔÚµÄ½á¹¹ÖĞµÄ¼ÆÊı. close ÏµÍ³µ÷ÓÃ½öÔÚÎÄ¼ş½á¹¹¼ÆÊıµôµ½ 0 Ê±Ö´ĞĞ release ·½·¨, ÕâÔÚ½á¹¹±»Ïú»ÙÊ±·¢Éú. release ·½·¨ºÍ close ÏµÍ³µ÷ÓÃÖ®¼äµÄÕâÖÖ¹ØÏµ±£Ö¤ÁËÄãµÄÇı¶¯Ò»´Î open Ö»¿´µ½Ò»´Î release.</p>
+<p>×¢Òâ, flush ·½·¨ÔÚÃ¿´ÎÓ¦ÓÃ³ÌĞòµ÷ÓÃ close Ê±¶¼±»µ÷ÓÃ. µ«ÊÇ, ºÜÉÙÇı¶¯ÊµÏÖ flush, ÒòÎª³£³£ÔÚ close Ê±Ã»ÓĞÊ²Ã´Òª×ö, ³ı·Çµ÷ÓÃ release.</p>
+<p>ÈçÄã»áÏëµ½µÄ, Ç°ÃæµÄÌÖÂÛ¼´±ãÊÇÓ¦ÓÃ³ÌĞòÃ»ÓĞÃ÷ÏÔµØ¹Ø±ÕËü´ò¿ªµÄÎÄ¼şÒ²ÊÊÓÃ: ÄÚºËÔÚ½ø³Ì exit Ê±×Ô¶¯¹Ø±ÕÁËÈÎºÎÎÄ¼ş, Í¨¹ıÔÚÄÚ²¿Ê¹ÓÃ close ÏµÍ³µ÷ÓÃ.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id415980" href="#id415980">12</a>] </sup>ÆäËû·çÎ¶µÄÉè±¸ÓÉ²»Í¬µÄº¯Êı¹Ø±Õ, ÒòÎª scull_open ÎªÃ¿¸öÉè±¸Ìæ»»ÁË²»Í¬µÄ filp-&gt;f_op. ÎÒÃÇÔÚ½éÉÜÃ¿ÖÖ·çÎ¶Ê±ÔÙÌÖÂÛËüÃÇ.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch03s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">3.4.&#160;×Ö·ûÉè±¸×¢²á&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;3.6.&#160;scull µÄÄÚ´æÊ¹ÓÃ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

@@ -1,0 +1,183 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>4.5.&#160;µ÷ÊÔÏµÍ³¹ÊÕÏ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch04.html" title="µÚ&#160;4&#160;ÕÂ&#160;µ÷ÊÔ¼¼Êõ">
+<link rel="prev" href="ch04s04.html" title="4.4.&#160;Ê¹ÓÃ¹Û²ìÀ´µ÷ÊÔ">
+<link rel="next" href="ch04s06.html" title="4.6.&#160;µ÷ÊÔÆ÷ºÍÏà¹Ø¹¤¾ß">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">4.5.&#160;µ÷ÊÔÏµÍ³¹ÊÕÏ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch04s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;4&#160;ÕÂ&#160;µ÷ÊÔ¼¼Êõ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch04s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DebuggingSystemFaults.sect"></a>4.5.&#160;µ÷ÊÔÏµÍ³¹ÊÕÏ</h2></div></div></div>
+<p>¼´±ãÄãÒÑÊ¹ÓÃÁËËùÓÐµÄ¼àÊÓºÍµ÷ÊÔ¼¼Êõ, ÓÐÊ±¹ÊÕÏ»¹ÁôÔÚÇý¶¯Àï, µ±Çý¶¯Ö´ÐÐÊ±ÏµÍ³³ö´í. µ±·¢ÉúÕâ¸öÊ±, ÄÜ¹»ÊÕ¼¯¾¡¿ÉÄÜ¶àµÄÐÅÏ¢À´½â¾öÎÊÌâÊÇÖØÒªµÄ.</p>
+<p>×¢Òâ"¹ÊÕÏ"²»ÒâÎ¶×Å"±ÀÀ£". Linux ´úÂëÊÇ×ã¹»½¡×³µØÓÅÑÅµØÏìÓ¦´ó²¿·Ö´íÎó:Ò»¸ö¹ÊÕÏ³£³£µ¼ÖÂµ±Ç°½ø³ÌµÄÆÆ»µ¶øÏµÍ³¼ÌÐø¹¤×÷. ÏµÍ³¿ÉÄÜ±ÀÀ£, Èç¹ûÒ»¸ö¹ÊÕÏ·¢ÉúÔÚÒ»¸ö½ø³ÌµÄÉÏÏÂÎÄÖ®Íâ, »òÕßÈç¹ûÏµÍ³µÄÒ»Ð©ÖÁ¹ØÖØÒªµÄ²¿·Ö»Ù»µÁË. µ«ÊÇµ±ÊÇÒ»¸öÇý¶¯´íÎóµ¼ÖÂµÄÎÊÌâ, Ëü³£³£Ö»»áµ¼ÖÂ²»ÐÒÊ¹ÓÃÇý¶¯µÄ½ø³ÌµÄÍ»È»ËÀµô. µ±½ø³Ì±»Ïú»ÙÊ±Î¨Ò»ÎÞ·¨»Ö¸´µÄÆÆ»µÊÇ·ÖÅä¸ø½ø³ÌÉÏÏÂÎÄµÄÒ»Ð©ÄÚ´æ¶ªÊ§ÁË; ÀýÈç, Çý¶¯Í¨¹ý kmalloc ·ÖÅäµÄ¶¯Ì¬ÁÐ±í¿ÉÄÜ¶ªÊ§. µ«ÊÇ, ÒòÎªÄÚºËÎªÈÎºÎÒ»¸ö´ò¿ªµÄÉè±¸ÔÚ½ø³ÌËÀÍöÊ±µ÷ÓÃ¹Ø±Õ²Ù×÷, ÄãµÄÇý¶¯¿ÉÒÔÊÍ·ÅÓÉ open ·½·¨·ÖÅäµÄ¶«Î÷.</p>
+<p>¾¡¹ÜÒ»¸ö oops ³£³£¶¼²»»á¹Ø±ÕÕû¸öÏµÍ³, ÄãºÜÓÐ¿ÉÄÜ·¢ÏÖÔÚ·¢ÉúÒ»´ÎºóÐèÒªÖØÆôÏµÍ³. Ò»¸öÂúÊÇ´íÎóµÄÇý¶¯ÄÜÊ¹Ó²¼þ´¦ÓÚ²»ÄÜÊ¹ÓÃµÄ×´Ì¬, Ê¹ÄÚºË×ÊÔ´´¦ÓÚ²»Ò»ÖÂµÄ×´Ì¬, »òÕß, ×î»µµÄÇé¿ö, ÔÚËæ»úµÄµØ·½ÆÆ»µÄÚºËÄÚ´æ. ³£³£Äã¿É¼òµ¥µØÐ¶ÔØÄãµÄÆÆÇý¶¯²¢ÇÒÔÚÒ»´Î oops ºóÖØÊÔ. È»¶ø, Èç¹ûÄã¿´µ½ÈÎºÎ¶«Î÷½¨ÒéËµÏµÍ³×÷ÎªÒ»¸öÕûÌå²»Ì«ºÃÁË, Äã×îºÃÁ¢¿ÌÖØÆô.</p>
+<p>ÎÒÃÇÒÑ¾­Ëµ¹ý, µ±ÄÚºË´úÂë³ö´í, Ò»¸öÌáÊ¾ÐÔµÄÏûÏ¢´òÓ¡ÔÚ¿ØÖÆÌ¨ÉÏ. ÏÂÒ»½Ú½âÊÍÈçºÎ½âÊÍ²¢ÀûÓÃÕâÑùµÄÏûÏ¢. ¾¡¹ÜËüÃÇ¶ÔÐÂÊÖ¿´À´Ïàµ±Ä£ºý, ´¦ÀíÆ÷×ª´¢ÊÇºÜÓÐÈ¤µÄÐÅÏ¢, ³£³£×ã¹»À´²éÃ÷Ò»¸ö³ÌÐò´íÎó¶ø²»ÐèÒª¸½¼ÓµÄ²âÊÔ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="OopsMessages.scet"></a>4.5.1.&#160;oops ÏûÏ¢</h3></div></div></div>
+<p>´ó²¿·Ö bug ÒÔ½âÒýÓÃ NULL Ö¸Õë»òÕßÊ¹ÓÃÆäËû²»ÕýÈ·Ö¸ÕëÖµÀ´±íÏÖ×Ô¼ºµÄ. ´ËÀà bug Í¨³£µÄÊä³öÊÇÒ»¸ö oops ÏûÏ¢.</p>
+<p>´¦ÀíÆ÷Ê¹ÓÃµÄÈÎºÎµØÖ·¼¸ºõ¶¼ÊÇÒ»¸öÐéÄâµØÖ·, Í¨¹ýÒ»¸ö¸´ÔÓµÄÒ³±í½á¹¹Ó³ÉäÎªÎïÀíµØÖ·(ÀýÍâÊÇÄÚ´æ¹ÜÀí×ÓÏµÍ³×Ô¼ºÊ¹ÓÃµÄÎïÀíµØÖ·). µ±½âÒýÓÃÒ»¸öÎÞÐ§µÄÖ¸Õë, ·ÖÒ³»úÖÆÎÞ·¨Ó³ÉäÖ¸Õëµ½Ò»¸öÎïÀíµØÖ·, ´¦ÀíÆ÷·¢³öÒ»¸öÒ³´íÎó¸ø²Ù×÷ÏµÍ³. Èç¹ûµØÖ·ÎÞÐ§, ÄÚºËÎÞ·¨"Ò³Èë"È±Ê§µÄµØÖ·; Ëü(³£³£)²úÉúÒ»¸ö oops Èç¹ûÔÚ´¦ÀíÆ÷´¦ÓÚ¹ÜÀíÄ£Ê½Ê±·¢ÉúÕâ¸öÇé¿ö.</p>
+<p>Ò»¸ö oops ÏÔÊ¾ÁË³ö´íÊ±µÄ´¦ÀíÆ÷×´Ì¬, °üÀ¨CPU ¼Ä´æÆ÷ÄÚÈÝºÍÆäËû¿´À´²»¿ÉÀí½âµÄÐÅÏ¢. ÏûÏ¢ÓÉ´íÎó´¦ÀíµÄ printk Óï¾ä²úÉú( arch/*/kernel/traps.c )²¢ÇÒÈçÍ¬Ç°Ãæ "printk" Ò»½ÚÖÐÃèÊöµÄ±»·ÖÅÉ.</p>
+<p>ÎÒÃÇ¿´Ò»¸öÕâÑùµÄÏûÏ¢. ÕâÊÇÀ´×ÔÔÚÔËÐÐ 2.6 ÄÚºËµÄ PC ÉÏÒ»¸ö NULL Ö¸Õëµ¼ÖÂµÄ½á¹û. ÕâÀï×îÏà¹ØµÄÐÅÏ¢ÊÇÖ¸ÁîÖ¸Õë(EIP), ´íÎóÖ¸ÁîµÄµØÖ·.</p>
+<pre class="screen">
+Unable to handle kernel NULL pointer dereference at virtual address 00000000
+ printing eip:  
+d083a064  
+Oops: 0002 [#1]  
+SMP  
+CPU:  0  
+EIP:  0060:[&lt;d083a064&gt;]  Not tainted  
+EFLAGS: 00010246  (2.6.6)  
+EIP is at faulty_write+0x4/0x10 [faulty]  
+eax: 00000000  ebx: 00000000  ecx: 00000000  edx: 00000000  
+esi: cf8b2460  edi: cf8b2480  ebp: 00000005  esp: c31c5f74  
+ds: 007b  es: 007b  ss: 0068  
+
+Process bash (pid: 2086, threadinfo=c31c4000 task=cfa0a6c0) 
+Stack: c0150558 cf8b2460 080e9408 00000005 cf8b2480 00000000 cf8b2460 cf8b2460 fffffff7 080e9408 c31c4000 c0150682 cf8b2460 080e9408 00000005 cf8b2480 00000000 00000001 00000005 c0103f8f 00000001 080e9408 00000005 00000005 
+Call Trace:
+ [&lt;c0150558&gt;] vfs_write+0xb8/0x130
+ [&lt;c0150682&gt;] sys_write+0x42/0x70
+ [&lt;c0103f8f&gt;] syscall_call+0x7/0xb
+
+Code: 89 15 00 00 00 00 c3 90 8d 74 26 00 83 ec 0c b8 00 a6 83 d0 
+</pre>
+<p>Ð´ÈëÒ»¸öÓÉ»µÄ£¿éÓµÓÐµÄÉè±¸¶ø²úÉúµÄÏûÏ¢, Ò»¸ö¹ÊÒâÓÃÀ´ÑÝÊ¾Ê§Ð§µÄÄ£¿é. faulty.c µÄ write ·½·¨µÄÊµÏÖÊÇËöÏ¸µÄ:</p>
+<pre class="programlisting">
+ssize_t faulty_write (struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+        /* make a simple fault by dereferencing a NULL pointer */
+        *(int *)0 = 0;
+        return 0;
+}
+</pre>
+<p>ÈçÄãÄÜ¼û, ÎÒÃÇÕâÀï×öµÄÊÇ½âÒýÓÃÒ»¸ö NULL Ö¸Õë. ÒòÎª 0 Ò»Ö±ÊÇÒ»¸öÎÞÐ§µÄÖ¸ÕëÖµ, Ò»¸ö´íÎó·¢Éú, ÓÉÄÚºË×ª±äÎªÇ°ÃæÕ¹Ê¾µÄ oops ÏûÏ¢. µ÷ÓÃ½ø³Ì½Ó×Å±»É±µô.</p>
+<p>´íÎóÄ£¿éÓÐ²»Í¬µÄ´íÎóÇé¿öÔÚËüµÄ¶ÁÊµÏÖÖÐ:</p>
+<pre class="programlisting">
+ssize_t faulty_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+    int ret;
+    char stack_buf[4];
+
+    /* Let's try a buffer overflow */
+    memset(stack_buf, 0xff, 20);
+    if (count &gt; 4)
+
+        count = 4; /* copy 4 bytes to the user */
+    ret = copy_to_user(buf, stack_buf, count);
+    if (!ret)
+
+        return count;
+    return ret;
+}
+</pre>
+<p>Õâ¸ö·½·¨¿½±´Ò»¸ö×Ö´®µ½Ò»¸ö±¾µØ±äÁ¿; ²»ÐÒµÄÊÇ, ×Ö´®³¤ÓÚÄ¿µÄÊý×é. µ±º¯Êý·µ»ØÊ±µ¼ÖÂµÄ»º´æÇøÒç³öÒýÆðÒ»´Î oops . ÒòÎª·µ»ØÖ¸ÁîÊ¹Ö¸ÁîÖ¸Õëµ½²»ÖªºÎ´¦, ÕâÀàµÄ´íÎóºÜÄÑ¸ú×Ù, ²¢ÇÒÄãµÃµ½ÈçÏÂµÄ:</p>
+<pre class="programlisting">
+EIP: 0010:[&lt;00000000&gt;]
+Unable to handle kernel paging request at virtual address ffffffff
+
+ printing eip:  
+ffffffff  
+Oops: 0000 [#5]  
+SMP  
+CPU:  0  
+EIP:  0060:[&lt;ffffffff&gt;]  Not tainted  
+EFLAGS: 00010296  (2.6.6)  
+EIP is at 0xffffffff  
+eax: 0000000c  ebx: ffffffff  ecx: 00000000  edx: bfffda7c  
+esi: cf434f00  edi: ffffffff  ebp: 00002000  esp: c27fff78  
+ds: 007b  es: 007b  ss: 0068  
+
+Process head (pid: 2331, threadinfo=c27fe000 task=c3226150) 
+Stack: ffffffff bfffda70 00002000 cf434f20 00000001 00000286 cf434f00 fffffff7 bfffda70 c27fe000 c0150612 cf434f00 bfffda70 00002000 cf434f20 00000000 00000003 00002000 c0103f8f 00000003 bfffda70 00002000 00002000 bfffda70 
+Call Trace: [&lt;c0150612&gt;] sys_read+0x42/0x70 [&lt;c0103f8f&gt;] syscall_call+0x7/0xb 
+Code: Bad EIP value. 
+</pre>
+<p>Õâ¸öÇé¿ö, ÎÒÃÇÖ»¿´µ½²¿·ÖµÄµ÷ÓÃ¶ÑÕ»( vfs_read ºÍ faulty_read ¶ªÊ§ ), ÄÚºË±§Ô¹Ò»¸ö"»µ EIP Öµ". Õâ¸ö±§Ô¹ºÍÔÚ¿ªÍ·ÁÐ³öµÄ·¸´íµÄµØÖ· ( ffffffff ) ¶¼°µÊ¾ÄÚºË¶ÑÕ»ÒÑ±»ÆÆ»µ.</p>
+<p>Í¨³£, µ±ÄãÃæ¶ÔÒ»¸ö oops, µÚÒ»¼þÊÂÊÇ²é¿´·¢ÉúÎÊÌâµÄÎ»ÖÃ, ³£³£Óëµ÷ÓÃ¶ÑÕ»·Ö¿ªÁÐ³ö. ÔÚÉÏÃæÕ¹Ê¾µÄµÚÒ»¸ö oops, Ïà¹ØµÄÐÐÊÇ:</p>
+<pre class="screen">
+EIP is at faulty_write+0x4/0x10 [faulty] 
+</pre>
+<p>ÕâÀïÎÒÃÇ¿´µ½, ÎÒÃÇÔøÔÚº¯Êý faulty_write, ËüÎ»ÓÚ faulty Ä£¿é( ÔÚ·½À¨ºÅÖÐÁÐ³öµÄ ). 16 ½øÖÆÊýÖ¸Ê¾Ö¸ÁîÖ¸ÕëÊÇº¯ÊýÄÚ 4 ×Ö½Ú, º¯Êý¿´À´ÊÇ 10 ( 16 ½øÖÆ )×Ö½Ú³¤. ³£³£Õâ¾Í×ã¹»À´ÖªµÀÎÊÌâÊÇÊ²Ã´.</p>
+<p>Èç¹ûÄãÐèÒª¸ü¶àÐÅÏ¢, µ÷ÓÃ¶ÑÕ»Õ¹Ê¾¸øÄãÈçºÎµÃÖªÔÚÄÄÀï»µÊÂµÄ. ¶ÑÕ»×Ô¼ºÊÇ 16 »úÖÆÐÎÊ½´òÓ¡µÄ; ×öÒ»µã¹¤×÷, Äã¾­³£¿ÉÒÔ´Ó¶ÑÕ»µÄÁÐ±íÖÐ¾ö¶¨±¾µØ±äÁ¿µÄÖµºÍº¯Êý²ÎÊý. ÓÐ¾­ÑéµÄÄÚºË¿ª·¢Õß¿ÉÒÔ´ÓÕâÀïµÄÄ³Ð©Ä£Ê½Ê¶±ðÖÐ»ñÒæ; ÀýÈç, Èç¹ûÄã¿´À´×Ô faulty_read oops µÄ¶ÑÕ»ÁÐ±í:</p>
+<pre class="screen">
+Stack: ffffffff bfffda70 00002000 cf434f20 00000001 00000286 cf434f00 fffffff7
+ bfffda70 c27fe000 c0150612 cf434f00 bfffda70 00002000 cf434f20 00000000
+ 00000003 00002000 c0103f8f 00000003 bfffda70 00002000 00002000 bfffda70 
+</pre>
+<p>¶ÑÕ»¶¥²¿µÄ ffffffff ÊÇÎÒÃÇ»µÊÂµÄ×Ö´®µÄÒ»²¿·Ö. ÔÚ x86 ÌåÏµ, È±Ê¡µØ, ÓÃ»§¿Õ¼ä¶ÑÕ»¿ªÊ¼ÓÚ 0xc0000000; Òò´Ë, Ñ­»·Öµ 0xbfffda70 ¿ÉÄÜÊÇÒ»¸öÓÃ»§¶ÑÕ»µØÖ·; Êµ¼ÊÉÏ, ËüÊÇ´«µÝ¸ø read ÏµÍ³µ÷ÓÃµÄ»º´æµØÖ·, Ã¿´ÎÏÂ´«¹ýÏµÍ³µ÷ÓÃÁ´Ê±¶¼±»¸´ÖÆ. ÔÚ x86 (ÓÖÒ»´Î, È±Ê¡µØ), ÄÚºË¿Õ¼ä¿ªÊ¼ÓÚ 0xc0000000, Òò´ËÕâ¸öÖ®ÉÏµÄÖµ¼¸ºõ¿Ï¶¨ÊÇÄÚºË¿Õ¼äµÄµØÖ·, µÈµÈ.</p>
+<p>×îºó, µ±¿´Ò»¸ö oops ÁÐ±í, Ò»Ö±¼àÊÓ±¾ÕÂ¿ªÊ¼ÌÖÂÛµÄ"slab ¶¾º¦"Öµ. ÀýÈç,Èç¹ûÄãµÃµ½Ò»¸öÄÚºË oops, ÀïÃæµÄ·¸´íµØÖ·Ê± 0xa5a5a5a5a5, Äã¼¸ºõ¿Ï¶¨ - Ä³¸öµØ·½ÔÚ³õÊ¼»¯¶¯Ì¬ÄÚ´æ.</p>
+<p>Çë×¢Òâ, Ö»ÔÚÄãµÄÄÚºËÊÇ´ò¿ª CONFIG_KALLSYMS Ñ¡Ïî¶ø±àÒëÊ±¿ÉÒÔ¿´µ½·ûºÅµÄµ÷ÓÃ¶ÑÕ». ·ñÔò, Äã¼ûµ½Ò»¸öÂãµÄ, 16 »úÖÆÁÐ±í, ³ý·ÇÄãÒÔ±ðµÄ·½Ê½¶ÔÆä½âÂë, ËüÊÇÔ¶Ô¶ÎÞÓÃµÄ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="SystemHange.sect"></a>4.5.2.&#160;ÏµÍ³¹ÒÆð</h3></div></div></div>
+<p>¾¡¹ÜÄÚºË´úÂëµÄ´ó²¿·Ö bug ÒÔ oops ÏûÏ¢½áÊø, ÓÐÊ±ºòËüÃÇ¿ÉÄÜÍêÈ«¹ÒÆðÏµÍ³. Èç¹ûÏµÍ³¹ÒÆð, Ã»ÓÐÏûÏ¢´òÓ¡. ÀýÈç, Èç¹û´úÂë½øÈëÒ»¸öÎÞÏÞÑ­»·, ÄÚºËÍ£Ö¹µ÷¶È,<sup>[<a name="id422785" href="#ftn.id422785">15</a>]</sup> ²¢ÇÒÏµÍ³²»»áÏìÓ¦ÈÎºÎ¶¯×÷, °üÀ¨Ä§Êõ Ctrl-Alt-Del ×éºÏ¼ü. ÄãÓÐ 2 ¸öÑ¡ÔñÀ´´¦ÀíÏµÍ³¹ÒÆð-- »òÕßÊÂÏÈ×èÖ¹ËüÃÇ, »òÕßÄÜ¹»ÊÂºóµ÷ÊÔËüÃÇ.</p>
+<p>Äã¿É×èÖ¹ÎÞÏÞÑ­»·Í¨¹ý²åÈë schedule ÒýÓÃÔÚÕ½ÂÔµãÉÏ. schedule µ÷ÓÃ( ÈçÄã¿ÉÄÜ²Âµ½µÄ )µ÷¶ÈÆ÷, Òò´Ë, ÔÊÐí±ðµÄ½ø³Ì´Óµ±Ç°½ø³ÌÍµÈ¡ CPU Êý¾Ý. Èç¹ûÒ»¸ö½ø³ÌÓÉÓÚÄãµÄÇý¶¯µÄbug¶øÔÚÄÚºË¿Õ¼äÑ­»·, schedule µ÷ÓÃÊ¹ÄãÄÜ¹»É±µô½ø³ÌÔÚ¸ú×Ù·¢ÉúÁËÊ²Ã´Ö®ºó.</p>
+<p>ÄãÓ¦µ±ÖªµÀ, µ±È», ÈçºÎ¶Ô schedule µÄµ÷ÓÃ¿ÉÄÜ´´ÔìÒ»¸ö¸½¼ÓµÄÖØÈëµ÷ÓÃÔ´µ½ÄãµÄÇý¶¯, ÒòÎªËüÔÊÐí±ðµÄ½ø³ÌÔËÐÐ. Õâ¸öÖØÈëÕý³£µØ²»Ó¦µ±ÊÇÎÊÌâ, ¼Ù¶¨ÄãÔÚÄãµÄÇý¶¯ÖÐÒÑ¾­Ê¹ÓÃÁËºÏÊÊµÄ¼ÓËø. È»¶ø, ÒªÈ·ÈÏÔÚÄãµÄÇý¶¯³ÖÓÐÒ»¸ö×ÔÐýËøµÄÈÎºÎÊ±¼ä²»ÄÜµ÷ÓÃ schedule.</p>
+<p>Èç¹ûÄãµÄÇý¶¯ÕæÕý¹ÒÆðÁËÏµÍ³, ²¢ÇÒÄã²»ÖªµÀÔÚÄÄÀï²åÈë schedule µ÷ÓÃ, ×îºÃµÄ·½Ê½ÊÇ¼ÓÈëÒ»Ð©´òÓ¡ÏûÏ¢²¢ÇÒÐ´µ½¿ØÖÆÌ¨(Èç¹ûÐèÒª, ¸Ä±ä console_loglevel Öµ).</p>
+<p>ÓÐÊ±ºòÏµÍ³¿ÉÄÜ¿´À´±»¹ÒÆð, µ«ÊÇÃ»ÓÐ. ÀýÈç, Õâ¿ÉÄÜ·¢ÉúÔÚ¼üÅÌÒÔÄ³¸öÆæ¹ÖµÄ·½Ê½±£³ÖËø×¡µÄÊ±ºò. ÕâÐ©¼Ù¹ÒÆð¿ÉÍ¨¹ý²é¿´ÄãÎª´ËÄ¿µÄÔËÐÐµÄ³ÌÐòµÄÊä³öÀ´¼ì²â. Ò»¸öÄãµÄÏÔÊ¾Æ÷ÉÏµÄÊ±ÖÓ»òÕßÏµÍ³¸ºÔØ±íÊÇÒ»¸öºÃµÄ×´Ì¬¼à¿ØÆ÷; Ö»ÒªËû¼ÌÐø¸üÐÂ, µ÷¶ÈÆ÷¾ÍÔÚ¹¤×÷.</p>
+<p>¶ÔÐí¶àµÄÉÏËøÒ»¸ö±Ø²»¿ÉÉÙµÄ¹¤¾ßÊÇ"Ä§Êõ sysrq ¼ü", ÔÚ´ó²¿·ÖÌåÏµÉÏ¶¼¿ÉÓÃ. Ä§¼ü sysrq ÊÇ PC ¼üÅÌÉÏ alt ºÍ sysrq ¼ü×éºÏÀ´·¢³öµÄ, »òÕßÔÚ±ðµÄÆ½Ì¨ÉÏÊ¹ÓÃÆäËûÌØÊâ¼ü(Ïê¼û documentation/sysrq.txt), ÔÚ´®¿Ú¿ØÖÆÌ¨ÉÏÒ²¿ÉÓÃ. Ò»¸öµÚÈý¼ü, ÓëÕâ 2 ¸öÒ»Æð°´ÏÂ, ½øÐÐÐí¶àÓÐÓÃµÄ¶¯×÷ÖÐµÄÒ»¸ö:</p>
+<p>r	¹Ø±Õ¼üÅÌÔ­Ê¼Ä£Ê½; ÓÃÔÚÒ»¸ö±ÀÀ£µÄÓ¦ÓÃ³ÌÐò( ÀýÈç X ·þÎñÆ÷ )¿ÉÄÜ½«ÄãµÄ¼üÅÌ¸ã³ÉÒ»¸öÆæ¹ÖµÄ×´Ì¬.</p>
+<p>k µ÷ÓÃ"°²È«×¢Òâ¼ü"( SAK ) ¹¦ÄÜ. SAK É±µôÔÚµ±Ç°¿ØÖÆÌ¨µÄËùÓÐÔËÐÐµÄ½ø³Ì, ¸øÄãÒ»¸ö¸É¾»µÄÖÕ¶Ë.</p>
+<p>s ½øÐÐÒ»¸öÈ«²¿´ÅÅÌµÄ½ô¼±Í¬²½.</p>
+<p>u	umount. ÊÔÍ¼ÖØÐÂ¼ÓÔØËùÓÐ´ÅÅÌÔÚÖ»¶ÁÄ£Ê½. Õâ¸ö²Ù×÷, ³£³£ÔÚ s Ö®ºóÂíÉÏµ÷ÓÃ, ¿ÉÒÔ½ÚÊ¡´óÁ¿µÄÎÄ¼þÏµÍ³¼ì²éÊ±¼ä, ÔÚÏµÍ³´¦ÓÚÑÏÖØÂé·³Ê±.</p>
+<p>b boot. Á¢¿ÌÖØÆôÏµÍ³. È·ÈÏÏÈÍ¬²½ºÍÖØÐÂ¼ÓÔØ´ÅÅÌ.</p>
+<p>p ´òÓ¡´¦ÀíÆ÷ÏûÏ¢.</p>
+<p>t ´òÓ¡µ±Ç°ÈÎÎñÁÐ±í.</p>
+<p>m ´òÓ¡ÄÚ´æÐÅÏ¢.</p>
+<p>ÓÐ±ðµÄÄ§Êõ sysrq ¹¦ÄÜ´æÔÚ; ÍêÕûÄÚÈÝ¿´ÄÚºËÔ´ÂëµÄÎÄµµÄ¿Â¼ÖÐµÄ sysrq.txt. ×¢ÒâÄ§Êõ sysrq ±ØÐëÔÚÄÚºËÅäÖÃÖÐÏÔÊ½Ê¹ÄÜ, ´ó²¿·ÖµÄ·¢²¼Ã»ÓÐÊ¹ÄÜËü, ÒòÎªÃ÷ÏÔµÄ°²È«ÀíÓÉ. ¶ÔÓÚÓÃÀ´¿ª·¢Çý¶¯µÄÏµÍ³, È»¶ø, Ê¹ÄÜÄ§Êõ sysrq ÖµµÃÎªËü×Ô¼º½¨Á¢Ò»¸öÐÂÄÚºËµÄÂé·³. Ä§Êõ sysrq ¿ÉÄÜÔÚÔËÐÐÊ±¹Ø±Õ, Ê¹ÓÃÈçÏÂµÄÒ»¸öÃüÁî:</p>
+echo 0 &gt; /proc/sys/kernel/sysrq 
+<p>Èç¹û·ÇÌØÈ¨ÓÃ»§ÄÜ¹»½Ó´¥ÄãµÄÏµÍ³¼üÅÌ, ÄãÓ¦µ±¿¼ÂÇ¹Ø±ÕËü, À´×èÖ¹ÓÐÒâ»òÎÞÒâµÄËð»µ. Ò»Ð©ÒÔÇ°µÄÄÚºË°æ±¾È±Ê¡¹Ø±Õ sysrq, Òò´ËÄãÐèÒªÔÚÔËÐÐÊ±Ê¹ÄÜËü, Í¨¹ýÏòÍ¬ÑùµÄ /proc/sys ÎÄ¼þÐ´Èë 1.</p>
+<p>sysrq ²Ù×÷ÊÇ·Ç³£ÓÐÓÃ, Òò´ËËüÃÇÒÑ¾­¶Ô²»ÄÜ½Ó´¥µ½¿ØÖÆÌ¨µÄÏµÍ³¹ÜÀíÔ±¿ÉÓÃ. ÎÄ¼þ /proc/sysrq-trigger ÊÇÒ»¸öÖ»Ð´µÄÈë¿Úµã, ÕâÀïÄã¿ÉÒÔ´¥·¢Ò»¸öÌØÊâµÄ sysrq ¶¯×÷, Í¨¹ýÐ´Èë¹ØÁªµÄÃüÁî×Ö·û; ½Ó×ÅÄã¿ÉÊÕ¼¯ÄÚºËÈÕÖ¾µÄÈÎºÎÊä³öÊý¾Ý. Õâ¸ö sysrq µÄÈë¿ÚµãÊÇÒ»Ö±¹¤×÷µÄ, ¼´±ã sysrq ÔÚ¿ØÖÆÌ¨ÉÏ±»¹Ø±Õ.</p>
+<p>Èç¹ûÄã¾­ÀúÒ»¸ö"»î¹Ò", ¾ÍÊÇÄãµÄÇý¶¯Õ³ÔÚÒ»¸öÑ­»·ÖÐ, µ«ÊÇÏµÍ³×÷ÎªÒ»¸öÕûÌå¹¦ÄÜÕý³£, ÓÐ¼¸¸ö¼¼ÊõÖµµÃÁË½â. ¾­³£µØ, sysrq p ¹¦ÄÜÖ±½ÓÖ¸Ïò³ö´íµÄº¯Êý. Èç¹ûÕâ¸ö²»ÐÐ, Äã»¹¿ÉÒÔÊ¹ÓÃÄÚºËÆÊÎö¹¦ÄÜ. ½¨Á¢Ò»¸ö´ò¿ªÆÊÎöµÄÄÚºË, ²¢ÇÒÓÃÃüÁîÐÐÖÐ profile=2 À´Æô¶¯Ëü. Ê¹ÓÃ readprofile ¹¤¾ß¸´Î»ÆÊÎö¼ÆÊýÆ÷, ½Ó×ÅÊ¹ÄãµÄÇý¶¯½øÈëËüµÄÑ­»·. Ò»»á¶ùºó, Ê¹ÓÃ readprofile À´¿´ÄÚºËÔÚÄÄÀïÏûºÄËüµÄÊ±¼ä. ÁíÒ»¸ö¸ü¸ß¼¶µÄÑ¡ÔñÊÇ oprofile, Äã¿ÉÒÔÒ²¿¼ÂÇÏÂ. ÎÄ¼þ documentation/basic_profiling.txt ¸æËßÄãÆô¶¯ÆÊÎöÆ÷ËùÓÐÐèÒªÖªµÀµÄ¶«Î÷.</p>
+<p>ÔÚ×·ÖðÏµÍ³¹ÒÆðÊ±Ò»¸öÖµµÃÊ¹ÓÃµÄ·À·¶´ëÊ©ÊÇÒÔÖ»¶Á·½Ê½¼ÓÔØÄãµÄ´ÅÅÌ(»òÕßÐ¶ÔØËüÃÇ). Èç¹û´ÅÅÌÊÇÖ»¶Á»òÕßÐ¶ÔØµÄ, ¾ÍÃ»ÓÐ·çÏÕËð»µÎÄ¼þÏµÍ³»òÕßÊ¹Ëü´¦ÓÚ²»Ò»ÖÂµÄ×´Ì¬. ÁíÍâµÄ¿ÉÄÜÐÔÊÇÊ¹ÓÃÒ»¸öÍ¨¹ý NFS, ÍøÂçÎÄ¼þÏµÍ³, À´¼ÓÔØËüµÄÈ«²¿ÎÄ¼þÏµÍ³µÄ¼ÆËã»ú, ÄÚºËµÄ"NFS-Root"¹¦ÄÜ±ØÐë´ò¿ª, ÔÚÆô¶¯Ê±±ØÐë´«µÝÌØÊâµÄ²ÎÊý. ÔÚÕâ¸öÇé¿öÏÂ, ¼´±ã²»ÒÀ¿¿ sysrq ÄãÒ²»á±ÜÃâÎÄ¼þÏµÍ³ÆÆ»µ, ÒòÎªÎÄ¼þÏµÍ³µÄÒ»ÖÂÓÐ NFS ·þÎñÆ÷À´¹ÜÀí, ÄãµÄÉè±¸Çý¶¯²»»á¹Ø±ÕËü.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id422785" href="#id422785">15</a>] </sup>Êµ¼ÊÉÏ, ¶à´¦ÀíÆ÷ÏµÍ³ÈÔÈ»ÔÚÆäËû´¦ÀíÆ÷ÉÏµ÷¶È, ÉõÖÁÒ»¸öµ¥´¦ÀíÆ÷µÄ»úÆ÷¿ÉÄÜÖØÐÂµ÷¶È, Èç¹ûÄÚºËÇÀÕ¼±»Ê¹ÄÜ. È»¶ø, ¶ÔÓÚ´ó²¿·ÖµÄÍ¨³£µÄÇé¿ö( µ¥´¦ÀíÆ÷²»Ê¹ÄÜÇÀÕ¼), ÏµÍ³Ò»ÆðÍ£Ö¹µ÷¶È.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch04s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch04.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch04s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">4.4.&#160;Ê¹ÓÃ¹Û²ìÀ´µ÷ÊÔ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;4.6.&#160;µ÷ÊÔÆ÷ºÍÏà¹Ø¹¤¾ß</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

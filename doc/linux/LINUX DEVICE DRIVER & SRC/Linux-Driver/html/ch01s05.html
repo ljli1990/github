@@ -1,0 +1,65 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>1.5.&#160;°æ±¾±àºÅ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch01.html" title="µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é">
+<link rel="prev" href="ch01s04.html" title="1.4.&#160;°²È«ÎÊÌâ">
+<link rel="next" href="ch01s06.html" title="1.6.&#160;°æÈ¨Ìõ¿î">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">1.5.&#160;°æ±¾±àºÅ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch01s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="VersionNumbering.sect1"></a>1.5.&#160;°æ±¾±àºÅ</h2></div></div></div>
+<p>ÔÚÉîÈë±à³ÌÖ®Ç°, ÎÒÃÇÓ¦µ±¶Ô Linux Ê¹ÓÃµÄ°æ±¾±àºÅ·½·¨ºÍ±¾ÊéÉæ¼°µÄ°æ±¾×öÐ©ËµÃ÷.</p>
+<p>Ê×ÏÈ, ×¢ÒâµÄÊÇÔÚ Linux ÏµÍ³ÖÐÊ¹ÓÃµÄÃ¿Ò»¸öÈí¼þ°üÓÐ×Ô¼ºµÄ·¢ÐÐ°æ±¾ºÅ, ËüÃÇÖ®¼ä´æÔÚÏà»¥ÒÀÀµÐÔ: ÄãÐèÒªÒ»¸ö°üµÄÌØ±ðµÄ°æ±¾À´ÔËÐÐÁíÍâÒ»¸ö°üµÄÌØ±ð°æ±¾. Linux ·¢²¼µÄ´´½¨Õß³£³£Òª´¦ÀíÆ¥ÅäÈí¼þ°üµÄ·±ËöÎÊÌâ, ÕâÑùÓÃ»§´ÓÒ»¸öÒÑ´ò°üºÃµÄ·¢²¼ÖÐ°²×°¾Í²»ÐèÒª´¦Àí°æ±¾ºÅµÄÎÊÌâÁË. ÁíÍâ, ÄÇÐ©Ìæ»»ºÍ¸üÐÂÏµÍ³Èí¼þµÄÈË, ¾ÍÒª×Ô¼º´¦ÀíÕâ¸öÎÊÌâÁË. ÐÒÔËµÄÊÇ, ¼¸ºõËùÓÐµÄÏÖ´ú·¢²¼Ö§³Öµ¥¸öÈí¼þ°üµÄ¸üÐÂ, Í¨¹ý¼ì²éÈí¼þ°üÖ®¼äµÄÒÀÀµÐÔ; ·¢²¼µÄÈí¼þ°ü¹ÜÀíÆ÷Í¨³£²»ÔÊÐí¸üÐÂ, Ö±µ½Âú×ãÁËÒÀÀµÐÔ.</p>
+<p>ÎªÁËÔËÐÐÎÒÃÇÔÚÌÖÂÛ¹ý³ÌÖÐ½éÉÜµÄÀý×Ó, Äã³ýÁË 2.6 ÄÚºËÒªÇóµÄÖ®Íâ²»ÐèÒªÈÎºÎ¹¤¾ßµÄÌØ±ð°æ±¾; ÈÎºÎ½üÆÚµÄ Linux ·¢²¼¶¼¿ÉÒÔÓÃÀ´ÔËÐÐÎÒÃÇµÄÀý×Ó. ÎÒÃÇ²»ÏêÊöÌØ±ðµÄÒªÇó, ÒòÎªÄãÄÚºËÔ´ÂëÖÐµÄÎÄ¼þ Document/Changes ÊÇÕâÖÖÐÅÏ¢µÄ×îºÃµÄÀ´Ô´, Èç¹ûÄãÓöµ½ÈÎºÎÎÊÌâ.</p>
+<p>ÖÁÓÚËµÄÚºË, Å¼ÊýµÄÄÚºË°æ±¾( ¾ÍÊÇËµ, 2.6.x )ÊÇÎÈ¶¨µÄ, ÓÃÀ´×öÍ¨ÓÃµÄ·¢²¼. ÆæÊý°æ±¾( ÀýÈç 2.7.x ), Ïà·´, ÊÇ¿ª·¢¿ìÕÕ²¢ÇÒÊÇ·Ç³£¶ÌÔÝµÄ; ËüÃÇµÄ×îÐÂ°æ±¾´ú±íÁË¿ª·¢µÄµ±Ç°×´Ì¬, µ«ÊÇ»áÔÚ¼¸ÌìÄÚ¾Í¹ýÊ±ÁË.</p>
+<p>±¾Êéº­¸ÇÄÚºË 2.6 °æ±¾. ÎÒÃÇµÄÄ¿±êÊÇÎªÉè±¸Çý¶¯±àÐ´ÕßÕ¹Ê¾ 2.6.10 ÄÚºËµÄËùÓÐ¿ÉÓÃµÄÌØÐÔ, ÕâÊÇÎÒÃÇÔÚ±àÐ´±¾ÊéÊ±µÄÄÚºË°æ±¾. ±¾ÊéµÄÕâÒ»°æ²»Éæ¼°ÄÚºËµÄÆäËû°æ±¾. ÄãÃÇÓÐÈË¸ÐÐËÈ¤µÄ»°, ±¾ÊéµÚ 2 °æÏêÏ¸º­¸Ç 2.0 µ½ 2.4 °æ±¾. ÄÇ¸ö°æ±¾ÒÀÈ»ÔÚ htt://lwn.net/Kernel/LDD2 ÔÚÏß»ñÈ¡µ½.</p>
+<p>ÄÚºË³ÌÐòÔ±Ó¦µ±Ã÷°×µ½ 2.6 ÄÚºËµÄ¿ª·¢¹ý³ÌµÄ¸Ä±ä. 2.6 ÏµÁÐÏÖÔÚ½ÓÊÜÖ®Ç°¿ÉÄÜÈÏÎª¶ÔÒ»¸ö"ÎÈ¶¨"µÄÄÚºËÌ«´óµÄ¸ü¸Ä. ÔÚÆäËûµÄ·½Ãæ, ÕâÒâÎ¶×ÅÄÚºËÄÚ²¿±à³Ì½Ó¿Ú¿ÉÄÜ¸Ä±ä, Òò´ËÇ±ÔÚµØ»áÊ¹±¾ÊéÄ³Ð©²¿·Ö¹ýÊ±; »ùÓÚÕâ¸öÔ­Òò, °éËæ×ÅÎÄ±¾µÄÀý×Ó´úÂëÒÑÖª¿ÉÒÔÔÚ 2.6.10 ÉÏÔËÐÐ, µ«ÊÇÄ³Ð©Ä£¿éÃ»ÓÐÔÚÖ®Ç°µÄ°æ±¾ÉÏ±àÒë. Ïë½ô¸úÄÚºË±à³Ì±ä»¯µÄ³ÌÐòÔ±×îºÃ¼ÓÈëÓÊ¼þÁÐ±í, ²¢ÇÒÀûÓÃÁÐÔÚ²Î¿¼ÊéÄ¿ÖÐµÄÍøÕ¾. Ò²ÓÐÒ»¸öÍøÒ³ÔÚ http://lwn.net/Articls/2.6-kernel-api ÉÏÎ¬»¤, Ëü°üº¬×Ô±¾Êé³ö°æÒÔÀ´µÄ API ¸Ä±äµÄÐÅÏ¢.</p>
+<p>±¾ÎÄ²»ÌØ±ðµØÌ¸ÂÛÆæÊýÄÚºË°æ±¾. ÆÕÍ¨ÓÃ»§²»»áÓÐÀíÓÉÔËÐÐ¿ª·¢ÖÐµÄÄÚºË. ÊÔÑéÐÂÌØÐÔµÄ¿ª·¢Õß, µ«ÊÇ, ÏëÔËÐÐ×îÐÂµÄ¿ª·¢°æ±¾. ËûÃÇ³£³£²»Í£¸üÐÂµ½×îÐÂµÄ°æ±¾, À´ÊÕ¼¯ bug µÄÐÞÕýºÍÐÂµÄÌØÐÔÊµÏÖ. µ«ÊÇ×¢Òâ, ÊÔÑéÖÐµÄÄÚºËÃ»ÓÐÈÎºÎ±£ÕÏ<sup>[<a name="id407315" href="#ftn.id407315">2</a>]</sup>, Èç¹ûÄãÓÉÓÚÒ»¸ö·Çµ±Ç°µÄÆæÊý°æ±¾ÄÚºËµÄÒ»¸ö bug ¶øÒýÆðµÄÎÊÌâ, Ã»ÈË¿ÉÒÔ°ïÄã. ÄÇÐ©ÔËÐÐÆæÊý°æ±¾ÄÚºËµÄÈË³£³£ÊÇ×ã¹»ÊìÁ·µÄÉîÈëµ½´úÂëÖÐ, ²»ÐèÒªÒ»±¾½Ì¿ÆÊé, ÕâÒ²ÊÇÎÒÃÇÎªÊ²Ã´²»Ì¸ÂÛ¿ª·¢ÖÐµÄÄÚºËµÄÁíÒ»¸öÔ­Òò.</p>
+<p>Linux µÄÁíÒ»¸öÌØÐÔÊÇËüÊÇÆ½Ì¨¶ÀÁ¢µÄ²Ù×÷ÏµÍ³, ²¢·Ç½ö½öÊÇ" PC ¿ËÂ¡ÌåµÄÒ»ÖÖ Unix ¿ËÂ¡ ", ¸ü¶àµÄ: Ëüµ±Ç°Ö§³Ö´óÔ¼ 20 ÖÖÌåÏµ. ±¾ÊéÊÇ¾¡¿ÉÄÜµØÆ½Ì¨¶ÀÁ¢, ËùÓÐµÄ´úÂëÀý×ÓÖÁÉÙÊÇÔÚ x86 ºÍ x86-64 Æ½Ì¨ÉÏ²âÊÔ¹ý. ÒòÎª´úÂëÒÑ¾­ÔÚ 32-bit ºÍ 64-bit ´¦ÀíÆ÷ÉÏ²âÊÔ¹ý, ËüÓ¦µ±ÄÜ¹»ÔÚËùÓÐÆäËûÆ½Ì¨ÉÏ±àÒëºÍÔËÐÐ. ÈçÍ¬Äã¿ÉÄÜÆÚÍûµØ, ÒÀÀµÌØÊâÓ²¼þµÄ´úÂëÀý×Ó²»»áÔÚËùÓÐÖ§³ÖµÄÆ½Ì¨ÉÏÔËÐÐ, µ«ÊÇÕâ¸öÍ¨³£ÔÚÔ´ÂëÀïËµÃ÷ÁË.</p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id407315" href="#id407315">2</a>] </sup>×¢Òâ, ¶ÔÓÚÅ¼Êý°æ±¾µÄÄÚºËÒ²²»´æÔÚ±£Ö¤, ³ý·ÇÄãÒÀ¿¿Ò»¸öÍ¬ÒâÌá¹©Ëü×Ô¼ºµÄµ£±£µÄÉÌÒµ¹©Ó¦ÉÌ.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch01s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">1.4.&#160;°²È«ÎÊÌâ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;1.6.&#160;°æÈ¨Ìõ¿î</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

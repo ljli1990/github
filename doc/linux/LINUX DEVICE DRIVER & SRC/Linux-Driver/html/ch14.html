@@ -1,0 +1,335 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>第&#160;14&#160;章&#160;Linux 设备模型-Linux设备驱动第三版（中文版）</title>
+<meta name="description" content="驱动开发" />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发,开发频道" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="prev" href="ch13s06.html" title="13.6.&#160;快速参考">
+<link rel="next" href="ch14s02.html" title="14.2.&#160;低级 sysfs 操作">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">第&#160;14&#160;章&#160;Linux 设备模型</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch13s06.html">上一页</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s02.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="TheLinuxDeviceModel.chap"></a>第&#160;14&#160;章&#160;Linux 设备模型</h2></div></div></div>
+<div class="toc">
+<p><b>目录</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch14.html#KobjectsKsetsandSubsystems.sect">14.1. Kobjects, Ksets 和 Subsystems </a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14.html#KobjectBasics.sect">14.1.1. Kobject 基础</a></span></dt>
+<dt><span class="sect2"><a href="ch14.html#KobjectHierachiesKsetsandSubsystems.sect">14.1.2. kobject 层次, kset, 和子系统</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s02.html">14.2. 低级 sysfs 操作</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s02.html#DefaultAttributes.sect">14.2.1. 缺省属性</a></span></dt>
+<dt><span class="sect2"><a href="ch14s02.html#NondefaultAttributes.sect">14.2.2. 非缺省属性</a></span></dt>
+<dt><span class="sect2"><a href="ch14s02.html#BinaryAttributes.sect">14.2.3. 二进制属性</a></span></dt>
+<dt><span class="sect2"><a href="ch14s02.html#SymbolicLinks.sect">14.2.4. 符号连接</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s03.html">14.3. 热插拔事件产生</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ch14s03.html#HotplugOperations.sect">14.3.1. 热插拔操作</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ch14s04.html">14.4. 总线, 设备, 和驱动</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s04.html#Buses.sect">14.4.1. 总线</a></span></dt>
+<dt><span class="sect2"><a href="ch14s04.html#Devices.sect">14.4.2. 设备</a></span></dt>
+<dt><span class="sect2"><a href="ch14s04.html#DeviceDrivers.sect2">14.4.3. 设备驱动</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s05.html">14.5. 类</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s05.html#TheclasssimpleInterface.sect2">14.5.1. class_simple 接口</a></span></dt>
+<dt><span class="sect2"><a href="ch14s05.html#TheFullClassInterface.sect2">14.5.2. 完整的类接口</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s06.html">14.6. 集成起来</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s06.html#AddaDevice.sect2">14.6.1. 添加一个设备</a></span></dt>
+<dt><span class="sect2"><a href="ch14s06.html#RemoveaDevice.sect2">14.6.2. 去除一个设备</a></span></dt>
+<dt><span class="sect2"><a href="ch14s06.html#AddaDriver.sect2">14.6.3. 添加一个驱动</a></span></dt>
+<dt><span class="sect2"><a href="ch14s06.html#RemoveaDriver.sect2">14.6.4. 去除一个驱动</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s07.html">14.7. 热插拔</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s07.html#DynamicDevices.sect2">14.7.1. 动态设备</a></span></dt>
+<dt><span class="sect2"><a href="ch14s07.html#ThesbinhotplugUtility.sect2">14.7.2. /sbin/hotplug 工具</a></span></dt>
+<dt><span class="sect2"><a href="ch14s07.html#Usingsbinhotplug.sect2">14.7.3. 使用 /sbin/hotplug </a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s08.html">14.8. 处理固件</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s08.html#TheKernelFirmwareInterface.sect2">14.8.1. 内核固件接口</a></span></dt>
+<dt><span class="sect2"><a href="ch14s08.html#HowItWorks.sect2">14.8.2. 它如何工作</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch14s09.html">14.9. 快速参考</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch14s09.html#Kobjects.sect2">14.9.1. Kobjects结构</a></span></dt>
+<dt><span class="sect2"><a href="ch14s09.html#SysfsOperations.sect2">14.9.2. sysfs 操作</a></span></dt>
+<dt><span class="sect2"><a href="ch14s09.html#BusesDevicesandDrivers.sect2">14.9.3. 总线, 设备, 和驱动</a></span></dt>
+<dt><span class="sect2"><a href="ch14s09.html#Classes.sect2">14.9.4. 类</a></span></dt>
+<dt><span class="sect2"><a href="ch14s09.html#Firmware.sect2">14.9.5. 固件</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<p>在 2.5 开发循环中一个声明的目标是为内核创建一个统一的设备模型. 之前的内核没有单一的数据结构, 使它们可以来获取关于系统如何整合的信息. 尽管缺乏信息, 有时事情也进行的不错. 新系统, 带有它们的更加复杂的技术并且需要支持诸如电源管理等特性, 但是, 清楚地要求需要一个通用的描述系统结构的抽象.</p>
+<p>2.6 设备模型提供了这个抽象. 现在它用在内核来支持广泛的任务, 包括:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>电源管理和系统关机</span></span></dt>
+<dd><p>这些需要一个对系统的结构的理解. 例如, 一个 USB 宿主适配器不可能被关闭, 在处理所有的连接到这个适配器的设备之前. 这个设备模型使能了一个按照正确顺序的系统硬件的遍历.</p></dd>
+<dt><span class="term"><span>与用户空间的通讯</span></span></dt>
+<dd><p>sysfs 虚拟文件系统的实现被紧密地捆绑进设备模型, 并且暴露它所代表的结构. 关于系统到用户空间的信息提供和改变操作参数的旋纽正越来越多地通过 sysfs 和 通过设备模型来完成.</p></dd>
+<dt><span class="term"><span>可热插拔设备</span></span></dt>
+<dd><p>计算机硬件正更多地动态变化; 外设可因用户的一时念头而进出. 在内核中使用的来处理和(特别的)与用户空间关于设备插入和拔出的通讯, 是由设备模型来管理.</p></dd>
+<dt><span class="term"><span>设备类别</span></span></dt>
+<dd><p>系统的许多部分对设备如何连接没有兴趣, 但是它们需要知道什么类型的设备可用. 设备模型包括一个机制来分配设备给类别, 它在一个更高的功能性的级别描述了这些设备, 并且允许它们从用户空间被发现.</p></dd>
+<dt><span class="term"><span>对象生命期</span></span></dt>
+<dd><p>许多上面描述的功能, 包括热插拔支持和 sysfs,  使在内核中创建和操作对象复杂了. 设备模型的实现要求创建一套机制来处理对象生命期, 它们之间的关系, 和它们在用户空间的表示.</p></dd>
+</dl></div>
+<p>Linux 设备模型是一个复杂的数据结构. 例如, 考虑图<a href="ch14.html#ldd3-14-1.fig" title="图&#160;14.1.&#160;设备模型的一小部分">设备模型的一小部分</a>, 它展示了(用简单的形式)和 USB 鼠标关联的设备模型结构的微小片段. 图中心的下方, 我们看到核心"设备"树, 展示了鼠标如何连接到系统. "bus"树跟踪什么连接到每个总线, 而在"classes" 下的子树涉及设备提供的功能, 不管它们是如何连接的. 设备模型树即便在一个简单的系统中也包含几百个节点, 如同在图中展示的那些; 它是一个难于整个呈现的数据结构.</p>
+<div class="figure">
+<a name="ldd3-14-1.fig"></a><p class="title"><b>图&#160;14.1.&#160;设备模型的一小部分</b></p>
+<div><img src="images/snagitldd3/ldd3-14-1.png" alt="设备模型的一小部分"></div>
+</div>
+<p>对大部分, Linux 设备模型代码负责所有这些方面, 而不强加自己于驱动作者之上. 它大部分位于后面; 和设备模型的直接交互通常由总线一级的逻辑和各种其他的内核子系统处理. 结果, 许多驱动作者会完全忽略设备模型, 并且信任它来照顾它自己.</p>
+<p>有时, 但是, 理解设备模型是一个好事情. 有时设备模型从其他的层后面遛出来; 例如, 通用的 DMA 代码( 我们在第 15 章遇到) 使用 struct device. 你可能想使用一些由设备模型提供的能力, 例如引用计数和由 kobjects 提供的相关特色. 通过 sysfs 和 用户空间的通讯也是一个设备模型功能; 本章解释了这个通讯如何工作.</p>
+<p>但是, 我们开始于一个自底而上的设备模型的表述. 设备模型的复杂性使得难于从一个高层视角来理解. 我们的希望是, 通过展示低层设备组件如何工作, 我们可为你准备这个挑战, 掌握这些组件如何用来建立更大的结构.</p>
+<p>对大部分读者, 本章可作为高级材料,不需要在第一次读完. 鼓励那些对 Linux 设备模型如何工作感兴趣的人努力向前, 但是, 在我们进入底层细节时.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="KobjectsKsetsandSubsystems.sect"></a>14.1.&#160;Kobjects, Ksets 和 Subsystems </h2></div></div></div>
+<p>Kobject 是基础的结构, 它保持设备模型在一起. 初始地它被作为一个简单的引用计数, 但是它的责任已随时间增长, 并且因此有了它自己的战场. struct kobject 所处理的任务和它的支持代码现在包括:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>对象的引用计数</span></span></dt>
+<dd><p>常常, 当一个内核对象被创建, 没有方法知道它会存在多长时间. 一种跟踪这种对象生命周期的方法是通过引用计数. 当没有内核代码持有对给定对象的引用, 那个对象已经完成了它的有用寿命并且可以被删除.</p></dd>
+<dt><span class="term"><span>sysfs 表示</span></span></dt>
+<dd><p>在 sysfs 中出现的每个对象在它的下面都有一个 kobject, 它和内核交互来创建它的可见表示.</p></dd>
+<dt><span class="term"><span>数据结构粘和</span></span></dt>
+<dd><p>设备模型是, 整体来看, 一个极端复杂的由多级组成的数据结构, 各级之间有许多连接. kobject 实现这个结构并且保持它在一起.</p></dd>
+<dt><span class="term"><span>热插拔事件处理</span></span></dt>
+<dd><p>kobject 子系统处理事件的产生, 事件通知用户空间关于系统中硬件的来去.</p></dd>
+</dl></div>
+<p>你可能从前面的列表总结出 kobject 是一个复杂的结构. 这可能是对的. 通过一次看一部分, 但是, 是有可能理解这个结构和它如何工作的.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="KobjectBasics.sect"></a>14.1.1.&#160;Kobject 基础</h3></div></div></div>
+<p>一个 kobject 有类型 struct kobject; 它在 &lt;linux/kobject.h&gt; 中定义. 这个文件还包含许多其他和 kobject 相关的结构的声明, 一个操作它们的函数的长列表.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Embeddingkobjects.sect"></a>14.1.1.1.&#160;嵌入的 kobjects</h4></div></div></div>
+<p>在我们进入细节前, 值得花些时间理解如何使用 kobjects. 如果你回看被 kobjects 处理的函数列表, 你会看到它们都是代表其他对象进行的服务. 一个 kobject, 换句话说, 对其自己很少感兴趣; 它存在仅仅为了结合一个高级对象到设备模型.</p>
+<p>因此, 对于内核代码它很少(甚至不知道)创建一个孤立的 kobject; 相反, kobject 被用来控制存取更大的, 特定域的对象. 为此, kobject 被嵌入到其他结构中. 如果你习惯以面向对象的术语考虑事情, kobject 可被看作一个顶级的, 抽象类, 其他的类自它而来. 一个 kobject 实现一系列功能, 这些功能对自己不是特别有用而对其他对象是好的. C 语言不允许直接表达继承, 因此其他的技术 -- 例如将一个结构嵌入另一个 -- 必须使用.</p>
+<p>作为一个例子, 让我们回看 struct cdev, 我们在第 3 章遇到过它. 那个结构, 如同在 2.6.10 内核中发现的, 看来如此:</p>
+<pre class="programlisting">
+struct cdev {
+ struct kobject kobj;
+ struct module *owner;
+ struct file_operations *ops;
+ struct list_head list;
+ dev_t dev;
+ unsigned int count; 
+};
+</pre>
+<p>我们可以看出, cdev 结构有一个 kobject 嵌在里面. 如果你有一个这样的结构, 会发现它的嵌入的 kobject 只是使用 kobj 成员. 使用 kobjects 的代码有相反的问题, 但是: 如果一个 struct kobject 指针, 什么是指向包含结构的指针? 你应当避免窍门(例如假定 kobject 是在结构的开始), 并且, 相反, 使用 container_of 宏 (在第 3 章的"open 方法"一节中介绍的). 因此转换一个指向嵌在一个结构 cdev 中的一个 struct kobject 的指针 kp 的方法是:</p>
+<pre class="programlisting">
+struct cdev *device = container_of(kp, struct cdev, kobj); 
+</pre>
+<p>程序员常常定义一个简单的宏来"后向转换" kobject 指针到包含类型.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Kobjectinitialization.sect"></a>14.1.1.2.&#160;kobject 初始化</h4></div></div></div>
+<p>本书已经展示了许多数据类型, 带有简单的在编译或者运行时初始化机制. 一个 kobject 的初始化有些复杂, 特别当使用它的所有函数时. 不管一个 kobject 如何使用, 但是, 必须进行几个步骤.</p>
+<p>这些步骤的第一个是仅仅设置整个 kobject 为 0, 常常使用一个对 memset 的调用. 常常这个初始化作为清零这个 kobjiect 嵌入的结构的一部分. 清零一个 kobject 失败导致非常奇怪的崩溃, 进一步会掉线; 这不是你想跳过的一步.</p>
+<p>下一步是设立一些内部成员, 使用对 kobject_init() 的调用:</p>
+<pre class="programlisting">
+void kobject_init(struct kobject *kobj); 
+</pre>
+<p>在其他事情中, kobject_init 设置 kobject 的引用计数为 1. 调用 kobject_init 不够, 但是. kobject 用户必须, 至少, 设置 kobject 的名子. 这是用在 sysfs 入口的名子. 如果你深入内核代码, 你可以发现直接拷贝一个字符串到 kobject 的名子成员的代码, 但是应当避免这个方法. 相反, 使用:</p>
+<pre class="programlisting">
+int kobject_set_name(struct kobject *kobj, const char *format, ...); 
+</pre>
+<p>这个函数采用一个 printk 风格的变量参数列表. 不管你信或不信, 对这种操作实际上可能失败( 他可能试图分配内存 ); 负责任的代码应当检查返回值并且有针对性的相应.</p>
+<p>其他的由创建者应当设置的 kobject 成员, 直接或间接, 是 ktype, kset, 和 parent. 我们在本章稍后到这些.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Referencecountmanipulation.sect"></a>14.1.1.3.&#160;引用计数的操作</h4></div></div></div>
+<p>一个 kobject 的其中一个关键函数是作为一个引用计数器, 给一个它被嵌入的对象. 只要对这个对象的引用存在, 这个对象( 和支持它的代码) 必须继续存在. 来操作一个 kobject 的引用计数的低级函数是:</p>
+<pre class="programlisting">
+struct kobject *kobject_get(struct kobject *kobj);
+void kobject_put(struct kobject *kobj);
+</pre>
+<p>一个对 kobject_get 的成功调用递增 kobject 的 引用计数并且返回一个指向 kobject 的指针. 如果, 但是, 这个 kobject 已经在被销毁的过程中, 这个操作失败, 并且 kobject_get 返回 NULL. 这个返回值必须总是被测试, 否则可能导致无法结束的令人不愉快的竞争情况.</p>
+<p>当一个引用被释放, 对 kobject_put 的调用递减引用计数, 并且可能地, 释放这个对象. 记住 kobject _init 设置这个引用计数为 1; 因此当你创建一个 kobject, 你应当确保对应地采取 kobject_put 调用, 当这个初始化引用不再需要.</p>
+<p>注意, 在许多情况下, 在 kobject 自身中的引用计数可能不足以阻止竞争情况. 一个 kobject 的存在( 以及它的包含结构 ) 可能非常, 例如, 需要创建这个 kobject 的模块的继续存在. 在这个 kobject 仍然在被传送时不能卸载那个模块. 这是为什么我们上面看到的 cdev 结构包含一个 struct module 指针. struct cdev 的引用计数实现如下:</p>
+<pre class="programlisting">
+struct kobject *cdev_get(struct cdev *p) 
+{
+ struct module *owner = p-&gt;owner;
+ struct kobject *kobj;
+ if (owner &amp;&amp; !try_module_get(owner))
+ return NULL;
+ kobj = kobject_get(&amp;p-&gt;kobj);
+ if (!kobj)
+ module_put(owner);
+ return kobj;
+}
+</pre>
+<p>创建一个对 cdev 结构的引用还需要创建一个对拥有它的模块的引用. 因此, cdev_get 使用 try_module_get 来试图递增这个模块的使用计数. 如果这个操作成功, kobject_get 被同样用来递增 kobject 的引用计数. 那个操作可能失败, 当然, 因此这个代码检查自 kobject_get 的返回值并且释放它的对模块的引用如果事情没有解决.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Releasefunctionsandkobjecttypes.sect"></a>14.1.1.4.&#160;释放函数和 kobject 类型</h4></div></div></div>
+<p>讨论中仍然缺失的一个重要事情是当一个 kobject 的引用计数到 0 时会发生什么. 创建 kobject 的代码通常不知道什么时候要发生这个情况; 如果它知道, 在第一位使用一个引用计数就没有意义了. 即便当引入 sysfs 时可预测的对象生命周期变得更加复杂; 用户空间程序可保持一个对 kobject 的引用( 通过保持一个它的关联的 sysfs 文件打开 )一段任意的时间.</p>
+<p>最后的结果是一个被 kobject 保护的结构无法在任何一个单个的, 可预测的驱动生命周期中的点被释放, 但是可以在必须准备在 kobject 的引用计数到 0 的任何时刻运行的代码中. 引用计数不在创建 kobject 的代码的直接控制之下. 因此这个代码必须被异步通知, 无论何时对它的 kobject 的最后引用消失.</p>
+<p>这个通知由 kobject 的一个释放函数来完成. 常常地, 这个方法有一个形式如下:</p>
+<pre class="programlisting">
+void my_object_release(struct kobject *kobj)
+{
+
+ struct my_object *mine = container_of(kobj, struct my_object, kobj); 
+
+/* Perform any additional cleanup on this object, then... */
+ kfree(mine);
+}
+</pre>
+<p>要强调的重要一点是: 每个 kobject 必须有一个释放函数, 并且这个 kobject 必须持续( 以一致的状态 ) 直到这个方法被调用. 如果这些限制不满足, 代码就有缺陷. 当这个对象还在使用时被释放会有风险, 或者在最后引用被返回后无法释放对象.</p>
+<p>有趣的是, 释放方法没有存储在 kobject 自身里面; 相反, 它被关联到包含 kobject 的结构类型中. 这个类型被跟踪, 用一个 struct kobj_type 结构类型, 常常简单地称为一个 "ktype". 这个结构看来如下:</p>
+<pre class="programlisting">
+struct kobj_type {
+ void (*release)(struct kobject *);
+ struct sysfs_ops *sysfs_ops;
+ struct attribute **default_attrs;
+};
+</pre>
+<p>在 struct kobj_type 中的 release 成员是, 当然, 一个指向这个 kobject 类型的 release 方法的指针. 我们将回到其他 2 个成员( sysfs_ops 和 default_attrs )在本章后面.</p>
+<p>每一个 kobject 需要有一个关联的 kobj_type 结构. 易混淆地, 指向这个结构的指针能在 2 个不同的地方找到. kobject 结构自身包含一个成员(称为 ktype)包含这个指针. 但是, 如果这个 kobject 是一个 kset 的成员, kobj_type 指针由 kset 提供. ( 我们将在下一节查看 ksets. ) 其间, 这个宏定义:</p>
+<pre class="programlisting">
+struct kobj_type *get_ktype(struct kobject *kobj); finds the kobj_type pointer for a given kobject. 
+</pre>
+</div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="KobjectHierachiesKsetsandSubsystems.sect"></a>14.1.2.&#160;kobject 层次, kset, 和子系统</h3></div></div></div>
+<p>kobject 结构常常用来连接对象到一个层级的结构中, 匹配正被建模的子系统的结构. 有 2 个分开的机制对于这个连接: parent 指针和 ksets.</p>
+<p>在结构 kobject 中的 parent 成员是一个指向其他对象的指针 -- 代表在层次中之上的下一级. 如果, 例如, 一个 kobject 表示一个 USB 设备, 它的 parent 指针可能指示这个设备被插入的 hub.</p>
+<p>parent 指针的主要用途是在 sysfs 层次中定位对象. 我们将看到这个如何工作, 在"低级 sysfs 操作"一节中.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Ksets.sect"></a>14.1.2.1.&#160;Ksets 对象</h4></div></div></div>
+<p>很多情况, 一个 kset 看来象一个 kobj_type 结构的扩展; 一个 kset 是一个嵌入到相同类型结构的 kobject 的集合. 但是, 虽然 struct kobj_type 关注的是一个对象的类型, struct kset 被聚合和集合所关注. 这 2 个概念已被分开以至于一致类型的对象可以出现在不同的集合中.</p>
+<p>因此, 一个 kset 的主要功能是容纳; 它可被当作顶层的给 kobjects 的容器类. 实际上, 每个 kset 在内部容纳它自己的 kobject, 并且它可以, 在许多情况下, 如同一个 kobject 相同的方式被对待. 值得注意的是 ksets 一直在 sysfs 中出现; 一旦一个 kset 已被建立并且加入到系统, 会有一个 sysfs 目录给它. kobjects 没有必要在 sysfs 中出现, 但是每个是 kset 成员的 kobject 都出现在那里.</p>
+<p>增加一个 kobject 到一个 kset 常常在一个对象创建时完成; 它是一个 2 步的过程. kobject 的 kset 成员必须 ???; 接着kobject 应当被传递到:</p>
+<pre class="programlisting">
+int kobject_add(struct kobject *kobj); 
+</pre>
+<p>如常, 程序员应当小心这个函数可能失败(在这个情况下它返回一个负错误码)并且相应地反应. 有一个内核提供的方便函数:</p>
+<pre class="programlisting">
+extern int kobject_register(struct kobject *kobj); 
+</pre>
+<p>这个函数仅仅是一个 kobject_init 和 kobject_add 的结合.</p>
+<p>当一个 kobject 被传递给 kobject_add, 它的引用计数被递增. kset 中容纳的, 毕竟, 是一个对这个对象的引用. 某种意义上, kobject 可能要必须从 kset 中移出来清除这个引用; 完成这个使用:</p>
+<pre class="programlisting">
+void kobject_del(struct kobject *kobj); 
+</pre>
+<p>还有一个 kobject_unregister 函数, 是 kobject_del 和 kobject_put 的结合.</p>
+<p>一个 kset 保持它的子女在一个标准的内核链表中. 在大部分情况下, 被包含的 kobjects 也有指向这个 kset 的指针( 或者, 严格地, 它的嵌入 kobject)在它们的 parent 的成员. 因此, 典型地, 一个 kset 和它的 kobjects 看来有些象你在图 <a href="ch14.html#ldd3-14-2.fig" title="图&#160;14.2.&#160;一个简单的 kset 层次">一个简单的 kset 层次</a>中所见. 记住:</p>
+<div class="figure">
+<a name="ldd3-14-2.fig"></a><p class="title"><b>图&#160;14.2.&#160;一个简单的 kset 层次</b></p>
+<div><img src="images/snagitldd3/ldd3-14-2.png" alt="一个简单的 kset 层次"></div>
+</div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>图表中的所有的被包含的 kobjects 实际上被嵌入在一些其他类型中, 甚至可能其他的 ksets.</p></li>
+<li><p>一个 kobject 的 parent 不要求是包含 kset( 尽管任何其他的组织可能是奇怪的和稀少的).</p></li>
+</ul></div>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Operationsonksets.sect"></a>14.1.2.2.&#160;ksets 之上的操作</h4></div></div></div>
+<p>对于初始化和设置, ksets 有一个接口非常类似于 kobjects. 下列函数存在:</p>
+<pre class="programlisting">
+void kset_init(struct kset *kset);
+int kset_add(struct kset *kset);
+int kset_register(struct kset *kset);
+void kset_unregister(struct kset *kset);
+</pre>
+<p>对大部分, 这些函数只是在 kset 的嵌入对象上调用类似的 kobject_ 函数.</p>
+<p>为管理 ksets 的引用计数, 情况大概相同:</p>
+<pre class="programlisting">
+struct kset *kset_get(struct kset *kset);
+void kset_put(struct kset *kset);
+</pre>
+<p>一个 kset 还有一个名子, 存储于嵌入的 kobject. 因此, 如果你有一个 kset 称为 my_set, 你将设置它的名子用:</p>
+<pre class="programlisting">
+kobject_set_name(&amp;my_set-&gt;kobj, "The name");
+</pre>
+<p>ksets 还有一个指针( 在 ktye 成员 )指向 kobject_type 结构来描述它包含的 kobject. 这个类型优先于在 kobject 自身中的 ktype 成员. 结果, 在典型的应用中, 在 struct kobject 中的 ktype 成员被留为 NULL, 因为 kset 中的相同成员是实际使用的那个.</p>
+<p>最后, 一个 kset 包含一个子系统指针(称为 subsys). 因此是时候讨论子系统了.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Subsystems.sect"></a>14.1.2.3.&#160;子系统</h4></div></div></div>
+<p>一个子系统是作为一个整体对内核一个高级部分的代表. 子系统常常(但是不是一直)出现在 sysfs 层次的顶级. 一些内核中的例子子系统包括 block_subsys(/sys/block, 给块设备), devices_subsys(/sys/devices, 核心设备层次), 以及一个特殊子系统给每个内核已知的总线类型. 一个驱动作者几乎从不需要创建一个新子系统; 如果你想这样做, 再仔细想想. 你可能需要什么, 最后, 是增加一个新类别, 如同在"类别"一节中描述的.</p>
+<p>一个子系统由一个简单结构代表:</p>
+<pre class="programlisting">
+struct subsystem {
+ struct kset kset;
+ struct rw_semaphore rwsem; 
+}; 
+</pre>
+<p>一个子系统, 因此, 其实只是一个对 kset 的包装, 有一个旗标丢在里面.</p>
+<p>每个 kset 必须属于一个子系统. 子系统成员关系帮助建立 kset 的位置在层次中, 但是, 更重要的, 子系统的 rwsem 旗标用来串行化对 kset 的内部链表的存取. 这个成员关系由在 struct kset 中的 subsys 指针所表示. 因此, 可以从 kset 的结构找到每个 kset 的包含子系统, 但是却无法直接从子系统结构发现多个包含在子系统中的 kset. </p>
+<p>子系统常常用一个特殊的宏声明:</p>
+<pre class="programlisting">
+decl_subsys(name, struct kobj_type *type, struct kset_hotplug_ops *hotplug_ops);
+</pre>
+<p>这个宏创建一个 struct subsystem 使用一个给这个宏的名子并后缀以 _subsys 而形成的名子. 这个宏还初始化内部的 kset 使用给定的 type 和 hotplug_ops. ( 我们在本章后面讨论热插拔操作). </p>
+<p>子系统有通常的建立和拆卸函数:</p>
+<pre class="programlisting">
+void subsystem_init(struct subsystem *subsys);
+int subsystem_register(struct subsystem *subsys);
+void subsystem_unregister(struct subsystem *subsys);
+struct subsystem *subsys_get(struct subsystem *subsys)
+void subsys_put(struct subsystem *subsys);
+</pre>
+<p>大部分这些操作只是作用在子系统的 kset上.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch13s06.html">上一页</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s02.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">13.6.&#160;快速参考&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;14.2.&#160;低级 sysfs 操作</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

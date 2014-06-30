@@ -1,0 +1,115 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch02s10.html" title="2.10.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch03s02.html" title="3.2.&#160;Ö÷´Î±àºÅ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s10.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch03s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="CharDrivers.chapter"></a>µÚ&#160;3&#160;ÕÂ&#160;×Ö·ûÇý¶¯</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch03.html#TheDesignofscull.sect">3.1. scull µÄÉè¼Æ</a></span></dt>
+<dt><span class="sect1"><a href="ch03s02.html">3.2. Ö÷´Î±àºÅ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch03s02.html#TheInternalRepresentationofDeviceNumber.sect">3.2.1. Éè±¸±àºÅµÄÄÚ²¿±íÊ¾</a></span></dt>
+<dt><span class="sect2"><a href="ch03s02.html#AllocatingandFreeingDeviceNumbers.sect">3.2.2. ·ÖÅäºÍÊÍ·ÅÉè±¸±àºÅ</a></span></dt>
+<dt><span class="sect2"><a href="ch03s02.html#DynamicAllocaionofMajorNumbers.sect">3.2.3. Ö÷±àºÅµÄ¶¯Ì¬·ÖÅä</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch03s03.html">3.3. Ò»Ð©ÖØÒªÊý¾Ý½á¹¹</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch03s03.html#FileOperation.sect">3.3.1. ÎÄ¼þ²Ù×÷</a></span></dt>
+<dt><span class="sect2"><a href="ch03s03.html#ThefileStructure.sect">3.3.2. ÎÄ¼þ½á¹¹</a></span></dt>
+<dt><span class="sect2"><a href="ch03s03.html#TheinodeStructure.sect">3.3.3. inode ½á¹¹</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch03s04.html">3.4. ×Ö·ûÉè±¸×¢²á</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch03s04.html#DeviceRegistrationinscull.sect">3.4.1. scull ÖÐµÄÉè±¸×¢²á</a></span></dt>
+<dt><span class="sect2"><a href="ch03s04.html#TheOlderWay.sect">3.4.2. ÀÏ·½·¨</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch03s05.html">3.5. open ºÍ release</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch03s05.html#TheopenMethod.sect">3.5.1. open ·½·¨</a></span></dt>
+<dt><span class="sect2"><a href="ch03s05.html#ThereleaseMethod.sect">3.5.2. release ·½·¨</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch03s06.html">3.6. scull µÄÄÚ´æÊ¹ÓÃ</a></span></dt>
+<dt><span class="sect1"><a href="ch03s07.html">3.7. ¶ÁºÍÐ´</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch03s07.html#ThereadMethod.sect">3.7.1. read ·½·¨</a></span></dt>
+<dt><span class="sect2"><a href="ch03s07.html#ThewriteMethod.sect">3.7.2. write ·½·¨</a></span></dt>
+<dt><span class="sect2"><a href="ch03s07.html#readvandwritev.sect">3.7.3. readv ºÍ writev</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch03s08.html">3.8. Ê¹ÓÃÐÂÉè±¸</a></span></dt>
+<dt><span class="sect1"><a href="ch03s09.html">3.9. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>±¾ÕÂµÄÄ¿µÄÊÇ±àÐ´Ò»¸öÍêÕûµÄ×Ö·ûÉè±¸Çý¶¯. ÎÒÃÇ¿ª·¢Ò»¸ö×Ö·ûÇý¶¯ÊÇÒòÎªÕâÒ»ÀàÊÊºÏ´ó²¿·Ö¼òµ¥Ó²¼þÉè±¸. ×Ö·ûÇý¶¯Ò²±È¿éÇý¶¯Ò×ÓÚÀí½â(ÎÒÃÇÔÚºóÐøÕÂ½Ú½Ó´¥). ÎÒÃÇµÄ×îÖÕÄ¿µÄÊÇ±àÐ´Ò»¸öÄ£¿é»¯µÄ×Ö·ûÇý¶¯, µ«ÊÇÎÒÃÇ²»»áÔÚ±¾ÕÂÌÖÂÛÄ£¿é»¯µÄÊÂÇé.</p>
+<p>¹á´®±¾ÕÂ, ÎÒÃÇÕ¹Ê¾´ÓÒ»¸öÕæÊµÉè±¸Çý¶¯ÌáÈ¡µÄ´úÂëÆ¬¶Î: scull( Simple Character Utility for Loading Localities). scull ÊÇÒ»¸ö×Ö·ûÇý¶¯, ²Ù×÷Ò»¿éÄÚ´æÇøÓòºÃÏñËüÊÇÒ»¸öÉè±¸. ÔÚ±¾ÕÂ, ÒòÎª scull µÄÕâ¸ö¹ÖÌØÐÔ, ÎÒÃÇ¿É»¥»»µØÊ¹ÓÃÉè±¸Õâ¸ö´ÊºÍ"scullÊ¹ÓÃµÄÄÚ´æÇø".</p>
+<p>scull µÄÓÅÊÆÔÚÓÚËü²»ÒÀÀµÓ²¼þ. scull Ö»ÊÇ²Ù×÷Ò»Ð©´ÓÄÚºË·ÖÅäµÄÄÚ´æ. ÈÎºÎÈË¶¼¿ÉÒÔ±àÒëºÍÔËÐÐ scull, ²¢ÇÒ scull ÔÚ Linux ÔËÐÐµÄÌåÏµ½á¹¹ÖÐ¿ÉÒÆÖ². ÁíÒ»·½Ãæ, Õâ¸öÉè±¸³ýÁËÑÝÊ¾ÄÚºËºÍ×Ö·ûÇý¶¯µÄ½Ó¿ÚºÍÔÊÐíÓÃ»§ÔËÐÐÒ»Ð©²âÊÔÖ®Íâ, ²»×öÈÎºÎÓÐÓÃµÄÊÂÇé.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheDesignofscull.sect"></a>3.1.&#160;scull µÄÉè¼Æ</h2></div></div></div>
+<p>±àÐ´Çý¶¯µÄµÚÒ»²½ÊÇ¶¨ÒåÇý¶¯½«ÒªÌá¹©¸øÓÃ»§³ÌÐòµÄÄÜÁ¦(»úÖÆ).ÒòÎªÎÒÃÇµÄ"Éè±¸"ÊÇ¼ÆËã»úÄÚ´æµÄÒ»²¿·Ö, ÎÒÃÇ¿É×ÔÓÉ×öÎÒÃÇÏë×öµÄÊÂÇé. Ëü¿ÉÒÔÊÇÒ»¸öË³ÐòµÄ»òÕßËæ»ú´æÈ¡µÄÉè±¸, Ò»¸ö»ò¶à¸öÉè±¸, µÈµÈ.</p>
+<p>ÎªÊ¹ scull ×÷ÎªÒ»¸öÄ£°åÀ´±àÐ´ÕæÊµÉè±¸µÄÕæÊµÇý¶¯, ÎÒÃÇ½«Õ¹Ê¾¸øÄãÈçºÎÔÚ¼ÆËã»úÄÚ´æÉÏÊµÏÖ¼¸¸öÉè±¸³éÏó, Ã¿¸öÓÐ²»Í¬µÄ¸öÐÔ.</p>
+<p>scull Ô´ÂëÊµÏÖÏÂÃæµÄÉè±¸. Ä£¿éÊµÏÖµÄÃ¿ÖÖÉè±¸¶¼±»ÒýÓÃ×öÒ»ÖÖÀàÐÍ.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>scull0 µ½ scull3</span></span></dt>
+<dd><p>4 ¸öÉè±¸, Ã¿¸öÓÉÒ»¸öÈ«¾ÖÓÀ¾ÃµÄÄÚ´æÇø×é³É. È«¾ÖÒâÎ¶×ÅÈç¹ûÉè±¸±»¶à´Î´ò¿ª, Éè±¸ÖÐº¬ÓÐµÄÊý¾ÝÓÉËùÓÐ´ò¿ªËüµÄÎÄ¼þÃèÊö·û¹²Ïí. ÓÀ¾ÃÒâÎ¶×ÅÈç¹ûÉè±¸¹Ø±ÕÓÖÖØÐÂ´ò¿ª, Êý¾Ý²»»á¶ªÊ§. Õâ¸öÉè±¸ÓÃÆðÀ´ÓÐÒâË¼, ÒòÎªËü¿ÉÒÔÓÃ¹ß³£µÄÃüÁîÀ´´æÈ¡ºÍ²âÊÔ, ÀýÈç cp, cat, ÒÔ¼° I/O ÖØ¶¨Ïò.</p></dd>
+<dt><span class="term"><span>scullpipe0 µ½ scullpipe3</span></span></dt>
+<dd><p>4 ¸ö FIFO (ÏÈÈëÏÈ³ö) Éè±¸, ÐÐÎªÏó¹ÜµÀ. Ò»¸ö½ø³Ì¶ÁµÄÄÚÈÝÀ´×ÔÁíÒ»¸ö½ø³ÌËùÐ´µÄ. Èç¹û¶à¸ö½ø³Ì¶ÁÍ¬Ò»¸öÉè±¸, ËüÃÇ¾ºÕùÊý¾Ý. scullpipe µÄÄÚ²¿½«Õ¹Ê¾×èÈû¶ÁÐ´ºÍ·Ç×èÈû¶ÁÐ´ÈçºÎÊµÏÖ, ¶ø²»±Ø²ÉÈ¡ÖÐ¶Ï. ¾¡¹ÜÕæÊµµÄÇý¶¯Ê¹ÓÃÓ²¼þÖÐ¶ÏÀ´Í¬²½ËüÃÇµÄÉè±¸, ×èÈûºÍ·Ç×èÈû²Ù×÷µÄÖ÷ÌâÊÇÖØÒªµÄ²¢ÇÒÓëÖÐ¶Ï´¦ÀíÊÇ·Ö¿ªµÄ.(ÔÚµÚ 10 ÕÂÉæ¼°).</p></dd>
+<dt><span class="term"><span>scullsingle</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>scullpriv</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>sculluid</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>scullwuid</span></span></dt>
+<dd><p>ÕâÐ©Éè±¸Óë scull0 ÏàËÆ, µ«ÊÇÔÚÊ²Ã´Ê±ºòÔÊÐí´ò¿ªÉÏÓÐÒ»Ð©ÏÞÖÆ. µÚÒ»¸ö( snullsingle) Ö»ÔÊÐíÒ»´ÎÒ»¸ö½ø³ÌÊ¹ÓÃÇý¶¯, ¶ø scullpriv ¶ÔÃ¿¸öÐéÄâÖÕ¶Ë(»òÕß X ÖÕ¶Ë»á»°)ÊÇË½ÓÐµÄ, ÒòÎªÃ¿¸ö¿ØÖÆÌ¨/ÖÕ¶ËÉÏµÄ½ø³ÌÓÐ²»Í¬µÄÄÚ´æÇø. sculluid ºÍ scullwuid ¿ÉÒÔ¶à´Î´ò¿ª, µ«ÊÇÒ»´ÎÖ»ÄÜÊÇÒ»¸öÓÃ»§; Ç°Õß·µ»ØÒ»¸ö"Éè±¸Ã¦"´íÎó, Èç¹ûÁíÒ»¸öÓÃ»§Ëø×ÅÉè±¸, ¶øºóÕßÊµÏÖ×èÈû´ò¿ª. ÕâÐ© scull µÄ±äÌå¿ÉÄÜ¿´À´»ìÏýÁË²ßÂÔºÍ»úÖÆ, µ«ÊÇËüÃÇÖµµÃ¿´¿´, ÒòÎªÒ»Ð©Êµ¼ÊÉè±¸ÐèÒªÕâÀà¹ÜÀí.</p></dd>
+</dl></div>
+<p>Ã¿¸ö scull Éè±¸ÑÝÊ¾ÁËÇý¶¯µÄ²»Í¬ÌØÉ«, ²¢ÇÒ³ÊÏÖÁË²»Í¬µÄÄÑ¶È. ±¾ÕÂÉæ¼° scull0 µ½ scull3 µÄÄÚ²¿; ¸ü¸ß¼¶µÄÉè±¸ÔÚµÚ 6 ÕÂÉæ¼°. scullpipe ÔÚ"Ò»¸ö×èÈû I/O Àý×Ó"Ò»½ÚÖÐÃèÊö, ÆäËûµÄÔÚ"Éè±¸ÎÄ¼þÉÏµÄ´æÈ¡¿ØÖÆ"ÖÐÃèÊö.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s10.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch03s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.10.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;3.2.&#160;Ö÷´Î±àºÅ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

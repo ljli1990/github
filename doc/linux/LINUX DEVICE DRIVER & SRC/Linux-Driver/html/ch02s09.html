@@ -1,0 +1,78 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.9.&#160;ÔÚÓÃ»§¿Õ¼ä×ö-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch02.html" title="µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é">
+<link rel="prev" href="ch02s08.html" title="2.8.&#160;Ä£¿é²ÎÊý">
+<link rel="next" href="ch02s10.html" title="2.10.&#160;¿ìËÙ²Î¿¼">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.9.&#160;ÔÚÓÃ»§¿Õ¼ä×ö</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s10.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DoingItinUserSpace.sect1"></a>2.9.&#160;ÔÚÓÃ»§¿Õ¼ä×ö</h2></div></div></div>
+<p> Ò»¸öµÚÒ»´ÎÉæ¼°ÄÚºËÎÊÌâµÄ Unix ³ÌÐòÔ±, ¿ÉÄÜ»á½ôÕÅÐ´Ò»¸öÄ£¿é. ±àÐ´Ò»¸öÓÃ»§³ÌÐòÀ´Ö±½Ó¶ÁÐ´Éè±¸¶Ë¿Ú¿ÉÄÜÈÝÒ×Ð©.  </p>
+<p> È·Êµ, ÓÐ¼¸¸öÂÛ¾ÝÇãÏòÓÚÓÃ»§¿Õ¼ä±à³Ì, ÓÐÊ±±àÐ´Ò»¸öËùÎ½µÄÓÃ»§¿Õ¼äÉè±¸Çý¶¯¶Ô±È×êÑÐÄÚºËÊÇÒ»¸öÃ÷ÖÇµÄÑ¡Ôñ. ÔÚ±¾½Ú, ÎÒÃÇÌÖÂÛ¼¸¸öÀíÓÉ, ÎªÊ²Ã´Äã¿ÉÄÜÔÚÓÃ»§¿Õ¼ä±àÐ´Çý¶¯. ±¾ÊéÊÇ¹ØÓÚÄÚºË¿Õ¼äÇý¶¯µÄ, µ«ÊÇ, ËùÒÔÎÒÃÇ²»³¬Ô½Õâ¸ö½éÉÜÐÔµÄÌÖÂÛ.</p>
+<p> ÓÃ»§¿Õ¼äÇý¶¯µÄºÃ´¦ÔÚÓÚ: </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>ÍêÕûµÄ C ¿â¿ÉÒÔÁ¬½Ó. Çý¶¯¿ÉÒÔ½øÐÐÐí¶àÆæ¹ÖµÄÈÎÎñ, ²»ÓÃÒÀ¿¿ÍâÃæµÄ³ÌÐò(ÊµÏÖÊ¹ÓÃ²ßÂÔµÄ¹¤¾ß³ÌÐò, ³£³£Ëæ×ÅÇý¶¯×ÔÉí·¢²¼).</p></li>
+<li><p>³ÌÐòÔ±¿ÉÒÔÔÚÇý¶¯´úÂëÉÏÔËÐÐ³£ÓÃµÄµ÷ÊÔÆ÷, ¶ø²»±Ø×ßµ÷ÊÔÒ»¸öÔËÐÐÖÐµÄÄÚºËµÄÍäÂ·.  </p></li>
+<li><p>Èç¹ûÒ»¸öÓÃ»§¿Õ¼äÇý¶¯¹ÒÆðÁË, Äã¿É¼òµ¥µØÉ±µôËü. Çý¶¯µÄÎÊÌâ²»¿ÉÄÜ¹ÒÆðÕû¸öÏµÍ³, ³ý·Ç±»¿ØÖÆµÄÓ²¼þÕæµÄ·èµôÁË.</p></li>
+<li><p>ÓÃ»§ÄÚ´æÊÇ¿É½»»»µÄ, ²»ÏóÄÚºËÄÚ´æ. Ò»¸ö²»³£Ê¹ÓÃµÄÈ´ÓÐºÜ´óÒ»¸öÇý¶¯µÄÉè±¸²»»áÕ¼¾Ý±ðµÄ³ÌÐò¿ÉÒÔÓÃµ½µÄ RAM, ³ýÁËÔÚËüÊµ¼ÊÔÚÓÃÊ±.  </p></li>
+<li><p>Ò»¸ö¾«ÐÄÉè¼ÆµÄÇý¶¯³ÌÐòÈÔÈ»¿ÉÒÔ, ÈçÍ¬ÄÚºË¿Õ¼äÇý¶¯, ÔÊÐí¶ÔÉè±¸µÄ²¢ÐÐ´æÈ¡.  </p></li>
+<li><p>Èç¹ûÄã±ØÐë±àÐ´Ò»¸ö·â±ÕÔ´ÂëµÄÇý¶¯, ÓÃ»§¿Õ¼äµÄÑ¡ÏîÊ¹ÄãÈÝÒ×±ÜÃâ²»Ã÷ÀÊµÄÐí¿ÉµÄÇé¿öºÍ¸Ä±äµÄÄÚºË½Ó¿Ú´øÀ´µÄÎÊÌâ.  </p></li>
+</ul></div>
+<p> ÀýÈç, USB Çý¶¯ÄÜ¹»ÔÚÓÃ»§¿Õ¼ä±àÐ´; ¿´(ÈÔÈ»ÄêÓ×) libusb ÏîÄ¿, ÔÚ libusb.sourceforge.net ºÍ "gadgetfs" ÔÚÄÚºËÔ´ÂëÀï. ÁíÒ»¸öÀý×ÓÊÇ X ·þÎñÆ÷: ËüÈ·ÇÐµØÖªµÀËüÄÜ´¦ÀíÄÄÐ©Ó²¼þ, ÄÄÐ©²»ÄÜ, ²¢ÇÒËüÌá¹©Í¼ÐÎ×ÊÔ´¸øËùÓÐµÄ X ¿Í»§. ×¢Òâ, È»¶ø, ÓÐÒ»¸ö»ºÂýµ«ÊÇ¹Ì¶¨µÄÆ¯ÒÆÏò×Å»ùÓÚ frame-buffer µÄÍ¼ÐÎ»·¾³, X ·þÎñÆ÷Ö»ÊÇ×÷ÎªÒ»¸ö·þÎñÆ÷, »ùÓÚÒ»¸öÄÚºË¿Õ¼äµÄÕæÊµµÄÉè±¸Çý¶¯, Õâ¸öÇý¶¯¸ºÔðÕæÕýµÄÍ¼ÐÎ²Ù×÷.</p>
+<p> ³£³£, ÓÃ»§¿Õ¼äÇý¶¯µÄ±àÐ´ÕßÍê³ÉÒ»¸ö·þÎñÆ÷½ø³Ì, ´ÓÄÚºË½Ó¹Ü×÷Îªµ¥¸ö´úÀíµÄ¸ºÔðÓ²¼þ¿ØÖÆµÄÈÎÎñ. ¿Í»§Ó¦ÓÃ³ÌÐò¾Í¿ÉÒÔÁ¬½Óµ½·þÎñÆ÷À´½øÐÐÊµ¼ÊµÄ²Ù×÷; Òò´Ë, Ò»¸ö´ÏÃ÷µÄÇý¶¯¾­³£¿ÉÒÔÔÊÐí¶ÔÉè±¸µÄ²¢ÐÐ´æÈ¡. Õâ¾ÍÊÇ X ·þÎñÆ÷ÈçºÎ¹¤×÷µÄ.  </p>
+<p>µ«ÊÇÓÃ»§¿Õ¼äµÄÉè±¸Çý¶¯µÄ·½·¨ÓÐ¼¸¸öÈ±µã. ×îÖØÒªµÄÊÇ:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>ÖÐ¶ÏÔÚÓÃ»§¿Õ¼äÎÞ·¨ÓÃ. ÔÚÄ³Ð©Æ½Ì¨ÉÏÓÐ¶ÔÕâ¸öÏÞÖÆµÄ½â¾ö·½·¨, ÀýÈçÔÚ IA32 ÌåÏµÉÏµÄ vm86 ÏµÍ³µ÷ÓÃ.</p></li>
+<li><p>Ö»¿ÉÄÜÍ¨¹ýÄÚ´æÓ³Éä /dev/mem À´Ê¹ÓÃ DMA, ¶øÇÒÖ»ÓÐÌØÈ¨ÓÃ»§¿ÉÒÔÕâÑù×ö.</p></li>
+<li><p>´æÈ¡ I/O ¶Ë¿ÚÖ»ÄÜÔÚµ÷ÓÃ ioperm »òÕß iopl Ö®ºó. ´ËÍâ, ²»ÊÇËùÓÐµÄÆ½Ì¨Ö§³ÖÕâÐ©ÏµÍ³µ÷ÓÃ, ¶ø´æÈ¡/dev/port¿ÉÄÜÌ«Âý¶øÎÞÐ§ÂÊ. ÕâÐ©ÏµÍ³µ÷ÓÃºÍÉè±¸ÎÄ¼þ¶¼ÒªÇóÌØÈ¨ÓÃ»§.</p></li>
+<li><p>ÏìÓ¦Ê±¼äÂý, ÒòÎªÐèÒªÉÏÏÂÎÄÇÐ»»ÔÚ¿Í»§ºÍÓ²¼þÖ®¼ä´«µÝÐÅÏ¢»ò¶¯×÷.</p></li>
+<li><p>¸ü²»ºÃµÄÊÇ, Èç¹ûÇý¶¯ÒÑ±»½»»»µ½Ó²ÅÌ, ÏìÓ¦Ê±¼ä»á³¤µ½²»¿É½ÓÊÜ. Ê¹ÓÃ mlock ÏµÍ³µ÷ÓÃ¿ÉÄÜ»áÓÐ°ïÖú, µ«ÊÇ³£³£µÄÄã½«ÐèÒªËø×¡Ðí¶àÄÚ´æÒ³, ÒòÎªÒ»¸öÓÃ»§¿Õ¼ä³ÌÐòÒÀÀµ´óÁ¿µÄ¿â´úÂë. mlock, Ò², ÏÞÖÆÔÚÊÚÈ¨ÓÃ»§ÉÏ.</p></li>
+<li><p>×îÖØÒªµÄÉè±¸²»ÄÜÔÚÓÃ»§¿Õ¼ä´¦Àí, °üÀ¨µ«²»ÏÞÓÚ, ÍøÂç½Ó¿ÚºÍ¿éÉè±¸.</p></li>
+</ul></div>
+<p>ÈçÄãËù¼û, ÓÃ»§¿Õ¼äÇý¶¯²»ÄÜ×öµÄÊÂÇé±Ï¾¹Ì«¶à. ¸ÐÐËÈ¤µÄÓ¦ÓÃ³ÌÐò»¹ÊÇ´æÔÚ: ÀýÈç, ¶Ô SCSI É¨ÃèÆ÷Éè±¸µÄÖ§³Ö( ÓÉ SANE °üÊµÏÖ )ºÍ CD ¿ÌÂ¼Æ÷ ( ÓÉ cdrecord ºÍ±ðµÄ¹¤¾ßÊµÏÖ ). ÔÚÁ½ÖÖÇé¿öÏÂ, ÓÃ»§¼¶±ðµÄÉè±¸Çé¿öÒÀÀµ "SCSI gneric" ÄÚºËÇý¶¯, ËüÊä³öÁËµÍ²ãµÄ SCSI ¹¦ÄÜ¸øÓÃ»§³ÌÐò, Òò´ËËüÃÇ¿ÉÒÔÇý¶¯ËüÃÇ×Ô¼ºµÄÓ²¼þ.  </p>
+<p> Ò»ÖÖÔÚÓÃ»§¿Õ¼ä¹¤×÷µÄÇé¿ö¿ÉÄÜÊÇÓÐÒâÒåµÄ, µ±Äã¿ªÊ¼´¦ÀíÐÂµÄÃ»ÓÐÓÃ¹ýµÄÓ²¼þÊ±. ÕâÑùÄã¿ÉÒÔÑ§Ï°È¥¹ÜÀíÄãµÄÓ²¼þ, ²»±Øµ£ÐÄ¹ÒÆðÕû¸öÏµÍ³. Ò»µ©ÄãÍê³ÉÁË, ÔÚÒ»¸öÄÚºËÄ£¿éÖÐ·â×°Èí¼þ¾Í»áÊÇÒ»¸ö¼òµ¥²Ù×÷ÁË.  
+</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s10.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.8.&#160;Ä£¿é²ÎÊý&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;2.10.&#160;¿ìËÙ²Î¿¼</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

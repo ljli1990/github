@@ -1,0 +1,103 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch01s08.html" title="1.8.&#160;±¾ÊéµÄÄÚÈÝ">
+<link rel="next" href="ch02s02.html" title="2.2.&#160;Hello World Ä£¿é">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="BuildingandRunningModules.chap"></a>µÚ&#160;2&#160;ÕÂ&#160;½¨Á¢ºÍÔËÐÐÄ£¿é</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch02.html#SettingUpYourTestSystem.sect1">2.1. ÉèÖÃÄãµÄ²âÊÔÏµÍ³</a></span></dt>
+<dt><span class="sect1"><a href="ch02s02.html">2.2. Hello World Ä£¿é</a></span></dt>
+<dt><span class="sect1"><a href="ch02s03.html">2.3. ÄÚºËÄ£¿éÏà±ÈÓÚÓ¦ÓÃ³ÌÐò</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch02s03.html#UserSpaceandKernelSpace.sect2">2.3.1. ÓÃ»§¿Õ¼äºÍÄÚºË¿Õ¼ä</a></span></dt>
+<dt><span class="sect2"><a href="ch02s03.html#ConcurrencyintheKernel.sect2">2.3.2. ÄÚºËµÄ²¢·¢</a></span></dt>
+<dt><span class="sect2"><a href="ch02s03.html#TheCurrentProcess.sect2">2.3.3. µ±Ç°½ø³Ì</a></span></dt>
+<dt><span class="sect2"><a href="ch02s03.html#AFewOtherDetails.sect2">2.3.4. ¼¸¸ö±ðµÄÏ¸½Ú</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch02s04.html">2.4. ±àÒëºÍ¼ÓÔØ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch02s04.html#CompilingModules.sect2">2.4.1. ±àÒëÄ£¿é</a></span></dt>
+<dt><span class="sect2"><a href="ch02s04.html#LoadingandUnloadingModules.sect2">2.4.2. ¼ÓÔØºÍÐ¶ÔØÄ£¿é</a></span></dt>
+<dt><span class="sect2"><a href="ch02s04.html#VersionDependency.sect2">2.4.3. °æ±¾ÒÀÀµ</a></span></dt>
+<dt><span class="sect2"><a href="ch02s04.html#PlatformDependency.sect2">2.4.4. Æ½Ì¨ÒÀÀµÐÔ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch02s05.html">2.5. ÄÚºË·ûºÅ±í</a></span></dt>
+<dt><span class="sect1"><a href="ch02s06.html">2.6. Ô¤±¸ÖªÊ¶</a></span></dt>
+<dt><span class="sect1"><a href="ch02s07.html">2.7. ³õÊ¼»¯ºÍ¹ØÍ£</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch02s07.html#TheCleanupFunction.sect2">2.7.1. ÇåÀíº¯Êý</a></span></dt>
+<dt><span class="sect2"><a href="ch02s07.html#ErrorHandlingDuringInitialization.sect2">2.7.2. ³õÊ¼»¯ÖÐµÄ´íÎó´¦Àí</a></span></dt>
+<dt><span class="sect2"><a href="ch02s07.html#ModuleLoadingRaces.sect2">2.7.3. Ä£¿é¼ÓÔØ¾ºÕù</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch02s08.html">2.8. Ä£¿é²ÎÊý</a></span></dt>
+<dt><span class="sect1"><a href="ch02s09.html">2.9. ÔÚÓÃ»§¿Õ¼ä×ö</a></span></dt>
+<dt><span class="sect1"><a href="ch02s10.html">2.10. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p> Ê±¼ä²î²»¶à¸Ã¿ªÊ¼±à³ÌÁË. ±¾ÕÂ½éÉÜËùÓÐµÄ¹ØÓÚÄ£¿éºÍÄÚºË±à³ÌµÄ¹Ø¼ü¸ÅÄî. ÔÚÕâ¼¸Ò³Àï, ÎÒÃÇ½¨Á¢²¢ÔËÐÐÒ»¸öÍêÕû(µ«ÊÇÏà¶ÔµØÃ»ÓÐÊ²Ã´ÓÃ´¦)µÄÄ£¿é, ²¢ÇÒ²é¿´Ò»Ð©±»ËùÓÐÄ£¿é¹²ÓÃµÄ»ù±¾´úÂë. ¿ª·¢ÕâÑùµÄ×¨ÃÅ¼¼Êõ¶ÔÈÎºÎÀàÐÍµÄÄ£¿é»¯µÄÇý¶¯¶¼ÊÇÖØÒªµÄ»ù´¡. Îª±ÜÃâÒ»´ÎÅ×³öÌ«¶àµÄ¸ÅÄî, ±¾ÕÂÖ»ÂÛ¼°Ä£¿é, ²»Éæ¼°ÈÎºÎÌØ±ðµÄÉè±¸ÀàÐÍ.</p>
+<p>ÔÚÕâÀï½éÉÜµÄËùÓÐµÄÄÚºËÏî ( º¯Êý, ±äÁ¿, Í·ÎÄ¼þ, ºÍºê )ÔÚ±¾ÕÂµÄ½áÎ²µÄ²Î¿¼Ò»½ÚÀïÓÐËµÃ÷.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SettingUpYourTestSystem.sect1"></a>2.1.&#160;ÉèÖÃÄãµÄ²âÊÔÏµÍ³</h2></div></div></div>
+<p> ÔÚ±¾ÕÂ¿ªÊ¼, ÎÒÃÇÌá¹©Àý×ÓÄ£¿éÀ´ÑÝÊ¾±à³Ì¸ÅÄî. ( ËùÓÐµÄÀý×Ó¶¼¿É´Ó O' Reilly' s µÄ FTP ÍøÕ¾ÉÏµÃµ½, ÈçµÚ 1 ÕÂ½âÊÍµÄÄÇÑù )½¨Á¢, ¼ÓÔØ, ºÍÐÞ¸ÄÕâÐ©Àý×Ó, ÊÇÌá¸ßÄã¶ÔÇý¶¯ÈçºÎ¹¤×÷ÒÔ¼°ÈçºÎÓëÄÚºË½»»¥µÄÀí½âµÄºÃ·½·¨.  </p>
+<p> Àý×ÓÄ£¿éÓ¦¸Ã¿ÉÒÔÔÚ´ó²¿·ÖµÄ 2.6.x ÄÚºËÉÏÔËÐÐ, °üÀ¨ÄÇÐ©ÓÉ·¢²¼¹©Ó¦ÉÌÌá¹©µÄ. µ«ÊÇ, ÎÒÃÇ½¨ÒéÄã»ñµÃÒ»¸öÖ÷Á÷ÄÚºË, Ö±½Ó´Ó kernel.org µÄ¾µÏñÍøÂç, ²¢°ÑËü°²×°µ½ÄãµÄÏµÍ³ÖÐ. ¹©Ó¦ÉÌµÄÄÚºË¿ÉÄÜÊÇÖ÷Á÷ÄÚºË±»ÖØÖØµØ´òÁË²¹¶¡²¢ÇÒºÍÖ÷Á÷ÄÚºËÓÐ·ÖÆç; Å¼¶û, ¹©Ó¦ÉÌµÄ²¹¶¡¿ÉÄÜ¸Ä±äÁËÉè±¸Çý¶¯¿É¼ûµÄÄÚºË API. Èç¹ûÄãÔÚ±àÐ´Ò»¸ö±ØÐëÔÚÌØ±ðµÄ·¢²¼ÉÏÔËÐÐµÄÇý¶¯, Äãµ±È»ÒªÔÚÏàÓ¦µÄÄÚºËÉÏ½¨Á¢ºÍ²âÊÔ. µ«ÊÇ, ´¦ÓÚÑ§Ï°Çý¶¯±àÐ´µÄÄ¿µÄ, Ò»¸ö±ê×¼ÄÚºËÊÇ×îºÃµÄ.  </p>
+<p>²»¹ÜÄãµÄÄÚºËÀ´Ô´, ½¨Á¢ 2.6.x µÄÄ£¿éÐèÒªÄãÓÐÒ»¸öÅäÖÃºÃ²¢½¨Á¢ºÃµÄÄÚºËÊ÷ÔÚÄãµÄÏµÍ³ÖÐ. Õâ¸öÒªÇóÊÇ´ÓÖ®Ç°ÄÚºË°æ±¾µÄ¸Ä±ä, Ö®Ç°Ö»ÒªÓÐÒ»Ì×µ±Ç°°æ±¾µÄÍ·ÎÄ¼þ¾Í×ã¹»ÁË. 2.6 Ä£¿éÕë¶ÔÄÚºËÔ´ÂëÊ÷ÀïÕÒµ½µÄÄ¿±êÎÄ¼þÁ¬½Ó; ½á¹ûÊÇÒ»¸ö¸ü¼Ó½¡×³µÄÄ£¿é¼ÓÔØÆ÷, »¹ÒªÇóÄÇÐ©Ä¿±êÎÄ¼þÒ²ÊÇ¿ÉÓÃµÄ. Òò´ËÄãµÄµÚÒ»¸öÉÌÒµ¶©µ¥ÊÇ¾ß±¸Ò»¸öÄÚºËÔ´ÂëÊ÷( »òÕß´Ó krenel.org ÍøÂç»òÕßÄãµÄ·¢²¼ÕßµÄÄÚºËÔ´Âë°ü), ½¨Á¢Ò»¸öÐÂÄÚºË, ²¢ÇÒ°²×°µ½ÄãµÄÏµÍ³. ÒòÎªÎÒÃÇÉÔºó»á¼ûµ½µÄÔ­Òò, Éú»îÍ¨³£ÊÇ×îÈÝÒ×µÄÈç¹ûµ±Äã½¨Á¢Ä£¿éÊ±ÕæÕýÔËÐÐÄ¿±êÄÚºË, ¾¡¹ÜÕâ²»ÊÇÐèÒªµÄ.</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[×¢Òâ]" src="images/note.png"></td>
+<th align="left">×¢Òâ</th>
+</tr>
+<tr><td align="left" valign="top"><p> ÄãÓ¦µ±Ò²¿¼ÂÇÒ»ÏÂÔÚÄÄÀï½øÐÐÄãµÄÄ£¿éÊÔÑé, ¿ª·¢ºÍ²âÊÔ. ÎÒÃÇÒÑ¾­¾¡Á¦Ê¹ÎÒÃÇµÄÀý×ÓÄ£¿é°²È«ºÍÕýÈ·, µ«ÊÇ bug µÄ¿ÉÄÜÐÔÊÇ¾­³£»áÓÐµÄ. ÄÚºË´úÂëÖÐµÄ´íÎó¿ÉÄÜ»áÒýÆðÒ»¸öÓÃ»§½ø³ÌµÄËÀÍö, »òÕßÅ¼¶û, Ì±»¾Õû¸öÏµÍ³. ËüÃÇÕý³£µØ²»»áµ¼ÖÂ¸üÑÏÖØµØºó¹û, ÀýÈç´ÅÅÌËðÉË. È»¶ø, »¹ÊÇ½¨ÒéÄã½øÐÐÄãµÄÄÚºËÊÔÑéÔÚÒ»¸öÃ»ÓÐ°üº¬Äã¸ºµ£²»Æð¶ªÊ§µÄÊý¾ÝµÄÏµÍ³, ²¢ÇÒÃ»ÓÐ½øÐÐÖØÒªµÄ·þÎñ. ÄÚºË¿ª·¢ÕßµäÐÍµØ»á±£ÁôÒ»Ì¨"ÎþÉü"ÏµÍ³À´²âÊÔÐÂµÄ´úÂë.  </p></td></tr>
+</table></div>
+<p> Òò´Ë, Èç¹ûÄã»¹Ã»ÓÐÒ»¸öºÏÊÊµÄÏµÍ³, ´øÓÐÒ»¸öÅäÖÃºÃ²¢½¨Á¢ºÃµÄÔ´ÂëÊ÷ÔÚ´ÅÅÌÉÏ, ÏÖÔÚÊÇÊ±ºò½¨Á¢ÁË. ÎÒÃÇ½«µÈ´ý. Ò»µ©Õâ¸öÈÎÎñÍê³É, Äã¾Í×¼±¸ºÃ¿ªÊ¼°Ú²¼ÄÚºËÄ£¿éÁË.  
+</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01s08.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">1.8.&#160;±¾ÊéµÄÄÚÈÝ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;2.2.&#160;Hello World Ä£¿é</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

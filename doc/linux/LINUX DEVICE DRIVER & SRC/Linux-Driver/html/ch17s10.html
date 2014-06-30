@@ -1,0 +1,143 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.10.&#160;Socket »º´æ-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17s09.html" title="17.9.&#160;Á¬½Ó×´Ì¬µÄ¸Ä±ä">
+<link rel="next" href="ch17s11.html" title="17.11.&#160;MAC µØÖ·½âÎö">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.10.&#160;Socket »º´æ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s09.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s11.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheSocketBuffers"></a>17.10.&#160;Socket »º´æ</h2></div></div></div>
+<p>ÎÒÃÇÏÖÔÚÒÑ¾­º­¸Çµ½ÁË´ó²¿·Ö¹ØÓÚÍøÂç½Ó¿ÚµÄÎÊÌâ. »¹È±·¦µÄÊÇ¶Ô sk_buff ½á¹¹µÄÏêÏ¸ÃèÊö.Õâ¸ö½á¹¹´¦ÓÚ Linux ÄÚºËÍøÂç×ÓÏµÍ³µÄºËĞÄ, ÎÒÃÇÏÖÔÚ½éÉÜÕâ¸ö½á¹¹µÄÖØÒª³ÉÔ±ºÍ²Ù×÷ËüÃÇµÄº¯Êı.</p>
+<p>¾¡¹ÜÃ»ÓĞÑÏ¸ñÒªÇóÈ¥Àí½â sk_buff µÄÄÚ²¿, ÄÜ¹»²é¿´ËüµÄÄÚÈİµÄÄÜÁ¦ÔÚÄã×·×ÙÎÊÌâºÍÊÔÍ¼ÓÅ»¯´úÂëÊ±ÊÇÓĞ°ïÖúµÄ. ÀıÈç, Èç¹ûÄã¿´ loopback.c, Äã»á·¢ÏÖÒ»¸ö»ùÓÚ¶Ô sk_buff ÄÚ²¿ÁË½âµÄÓÅ»¯. ÕâÀïÊÊÓÃµÄÍ¨³£µÄ¾¯¸æÊÇ: Èç¹ûÄã±àĞ´ÀûÓÃ sk_buff ½á¹¹µÄÖªÊ¶µÄ´úÂë, ÄãÓ¦µ±×¼±¸ºÃÔÚÒÔºóÄÚºË·¢ĞĞÖĞËü»µµô. ÈÔÈ», ÓĞÊ±ĞÔÄÜÓÅÊÆÖµµÃ¶îÍâµÄÎ¬»¤¿ªÏú.</p>
+<p>ÎÒÃÇÕâÀï²»»áÃèÊöÕû¸ö½á¹¹, Ö»ÊÇÄÇĞ©ÔÚÇı¶¯Àï¿ÉÄÜÓÃµ½µÄ. Èç¹ûÄãÏë¿´µ½¸ü¶à, Äã¿ÉÒÔ²é¿´ &lt;linux/skbuff.h&gt;, ÄÇÀï¶¨ÒåÁË½á¹¹ºÍº¯ÊıÔ­ĞÍ. ¹ØÓÚÈçºÎÊ¹ÓÃÕâĞ©³ÉÔ±ºÍº¯ÊıµÄ¶îÍâµÄÏ¸½Ú¿ÉÒÔÍ¨¹ıËÑË÷ÄÚºËÔ´ÂëºÜÈİÒ×»ñÈ¡.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheImportFields"></a>17.10.1.&#160;ÖØÒª³ÉÔ±±äÁ¿</h3></div></div></div>
+<p>ÕâÀï½éÉÜµÄ³ÉÔ±ÊÇÇı¶¯¿ÉÄÜĞèÒª´æÈ¡µÄ. ÒÔ·ÇÌØ±ğµÄË³ĞòÁĞ³öËüÃÇ.</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>struct net_device *dev;</span></span></dt>
+<dd><p>½ÓÊÕ»ò·¢ËÍÕâ¸ö»º´æµÄÉè±¸</p></dd>
+<dt><span class="term"><span>union { /* ... */ } h;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>union { /* ... */ } nh;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>union { /*... */} mac;</span></span></dt>
+<dd>
+<p>Ö¸Ïò±¨ÎÄÖĞ°üº¬µÄ¸÷¼¶µÄÍ·µÄÖ¸Õë. union ÖĞµÄÄ³¸ö³ÉÔ±¶¼ÊÇÒ»¸ö²»Í¬Êı¾İ½á¹¹ÀàĞÍµÄÖ¸Õë. h º¬ÓĞ´«Êä²ãÍ·²¿Ö¸Õë(ÀıÈç, struct tcphdr *th); nh °üº¬ÍøÂç²ãÍ·²¿(ÀıÈç struct iphdr *iph); ÒÔ¼° mac °üº¬Á´Â·²ãÍ·²¿Ö¸Õë(ÀıÈç struct ethkr * ethernet).</p>
+<p>Èç¹ûÄãµÄÇı¶¯ĞèÒª²é¿´ TCP ±¨ÎÄµÄÔ´ºÍÄ¿µÄµØÖ·, ¿ÉÒÔÔÚ skb-&gt;h.th ÖĞÕÒµ½. ¿´Í·ÎÄ¼şÀ´ÕÒµ½È«²¿µÄ¿ÉÒÔÕâÑù´æÈ¡µÄÍ·²¿ÀàĞÍ.</p>
+<p>×¢ÒâÍøÂçÇı¶¯¸ºÔğÉèÖÃ½øÈë±¨ÎÄµÄ mac Ö¸Õë. Õâ¸öÈÎÎñÕı³£ÊÇÓÉ eth_type_trans ´¦Àí, µ«ÊÇ ·ÇÒÔÌ«ÍøÇı¶¯²»µÃ²»Ö±½ÓÉèÖÃ skb-&gt;mac.raw, ÈçÍ¬"·ÇÒÔÌ«ÍøÍ·²¿"Ò»½ÚËùÊ¾.</p>
+</dd>
+<dt><span class="term"><span>unsigned char *head;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned char *data;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned char *tail;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned char *end;</span></span></dt>
+<dd><p>ÓÃÀ´Ñ°Ö·±¨ÎÄÖĞÊı¾İµÄÖ¸Õë. head Ö¸Ïò·ÖÅäÄÚ´æµÄ¿ªÊ¼, data ÊÇÓĞĞ§×Ö½ÚµÄ¿ªÊ¼(²¢ÇÒ³£³£ÉÔÎ¢±È head ´óÒ»Ğ©), tail ÊÇÓĞĞ§×Ö½ÚµÄ½áÎ², end Ö¸Ïò tail ÄÜ¹»µ½´ïµÄ×î´óµØÖ·. ²é¿´ËüµÄÁíÒ»¸ö·½·¨ÊÇ¿ÉÓÃ»º´æ¿Õ¼äÊÇ skb-&gt;end - skb-&gt;head, µ±Ç°Ê¹ÓÃµÄ¿Õ¼äÊÇ skb-&gt;tail - skb-&gt;data.</p></dd>
+<dt><span class="term"><span>unsigned int len;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned int data_len;</span></span></dt>
+<dd><p>len ÊÇ±¨ÎÄÖĞÈ«²¿Êı¾İµÄ³¤¶È, ¶ø data_len ÊÇ±¨ÎÄ´æ´¢ÓÚµ¥¸öÆ¬ÖĞµÄ²¿·ÖµÄ³¤¶È. ³ı·ÇÊ¹ÓÃ·¢É¢/»ã¾Û I/O, data_len ³ÉÔ±µÄÖµÎª 0.</p></dd>
+<dt><span class="term"><span>unsigned char ip_summed;</span></span></dt>
+<dd><p>Õâ¸ö±¨ÎÄµÄĞ£ÑéºÍ²ßÂÔ. ÓÉÇı¶¯ÔÚ½øÈë±¨ÎÄÉÏÉèÖÃÕâ¸ö³ÉÔ±, ÈçÔÚ"±¨ÎÄ½ÓÊÕ"Ò»½ÚÖĞÃèÊöµÄ.</p></dd>
+<dt><span class="term"><span>unsigned char pkt_type;</span></span></dt>
+<dd><p>ÔÚµİËÍÖĞÊ¹ÓÃµÄ±¨ÎÄ·ÖÀà. Çı¶¯¸ºÔğÉèÖÃËüÎª PACKET_HOST (±¨ÎÄÊÇ¸ø×Ô¼ºµÄ), PACKET_OTHERHOST (²», Õâ¸ö±¨ÎÄ²»ÊÇ¸øÎÒµÄ), PACKET_BROADCAST, »òÕß PACKET_MULTICAST. ÒÔÌ«ÍøÇı¶¯²»ÏÔÊ½ĞŞ¸Ä pkt_type, ÒòÎª eth_type_trans ÎªËüÃÇ×ö.</p></dd>
+<dt><span class="term"><span>shinfo(struct sk_buff *skb);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned int shinfo(skb)-&gt;nr_frags;</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>skb_frag_t shinfo(skb)-&gt;frags;</span></span></dt>
+<dd><p>ÓÉÓÚĞÔÄÜµÄÔ­Òò, ÓĞĞ© skb ĞÅÏ¢´æ´¢ÓÚÒ»¸ö·Ö¿ªµÄ½á¹¹ÖĞ, ËüÔÚÄÚ´æÖĞ½ô½Ó×Å skb. Õâ¸ö"shared info"(ÕâÑùÃüÃûÊÇÒòÎªËü¿ÉÒÔÔÚÍøÂç´úÂëÖĞ¶à¸ö skb ¿½±´ÖĞ¹²Ïí)±ØĞëÍ¨¹ı shinfo ºê¶¨ÒåÀ´´æÈ¡. Õâ¸ö½á¹¹ÖĞÓĞ¼¸¸ö³ÉÔ±, µ«ÊÇ´ó²¿·Ö³¬³ö±¾ÊéµÄ·¶Î§. ÎÒÃÇÔÚ"·¢É¢/»ã¾Û I/O"Ò»½ÚÖĞ¼û¹ı nr_frags ºÍ frags.</p></dd>
+</dl></div>
+<p>ÔÚ½á¹¹ÖĞÊ£ÏÂµÄ³ÉÔ±²»ÊÇÌØ±ğÓĞÈ¤. ËüÃÇÓÃÀ´Î¬»¤»º´æÁĞ±í, À´Í³¼Æ socket ÓµÓĞµÄ»º´æ´óĞ¡, µÈµÈ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="FunctionsActingonSocketBuffers"></a>17.10.2.&#160;×÷ÓÃÓÚ socket »º´æµÄº¯Êı</h3></div></div></div>
+<p>Ê¹ÓÃÒ»¸ö sk_buff ½á¹¹µÄÍøÂçÇı¶¯ÀûÓÃÕıÊ½½Ó¿Úº¯ÊıÀ´²Ù×÷Ëü. Ğí¶àº¯Êı²Ù×÷Ò»¸ö socket »º´æ; ÕâÀïÊÇ×îÓĞÈ¤µÄ¼¸¸ö:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>struct sk_buff *alloc_skb(unsigned int len, int priority);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>struct sk_buff *dev_alloc_skb(unsigned int len);</span></span></dt>
+<dd><p>·ÖÅäÒ»¸ö»º´æÇø. alloc_skb º¯Êı·ÖÅäÒ»¸ö»º´æ²¢ÇÒ½« skb-&gt;data ºÍ skb-&gt;tail ¶¼³õÊ¼»¯³É skb-&gt;head. dev_alloc_skb º¯ÊıÊÇÊ¹ÓÃ GFP_ATOMIC ÓÅÏÈ¼¶µ÷ÓÃ alloc_skb µÄ¿ì½İ·½·¨, ²¢ÇÒÔÚ skb-&gt;head ºÍ skb-&gt;data Ö®¼ä±£ÁôÁËÒ»Ğ©¿Õ¼ä. Õâ¸öÊı¾İ¿Õ¼äÓÃÔÚÍøÂç²ãÖ®¼äµÄÓÅ»¯, Çı¶¯²»Òª¶¯Ëü.</p></dd>
+<dt><span class="term"><span>void kfree_skb(struct sk_buff *skb);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void dev_kfree_skb(struct sk_buff *skb);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void dev_kfree_skb_irq(struct sk_buff *skb);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void dev_kfree_skb_any(struct sk_buff *skb);</span></span></dt>
+<dd><p>ÊÍ·Å»º´æ. kfree_skb µ÷ÓÃÓÉÄÚºËÔÚÄÚ²¿Ê¹ÓÃ. Ò»¸öÇı¶¯Ó¦µ±Ê¹ÓÃÒ»ÖÖ dev_kfree_skb µÄ±äÌå: ÔÚ·ÇÖĞ¶ÏÉÏÏÂÎÄÖĞÊ¹ÓÃ dev_kfree_skb, ÔÚÖĞ¶ÏÉÏÏÂÎÄÖĞÊ¹ÓÃ dev_kfree_skb_irq, »òÕß dev_kfree_skb_any ÔÚÈÎºÎ 2 ÖÖÇé¿öÏÂ.</p></dd>
+<dt><span class="term"><span>unsigned char *skb_put(struct sk_buff *skb, int len);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned char *__skb_put(struct sk_buff *skb, int len);</span></span></dt>
+<dd><p>¸üĞÂ sk_buff ½á¹¹ÖĞµÄ tail ºÍ len ³ÉÔ±; ËüÃÇÓÃÀ´Ôö¼ÓÊı¾İµ½»º´æµÄ½áÎ², Ã¿¸öº¯ÊıµÄ·µ»ØÖµÊÇ skb-&gt;tail µÄÇ°Ò»¸öÖµ(»»¾ä»°Ëµ, ËüÖ¸Ïò¸Õ¸Õ´´½¨µÄÊı¾İ¿Õ¼ä). Çı¶¯¿ÉÒÔÊ¹ÓÃ·µ»ØÖµÍ¨¹ıÒıÓÃ memcpy(skb_put(...), data, len) À´¿½±´Êı¾İ»òÕßÒ»¸öµÈÍ¬µÄ¶«¶«. Á½¸öº¯ÊıµÄÇø±ğÔÚÓÚ skb_put ¼ì²éÒÔÈ·ÈÏÊı¾İÊÊºÏ»º´æ, ¶ø __skb_put Ê¡ÂÔÕâ¸ö¼ì²é.</p></dd>
+<dt><span class="term"><span>unsigned char *skb_push(struct sk_buff *skb, int len);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>unsigned char *__skb_push(struct sk_buff *skb, int len);</span></span></dt>
+<dd><p>µİ¼õ skb-&gt;data ºÍµİÔö skb-&gt;len µÄº¯Êı. ËüÃÇÓë skb_put ÏàËÆ, ³ıÁËÊı¾İÊÇÌí¼Óµ½±¨ÎÄµÄ¿ªÊ¼¶ø²»ÊÇ½áÎ². ·µ»ØÖµÖ¸Ïò¸Õ¸Õ´´½¨µÄÊı¾İ¿Õ¼ä. ÕâĞ©º¯ÊıÓÃÀ´ÔÚ·¢ËÍ±¨ÎÄÖ®Ç°Ìí¼ÓÒ»¸öÓ²¼şÍ·²¿. ÓÖÒ»´Î, __skb_push ²»Í¬ÔÚËü²»¼ì²é¿Õ¼äÊÇ·ñ×ã¹».</p></dd>
+<dt><span class="term"><span>int skb_tailroom(struct sk_buff *skb);</span></span></dt>
+<dd><p>·µ»Ø¿ÉÒÔÔÚ»º´æÖĞ·ÅÖÃÊı¾İµÄ¿ÉÓÃ¿Õ¼äÊıÁ¿. Èç¹ûÇı¶¯·ÅÁË¶àÓÚËüÄÜ³ÖÓĞµÄÊı¾İµ½»º´æÖĞ, ÏµÍ³Éµµô. ¾¡¹ÜÄã¿ÉÄÜ·´¶ÔËµÒ»¸ö printk »á×ã¹»À´±êÊ¶³öÕâ¸ö´íÎó, ÄÚ´æÆÆ»µ¶ÔÏµÍ³ÊÇ·Ç³£ÓĞº¦µÄÒÔÖÁÓÚ¿ª·¢Õß¾ö¶¨²ÉÈ¡È·¶¨µÄ¶¯×÷. Êµ¼ÊÖĞ, Äã²»¸ÃĞèÒª¼ì²é¿ÉÓÃ¿Õ¼ä, Èç¹û»º´æ±»ÕıÈ·µØ·ÖÅäÁË. ÒòÎªÇı¶¯³£³£ÔÚ·ÖÅä»º´æÇ°»ñÖª±¨ÎÄµÄ´óĞ¡, Ö»ÓĞÒ»¸öÑÏÖØ»µµôµÄÇı¶¯»áÔÚ»º´æÖĞ°²·ÅÌ«¶àµÄÊı¾İ, ÕâÑù³öÂÒ×Ó¾Í¿Éµ±×÷Ò»¸öÓ¦µÃµÄ³Í·£.</p></dd>
+<dt><span class="term"><span>int skb_headroom(struct sk_buff *skb);</span></span></dt>
+<dd><p>·µ»Ø data Ç°ÃæµÄ¿ÉÓÃ¿Õ¼äÊıÁ¿, ¾ÍÊÇ, ¿ÉÒÔ "push" ¸ø»º´æ¶àÉÙ×Ö½Ú.</p></dd>
+<dt><span class="term"><span>void skb_reserve(struct sk_buff *skb, int len);</span></span></dt>
+<dd><p>µİÔö data ºÍ tail. Õâ¸öº¯Êı¿ÉÓÃÀ´ÔÚÌî³äÊı¾İÇ°±£Áô¿Õ¼ä. ´ó²¿·ÖÒÔÌ«Íø½Ó¿Ú±£Áô 2 ¸ö×Ö½ÚÔÚ±¨ÎÄµÄÇ°Ãæ; Òò´Ë, IP Í·¶ÔÆëµ½ 16 ×Ö½Ú, ÔÚ 14 ×Ö½ÚµÄÒÔÌ«ÍøÍ·ºóÃæ. snull Ò²ÕâÑù×ö, ¾¡¹ÜÃ»ÓĞÔÚ"±¨ÎÄ½ÓÊÕ"Ò»½ÚÖĞÕ¹ÏÖÕâ¸öÖ¸ÁîÒÔ±ÜÃâÔÚÄÇÊ±ÒıÈë¹ı¶à¸ÅÄî.</p></dd>
+<dt><span class="term"><span>unsigned char *skb_pull(struct sk_buff *skb, int len);</span></span></dt>
+<dd><p>´Ó±¨ÎÄµÄÍ·²¿È¥³ıÊı¾İ. Çı¶¯²»»áĞèÒªÊ¹ÓÃÕâ¸öº¯Êı, µ«ÊÇÎªÍêÕû¶ø°üº¬ÔÚÕâ¶ù. Ëüµİ¼õ skb-&gt;len ºÍµİÔö skb-&gt;data; ÕâÊÇÓ²¼şÍ·ÈçºÎ´Ó½øÈë±¨ÎÄ¿ªÊ¼±»°şÀë.</p></dd>
+<dt><span class="term"><span>int skb_is_nonlinear(struct sk_buff *skb);</span></span></dt>
+<dd><p>·µ»ØÒ»¸öÕæÖµ, Èç¹ûÕâ¸ö skb ·ÖÀëÎª¶à¸öÆ¬Îª·¢É¢/»ã¾Û I/O.</p></dd>
+<dt><span class="term"><span>int skb_headlen(struct sk_buff *skb);</span></span></dt>
+<dd><p>·µ»Ø skb µÄµÚÒ»¸öÆ¬µÄ³¤¶È(ÓÉ skb-&gt;data Ö¸×Å).</p></dd>
+<dt><span class="term"><span>void *kmap_skb_frag(skb_frag_t *frag);</span></span></dt>
+<dd></dd>
+<dt><span class="term"><span>void kunmap_skb_frag(void *vaddr);</span></span></dt>
+<dd><p>Èç¹ûÄã±ØĞë´ÓÄÚºËÖĞµÄÒ»¸ö·ÇÏßĞÔ skb Ö±½Ó´æÈ¡Æ¬, ÕâĞ©º¯ÊıÎªÄãÓ³ÉäÒÔ¼°È¥Ó³ÉäËüÃÇ. Ê¹ÓÃÒ»¸öÔ­×ÓĞÔ kmap, Òò´ËÄã²»ÄÜÒ»´ÎÓ³Éä¶àÓÚÒ»¸öÆ¬.</p></dd>
+</dl></div>
+<p>ÄÚºË¶¨ÒåÁË¼¸¸öÆäËûµÄ×÷ÓÃÓÚ socket »º´æµÄº¯Êı, µ«ÊÇËüÃÇÊÇ´òËãÓÃÓÚ¸ß²ãÍøÂç´úÂë, Çı¶¯²»ĞèÒªËüÃÇ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s09.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s11.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.9.&#160;Á¬½Ó×´Ì¬µÄ¸Ä±ä&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.11.&#160;MAC µØÖ·½âÎö</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

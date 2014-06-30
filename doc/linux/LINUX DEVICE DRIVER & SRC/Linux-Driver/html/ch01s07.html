@@ -1,0 +1,56 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>1.7.&#160;¼ÓÈëÄÚºË¿ª·¢ÉçÍÅ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch01.html" title="µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é">
+<link rel="prev" href="ch01s06.html" title="1.6.&#160;°æÈ¨Ìõ¿î">
+<link rel="next" href="ch01s08.html" title="1.8.&#160;±¾ÊéµÄÄÚÈÝ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">1.7.&#160;¼ÓÈëÄÚºË¿ª·¢ÉçÍÅ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;1&#160;ÕÂ&#160;µÚÒ»ÕÂ Éè±¸Çý¶¯¼ò½é</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch01s08.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="JoiningtheKernelDevelopment.sect1"></a>1.7.&#160;¼ÓÈëÄÚºË¿ª·¢ÉçÍÅ</h2></div></div></div>
+<p>ÔÚÄã¿ªÊ¼Îª Linux ÄÚºË±àÐ´Ä£¿éÊ±, Äã¾Í³ÉÎªÒ»¸ö¿ª·¢Õß´óÉçÍÅµÄÒ»²¿·Ö. ÔÚÕâ¸öÉçÍÅÖÐ, Äã²»½ö»á·¢ÏÖÓÐÈËÃ¦ÂµÓÚÀàËÆ¹¤×÷, »¹ÓÐÒ»ÈºÌØ±ðÍ¶ÈëµÄ¹¤³ÌÊ¦Å¬Á¦Ê¹ Linux ³ÉÎª¸üºÃµÄÏµÍ³. ÕâÐ©ÈË¿ÉÒÔÊÇ°ïÖú, ÀíÄî, ÒÔ¼°¹Ø¼üµÄÉó²éµÄÀ´Ô´, ÒÔ¼°ËûÃÇ½«ÊÇÄãÔ¸ÒâÇóÖúµÄµÚÒ»ÀàÈË, µ±ÄãÔÚÑ°ÕÒÒ»¸öÐÂÇý¶¯µÄ²âÊÔÕß.</p>
+<p>¶ÔÓÚ Linux ÄÚºË¿ª·¢Õß, ÖÐÐÄµÄ»ã¾ÛµãÊÇ Linux ÄÚºËÓÊ¼þÁÐ±í. ËùÓÐÖ÷ÒªµÄÄÚºË¿ª·¢Õß, ´Ó Linus Torvalds µ½ÆäËûÈË, ¶¼¶©ÔÄÕâ¸öÁÐ±í. Çë×¢ÒâÕâ¸öÁÐ±í²»ÊÊºÏÐÄÁ¦Ë¥ÈõµÄÈË: Ã¿Ìì»òÕß¼¸ÌìÄÚµÄÊéÐ´Á÷Á¿¿ÉÄÜ¶àÖÁ 200 ÌõÏûÏ¢. µ«ÊÇ, ËæÕâ¸öÁÐ±íÖ®ºóµÄÊÇ¶ÔÄÇÐ©¸ÐÐËÈ¤ÓÚÄÚºË¿ª·¢µÄÈËÖØÒªµÄ¶«Î÷; ËüÒ²ÊÇÒ»¸ö×î¸ßÆ·ÖÊµÄ×ÊÔ´, ¶ÔÄÇÐ©ÐèÒªÄÚºË¿ª·¢°ïÖúµÄÈË.</p>
+<p>Îª¼ÓÈë Linux ÄÚºËÁÐ±í, ×ñÕÕÔÚ Linux ÄÚºËÓÊ¼þÁÐ±í FAQ: http://www.tux.org/lkml ÖÐµÄÖ¸Ê¾. ÔÄ¶ÁÕâ¸ö FAQ µÄÊ£Óà²¿·Ö, µ±ÄãÊìÏ¤ËüÊ±; ÄÇÀïÓÐ´óÁ¿µÄÓÐÓÃµÄÐÅÏ¢. Linux ÄÚºË¿ª·¢Õß¶¼ÊÇÃ¦ÂµµÄÈË, ËûÃÇ¸ü¶àµØÔ¸Òâ°ïÖúÄÇÐ©ÒÑ¾­Çå³þµØÊ×ÏÈÍê³ÉÁËÊôÓÚ×Ô¼ºµÄÄÇ²¿·Ö¹¤×÷µÄÈË.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch01s08.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">1.6.&#160;°æÈ¨Ìõ¿î&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;1.8.&#160;±¾ÊéµÄÄÚÈÝ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

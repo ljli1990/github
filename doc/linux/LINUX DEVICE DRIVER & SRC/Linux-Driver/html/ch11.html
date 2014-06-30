@@ -1,0 +1,109 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;11&#160;ÕÂ&#160;ÄÚºËÖÐµÄÊý¾ÝÀàÐÍ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch10s06.html" title="10.6.&#160;¿ìËÙ²Î¿¼">
+<link rel="next" href="ch11s02.html" title="11.2.&#160;°²ÅÅÒ»¸öÃ÷È·´óÐ¡¸øÊý¾ÝÏî">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;11&#160;ÕÂ&#160;ÄÚºËÖÐµÄÊý¾ÝÀàÐÍ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch10s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch11s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="DataTypeintheKernel.chap"></a>µÚ&#160;11&#160;ÕÂ&#160;ÄÚºËÖÐµÄÊý¾ÝÀàÐÍ</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch11.html#UseofStandardCTypes.sect">11.1. ±ê×¼ C ÀàÐÍµÄÊ¹ÓÃ</a></span></dt>
+<dt><span class="sect1"><a href="ch11s02.html">11.2. °²ÅÅÒ»¸öÃ÷È·´óÐ¡¸øÊý¾ÝÏî</a></span></dt>
+<dt><span class="sect1"><a href="ch11s03.html">11.3. ½Ó¿ÚÌØ¶¨µÄÀàÐÍ</a></span></dt>
+<dt><span class="sect1"><a href="ch11s04.html">11.4. ÆäËûÒÆÖ²ÐÔÎÊÌâ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch11s04.html#TimeIntervals.sect">11.4.1. Ê±¼ä¼ä¸ô</a></span></dt>
+<dt><span class="sect2"><a href="ch11s04.html#PageSize.sect">11.4.2. Ò³´óÐ¡</a></span></dt>
+<dt><span class="sect2"><a href="ch11s04.html#ByteOrder.sect">11.4.3. ×Ö½ÚÐò</a></span></dt>
+<dt><span class="sect2"><a href="ch11s04.html#DataAlignment.sect">11.4.4. Êý¾Ý¶ÔÆë</a></span></dt>
+<dt><span class="sect2"><a href="ch11s04.html#PointersandErrorValues.sect">11.4.5. Ö¸ÕëºÍ´íÎóÖµ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch11s05.html">11.5. Á´±í</a></span></dt>
+<dt><span class="sect1"><a href="ch11s06.html">11.6. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>ÔÚÎÒÃÇ½øÈë¸ü¸ß¼¶Ö÷ÌâÖ®Ç°, ÎÒÃÇÐèÒªÍ£ÏÂÀ´¿ìËÙ¹Ø×¢Ò»ÏÂ¿ÉÒÆÖ²ÐÔÎÊÌâ. ÏÖ´ú°æ±¾µÄ Linux ÄÚºËÊÇ¸ß¶È¿ÉÒÆÖ²µÄ, ËüÕýÔËÐÐÔÚºÜ¶à²»Í¬ÌåÏµÉÏ. ÓÉÓÚ Linux ÄÚºËµÄ¶àÆ½Ì¨ÌØÐÔ, ´òËã×öÈÏÕæÊ¹ÓÃµÄÇý¶¯Ó¦µ±Ò²ÊÇ¿ÉÒÆÖ²µÄ.</p>
+<p>µ«ÊÇÄÚºË´úÂëµÄÒ»¸öºËÐÄÎÊÌâÊÇ²»µ«ÄÜ¹»´æÈ¡ÒÑÖª³¤¶ÈµÄÊý¾ÝÏî(ÀýÈç, ÎÄ¼þÏµÍ³Êý¾Ý½á¹¹»òÕßÉè±¸µ¥°åÉÏµÄ¼Ä´æÆ÷), ¶øÇÒ¿ÉÒÔÊ¹ÓÃ²»Í¬´¦ÀíÆ÷µÄÄÜÁ¦(32-Î» ºÍ 64-Î» ÌåÏµ, ²¢ÇÒÒ²¿ÉÄÜÊÇ 16 Î»).</p>
+<p>ÄÚºË¿ª·¢ÕßÔÚÒÆÖ² x86 ´úÂëµ½ÐÂÌåÏµÊ±Óöµ½µÄ¼¸¸öÎÊÌâÓë²»ÕýÈ·µÄÊý¾ÝÀàÐÍÏà¹Ø. ¼á³ÖÑÏ¸ñµÄÊý¾ÝÀàÐÍºÍÊ¹ÓÃ -Wall -Wstrict-prototypes ½øÐÐ±àÒë¿ÉÄÜ±ÜÃâ´ó²¿·ÖµÄ bug.</p>
+<p>ÄÚºËÊý¾ÝÊ¹ÓÃµÄÊý¾ÝÀàÐÍ·ÖÎª 3 ¸öÖ÷ÒªÀàÐÍ: ±ê×¼ C ÀàÐÍÀýÈç int, Ã÷È·´óÐ¡µÄÀàÐÍÀýÈç u32, ÒÔ¼°ÓÃ×÷ÌØ¶¨ÄÚºË¶ÔÏóµÄÀàÐÍ, ÀýÈç pid_t. ÎÒÃÇ½«¿´µ½Õâ 3 ¸öÀàÐÍÖÖÀàÓ¦µ±Ê²Ã´Ê±ºòÒÔ¼°Ó¦µ±ÈçºÎÊ¹ÓÃ. ±¾ÕÂµÄ×îºóµÄ½ÚÌ¸ÂÛÒ»Ð©ÆäËûµÄµäÐÍÎÊÌâ, ÄãÔÚÒÆÖ² x86 µÄÇý¶¯µ½ÆäËûÆ½Ì¨Ê±¿ÉÄÜÓöµ½µÄÎÊÌâ, ²¢ÇÒ½éÉÜ½üÆÚÄÚºËÍ·ÎÄ¼þÊä³öµÄÁ´±íµÄ³£ÓÃÖ§³Ö.</p>
+<p>Èç¹ûÄã×ñÕÕÎÒÃÇÌá¹©µÄÖ¸Òý, ÄãµÄÇý¶¯Ó¦µ±±àÒëºÍÔËÐÐÔÚÄãÎÞ·¨²âÊÔµÄÆ½Ì¨ÉÏ.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="UseofStandardCTypes.sect"></a>11.1.&#160;±ê×¼ C ÀàÐÍµÄÊ¹ÓÃ</h2></div></div></div>
+<p>¾¡¹Ü´ó²¿·Ö³ÌÐòÔ±Ï°¹ß×ÔÓÉÊ¹ÓÃ±ê×¼ÀàÐÍ, Èç int ºÍ long, ±àÐ´Éè±¸Çý¶¯ÐèÒªÒ»Ð©Ð¡ÐÄÀ´±ÜÃâÀàÐÍ³åÍ»ºÍÄ£ºýµÄ bug.</p>
+<p>Õâ¸öÎÊÌâÊÇÄã²»ÄÜÊ¹ÓÃ±ê×¼ÀàÐÍ, µ±ÄãÐèÒª"Ò»¸ö 2-×Ö½Ú Ìî³äÕß"»òÕß"Ò»¸ö¶«Î÷À´´ú±íÒ»¸ö4-×Ö½Ú ×Ö´®", ÒòÎªÕý³£µÄ C Êý¾ÝÀàÐÍÔÚËùÓÐÌåÏµÉÏ²»ÊÇÏàÍ¬´óÐ¡. ÎªÕ¹Ê¾¸÷ÖÖ C ÀàÐÍµÄÊý¾Ý´óÐ¡, datasize ³ÌÐòÒÑ°üº¬ÔÚÀý×ÓÎÄ¼þ misc-progs Ä¿Â¼ÖÐ, ÓÉ O' Reilly's FTP Õ¾µãÌá¹©. ÕâÊÇÒ»¸ö³ÌÐòµÄÑùÀýÔËÐÐ, ÔÚÒ»¸ö i386 ÏµÍ³ÉÏ(ÏÔÊ¾µÄ×îºó 4 ¸öÀàÐÍÔÚÏÂÒ»ÕÂ½éÉÜ):</p>
+<pre class="screen">
+morgana% misc-progs/datasize
+arch Size: char short int long ptr long-long u8 u16 u32 u64
+i686       1    2     4   4    4   8         1  2   4   8
+</pre>
+<p>Õâ¸ö³ÌÐò¿ÉÒÔÓÃÀ´ÏÔÊ¾³¤ÕûÐÍºÍÖ¸ÕëÔÚ 64-Î» Æ½Ì¨ÉÏµÄ²»Í¬´óÐ¡, ÈçÍ¬ÔÚ²»Í¬ Linux ¼ÆËã»úÉÏÔËÐÐ³ÌÐòËùÑÝÊ¾µÄ:</p>
+<pre class="screen">
+arch  Size:  char  short  int  long  ptr long-long  u8 u16 u32 u64 
+i386         1     2      4    4     4   8          1  2   4   8  
+alpha        1     2      4    8     8   8          1  2   4   8  
+armv4l       1     2      4    4     4   8          1  2   4   8  
+ia64         1     2      4    8     8   8          1  2   4   8  
+m68k         1     2      4    4     4   8          1  2   4   8  
+mips         1     2      4    4     4   8          1  2   4   8  
+ppc          1     2      4    4     4   8          1  2   4   8  
+sparc        1     2      4    4     4   8          1  2   4   8  
+sparc64      1     2      4    4     4   8          1  2   4   8  
+x86_64       1     2      4    8     8   8          1  2   4   8  
+</pre>
+<p>×¢ÒâÓÐÈ¤µÄÊÇ SPARC 64 ÌåÏµÔÚÒ»¸ö 32-Î» ÓÃ»§¿Õ¼äÔËÐÐ, Òò´ËÄÇÀïÖ¸ÕëÊÇ 32 Î»¿í, ¾¡¹ÜËüÃÇÔÚÄÚºË¿Õ¼äÊÇ 64 Î»¿í. Õâ¿ÉÓÃ¼ÓÔØ kdatasize Ä£¿é(ÔÚÀý×ÓÎÄ¼þµÄ misc-modules Ä¿Â¼Àï)À´ÑéÖ¤. Õâ¸öÄ£¿éÔÚ¼ÓÔØÊ±Ê¹ÓÃ printk À´±¨¸æ´óÐ¡ÐÅÏ¢, ²¢ÇÒ·µ»ØÒ»¸ö´íÎó( Òò´ËÃ»ÓÐ±ØÒªÐ¶ÔØËü ):</p>
+<pre class="screen">
+kernel: arch Size: char short int long ptr long-long u8 u16 u32 u64
+kernel: sparc64    1    2     4   8    8   8         1  2   4   8
+</pre>
+<p>¾¡¹ÜÔÚ»ìºÏ²»Í¬Êý¾ÝÀàÐÍÊ±Äã±ØÐëÐ¡ÐÄ, ÓÐÊ±ÓÐºÜºÃµÄÀíÓÉÕâÑù×ö. Ò»ÖÖÇé¿öÊÇÒòÎªÄÚ´æ´æÈ¡, ÓëÄÚºËÏà¹ØÊ±ÊÇÌØÊâµÄ. ¸ÅÄîÉÏ, ¾¡¹ÜµØÖ·ÊÇÖ¸Õë, ÄÚ´æ¹ÜÀí³£³£Ê¹ÓÃÒ»¸öÎÞ·ûºÅµÄÕûÊýÀàÐÍ¸üºÃµØÍê³É; ÄÚºË¶Ô´ýÎïÀíÄÚ´æÈçÍ¬Ò»¸ö´óÊý×é, ²¢ÇÒÄÚ´æµØÖ·Ö»ÊÇÒ»¸öÊý×éË÷Òý. ½øÒ»²½µØ, Ò»¸öÖ¸ÕëÈÝÒ×½âÒýÓÃ; µ±Ö±½Ó´¦ÀíÄÚ´æ´æÈ¡Ê±, Äã¼¸ºõ´Ó²»ÏëÒÔÕâÖÖ·½Ê½½âÒýÓÃ. Ê¹ÓÃÒ»¸öÕûÊýÀàÐÍ±ÜÃâÁËÕâÖÖ½âÒýÓÃ, Òò´Ë±ÜÃâÁË bug. Òò´Ë, ÄÚºËÖÐÍ¨³£µÄÄÚ´æµØÖ·³£³£ÊÇ unsigned long, ÀûÓÃÁËÖ¸ÕëºÍ³¤ÕûÐÍÒ»Ö±ÊÇÏàÍ¬´óÐ¡µÄÕâ¸öÊÂÊµ, ÖÁÉÙÔÚ Linux Ä¿Ç°Ö§³ÖµÄËùÓÐÆ½Ì¨ÉÏ.</p>
+<p>ÒòÎªÆäËùÖµµÄÔ­Òò, C99 ±ê×¼¶¨ÒåÁË intptr_t ºÍ uintptr_t ÀàÐÍ¸øÒ»¸ö¿ÉÒÔ³ÖÓÐÒ»¸öÖ¸ÕëÖµµÄÕûÐÍ±äÁ¿. µ«ÊÇ, ÕâÐ©ÀàÐÍ¼¸ºõÃ»ÔÚ 2.6 ÄÚºËÖÐÊ¹ÓÃ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch10s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch11s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.6.&#160;¿ìËÙ²Î¿¼&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;11.2.&#160;°²ÅÅÒ»¸öÃ÷È·´óÐ¡¸øÊý¾ÝÏî</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

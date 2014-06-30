@@ -1,0 +1,105 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>14.8.&#160;´¦Àí¹Ì¼þ-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ">
+<link rel="prev" href="ch14s07.html" title="14.7.&#160;ÈÈ²å°Î">
+<link rel="next" href="ch14s09.html" title="14.9.&#160;¿ìËÙ²Î¿¼">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">14.8.&#160;´¦Àí¹Ì¼þ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch14s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DealingwithFirmware.sect1"></a>14.8.&#160;´¦Àí¹Ì¼þ</h2></div></div></div>
+<p>×÷ÎªÒ»¸öÇý¶¯×÷Õß, Äã¿ÉÄÜ·¢ÏÖÄãÃæ¶ÔÒ»¸öÉè±¸±ØÐëÔÚËüÄÜÖ§³Ö¹¤×÷Ç°ÏÂÔØ¹Ì¼þµ½ËüÀïÃæ. Ó²¼þÊÐ³¡µÄÐí¶àµØ·½µÄ¾ºÕùÊÇÈç´ËµÃÇ¿ÁÒ, ÒÔÖÁÓÚÉõÖÁÒ»µãÓÃ×÷Éè±¸¿ØÖÆ¹Ì¼þµÄ EEPROM µÄ³É±¾ÖÆÔìÉÌ¶¼²»Ô¸Òâ»¨·Ñ. Òò´Ë¹Ì¼þ·¢²¼ÔÚËæÓ²¼þÒ»ÆðµÄÒ»ÕÅ CD ÉÏ, ²¢ÇÒ²Ù×÷ÏµÍ³¸ºÔð´«ËÍ¹Ì¼þµ½Éè±¸×ÔÉí.</p>
+<p>Äã¿ÉÄÜÏë½â¾ö¹Ì¼þÎÊÌâÊ¹ÓÃÕâÑùµÄÒ»¸öÉùÃ÷:</p>
+<pre class="programlisting">
+static char my_firmware[] = { 0x34, 0x78, 0xa4, ... }; 
+</pre>
+<p>µ«ÊÇ, Õâ¸ö·½·¨¼¸ºõ¿Ï¶¨ÊÇÒ»¸ö´íÎó. ½«¹Ì¼þ±àÂëµ½Ò»¸öÇý¶¯À©´óÁËÇý¶¯µÄ´úÂë, Ê¹¹Ì¼þÉý¼¶À§ÄÑ, ²¢ÇÒ·Ç³£¿ÉÄÜ²úÉúÐí¿ÉÎÊÌâ. ¹©Ó¦ÉÌ²»¿ÉÄÜÒÑ¾­·¢²¼¹Ì¼þÓ³ÏóÔÚ GPL Ö®ÏÂ, Òò´ËºÍ GPL-Ðí¿ÉµÄ´úÂë»ìºÏ³£³£ÊÇÒ»¸ö´íÎó. Îª´Ë, °üº¬ÄÚÇ¶¹Ì¼þµÄÇý¶¯²»¿ÉÄÜ±»½ÓÊÜµ½Ö÷Á÷ÄÚºË»òÕß±» Linux ·¢²¼Õß°üº¬.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheKernelFirmwareInterface.sect2"></a>14.8.1.&#160;ÄÚºË¹Ì¼þ½Ó¿Ú</h3></div></div></div>
+<p>ÕýÈ·µÄ·½·¨ÊÇµ±ÄãÐèÒªËüÊ±´ÓÓÃ»§¿Õ¼ä»ñÈ¡Ëü. µ«ÊÇ, ÇëµÖÖÆÊÔÍ¼´ÓÄÚºË¿Õ¼äÖ±½Ó´ò¿ª°üº¬¹Ì¼þµÄÎÄ¼þµÄÓÕ»ó; ÄÇÊÇÒ»¸öÒ×³ö´íµÄ²Ù×÷, ²¢ÇÒËü°²·ÅÁË²ßÂÔ(ÒÔÒ»¸öÎÄ¼þÃûµÄÐÎÊ½)µ½ÄÚºË. Ïà·´, ÕýÈ·µÄ·½·¨Ê±Ê¹ÓÃ¹Ì¼þ½Ó¿Ú, Ëü¾ÍÊÇÎª´Ë¶ø´´½¨µÄ:</p>
+<pre class="programlisting">
+#include &lt;linux/firmware.h&gt;
+int request_firmware(const struct firmware **fw, char *name, 
+ struct device *device); 
+</pre>
+<p>µ÷ÓÃ request_firmware ÒªÇóÓÃ»§¿Õ¼ä¶¨Î»²¢Ìá¹©Ò»¸ö¹Ì¼þÓ³Ïó¸øÄÚºË; ÎÒÃÇÒ»»á¶ù¿´ËüÈçºÎ¹¤×÷µÄÏ¸½Ú. name Ó¦µ±±êÊ¶ÐèÒªµÄ¹Ì¼þ; Õý³£µÄÓÃ·¨ÊÇ¹©Ó¦ÕßÌá¹©µÄ¹Ì¼þÎÄ¼þÃû. Ä³Ð©Ïó my_firmware.bin µÄÃû×ÓÊÇµäÐÍµÄ. Èç¹û¹Ì¼þ±»³É¹¦¼ÓÔØ, ·µ»ØÖµÊÇ 0(¸ºÔð³£ÓÃµÄ´íÎóÂë±»·µ»Ø), ²¢ÇÒ fw ²ÎÊýÖ¸ÏòÒ»¸öÕâÐ©½á¹¹:</p>
+<pre class="programlisting">
+struct firmware {
+ size_t size;
+ u8 *data; 
+}; 
+</pre>
+<p>ÄÇ¸ö½á¹¹°üº¬Êµ¼ÊµÄ¹Ì¼þ, ËüÏÖÔÚ¿É±»ÏÂÔØµ½Éè±¸ÖÐ. Ð¡ÐÄÕâ¸ö¹Ì¼þÊÇÀ´×ÔÓÃ»§¿Õ¼äµÄÎ´±»¼ì²éµÄÊý¾Ý; ÄãÓ¦µ±ÔÚ·¢ËÍËüµ½Ó²¼þÖ®Ç°ÔËÓÃÈÎºÎ²¢ÇÒËùÓÐµÄÄãÄÜ¹»Ïëµ½µÄ¼ì²éÀ´Ëµ·þÄã×Ô¼ºËüÊÇÕýÈ·µÄ¹Ì¼þÓ³Ïó. Éè±¸¹Ì¼þ³£³£°üº¬±êÊ¶´®, Ð£ÑéºÍ, µÈµÈ; ÔÚÐÅÈÎÊý¾ÝÇ°È«²¿¼ì²éËüÃÇ.</p>
+<p>ÔÚÄãÒÑ¾­·¢ËÍ¹Ì¼þµ½Éè±¸Ç°, ÄãÓ¦µ±ÊÍ·Å in-kernel ½á¹¹, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void release_firmware(struct firmware *fw); 
+</pre>
+<p>ÒòÎª request_firmware ÇëÇóÓÃ»§¿Õ¼äÀ´°ïÃ¦, Ëü±£Ö¤ÔÚ·µ»ØÇ°Ë¯Ãß. Èç¹ûÄãµÄÇý¶¯µ±Ëü±ØÐëÇëÇó¹Ì¼þÊ±²»ÔÚË¯ÃßµÄÎ»ÖÃ, Òì²½µÄÌæ´ú·½·¨¿ÉÄÜÒªÊ¹ÓÃ:</p>
+<pre class="programlisting">
+int request_firmware_nowait(struct module *module,
+ char *name, struct device *device, void *context,
+ void (*cont)(const struct firmware *fw, void *context)); 
+</pre>
+<p>ÕâÀï¶îÍâµÄ²ÎÊýÊÇ moudle( Ëü½«Ò»Ö±ÊÇ THIS_MODULE), context (Ò»¸ö¹Ì¼þ×ÓÏµÍ³²»Ê¹ÓÃµÄË½ÓÐÊý¾ÝÖ¸Õë), ºÍ cont. Èç¹û¶¼½øÐÐË³Àû, request_firmware_nowait ¿ªÊ¼¹Ì¼þ¼ÓÔØ¹ý³Ì²¢ÇÒ·µ»Ø 0. ÔÚ½«À´Ä³¸öÊ±¼ä, cont ½«ÓÃ¼ÓÔØµÄ½á¹û±»µ÷ÓÃ. Èç¹ûÓÉÓÚÄ³Ð©Ô­Òò¹Ì¼þ¼ÓÔØÊ§°Ü, fw ÊÇ NULL.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="HowItWorks.sect2"></a>14.8.2.&#160;ËüÈçºÎ¹¤×÷</h3></div></div></div>
+<p>¹Ì¼þ×ÓÏµÍ³Ê¹ÓÃ sysfs ºÍÈÈ²å°Î»úÖÆ. µ±µ÷ÓÃ request_firmware, Ò»¸öÐÂÄ¿Â¼ÔÚ /sys/class/firmware ÏÂÊ¹ÓÃÄãµÄÇý¶¯µÄÃû×Ó±»´´½¨. ÄÇ¸öÄ¿Â¼°üº¬ 3 ¸öÊôÐÔ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>loading </span></span></dt>
+<dd><p>Õâ¸öÊôÐÔÓ¦µ±±»¼ÓÔØ¹Ì¼þµÄÓÃ»§¿Õ¼ä½ø³ÌÉèÖÃÎª 1. µ±¼ÓÔØ½ø³ÌÍê³É, ËüÓ¦µ±ÉèÎª 0. Ð´Ò»¸öÖµ -1 µ½ loading »áÖÐÖ¹¹Ì¼þ¼ÓÔØ½ø³Ì.</p></dd>
+<dt><span class="term"><span>data </span></span></dt>
+<dd><p>data ÊÇÒ»¸ö¶þ½øÖÆµÄ½ÓÊÕ¹Ì¼þÊý¾Ý×ÔÉíµÄÊôÐÔ. ÔÚÉèÖÃ loading ºó, ÓÃ»§¿Õ¼ä½ø³ÌÓ¦µ±Ð´¹Ì¼þµ½Õâ¸öÊôÐÔ.</p></dd>
+<dt><span class="term"><span>device </span></span></dt>
+<dd><p>Õâ¸öÊôÐÔÊÇÒ»¸ö·ûºÅÁ¬½Óµ½ /sys/devices ÏÂÃæµÄ±»¹ØÁªÈë¿ÚÏî.</p></dd>
+</dl></div>
+<p>Ò»µ©´´½¨ÁË sysfs Èë¿ÚÏî, ÄÚºËÎªÄãµÄÉè±¸²úÉúÒ»¸öÈÈ²å°ÎÊÂ¼þ. ´«µÝ¸øÈÈ²å°Î´¦ÀíÕßµÄ»·¾³°üÀ¨Ò»¸ö±äÁ¿ FIRMWARE, Ëü±»ÉèÖÃÎªÌá¹©¸ø request_firmware µÄÃû×Ó. Õâ¸ö´¦ÀíÕßÓ¦µ±¶¨Î»¹Ì¼þÎÄ¼þ, ²¢ÇÒ¿½±´Ëüµ½ÄÚºËÊ¹ÓÃÌá¹©µÄÊôÐÔ. Èç¹ûÕâ¸öÎÄ¼þÎÞ·¨ÕÒµ½, ´¦ÀíÕßÓ¦µ±ÉèÖÃ loading ÊôÐÔÎª -1.</p>
+<p>Èç¹ûÒ»¸ö¹Ì¼þÇëÇóÔÚ 10 ÃëÄÚÃ»ÓÐ±»·þÎñ, ÄÚºË¾Í·ÅÆú²¢·µ»ØÒ»¸öÊ§°Ü×´Ì¬¸øÇý¶¯. ³¬Ê±ÖÜÆÚ¿ÉÍ¨¹ý sysfs ÊôÐÔ /sys/class/firmware/timeout ÊôÐÔ¸Ä±ä.</p>
+<p>Ê¹ÓÃ request_firmware ½Ó¿ÚÔÊÐíÄãËæÄãµÄÇý¶¯·¢²¼Éè±¸¹Ì¼þ. µ±ÕýÈ·µØ¼¯³Éµ½ÈÈ²å°Î»úÖÆ, ¹Ì¼þ¼ÓÔØ×ÓÏµÍ³ÔÊÐíÉè±¸¼ò»¯¹¤×÷"ÔÚºÐ×ÓÖ®Íâ" ÏÔÈ»ÕâÊÇ´¦ÀíÎÊÌâµÄ×îºÃ·½·¨.</p>
+<p>µ«ÊÇ, ÇëÔÊÐíÎÒÃÇÌá³ö¶àÒ»Ìõ¾¯¸æ: Éè±¸¹Ì¼þÃ»ÓÐÖÆÔìÉÌµÄÐí¿É²»Ó¦µ±·¢²¼. Ðí¶àÖÆÔìÉÌ»áÍ¬ÒâÔÚºÏÀíµÄÌõ¿îÏÂÐí¿ÉËüÃÇµÄ¹Ì¼þ, Èç¹û¿ÍÆøµØÇëÇó; Ò»Ð©ÆäËûµÄ¿ÉÄÜ²»ºÎÔÚ. ÎÞÂÛÈçºÎ, ÔÚÃ»ÓÐÐí¿ÉÊ±¿½±´ºÍ·¢²¼ËüÃÇµÄ¹Ì¼þÊÇ¶Ô°æÈ¨·¨µÄÆÆ»µ²¢ÇÒÕÐÖÂÂé·³.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch14s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch14.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">14.7.&#160;ÈÈ²å°Î&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;14.9.&#160;¿ìËÙ²Î¿¼</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

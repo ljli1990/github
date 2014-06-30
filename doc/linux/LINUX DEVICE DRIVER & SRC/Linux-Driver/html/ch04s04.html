@@ -1,0 +1,98 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>4.4.&#160;й╧сц╧ш╡Лю╢╣Вйт-LinuxиХ╠╦гЩ╤╞╣зхЩ╟Фё╗жпнд╟Фё╘- - </title>
+<meta name="description" content="гЩ╤╞©╙╥╒- - " />
+<meta name="keywords" content="LinuxиХ╠╦гЩ╤╞,жпнд╟Ф,╣зхЩ╟Ф,ldd,linux device driver,гЩ╤╞©╙╥╒,╣Гвс╟Ф,ЁлпРиХ╪ф,хМ╪Ч©╙╥╒, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux иХ╠╦гЩ╤╞ Edition 3">
+<link rel="up" href="ch04.html" title="╣з&#160;4&#160;уб&#160;╣Вйт╪╪йУ">
+<link rel="prev" href="ch04s03.html" title="4.3.&#160;сц╡Ия╞ю╢╣Вйт">
+<link rel="next" href="ch04s05.html" title="4.5.&#160;╣Вйто╣мЁ╧йуо">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">4.4.&#160;й╧сц╧ш╡Лю╢╣Вйт</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch04s03.html">иор╩рЁ</a>&#160;</td>
+<th width="60%" align="center">╣з&#160;4&#160;уб&#160;╣Вйт╪╪йУ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch04s05.html">обр╩рЁ</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DebuggingbyWatching.sect"></a>4.4.&#160;й╧сц╧ш╡Лю╢╣Вйт</h2></div></div></div>
+<p>спй╠п║нйлБ©иртм╗╧Щ╧ш╡Лсц╩╖©у╪Д╣дс╕сцЁлпР╣дппн╙ю╢в╥вы. ╪ЮйсЁлпРр╡спжЗсз╫╗а╒╤тгЩ╤╞уЩх╥╧╓вВ╣дпепд. юЩхГ, нрцгдэ╧╩╤т scull ╦п╣╫сппепд, тз©╢аккЭ╣д╤ай╣ожхГ╨ноЛс╕╡╩м╛йЩа©йЩ╬щ╣д╤агКгСж╝╨С.</p>
+<p>сп╪╦╦Ж╥╫╥╗ю╢╪Юйссц╩╖©у╪ДЁлпРткпп. дЦ©иртткппр╩╦Ж╣ВйтфВю╢╣╔╡╫╧ЩкЭ╣д╨╞йЩ, тЖ╪с╢Рс║сО╬Д, ╩Руътз strace обткппЁлпР. уБюО, нрцг╫╚лжбшвН╨Ср╩╦Ж╪╪йУ, ╣╠уФуЩд©╣дйг╪Л╡Идз╨к╢ЗбКй╠кЭйгвНспх╓╣д.</p>
+<p>strace цЭаНй╠р╩╦Жспа╕╧╓╬ъ, отй╬кЫсп╣дсц╩╖©у╪ДЁлпР╥╒ЁЖ╣до╣мЁ╣Всц.  кЭ╡╩╫Жотй╬╣Всц, ╩╧рт╥Ш╨епнй╫отй╬╣Всц╣д╡нйЩ╨м╥╣╩ьж╣. ╣╠р╩╦Жо╣мЁ╣Всцй╖╟э, ╢МнС╣д╥Ш╨еж╣(юЩхГ, ENOMEM)╨м╤тс╕╣двж╢╝(Out of memory) ╤╪отй╬. strace сп╨э╤ЮцЭаНппя║оН; фДжпвНспсц╣дйг -t ю╢отй╬ц©╦Ж╣Всцж╢пп╣дй╠╪Д, -T ю╢отй╬╣Всцжп╩╗╥я╣дй╠╪Д, -e ю╢очжф╠╩╦Звы╣Всц╣дюЮпм, рт╪╟-o ю╢жь╤╗оРйДЁЖ╣╫р╩╦Жнд╪Ч. х╠й║╣ь, strace ╢Рс║╣Всцпео╒╣╫ stderr.</p>
+<p>strace ╢сдз╨квтиМ╩Ях║пео╒. уБрБн╤ве©ирт╦Звыр╩╦ЖЁлпР, ╡╩╧экЭйг╥Я╢Ьсп╣Вйтж╖Ёж╠ЮрК(╤т gcc йг -g я║оН)рт╪╟╡╩╧экЭйг╥Я strip ╧Щ. дЦр╡©ирта╛╫св╥вы╣╫р╩╦Жткппжп╣д╫ЬЁл, юЮкфсзр╩╦Ж╣ВйтфВ╣д╥╫й╫а╛╫с╣╫р╩╦Жткппжп╣д╫ЬЁл╡╒©ьжфкЭ.</p>
+<p>╦Звыпео╒Ёёсцю╢ж╖Ёж╥╒╦Ьс╕сцЁлпР©╙╥╒уъ╣д╧йуо╠╗╦Ф, ╣╚йг╤тдз╨кЁлпРт╠р╡йг╨эсп╪шж╣╣д. нрцгря╬╜©╢╣╫гЩ╤╞╢ЗбКткппхГ╨ноЛс╕о╣мЁ╣Всц; strace тйпМнрцг╪Л╡Иц©╦Ж╣Всц╣дйДхК╨мйДЁЖйЩ╬щ╣др╩жбпт.</p>
+<p>юЩхГ, обцФ╣дфад╩йДЁЖотй╬(╢С╡©╥ж)ткппцЭаН strace ls /dev &gt; /dev/scull0 ╣двН╨С╣дпп:</p>
+<pre class="screen">
+open("/dev", O_RDONLY|O_NONBLOCK|O_LARGEFILE|O_DIRECTORY) = 3
+fstat64(3, {st_mode=S_IFDIR|0755, st_size=24576, ...}) = 0
+
+fcntl64(3, F_SETFD, FD_CLOEXEC)  = 0  
+getdents64(3, /* 141 entries */, 4096)  = 4088  
+[...]  
+getdents64(3, /* 0 entries */, 4096)  = 0  
+close(3)  = 0  
+[...]  
+
+fstat64(1, {st_mode=S_IFCHR|0664, st_rdev=makedev(254, 0), ...}) = 0
+write(1, "MAKEDEV\nadmmidi0\nadmmidi1\nadmmid"..., 4096) = 4000
+write(1, "b\nptywc\nptywd\nptywe\nptywf\nptyx0\n"..., 96) = 96
+write(1, "b\nptyxc\nptyxd\nptyxe\nptyxf\nptyy0\n"..., 4096) = 3904
+write(1, "s17\nvcs18\nvcs19\nvcs2\nvcs20\nvcs21"..., 192) = 192
+write(1, "\nvcs47\nvcs48\nvcs49\nvcs5\nvcs50\nvc"..., 673) = 673
+close(1) = 0
+exit_group(0) = ?
+</pre>
+<p>╢с╣зр╩╦Ж write ╣Всц©╢, цВот╣ь, тз ls ╫АйЬ╡И©╢д©╠Йд©б╪╨С, кЭйтм╪п╢ 4KB. фФ╧ж╣ь(╤тls), ж╩сп 4000 вж╫зп╢хК, ╡╒гр╡ывВ╠╩жь╦╢. ╣╚йг, нрцгж╙╣ю scull жп╣дп╢й╣ожр╩╢нп╢р╩╦Ж╣╔╦Жа©вс, рР╢кнрцг╠╬ю╢╬мфзмШ╡©╥жп╢. ╪╦╡╫ж╝╨С, кЫсп╤╚нВгЕ©у, ЁлпРЁи╧╕мкЁЖ.</p>
+<p>вВн╙аМр╩╦ЖюЩвс, хцнрцг╤ах║ scull иХ╠╦(й╧сц wc цЭаН):</p>
+<pre class="screen">
+[...]
+open("/dev/scull0", O_RDONLY|O_LARGEFILE) = 3
+fstat64(3, {st_mode=S_IFCHR|0664, st_rdev=makedev(254, 0), ...}) = 0
+read(3, "MAKEDEV\nadmmidi0\nadmmidi1\nadmmid"..., 16384) = 4000
+read(3, "b\nptywc\nptywd\nptywe\nptywf\nptyx0\n"..., 16384) = 4000
+read(3, "s17\nvcs18\nvcs19\nvcs2\nvcs20\nvcs21"..., 16384) = 865
+read(3, "", 16384) = 0
+fstat64(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 1), ...}) = 0
+write(1, "8865 /dev/scull0\n", 17) = 17
+close(3) = 0
+exit_group(0) = ?
+</pre>
+<p>хГм╛фзмШ╣д, read р╩╢нж╩дэ╩Ях║ 4000 вж╫з, ╣╚йгйЩ╬щвэа©╣хм╛сзг╟╦ЖюЩвсп╢хК╣д. в╒рБтзуБ╦ЖюЩвсюО╤ах║йгхГ╨нвИж╞╣д, м╛г╟цФ╦Звы╣доЮ╥╢. wc н╙©Лкы╤а╠╩се╩╞╧Щ, рР╢кхф╧Щак╠Йв╪©Б, йтм╪р╩╦Жо╣мЁ╣Всц╤ах║╦Э╤ЮйЩ╬щ. дЦ©и╢с╦Звы╣д╤а╣дппюО©╢╣╫ wc йгхГ╨нйтм╪р╩╢н╤ах║ 16 KB.</p>
+<p>Linux в╗╪рдэ╧╩╢с strace ╣дйДЁЖжп╥╒ож╦Э╤Юспсцпео╒. хГ╧ШдЦ╡╩оК©╢╣╫кЫсп╣д╥Ш╨е, дЦ©ий╧сц efile ╠Йж╬ю╢очжфдЦвт╪╨╫Ж╡И©╢нд╪Ч╥╫╥╗йгхГ╨н╧╓вВ╣д.</p>
+<p>╬м╦Жхк╤Ьят, нрцг╥╒ож strace ╤тсз╡ИцВо╣мЁ╣Всц╣дткппй╠╢МнСйг╥гЁёспсц. ЁёЁёйгс╕сцЁлпР╩Рящй╬ЁлпРжп╣д perror ╣Всц╡╩вЦ╧╩оЙо╦, ╡╒грдэ╧╩х╥гпк╣ЁЖдд╦Жо╣мЁ╣Всц╣ддд╦Ж╡нйЩ╢╔╥╒ак╢МнСйг╥гЁёсп╟ОжЗ╣д.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch04s03.html">иор╩рЁ</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch04.html">иор╩╪╤</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch04s05.html">обр╩рЁ</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">4.3.&#160;сц╡Ия╞ю╢╣Вйт&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">фПй╪рЁ</a></td>
+<td width="40%" align="right" valign="top">&#160;4.5.&#160;╣Вйто╣мЁ╧йуо</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ЪйG█┤═б2BфдОЧРщ■x╨Щ8ЭДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щ ┼░▌Ppхd></script>

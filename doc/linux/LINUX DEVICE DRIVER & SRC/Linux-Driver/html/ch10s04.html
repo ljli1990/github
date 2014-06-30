@@ -1,0 +1,130 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>10.4.&#160;ÖÐ¶Ï¹²Ïí-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch10.html" title="µÚ&#160;10&#160;ÕÂ&#160;ÖÐ¶Ï´¦Àí">
+<link rel="prev" href="ch10s03.html" title="10.3.&#160;Ç°ºÍºó°ë²¿">
+<link rel="next" href="ch10s05.html" title="10.5.&#160;ÖÐ¶ÏÇý¶¯ I/O">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">10.4.&#160;ÖÐ¶Ï¹²Ïí</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch10s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;10&#160;ÕÂ&#160;ÖÐ¶Ï´¦Àí</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch10s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="InterruptSharing.sect"></a>10.4.&#160;ÖÐ¶Ï¹²Ïí</h2></div></div></div>
+<p>ÖÐ¶Ï³åÍ»µÄ¸ÅÄî¼¸ºõÊÇ PC ÌåÏµµÄÍ¬Òå´Ê. ¹ýÈ¥, ÔÚ PC ÉÏµÄ IRQ Ïß²»ÄÜ·þÎñ¶àÓÚÒ»¸öÉè±¸, ²¢ÇÒËüÃÇ´Ó²»×ã¹». ½á¹û, Ê§ÍûµÄÓÃ»§»¨·Ñ´óÁ¿Ê±¼ä¿ª×ÅËüÃÇµÄ¼ÆËã»ú, ¾¡Á¦ÕÒµ½Ò»¸ö·½·¨À´Ê¹ËüÃÇËùÓÐµÄÍâÉèÒ»Æð¹¤×÷.</p>
+<p>ÏÖ´úµÄÓ²¼þ, µ±È», ÒÑ¾­Éè¼ÆÀ´ÔÊÐíÖÐ¶Ï¹²Ïí; PCI ×ÜÏßÒªÇóËü. Òò´Ë, Linux ÄÚºËÖ§³ÖÔÚËùÓÐ×ÜÏßÉÏÖÐ¶Ï¹²Ïí, ÉõÖÁÊÇÄÇÐ©(ÀýÈç ISA ×ÜÏß)´«Í³ÉÏ²»±»Ö§³ÖµÄ. 2.6 ÄÚºËµÄÉè±¸Çý¶¯Ó¦µ±±àÐ´À´Ê¹ÓÃ¹²ÏíÖÐ¶Ï, Èç¹ûÄ¿±êÓ²¼þÄÜ¹»Ö§³ÖÕâ¸ö²Ù×÷Ä£Ê½. ÐÒÔËµÄÊÇ, Ê¹ÓÃ¹²ÏíÖÐ¶ÏÔÚ´ó²¿·ÖÊ±¼äÊÇÈÝÒ×µÄ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="InstallingaSharedHandler.sect"></a>10.4.1.&#160;°²×°Ò»¸ö¹²ÏíµÄ´¦ÀíÕß</h3></div></div></div>
+<p>¹²ÏíÖÐ¶ÏÍ¨¹ý request_irq À´°²×°¾ÍÏñ²»¹²ÏíµÄÒ»Ñù, µ«ÊÇÓÐ 2 ¸ö²»Í¬:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>SA_SHIRQ Î»±ØÐëÔÚ flags ²ÎÊýÖÐÖ¸¶¨, µ±ÇëÇóÖÐ¶ÏÊ±.<p></p>
+</li>
+<li><p>dev_id ²ÎÊý±ØÐëÊÇ¶ÀÌØµÄ. ÈÎºÎÄ£¿éµØÖ·¿Õ¼äµÄÖ¸Õë¶¼ÐÐ, µ«ÊÇ dev_id Ã÷È·µØ²»ÄÜÉèÖÃÎª NULL.</p></li>
+</ul></div>
+<p>ÄÚºË±£³Ö×ÅÒ»¸öÓëÖÐ¶ÏÏà¹ØÁªµÄ¹²Ïí´¦ÀíÕßÁÐ±í, ²¢ÇÒ dev_id ¿ÉÈÏÎªÊÇÇø±ðËüÃÇµÄÇ©Ãû. Èç¹û 2 ¸öÇý¶¯ÒªÔÚÍ¬Ò»¸öÖÐ¶ÏÉÏ×¢²á NULL ×÷ÎªËüÃÇµÄÇ©Ãû, ÔÚÐ¶ÔØÊ±ÊÂÇé¿ÉÄÜ¾ÍÂÒÁË, ÔÚÖÐ¶Ïµ½µÄÊ±ºòÒý·¢ÄÚºË oops. ÓÉÓÚÕâ¸öÀíÓÉ, Èç¹ûÔÚ×¢²á¹²ÏíÖÐ¶ÏÊ±´«¸øÁËÒ»¸ö NULL dev_id , ÏÖ´úÄÚºË»á´óÉù±§Ô¹. µ±ÇëÇóÒ»¸ö¹²ÏíµÄÖÐ¶Ï, request_irq ³É¹¦, Èç¹ûÏÂÁÐÖ®Ò»ÊÇÕæ:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>ÖÐ¶ÏÏß¿ÕÏÐ.</p></li>
+<li><p>ËùÓÐÕâÌõÏßµÄÒÑ¾­×¢²áµÄ´¦ÀíÕßÒ²Ö¸¶¨¹²ÏíÕâ¸ö IRQ.</p></li>
+</ul></div>
+<p>ÎÞÂÛºÎÊ± 2 ¸ö»ò¶à¸öÇý¶¯ÔÚ¹²ÏíÖÐ¶ÏÏß, ²¢ÇÒÓ²¼þÖÐ¶ÏÔÚÕâÌõÏßÉÏÖÐ¶Ï´¦ÀíÆ÷, ÄÚºËÎªÕâ¸öÖÐ¶Ïµ÷ÓÃÃ¿¸ö×¢²áµÄ´¦ÀíÕß, ´«µÝËüµÄ dev_id ¸øÃ¿¸ö. Òò´Ë, Ò»¸ö¹²ÏíµÄ´¦ÀíÕß±ØÐëÄÜ¹»Ê¶±ðËü×Ô¼ºµÄÖÐ¶Ï²¢ÇÒÓ¦µ±¿ìËÙÍË³öµ±Ëü×Ô¼ºµÄÉè±¸Ã»ÓÐ±»ÖÐ¶ÏÊ±. È·ÈÏ·µ»Ø IRQ_NONE ÎÞÂÛºÎÊ±ÄãµÄ´¦ÀíÕß±»µ÷ÓÃ²¢ÇÒ·¢ÏÖÉè±¸Ã»±»ÖÐ¶Ï.</p>
+<p>Èç¹ûÄãÐèÒªÌ½²âÄãµÄÉè±¸, ÔÚÇëÇó IRQ ÏßÖ®Ç°, ÄÚºËÎÞ·¨°ïÄã. Ã»ÓÐÌ½²âº¯Êý¿É¸ø¹²Ïí´¦ÀíÕßÊ¹ÓÃ. ±ê×¼µÄÌ½²â»úÖÆÓÐÐ§Èç¹ûÊ¹ÓÃµÄÏßÊÇ¿ÕÏÐµÄ, µ«ÊÇÈç¹ûÕâÌõÏßÒÑ¾­±»ÁíÒ»¸öÓÐ¹²ÏíÄÜÁ¦µÄÇý¶¯³ÖÓÐ, Ì½²âÊ§°Ü, ¼´±ãÄãµÄÇý¶¯ÒÑÕý³£¹¤×÷. ÐÒÔËµÄÊÇ, ´ó²¿·ÖÉè¼ÆÎªÖÐ¶Ï¹²ÏíµÄÓ²¼þÄÜ¹»¸æÖª´¦ÀíÆ÷ËüÔÚÊ¹ÓÃÄÄ¸öÖÐ¶Ï, Òò´Ë¼õÉÙÃ÷ÏÔµÄÌ½²âµÄÐèÒª.</p>
+<p>ÊÍ·Å´¦ÀíÕßÒÔÕý³£·½Ê½½øÐÐ, Ê¹ÓÃ free_irq. ÕâÀï dev_id ²ÎÊýÓÃÀ´´ÓÕâ¸öÖÐ¶ÏµÄ¹²Ïí´¦ÀíÕßÁÐ±íÖÐÑ¡ÔñÕýÈ·µÄ´¦ÀíÕßÀ´ÊÍ·Å. Õâ¾ÍÊÇÎªÊ²Ã´ dev_id Ö¸Õë±ØÐëÊÇ¶ÀÌØµÄ.</p>
+<p>Ò»¸öÊ¹ÓÃ¹²Ïí´¦ÀíÕßµÄÇý¶¯ÐèÒªÐ¡ÐÄ¶àÒ»¼þÊÂ: Ëü²»ÄÜÊ¹ÓÃ enable_irq »òÕß disable_irq. Èç¹ûËüÓÃÁË, ¶ÔÆäËû¹²ÏíÕâÌõÏßµÄÉè±¸¾ÍÂÒÁË; ½ûÖ¹ÁíÒ»¸öÉè±¸µÄÖÐ¶Ï¼´±ã¶ÌÊ±¼äÒ²¿ÉÄÜ²úÉúÑÓÊ±, Õâ¶ÔÕâ¸öÉè±¸ºÍËüµÄÓÃ»§ÊÇÓÐÎÊÌâµÄ. Í¨³£, ³ÌÐòÔ±±ØÐë¼Ç×¡, ËûµÄÇý¶¯²»ÓµÓÐÕâ¸ö IRQ, ²¢ÇÒËüµÄÐÐÎªÓ¦µ±±ÈËüÓµÓÐÕâ¸öÖÐ¶ÏÏß¸ü¼Ó"Éç»áÐÔ".</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="RunningtheHandler.sect"></a>10.4.2.&#160;ÔËÐÐ´¦ÀíÕß</h3></div></div></div>
+<p>ÈçÍ¬Ç°Ãæ½¨ÒéµÄ, µ±ÄÚºËÊÕµ½Ò»¸öÖÐ¶Ï, ËùÓÐµÄ×¢²áµÄ´¦ÀíÕß±»µ÷ÓÃ. Ò»¸ö¹²ÏíµÄ´¦ÀíÕß±ØÐëÄÜ¹»ÔÚËüÐèÒªµÄ´¦ÀíµÄÖÐ¶ÏºÍÆäËûÉè±¸²úÉúµÄÖÐ¶ÏÖ®¼äÇø·Ö.</p>
+<p>Ê¹ÓÃ shared=1 Ñ¡ÏîÀ´¼ÓÔØ short °²×°ÁËÏÂÁÐ´¦ÀíÕßÀ´´úÌæÈ±Ê¡µÄ:</p>
+<pre class="programlisting">
+irqreturn_t short_sh_interrupt(int irq, void *dev_id, struct pt_regs *regs) 
+{
+        int value, written;
+        struct timeval tv;
+        /* If it wasn't short, return immediately */
+        value = inb(short_base);
+        if (!(value &amp; 0x80))
+                return IRQ_NONE;
+        /* clear the interrupting bit */
+        outb(value &amp; 0x7F, short_base);
+        /* the rest is unchanged */
+        do_gettimeofday(&amp;tv);
+        written = sprintf((char *)short_head,"%08u.%06u\n",
+                          (int)(tv.tv_sec % 100000000), (int)(tv.tv_usec));
+        short_incr_bp(&amp;short_head, written);
+        wake_up_interruptible(&amp;short_queue); /* awake any reading process */
+        return IRQ_HANDLED;
+}
+</pre>
+<p>ÕâÀïÓ¦¸ÃÓÐ¸ö½âÊÍ. ÒòÎª²¢¿ÚÃ»ÓÐ"ÖÐ¶Ï¹ÒÆð"Î»À´¼ì²é, ´¦ÀíÕßÊ¹ÓÃ ACK Î»×÷´ËÄ¿µÄ. Èç¹ûÕâ¸öÎ»ÊÇ¸ß, Õý±¨¸æµÄÖÐ¶ÏÊÇ¸ø short, ²¢ÇÒÕâ¸ö´¦ÀíÕßÇå³ýÕâ¸öÎ».</p>
+<p>´¦ÀíÕßÍ¨¹ý²¢¿ÚÊý¾Ý¶Ë¿ÚµÄÇåÁãÀ´¸´Î»Õâ¸öÎ» -- short ¼ÙÉè¹Ü½Å 9 ºÍ 10 Á¬ÔÚÒ»Æð. Èç¹ûÆäËûÒ»¸öºÍ short ¹²ÏíÕâ¸ö IRQ µÄÉè±¸²úÉúÒ»¸öÖÐ¶Ï, short ¿´µ½ËüµÄÏßÈÔÈ»·Ç¼¤»î²¢ÇÒÊ²Ã´²»×÷.</p>
+<p>µ±È», Ò»¸ö¹¦ÄÜÆëÈ«µÄÇý¶¯¿ÉÄÜ½«¹¤×÷»®·ÖÎ»Ç°ºÍºó°ë²¿, µ«ÊÇÈÝÒ×Ìí¼Ó²¢ÇÒ²»»áÓÐÈÎºÎÓ°ÏìÊµÏÖ¹²ÏíµÄ´úÂë. Ò»¸öÕæÊµÇý¶¯»¹¿ÉÄÜÊ¹ÓÃ dev_id ²ÎÊýÀ´¾ö¶¨, ÔÚºÜ¶à¿ÉÄÜµÄÖÐ, ÄÄ¸öÉè±¸ÔÚÖÐ¶Ï.</p>
+<p>×¢Òâ, Èç¹ûÄãÊ¹ÓÃ´òÓ¡»ú(´úÌæÌøÏß)À´²âÊÔÊ¹ÓÃ short µÄÖÐ¶Ï¹ÜÀí, Õâ¸ö¹²ÏíµÄ´¦ÀíÕß²»ÏóËùËµµÄÒ»Ñù¹¤×÷,ÒòÎª´òÓ¡»úÐ­Òé²»ÔÊÐí¹²Ïí, ²¢ÇÒÇý¶¯²»ÖªµÀÊÇ·ñÕâ¸öÖÐ¶ÏÊÇÀ´×Ô´òÓ¡»ú.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheprocInterfaceandShardInterrupts.sect"></a>10.4.3.&#160;/proc ½Ó¿ÚºÍ¹²ÏíÖÐ¶Ï</h3></div></div></div>
+<p>ÔÚÏµÍ³ÖÐ°²×°¹²Ïí´¦ÀíÕß²»Ó°Ïì /proc/stat, ËüÉõÖÁ²»ÖªµÀ´¦ÀíÕß. µ«ÊÇ, /proc/interrupts ÉÔÉÔ±ä»¯.</p>
+<p>ËùÓÐÍ¬Ò»¸öÖÐ¶ÏºÅµÄ°²×°µÄ´¦ÀíÕß³öÏÖÔÚ /proc/interrupts µÄÍ¬Ò»ÐÐ. ÏÂÁÐÊä³ö( ´ÓÒ»¸ö x86_64 ÏµÍ³)ÏÔÊ¾ÁË¹²ÏíÖÐ¶Ï´¦ÀíÊÇÈçºÎÏÔÊ¾µÄ:</p>
+<pre class="screen">
+ CPU0
+ 0: 892335412 XT-PIC timer
+ 1: 453971 XT-PIC i8042
+ 2: 0 XT-PIC cascade
+ 5: 0 XT-PIC libata, ehci_hcd
+ 8: 0 XT-PIC rtc
+ 9: 0 XT-PIC acpi
+ 10: 11365067 XT-PIC ide2, uhci_hcd, uhci_hcd, SysKonnect SK-98xx, EMU10K1
+ 11: 4391962 XT-PIC uhci_hcd, uhci_hcd
+ 12: 224 XT-PIC i8042
+ 14: 2787721 XT-PIC ide0
+ 15: 203048 XT-PIC ide1
+NMI: 41234
+LOC: 892193503
+ERR: 102
+MIS: 0
+</pre>
+<p>Õâ¸öÏµÍ³ÓÐ¼¸¸ö¹²ÏíÖÐ¶ÏÏß. IRQ 5 ÓÃÀ´¸ø´®ÐÐ ATA ºÍ IEEE 1394 ¿ØÖÆÆ÷; IRQ 10 ÓÐ¼¸¸öÉè±¸, °üÀ¨Ò»¸ö IDE ¿ØÖÆÆ÷, 2 ¸ö USB ¿ØÖÆÆ÷, Ò»¸öÒÔÌ«Íø½Ó¿Ú, ÒÔ¼°Ò»¸öÉù¿¨; ²¢ÇÒ IRQ 11 Ò²±» 2 ¸ö USB ¿ØÖÆÆ÷Ê¹ÓÃ.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch10s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch10s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.3.&#160;Ç°ºÍºó°ë²¿&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;10.5.&#160;ÖÐ¶ÏÇý¶¯ I/O</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

@@ -1,0 +1,101 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.11.&#160;MAC µØÖ·½âÎö-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17s10.html" title="17.10.&#160;Socket »º´æ">
+<link rel="next" href="ch17s12.html" title="17.12.&#160;¶¨ÖÆ ioctl ÃüÁî">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.11.&#160;MAC µØÖ·½âÎö</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s10.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s12.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="MACAddressResolution"></a>17.11.&#160;MAC µØÖ·½âÎö</h2></div></div></div>
+<p>ÒÔÌ«ÍøÍ¨Ñ¶µÄÒ»¸öÓĞÈ¤µÄ·½ÃæÊÇÈçºÎ½« MAC µØÖ·( ½Ó¿ÚµÄÎ¨Ò»Ó²¼ş ID )ºÍ IP ±àºÅ½áºÏÆğÀ´. ´ó²¿·ÖĞ­ÒéÓĞÀàËÆµÄÎÊÌâ, µ«ÎÒÃÇÕâÀï¼¯ÖĞÓÚÀàÒÔÌ«ÍøµÄÇé¿ö. ÎÒÃÇÊÔÍ¼Ìá¹©Õâ¸öÎÊÌâµÄÍêÕûÃèÊö, Òò´ËÎÒÃÇÕ¹Ê¾Èı¸öÇéĞÎ: ARP, ÎŞ ARP µÄÒÔÌ«ÍøÍ·²¿( ÀıÈç plip), ÒÔ¼°·ÇÒÔÌ«ÍøÍ·²¿.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="UsingARPwithEthernet"></a>17.11.1.&#160;ÒÔÌ«ÍøÊ¹ÓÃ ARP</h3></div></div></div>
+<p>´¦ÀíµØÖ·½âÎöµÄÍ¨³£·½·¨ÊÇÊ¹ÓÃ Address Resolution Protocol (ARP). ĞÒÔËµÄÊÇ, ARP ÓÉÄÚºËÀ´¹ÜÀí, ²¢ÇÒÒ»¸öÒÔÌ«Íø½Ó¿Ú²»ĞèÒª×öÌØ±ğµÄÊÂÇéÀ´Ö§³Ö ARP. Ö»Òª dev-&gt;addr ºÍ dev-&gt;addr_len ÔÚ open Ê±ÕıÈ·µÄ¸³ÖµÁË, Çı¶¯¾Í²»ĞèÒªµ£ĞÄ½â¾ö IP ±àºÅ¶ÔÓ¦ÓÚ MAC µØÖ·; ether_setup °²ÅÅÕıÈ·µÄÉè±¸·½·¨¸ø dev-&gt;hard_header ºÍ dev_rebuild_header.</p>
+<p>¾¡¹ÜÍ¨³£ÄÚºË´¦ÀíµØÖ·½âÎöµÄÏ¸½Ú(²¢ÇÒ»º´æ½á¹û), ËüĞèÒª½Ó¿ÚÇı¶¯À´°ïÖú½¨Á¢±¨ÎÄ. ±Ï¾¹, Çı¶¯ÖªµÀÎïÀí²ãÍ·²¿Ï¸½Ú, È»¶øÍøÂç´úÂëµÄ×÷ÕßÒÑ¾­ÊÔÍ¼¸ôÀëÄÚºËÆäËû²¿·Ö. Îª´Ë, ÄÚºËµ÷ÓÃÇı¶¯µÄ hard_header ·½·¨Ê¹ÓÃ ARP ²éÑ¯µÄ½á¹ûÀ´²¼ÖÃ±¨ÎÄ. Õı³£µØ, ÒÔÌ«ÍøÇı¶¯±àĞ´Õß²»ĞèÒªÖªµÀÕâ¸ö¹ı³Ì -- ¹«¹²µÄÒÔÌ«Íø´úÂë¸ºÔğÁËËùÓĞÊÂÇé.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="OverridingARP"></a>17.11.2.&#160;²»¿¼ÂÇ ARP</h3></div></div></div>
+<p>¼òµ¥µÄµã¶ÔµãÍøÂç½Ó¿Ú, ÀıÈç plip, ¿ÉÄÜ´ÓÊ¹ÓÃÒÔÌ«ÍøÍ·²¿ÖĞÊÜÒæ, ¶ø±ÜÃâÀ´»Ø·¢ËÍ ARP ±¨ÎÄµÄ¿ªÏú. snull ÖĞµÄÀı×Ó´úÂëÒ²ÊôÓÚÕâÒ»ÀàµÄÍøÂçÉè±¸. snull ²»ÄÜÊ¹ÓÃ ARP ÒòÎªÇı¶¯¸Ä±ä·¢ËÍ±¨ÎÄÖĞµÄ IP µØÖ·, ARP ±¨ÎÄÒ²½»»» IP µØÖ·. ¾¡¹ÜÎÒÃÇ¿ÉÄÜÇáÒ×ÊµÏÖÁËÒ»¸ö¼òµ¥ ARP Ó¦´ğ·¢ÉúÆ÷, ¸ü¶àµÄÊÇÑİÊ¾ĞÔµÄÀ´Õ¹Ê¾ÈçºÎÖ±½Ó´¦ÀíÍøÂç²ãÍ·²¿.</p>
+<p>Èç¹ûÄãµÄÉè±¸ÏëÊ¹ÓÃÍ¨³£µÄÓ²¼şÍ·¶ø²»ÔËĞĞ ARP, ÄãĞèÒªÖØĞ´È±Ê¡µÄ dev-&gt;hard_header ·½·¨. ÕâÊÇ snull µÄÊµÏÖ, ×÷ÎªÒ»¸ö·Ç³£¶ÌµÄº¯Êı:</p>
+<pre class="programlisting">
+int snull_header(struct sk_buff *skb, struct net_device *dev,
+                 unsigned short type, void *daddr, void *saddr,
+                 unsigned int len)
+{
+    struct ethhdr *eth = (struct ethhdr *)skb_push(skb,ETH_HLEN);
+    eth-&gt;h_proto = htons(type);
+    memcpy(eth-&gt;h_source, saddr ? saddr : dev-&gt;dev_addr, dev-&gt;addr_len);
+    memcpy(eth-&gt;h_dest,  daddr ? daddr : dev-&gt;dev_addr, dev-&gt;addr_len);
+    eth-&gt;h_dest[ETH_ALEN-1]  ^= 0x01;  /* dest is us xor 1 */
+    return (dev-&gt;hard_header_len);
+}
+</pre>
+<p>Õâ¸öº¯Êı½ö½öÓÃÄÚºËÌá¹©µÄĞÅÏ¢²¢°ÑËü¸ñÊ½³É±ê×¼ÒÔÌ«ÍøÍ·. ËüÒ²·­×ªÄ¿µÄÒÔÌ«ÍøµØÖ·µÄ 1 Î», ÀíÓÉÏÂÃæĞğÊö.</p>
+<p>µ±½Ó¿ÚÊÕµ½Ò»¸ö±¨ÎÄ, eth_type_trans ÒÔ¼¸ÖÖ·½·¨À´Ê¹ÓÃÓ²¼şÍ·²¿. ÎÒÃÇÒÑ¾­ÔÚ snull_rx ¿´µ½Õâ¸öµ÷ÓÃ.</p>
+<pre class="programlisting">
+skb-&gt;protocol = eth_type_trans(skb, dev);
+</pre>
+<p>Õâ¸öº¯Êı³éÈ¡Ğ­Òé±êÊ¶(	ETH_P_IP, ÔÚÕâ¸öÇé¿öÏÂ )´ÓÒÔÌ«ÍøÍ·; ËüÒ²¸³Öµ skb-&gt;mac.raw, ´Ó±¨ÎÄ data (Ê¹ÓÃ skb_pull)È¥µôÓ²¼şÍ·²¿, ²¢ÇÒÉèÖÃ skb-&gt;pkt_type. ×îºóÒ»ÏîÔÚ skb ·ÖÅäÊÇÈ±Ê¡Îª PACKET_HOST(Ö¸Ê¾±¨ÎÄÊÇ·¢ÏòÕâ¸öÖ÷»úµÄ), eth_type_trans ¸Ä±äËüÀ´·´Ó³ÒÔÌ«ÍøÄ¿µÄµØÖ·: Èç¹ûÕâ¸öµØÖ·²»Æ¥Åä½ÓÊÕËüµÄ½Ó¿ÚµØÖ·, pkt_type ³ÉÔ±±»ÉèÎª PACKET_OTHERHOST. ½á¹û, ³ı·Ç½Ó¿Ú´¦ÓÚ»ìÔÓÄ£Ê½»òÕßÄÚºË´ò¿ªÁË±¨ÎÄ×ª·¢, netif_rx ¶ªÆúÈÎºÎÀàĞÍÎª PACKET_OTHERHOST µÄ±¨ÎÄ. ÒòÎªÕâÑù, snull_header Ğ¡ĞÄµØÊ¹Ä¿µÄÓ²¼şµØÖ·Æ¥Åä½ÓÊÕ½Ó¿Ú.</p>
+<p>Èç¹ûÄãµÄ½Ó¿ÚÊÇµã¶ÔµãÁ¬½Ó, Äã²»»áÏëÊÕµ½²»Ï£ÍûµÄ¶à²¥±¨ÎÄ. Îª±ÜÃâÕâ¸öÎÊÌâ, ¼Ç×¡, µÚÒ»¸ö×Ö½ÚµÄ×îµÍÎ»(LSB)Îª 0 µÄÄ¿µÄµØÖ·ÊÇ·½ÏòÒ»¸öµ¥¸öÖ÷»ú(¼´, ÒªÃ´ PACKET_HOST, ÒªÃ´ PACKET_OTHERHOST). plip Çı¶¯Ê¹ÓÃ 0xfc ×÷ÎªËüµÄÓ²¼şµØÖ·µÄµÚÒ»¸ö×Ö½Ú, ¶ø snull Ê¹ÓÃ 0x00. Á½¸öµØÖ·¶¼µ¼ÖÂÒ»¸ö¹¤×÷ÖĞµÄÀàËÆÒÔÌ«ÍøµÄµã¶ÔµãÁ¬½Ó.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="NonEthernetHeader"></a>17.11.3.&#160;·ÇÒÔÌ«ÍøÍ·²¿</h3></div></div></div>
+<p>ÎÒÃÇ¸Õ¸Õ¿´¹ıÓ²¼şÍ·²¿³ıÄ¿µÄµØÖ·Íâ°üº¬ÁËÒ»Ğ©ĞÅÏ¢, ×îÖØÒªµÄÊÇÍ¨Ñ¶Ğ­Òé. ÎÒÃÇÏÖÔÚÃèÊöÓ²¼şÍ·²¿ÈçºÎÓÃÀ´·â×°Ïà¹ØµÄĞÅÏ¢. Èç¹ûÄãĞèÒªÖªµÀÏ¸½Ú, Äã¿É´ÓÄÚºËÔ´ÂëÀï³éÈ¡ËüÃÇ»òÕß´ÓÌØ¶¨´«ËÍÃ½½éµÄ¼¼ÊõÎÄµµÖĞ. ´ó²¿·ÖÇı¶¯±àĞ´ÕßÄÜ¹»ºöÂÔÕâ¸öÌÖÂÛÖ»ÊÇÊ¹ÓÃÒÔÌ«ÍøÊµÏÖ.</p>
+<p>ÖµµÃÒ»ÌáµÄÊÇ²»ÊÇËùÓĞĞÅÏ¢¶¼ÓÉÃ¿¸öĞ­ÒéÌá¹©. Ò»¸öµã¶ÔµãÁ¬½ÓÀıÈç plip »òÕß snull ¿ÉÄÜÔÚ²»Ê§È¥Í¨ÓÃĞÔµÄÇé¿öÏÂ±ÜÃâ´«ËÍÕâ¸öÒÔÌ«ÍøÍ·²¿. hard_header Éè±¸·½·¨, ÓÉ snull_header ÊµÏÖËùÕ¹Ê¾µÄ, ½ÓÊÕ×ÔÄÚºËµÄµİ½»µÄĞÅÏ¢( Ğ­Òé¼¶±ğºÍÓ²¼şµØÖ· ). ËüÒ²ÔÚ type ²ÎÊıÖĞ½ÓÊÕ 16 Î»Ğ­Òé±àºÅ; IP, ÀıÈç, ±êÊ¶Îª ETH_P_IP. Çı¶¯Ó¦¸ÃÕıÈ·µİ½»±¨ÎÄÊı¾İºÍĞ­Òé±àºÅ¸ø½ÓÊÕÖ÷»ú. Ò»¸öµã¶ÔµãÁ¬½Ó¿ÉÄÜËüµÄÓ²¼şÍ·²¿µÄµØÖ·, Ö»´«ËÍĞ­Òé±àºÅ, ÒòÎª±£Ö¤µİ½»ÊÇ¶ÀÁ¢ÓÚÔ´ºÍÄ¿µÄµØÖ·µÄ. Ò»¸öÖ»ÓĞ IP µÄÁ¬½ÓÉõÖÁ¿ÉÄÜ²»·¢ËÍÈÎºÎÓ²¼şÍ·²¿.</p>
+<p>µ±±¨ÎÄÔÚÁ¬½ÓµÄÁíÒ»¶Ë±»ÊÕµ½, ½ÓÊÕº¯ÊıÓ¦µ±ÕıÈ·ÉèÖÃ³ÉÔ± skb-&gt;protocol, skb-&gt;pkt_type, ºÍ skb-&gt;mac.raw.</p>
+<p>skb-&gt;mac.raw ÊÇÒ»¸ö×Ö·ûÖ¸Õë, ÓÉÔÚ¸ß²ãµÄÍøÂç´úÂë(ÀıÈç, net/ipv4/arp.c)ËùÊµÏÖµÄµØÖ·½âÎö»úÖÆÊ¹ÓÃ. Ëü±ØĞëÖ¸ÏòÒ»¸öÆ¥Åä dev-&gt;type µÄ»úÆ÷µØÖ·. Éè±¸ÀàĞÍµÄ¿ÉÄÜµÄÖµÔÚ &lt;linux/if_arp.h&gt; ÖĞ¶¨Òå; ÒÔÌ«Íø½Ó¿ÚÊ¹ÓÃ ARPHRD_ETHER. ÀıÈç, ÕâÊÇ eth_type_trans ÈçºÎ´¦ÀíÊÕµ½µÄ±¨ÎÄµÄÒÔÌ«ÍøÍ·:</p>
+<pre class="programlisting">
+skb-&gt;mac.raw = skb-&gt;data;
+skb_pull(skb, dev-&gt;hard_header_len);
+</pre>
+<p>ÔÚ×î¼òµ¥µÄÇé¿öÏÂ( Ò»¸öÃ»ÓĞÍ·µÄµã¶ÔµãÁ¬½Ó ), skb-&gt;mac.raw ¿ÉÖ¸ÏòÒ»¸ö¾²Ì¬»º´æ, °üº¬½Ó¿ÚµÄÓ²¼şµØÖ·, protocol ¿ÉÉèÖÃÎª ETH_P_IP, ²¢ÇÒ packet_type ¿ÉÈÃËüÊÇÈ±Ê¡µÄÖµ PACKET_HOST.</p>
+<p>ÒòÎªÃ¿¸öÓ²¼şÀàĞÍÊÇ¶ÀÌØµÄ, ¸ø³ö³¬³öÒÑ¾­ÌÖÂÛµÄÌØ±ğµÄÉè±¸ÊÇÀ§ÄÑµÄ. ÄÚºËÖĞÂúÊÇÀı×Ó, µ«ÊÇ. ÀıÈç, ¿É²é¿´ AppleTalk Çı¶¯( drivers/net/appletalk/cops.c), ºìÍâÇı¶¯(ÀıÈç, driver/net/irds/smc_ircc.c), »òÕß PPP Çı¶¯( drivers/net/ppp_generic.c).</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s10.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s12.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.10.&#160;Socket »º´æ&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.12.&#160;¶¨ÖÆ ioctl ÃüÁî</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

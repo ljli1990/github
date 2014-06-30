@@ -1,0 +1,188 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>14.5.&#160;Àà-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ĞÍ">
+<link rel="prev" href="ch14s04.html" title="14.4.&#160;×ÜÏß, Éè±¸, ºÍÇı¶¯">
+<link rel="next" href="ch14s06.html" title="14.6.&#160;¼¯³ÉÆğÀ´">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">14.5.&#160;Àà</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch14s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ĞÍ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Classes.sect1"></a>14.5.&#160;Àà</h2></div></div></div>
+<p>ÎÒÃÇÔÚ±¾ÕÂÖĞÒª¿¼²ì×îºóµÄÉè±¸Ä£ĞÍ¸ÅÄîÊÇÀà.Ò»¸öÀàÊÇÒ»¸öÉè±¸µÄ¸ß¼¶ÊÓÍ¼, Ëü³éÏó³öµÍ¼¶µÄÊµÏÖÏ¸½Ú. Çı¶¯¿ÉÒÔ¼ûµ½Ò»¸öSCSI ´ÅÅÌ»òÕßÒ»¸ö ATA ´ÅÅÌ, ÔÚÀàµÄ¼¶±ğ, ËüÃÇ¶¼ÊÇ´ÅÅÌ. ÀàÔÊĞíÓÃ»§¿Õ¼ä»ùÓÚËüÃÇ×öÊ²Ã´À´Ê¹ÓÃÉè±¸, ¶ø²»ÊÇËüÃÇÈçºÎ±»Á¬½Ó»òÕßËüÃÇÈçºÎ¹¤×÷.</p>
+<p>¼¸ºõËùÓĞµÄÀà¶¼ÔÚ sysfs ÖĞÔÚ /sys/class ÏÂ³öÏÖ. Òò´Ë, ÀıÈç, ËùÓĞµÄÍøÂç½Ó¿Ú¿ÉÔÚ /sys/class/net ÏÂ·¢ÏÖ, ²»¹Ü½Ó¿ÚÀàĞÍ. ÊäÈëÉè±¸¿ÉÔÚ /sys/class/input ÏÂ, ÒÔ¼°´®ĞĞÉè±¸ÔÚ /sys/class/tty. Ò»¸öÀıÍâÊÇ¿éÉè±¸, ÓÉÓÚÀúÊ·µÄÔ­ÒòÔÚ /sys/block. </p>
+<p>Àà³ÉÔ±¹ØÏµ³£³£ÓÉ¸ß¼¶µÄ´úÂë´¦Àí, ²»±ØÒªÇı¶¯µÄÃ÷È·µÄÖ§³Ö. µ± sbull Çı¶¯( ¼û 16 ÕÂ) ´´½¨Ò»¸öĞéÄâ´ÅÅÌÉè±¸, Ëü×Ô¶¯³öÏÖÔÚ /sys/block. snull ÍøÂçÇı¶¯(¼û 17 ÕÂ)Ã»ÓĞ×öÈÎºÎÌØÊâÊÂÇé¸øËüµÄ½Ó¿ÚÔÚ /sys/class/net ÖĞ³öÏÖ. ½«ÓĞ¶à´Î, µ«ÊÇ, µ±Çı¶¯½áÊøÖ±½Ó´¦ÀíÀà.</p>
+<p>ÔÚĞí¶àÇé¿ö, Àà×ÓÏµÍ³ÊÇ×îºÃµÄÊä³öĞÅÏ¢µ½ÓÃ»§¿Õ¼äµÄ·½·¨. µ±Ò»¸ö×ÓÏµÍ³´´½¨Ò»¸öÀà, ËüÍêÈ«ÓµÓĞÕâ¸öÀà, Òò´ËÃ»ÓĞ±ØÒªµ£ĞÄÄÄ¸öÄ£¿éÓµÓĞÄÇÀï·¢ÏÖµÄÊôĞÔ. ËüÒ²ÓÃ¼«ÉÙµÄÊ±¼äÅÇ»²ÓÚ¸ü¼ÓÃæÏòÓ²¼şµÄ sysfs ²¿·ÖÀ´ÁË½â, Ëü²»ÊÇÒ»¸öÖ±½Óä¯ÀÀµÄºÃµØ·½. ÓÃ»§»á¸ü¼Ó¸ßĞËµØÔÚ /sys/class/some-widget ÖĞ·¢ÏÖĞÅÏ¢, ¶ø²»ÊÇ, /sys/device/pci0000:00/0000:00:10.0/usb2/2-0:1.0.</p>
+<p>Çı¶¯ºËĞÄÊä³ö 2 ¸öÇåÎúµÄ½Ó¿ÚÀ´¹ÜÀíÀà. class_simple º¯ÊıÉè¼ÆÀ´¾¡¿ÉÄÜÈİÒ×µØÌí¼ÓĞÂÀàµ½ÏµÍ³. ËüÃÇµÄÖ÷ÒªÄ¿µÄ, ³£³£, ÊÇ±©Â¶°üº¬Éè±¸ºÅµÄÊôĞÔÀ´Ê¹ÄÜÉè±¸½ÚµãµÄ×Ô¶¯´´½¨. ³£ÓÃµÄÀà½Ó¿Ú¸ü¼Ó¸´ÔÓµ«ÊÇÍ¬Ê±Ìá¹©¸ü¶àÌØĞÔ. ÎÒÃÇ´Ó¼òµ¥°æ±¾¿ªÊ¼.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheclasssimpleInterface.sect2"></a>14.5.1.&#160;class_simple ½Ó¿Ú</h3></div></div></div>
+<p>class_simple ½Ó¿ÚÒâÍ¼ÊÇÒ×ÓÚÊ¹ÓÃ, ÒÔÖÁÓÚÃ»ÈË»á±§Ô¹Ã»ÓĞ±©Â¶ÖÁÉÙÒ»¸ö°üº¬Éè±¸µÄ±»·ÖÅäµÄºÅµÄÊôĞÔ. Ê¹ÓÃÕâ¸ö½Ó¿ÚÖ»²»¹ıÊÇÒ»¶Ôº¯Êıµ÷ÓÃ, Ã»ÓĞÍ¨³£µÄºÍ Linux Éè±¸Ä£ĞÍ¹ØÁªµÄÑù°å.</p>
+<p>µÚÒ»²½ÊÇ´´½¨Àà×ÔÉí. Ê¹ÓÃÒ»¸ö¶Ô class_simple_create µÄµ÷ÓÃÀ´Íê³É:</p>
+<pre class="programlisting">
+struct class_simple *class_simple_create(struct module *owner, char *name);
+</pre>
+<p>Õâ¸öº¯ÊıÊ¹ÓÃ¸ø¶¨µÄÃû×Ó´´½¨Ò»¸öÀà. Õâ¸ö²Ù×÷¿ÉÄÜÊ§°Ü, µ±È», Òò´ËÔÚ¼ÌĞøÖ®Ç°·µ»ØÖµÓ¦µ±Ò»Ö±±»¼ì²é( Ê¹ÓÃ IS_ERR, ÔÚµÚ 1 ÕÂµÄ"Ö¸ÕëºÍ´íÎóÖµ"Ò»½ÚÖĞÃèÊö¹ı).</p>
+<p>Ò»¸ö¼òµ¥µÄÀà¿É±»Ïú»Ù, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void class_simple_destroy(struct class_simple *cs); 
+</pre>
+<p>´´½¨Ò»¸ö¼òµ¥ÀàµÄÕæÊµÄ¿µÄÊÇÌí¼ÓÉè±¸¸øËü; Õâ¸öÈÎÎñÊ¹ÓÃ:</p>
+<pre class="programlisting">
+struct class_device *class_simple_device_add(struct class_simple *cs, dev_t devnum, struct device *device, const char *fmt, ...); 
+</pre>
+<p>ÕâÀï, cs ÊÇÖ®Ç°´´½¨µÄ¼òµ¥Àà, devnum ÊÇ·ÖÅäµÄÉè±¸ºÅ, device ÊÇ´ú±íÕâ¸öÉè±¸µÄ struct device, ÆäËûµÄ²ÎÊıÊÇÒ»¸ö printk-·ç¸ñ µÄ¸ñÊ½´®ºÍ²ÎÊıÀ´´´½¨Éè±¸Ãû×Ó. Õâ¸öµ÷ÓÃÌí¼ÓÒ»Ïîµ½Àà, °üº¬Ò»¸öÊôĞÔ, dev, º¬ÓĞÉè±¸ºÅ. Èç¹ûÉè±¸²ÎÊıÊÇ·Ç NULL, Ò»¸ö·ûºÅÁ¬½Ó( ³ÆÎª device )Ö¸ÏòÔÚ /sys/devices ÏÂµÄÉè±¸µÄÈë¿Ú.</p>
+<p>¿ÉÄÜÌí¼ÓÆäËûµÄÊôĞÔµ½Éè±¸Èë¿Ú. ËüÖ»ÊÇÊ¹ÓÃ class_device_create_file, ÎÒÃÇÔÚÏÂÒ»½ÚºÍÍêÕûÀà×ÓÏµÍ³ËùÊ£ÏÂµÄÄÚÈİÌÖÂÛ.</p>
+<p>µ±Éè±¸½ø³öÊ±Àà²úÉúÈÈ²å°ÎÊÂ¼ş. Èç¹ûÄãµÄÇı¶¯ĞèÒªÌí¼Ó±äÁ¿µ½»·¾³ÖĞ¸øÓÃ»§¿Õ¼äÊÂ¼ş´¦ÀíÕß, ¿ÉÒÔ½¨Á¢Ò»¸öÈÈ²å°Î»Øµ÷, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+int class_simple_set_hotplug(struct class_simple *cs,
+ int (*hotplug)(struct class_device *dev,
+ char **envp, int num_envp,
+ char *buffer, int buffer_size)); 
+</pre>
+<p>µ±ÄãµÄÉè±¸Àë¿ªÊ±, ÀàÈë¿ÚÓ¦µ±±»È¥³ı, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void class_simple_device_remove(dev_t dev); 
+</pre>
+<p>×¢Òâ, ÓÉ class_simple_device_add ·µ»ØµÄ class_device ½á¹¹ÕâÀï²»ĞèÒª; Éè±¸ºÅ(Ëüµ±È»Ó¦µ±ÊÇÎ¨Ò»µÄ)×ã¹»ÁË.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheFullClassInterface.sect2"></a>14.5.2.&#160;ÍêÕûµÄÀà½Ó¿Ú</h3></div></div></div>
+<p>class_simple ½Ó¿ÚÂú×ãĞí¶àĞèÒª, µ«ÊÇÓĞÊ±ĞèÒª¸ü¶àÁé»îĞÔ. ÏÂÃæµÄÌÖÂÛÃèÊöÈçºÎÊ¹ÓÃÍêÕûµÄÀà»úÖÆ, class_simple ÕıÊÇ»ùÓÚ´Ë. ËüÊÇ¼ò¶ÌµÄ: Ààº¯ÊıºÍ½á¹¹×ñÑ­Éè±¸Ä£ĞÍÆäËû²¿·ÖÏàÍ¬µÄÄ£Ê½, Òò´ËÕâÀïÃ»ÓĞÊ²Ã´ÕæÕıÊÇĞÂµÄ.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Managingclasses.sect3"></a>14.5.2.1.&#160;¹ÜÀíÀà</h4></div></div></div>
+<p>Ò»¸öÀàÓÉÒ»¸ö struct class µÄÊµÀıÀ´¶¨Òå:</p>
+<pre class="programlisting">
+struct class {
+ char *name;
+ struct class_attribute *class_attrs;
+ struct class_device_attribute *class_dev_attrs;
+ int (*hotplug)(struct class_device *dev, char **envp,
+ int num_envp, char *buffer, int buffer_size);
+ void (*release)(struct class_device *dev);
+ void (*class_release)(struct class *class);
+ /* Some fields omitted */
+};
+</pre>
+<p>Ã¿¸öÀàĞèÒªÒ»¸öÎ¨Ò»µÄÃû×Ó, ËüÊÇÕâ¸öÀàÈçºÎÔÚ /sys/class ÖĞ³öÏÖ. µ±Õâ¸öÀà±»×¢²á, ÓÉ class_attrs ËùÖ¸ÏòµÄÊı×éÖĞÁĞ³öµÄËùÓĞÊôĞÔ±»´´½¨. »¹ÓĞÒ»Ì×È±Ê¡ÊôĞÔ¸øÃ¿¸öÌí¼Óµ½ÀàÖĞµÄÉè±¸; class_dev_attrs Ö¸ÏòËüÃÇ. ÓĞÍ¨³£µÄÈÈ²å°Îº¯ÊıÀ´Ìí¼Ó±äÁ¿µ½»·¾³ÖĞ, µ±ÊÂ¼ş²úÉúÊ±. »¹ÓĞ 2 ¸öÊÍ·Å·½·¨: release ÔÚÎŞÂÛºÎÊ±´ÓÀàÖĞÈ¥³ıÒ»¸öÉè±¸Ê±±»µ÷ÓÃ, ¶ø class_release ÔÚÀà×Ô¼º±»ÊÍ·ÅÊ±µ÷ÓÃ.</p>
+<p>×¢²áº¯ÊıÊÇ:</p>
+<pre class="programlisting">
+int class_register(struct class *cls);
+void class_unregister(struct class *cls);
+</pre>
+<p>Ê¹ÓÃÊôĞÔµÄ½Ó¿Ú²»Ó¦µ±ÔÚÕâµãÏÅÈË:</p>
+<pre class="programlisting">
+struct class_attribute {
+ struct attribute attr;
+ ssize_t (*show)(struct class *cls, char *buf);
+ ssize_t (*store)(struct class *cls, const char *buf, size_t count); 
+}; 
+CLASS_ATTR(name, mode, show, store); 
+int class_create_file(struct class *cls, const struct class_attribute *attr);
+void class_remove_file(struct class *cls, const struct class_attribute *attr);
+</pre>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Classdevices.sect3"></a>14.5.2.2.&#160;ÀàÉè±¸</h4></div></div></div>
+<p>Ò»¸öÀàµÄÕæÕıÄ¿µÄÊÇ×÷ÎªÒ»¸öÊÇ¸ÃÀà³ÉÔ±µÄÉè±¸µÄÈİÆ÷. Ò»¸ö³ÉÔ±ÓÉ struct class_device À´±íÊ¾:</p>
+<pre class="programlisting">
+struct class_device {
+struct kobject kobj;
+struct class *class;
+struct device *dev;
+void *class_data;
+char class_id[BUS_ID_SIZE];
+
+ };
+</pre>
+<p>class_id ³ÉÔ±³ÖÓĞÉè±¸Ãû×Ó, ÈçÍ¬ËüÔÚ sysfs ÖĞµÄÒ»Ñù. class Ö¸ÕëÓ¦µ±Ö¸Ïò³ÖÓĞÕâ¸öÉè±¸µÄÀà, ²¢ÇÒ dev Ó¦µ±Ö¸Ïò¹ØÁªµÄÉè±¸½á¹¹. ÉèÖÃ dev ÊÇ¿ÉÑ¡µÄ; Èç¹ûËüÊÇ·Ç NULL, ËüÓÃÀ´´´½¨Ò»¸ö·ûºÅÁ¬½Ó´ÓÀàÈë¿Úµ½¶ÔÓ¦µÄÔÚ /sys/devices ÏÂµÄÈë¿Ú, Ê¹µÃÒ×ÓÚÔÚÓÃ»§¿Õ¼äÕÒµ½Éè±¸Èë¿Ú. Àà¿ÉÒÔÊ¹ÓÃ class_data À´³ÖÓĞÒ»¸öË½ÓĞÖ¸Õë.</p>
+<p>Í¨³£µÄ×¢²áº¯ÊıÒÑ¾­±»Ìá¹©:</p>
+<pre class="programlisting">
+int class_device_register(struct class_device *cd);
+void class_device_unregister(struct class_device *cd);
+</pre>
+<p>ÀàÉè±¸½Ó¿ÚÒ²ÔÊĞíÖØÃüÃûÒ»¸öÒÑ¾­×¢²áµÄÈë¿Ú:</p>
+<pre class="programlisting">
+int class_device_rename(struct class_device *cd, char *new_name); 
+</pre>
+<p>ÀàÉè±¸Èë¿ÚÓĞÊôĞÔ:</p>
+<pre class="programlisting">
+struct class_device_attribute {
+ struct attribute attr;
+ ssize_t (*show)(struct class_device *cls, char *buf);
+ ssize_t (*store)(struct class_device *cls, const char *buf,
+ size_t count);
+};
+
+CLASS_DEVICE_ATTR(name, mode, show, store); 
+int class_device_create_file(struct class_device *cls, const struct class_device_attribute *attr);
+void class_device_remove_file(struct class_device *cls, const struct class_device_attribute *attr);
+</pre>
+<p>Ò»¸öÈ±Ê¡µÄÊôĞÔ¼¯ºÏ, ÔÚÀàµÄ class_dev_attrs ³ÉÔ±, ±»´´½¨µ±ÀàÉè±¸±»×¢²áÊ±; class_device_create_file ¿ÉÓÃÀ´´´½¨¶îÍâµÄÊôĞÔ. ÊôĞÔ»¹¿ÉÒÔ±»¼ÓÈëµ½ÓÉ class_simple ½Ó¿Ú´´½¨µÄÀàÉè±¸.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Classinterfaces.sect3"></a>14.5.2.3.&#160;Àà½Ó¿Ú</h4></div></div></div>
+<p>Àà×ÓÏµÍ³ÓĞÒ»¸ö¶îÍâµÄÔÚ Linux Éè±¸Ä£ĞÍÆäËû²¿·ÖÕÒ²»µ½µÄ¸ÅÄî. Õâ¸ö»úÖÆ³ÆÎªÒ»¸ö½Ó¿Ú, µ«ÊÇËüÊÇ, Ò²Ğí, ×îºÃ×÷ÎªÒ»ÖÖ´¥·¢»úÖÆ¿ÉÓÃÀ´ÔÚÉè±¸½øÈë»òÀë¿ªÀàÊ±µÃµ½Í¨Öª.</p>
+<p>Ò»¸ö½Ó¿Ú±»±íÊ¾, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+struct class_interface {
+ struct class *class;
+ int (*add) (struct class_device *cd);
+ void (*remove) (struct class_device *cd); 
+}; 
+</pre>
+<p>½Ó¿Ú¿É±»×¢²á»ò×¢Ïú, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+int class_interface_register(struct class_interface *intf);
+void class_interface_unregister(struct class_interface *intf);
+</pre>
+<p>Ò»¸ö½Ó¿ÚµÄ¹¦ÄÜÊÇ¼òµ¥Ã÷ÁËµÄ. ÎŞÂÛºÎÊ±Ò»¸öÀàÉè±¸±»¼ÓÈëµ½ÔÚ class_interface ½á¹¹ÖĞÖ¸¶¨µÄÀàÊ±, ½Ó¿ÚµÄ add º¯Êı±»µ÷ÓÃ. Õâ¸öº¯Êı¿É½øĞĞÈÎºÎ¶îÍâµÄÕâ¸öÉè±¸ĞèÒªµÄÉèÖÃ; Õâ¸öÉèÖÃ³£³£²ÉÈ¡Ôö¼Ó¸ü¶àÊôĞÔµÄĞÎÊ½, µ«ÊÇÆäËûµÄÓ¦ÓÃ¶¼¿ÉÄÜ. µ±Éè±¸±»´ÓÀàÖĞÈ¥³ı, remove ·½·¨±»µ÷ÓÃÀ´½øĞĞÈÎºÎĞèÒªµÄÇåÀí.</p>
+<p>¿É×¢²á¶à¸ö½Ó¿Ú¸øÒ»¸öÀà.</p>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch14s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch14.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">14.4.&#160;×ÜÏß, Éè±¸, ºÍÇı¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;14.6.&#160;¼¯³ÉÆğÀ´</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

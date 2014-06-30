@@ -1,0 +1,163 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>16.2.&#160;¿éÉè±¸²Ù×÷-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch16.html" title="µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯">
+<link rel="prev" href="ch16.html" title="µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯">
+<link rel="next" href="ch16s03.html" title="16.3.&#160;ÇëÇó´¦Àí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">16.2.&#160;¿éÉè±¸²Ù×÷</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch16.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch16s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheBlockDeviceOperations.sect1"></a>16.2.&#160;¿éÉè±¸²Ù×÷</h2></div></div></div>
+<p>ÔÚÇ°ÃæÒ»½ÚÖĞÎÒÃÇ¶Ô block_device_operations ÓĞÁË¼ò¶ÌµÄ½éÉÜ. ÏÖÔÚÎÒÃÇÏêÏ¸Ğ©¿´¿´ÕâĞ©²Ù×÷, ÔÚ½øÈëÇëÇó´¦ÀíÖ®Ç°. Îª´Ë, ÊÇÊ±¼äÌáµ½ sbull Çı¶¯µÄÁíÒ»¸öÌØĞÔ: Ëü¼Ù×°ÊÇÒ»¸ö¿ÉÒÆ³öµÄÉè±¸. ÎŞÂÛºÎÊ±×îºóÒ»¸öÓÃ»§¹Ø±ÕÉè±¸, Ò»¸ö 30 ÃëµÄ¶¨Ê±Æ÷±»ÉèÖÃ; Èç¹ûÉè±¸ÔÚÕâ¸öÊ±¼äÄÚ²»±»´ò¿ª, Éè±¸µÄÄÚÈİ±»Çå³ı, ²¢ÇÒÄÚºË±»¸æÖª½éÖÊÒÑ±»¸Ä±ä. 30 ÃëÑÓ³Ù¸øÁËÓÃ»§Ê±¼ä, ÀıÈç, À´Ğ¶ÔØÒ»¸ö sbull Éè±¸ÔÚ´´½¨Ò»¸öÎÄ¼şÏµÍ³Ö®ºó.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheopenandreleaseMethods.sect2"></a>16.2.1.&#160;open ºÍ release ·½·¨</h3></div></div></div>
+<p>ÎªÊµÏÖÄ£ÄâµÄ½éÖÊÒÆ³ö, µ±×îºóÒ»¸öÓÃ»§ÒÑ¹Ø±ÕÉè±¸Ê± sbull ±ØĞëÖªµÀ. Ò»¸öÓÃ»§¼ÆÊı±»Çı¶¯Î¬»¤. ËüÊÇ open ºÍ close ·½·¨µÄ¹¤×÷À´±£³ÖÕâ¸ö¼ÆÊı×îĞÂ.</p>
+<p>open ·½·¨¿´ÆğÀ´·Ç³£ÀàËÆÓÚËüµÄ×Ö·ûÇı¶¯¶ÔµÈÌå; ËüÓÃÏà¹ØµÄ½ÚµãºÍÎÄ¼ş½á¹¹Ö¸Õë×÷Îª²ÎÊı. µ±Ò»¸ö½ÚµãÒıÓÃÒ»¸ö¿éÉè±¸, i_bdev-&gt;bd_disk °üº¬Ò»¸öÖ¸Ïò¹ØÁª gendisk ½á¹¹µÄÖ¸Õë; Õâ¸öÖ¸Õë¿ÉÓÃÀ´»ñµÃÒ»¸öÇı¶¯µÄ¸øÉè±¸µÄÄÚ²¿Êı¾İ½á¹¹. ¼´, Êµ¼ÊÉÏ, sbull open ·½·¨×öµÄµÚÒ»¼şÊÂ:</p>
+<pre class="programlisting">
+static int sbull_open(struct inode *inode, struct file *filp)
+{
+        struct sbull_dev *dev = inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data;
+        del_timer_sync(&amp;dev-&gt;timer);
+        filp-&gt;private_data = dev;
+        spin_lock(&amp;dev-&gt;lock)
+        ;
+        if (! dev-&gt;users)
+                check_disk_change(inode-&gt;i_bdev);
+        dev-&gt;users++;
+        spin_unlock(&amp;dev-&gt;lock)
+        ;
+        return 0;
+}
+</pre>
+<p>Ò»µ© sbull_open ÓĞËüµÄÉè±¸½á¹¹Ö¸Õë, Ëüµ÷ÓÃ del_timer_sync À´È¥µô"½éÖÊÒÆ³ö"¶¨Ê±Æ÷, Èç¹ûÓĞÒ»¸öÊÇ»îµÄ. ×¢ÒâÎÒÃÇ²»¼ÓËøÉè±¸×ÔĞıËø, Ö±µ½¶¨Ê±Æ÷±»É¾³ıºó; Èç¹û¶¨Ê±Æ÷º¯ÊıÔÚÎÒÃÇ¿ÉÉ¾³ıËüÖ®Ç°ÔËĞĞ, ·´¹ıÀ´×ö»áÓĞËÀËø. ÔÚÉè±¸¼ÓËøÏÂ, ÎÒÃÇµ÷ÓÃÒ»¸öÄÚºËº¯Êı, ³ÆÎª check_disk_change, À´¼ì²éÊÇ·ñÒÑ·¢ÉúÒ»¸ö½éÖÊ¸Ä±ä. ¿ÉÄÜÓĞÈËÕùÂÛËµÄÚºËÓ¦µ±×öÕâ¸öµ÷ÓÃ, µ«ÊÇ±ê×¼Ä£Ê½ÊÇÎªÇı¶¯À´ÔÚ´ò¿ªÊ±´¦ÀíËü.</p>
+<p>×îºóÒ»²½ÊÇµİÔöÓÃ»§¼ÆÊı²¢ÇÒ·µ»Ø.</p>
+<p>ÊÍ·Å·½·¨µÄÈÎÎñÊÇ, Ïà·´, À´µİ¼õÓÃ»§¼ÆÊı, ÒÔ¼°, Èç¹û±»Ö¸Ê¾ÁË, Æô¶¯½éÖÊÒÆ³ö¶¨Ê±Æ÷:</p>
+<pre class="programlisting">
+static int sbull_release(struct inode *inode, struct file *filp)
+{
+        struct sbull_dev *dev = inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data;
+        spin_lock(&amp;dev-&gt;lock)
+        ;
+        dev-&gt;users--;
+        if (!dev-&gt;users)
+        {
+                dev-&gt;timer.expires = jiffies + INVALIDATE_DELAY;
+                add_timer(&amp;dev-&gt;timer);
+        }
+
+        spin_unlock(&amp;dev-&gt;lock)
+        ;
+        return 0;
+}
+</pre>
+<p>ÔÚÒ»¸ö´¦ÀíÕæÊµµÄÓ²¼şÉè±¸µÄÇı¶¯ÖĞ, open ºÍ release ·½·¨Ó¦µ±ÏàÓ¦µØÉèÖÃÇı¶¯ºÍÓ²¼şµÄ×´Ì¬. Õâ¸ö¹¤×÷¿ÉÄÜ°üÀ¨ÆğÍ£´ÅÅÌ, ¼ÓËøÒ»¸ö¿ÉÒÆ³öÉè±¸µÄÃÅ, ·ÖÅä DMA »º³å, µÈµÈ.</p>
+<p>Äã¿ÉÄÜÆæ¹ÖË­Êµ¼ÊÉÏ´ò¿ªÁËÒ»¸ö¿éÉè±¸. ÓĞÒ»Ğ©²Ù×÷¿Éµ¼ÖÂÒ»¸ö¿éÉè±¸´ÓÓÃ»§¿Õ¼äÖ±½Ó´ò¿ª; Õâ°üÀ¨·ÖÇøÒ»¸ö´ÅÅÌ, ÔÚÒ»¸ö·ÖÇøÉÏ½¨Á¢Ò»¸öÎÄ¼şÏµÍ³, »òÕßÔËĞĞÒ»¸öÎÄ¼şÏµÍ³¼ì²éÆ÷. µ±¼ÓÔØÒ»¸ö·ÖÇøÊ±, ¿éÇı¶¯Ò²¿É¿´µ½Ò»¸ö open µ÷ÓÃ. ÔÚÕâ¸öÇé¿öÏÂ, Ã»ÓĞÓÃ»§¿Õ¼ä½ø³Ì³ÖÓĞÒ»¸öÕâ¸öÉè±¸µÄ´ò¿ªµÄÎÄ¼şÃèÊö·û; Ïà·´, ´ò¿ªµÄÎÄ¼ş±»ÄÚºË×ÔÉí³ÖÓĞ. ¿éÇı¶¯ÎŞ·¨ÖªµÀÒ»¸ö¼ÓÔØ²Ù×÷(Ëü´ÓÄÚºË´ò¿ªÉè±¸)ºÍµ÷ÓÃÈç mkfs ¹¤¾ß(´ÓÓÃ»§¿Õ¼ä´ò¿ªËü)Ö®¼äµÄ²î±ğ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="SupportingRemovableMedia.sect2"></a>16.2.2.&#160;Ö§³Ö¿ÉÒÆ³öµÄ½éÖÊ</h3></div></div></div>
+<p>block_device_operations ½á¹¹°üº¬ 2 ¸ö·½·¨À´Ö§³Ö¿ÉÒÆ³ö½éÖÊ. Èç¹ûÄãÎªÒ»¸ö·Ç¿ÉÒÆ³öÉè±¸±àĞ´Ò»¸öÇı¶¯, Äã¿É°²È«µØºöÂÔÕâĞ©·½·¨. ËüÃÇµÄÊµÏÖÊÇÏà¶ÔÖ±½ÓµÄ.</p>
+<p>media_changed ·½·¨±»µ÷ÓÃ( ´Ó check_disk_change ) À´¿´ÊÇ·ñ½éÖÊÒÑ¾­±»¸Ä±ä; ËüÓ¦µ±·µ»ØÒ»¸ö·ÇÁãÖµ, Èç¹ûÒÑ¾­·¢Éú. sbull ÊµÏÖÊÇ¼òµ¥µÄ; Ëü²éÑ¯Ò»¸öÒÑ±»ÉèÖÃµÄ±êÖ¾, Èç¹û½éÖÊÒÆ³ö¶¨Ê±Æ÷ÒÑ³¬Ê±:</p>
+<pre class="programlisting">
+int sbull_media_changed(struct gendisk *gd)
+{
+        struct sbull_dev *dev = gd-&gt;private_data;
+        return dev-&gt;media_change;
+}
+</pre>
+<p>revalidate ·½·¨ÔÚ½éÖÊ¸Ä±äºó±»µ÷ÓÃ; ËüµÄ¹¤×÷ÊÇ×öÈÎºÎĞèÒªµÄÊÂÇéÀ´×¼±¸Çı¶¯¶ÔĞÂ½éÖÊµÄ²Ù×÷, Èç¹ûÓĞ. ÔÚµ÷ÓÃ revalidate Ö®ºó, ÄÚºËÊÔÍ¼ÖØĞÂ¶Á·ÖÇø±í²¢ÇÒÆô¶¯Õâ¸öÉè±¸. sbull µÄÊµÏÖ½ö½ö¸´Î» media_change ±êÖ¾²¢ÇÒÇåÁãÉè±¸ÄÚ´æÀ´Ä£ÄâÒ»¸ö¿ÕÅÌ²åÈë.</p>
+<pre class="programlisting">
+int sbull_revalidate(struct gendisk *gd)
+{
+        struct sbull_dev *dev = gd-&gt;private_data;
+
+        if (dev-&gt;media_change)
+        {
+                dev-&gt;media_change = 0;
+                memset (dev-&gt;data, 0, dev-&gt;size);
+        }
+        return 0;
+}
+</pre>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheioctlMethod.sect2"></a>16.2.3.&#160;ioctl ·½·¨</h3></div></div></div>
+<p>¿éÉè±¸¿ÉÌá¹©Ò»¸ö ioctl ·½·¨À´½øĞĞÉè±¸¿ØÖÆº¯Êı. ¸ß²ãµÄ¿é×ÓÏµÍ³´úÂëÔÚÄãµÄÇı¶¯ÄÜ¼ûµ½ËüÃÇÖ®Ç°½âÊÍĞí¶àµÄ ioctl ÃüÁî, µ«ÊÇ( È«²¿ÄÚÈİ¼û drivers/block/ioctl.c , ÔÚÄÚºËÔ´ÂëÖĞ). Êµ¼ÊÉÏ, Ò»¸öÏÖ´úµÄ¿éÇı¶¯¸ù±¾²»±ØÊµÏÖĞí¶àµÄ ioctl ÃüÁî. </p>
+<p>sbull ioctl ·½·¨Ö»´¦ÀíÒ»¸öÃüÁî -- Ò»¸ö¶ÔÉè±¸µÄ½á¹¹µÄÇëÇó:</p>
+<pre class="programlisting">
+int sbull_ioctl (struct inode *inode, struct file *filp, unsigned int cmd, unsigned long arg)
+{
+        long size;
+        struct hd_geometry geo;
+        struct sbull_dev *dev = filp-&gt;private_data;
+
+        switch(cmd)
+        {
+        case HDIO_GETGEO:
+                /*
+                * Get geometry: since we are a virtual device, we have to make
+                * up something plausible. So we claim 16 sectors, four heads,
+                * and calculate the corresponding number of cylinders. We set the
+                * start of data at sector four.
+                */ 
+                size = dev-&gt;size*(hardsect_size/KERNEL_SECTOR_SIZE);
+                geo.cylinders = (size &amp; ~0x3f) &gt;&gt; 6;
+                geo.heads = 4;
+                geo.sectors = 16;
+                geo.start = 4;
+                if (copy_to_user((void __user *) arg, &amp;geo, sizeof(geo)))
+                        return -EFAULT;
+                return 0;
+        }
+
+        return -ENOTTY; /* unknown command */
+}
+</pre>
+<p>Ìá¹©ÅÅÁĞĞÅÏ¢¿ÉÄÜ¿´À´ÏóÒ»¸öÆæ¹ÖµÄÈÎÎñ, ÒòÎªÎÒÃÇµÄÉè±¸ÊÇ´¿´âĞéÄâµÄ²¢ÇÒºÍ´ÅµÀºÍÖùÃæÃ»ÈÎºÎ¹ØÏµ. ÉõÖÁ´ó²¿·ÖÕæÕıµÄ¿éÓ²¼ş¶¼ÒÑºÜ¶àÄê²»ÔÙÓĞºÜ¶à¸ü¸´ÔÓµÄ½á¹¹. ÄÚºË²»¹ØĞÄÒ»¸ö¿éÉè±¸µÄÅÅÁĞ; Ö»°ÑËü¿´×÷Ò»¸öÉÈÇøµÄÏßĞÔÊı×é. µ«ÊÇ, ÓĞÄ³Ğ©ÓÃ»§¹¤¾ßÈÔÈ»ÏëÄÜ¹»²éÑ¯Ò»¸ö´ÅÅÌµÄÅÅÁĞ. ÌØ±ğµÄ, fdisk ¹¤¾ß, Ëü±à¼­·ÖÇø±í, ÒÀ¿¿ÖùÃæĞÅÏ¢²¢ÇÒÈç¹ûÕâ¸öĞÅÏ¢Ã»ÓĞÔò²»ÄÜÕıÈ·¹¤×÷.</p>
+<p>ÎÒÃÇÏ£Íû sbull Éè±¸ÊÇ¿É·ÖÇøµÄ, ¼´±ãÊ¹ÓÃÀÏµÄ, ¼òµ¥µÄ¹¤¾ß. Òò´Ë, ÎÒÃÇÒÑÌá¹©ÁËÒ»¸ö ioctl ·½·¨, Õâ¸ö·½·¨Ìá¹©ÁËÒ»¸ö¿É¿¿µÄÄÜ¹»Æ¥ÅäÎÒÃÇÉè±¸ÈİÁ¿µÄÅÅÁĞµÄ¼ÙÏó. ´ó²¿·Ö´ÅÅÌÇı¶¯×öÀàËÆµÄÊÂÇé. ×¢Òâ, ÏóÍ¨³£, ÉÈÇø¼ÆÊı±»×ª»», Èç¹ûĞèÒª, À´Æ¥ÅäÄÚºËÊ¹ÓÃµÄ 512-×Ö½Ú µÄ¹ßÀı.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch16.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch16.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch16s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;16&#160;ÕÂ&#160;¿éÇı¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;16.3.&#160;ÇëÇó´¦Àí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

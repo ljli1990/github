@@ -1,0 +1,109 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="prev" href="ch04s06.html" title="4.6.&#160;µ÷ÊÔÆ÷ºÍÏà¹Ø¹¤¾ß">
+<link rel="next" href="ch05s02.html" title="5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch04s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch05s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ConcurrencyandRaceContitions.chap"></a>µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</h2></div></div></div>
+<div class="toc">
+<p><b>Ä¿Â¼</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch05.html#Pitfallsinscull.sect">5.1. scull ÖÐµÄÈ±ÏÝ</a></span></dt>
+<dt><span class="sect1"><a href="ch05s02.html">5.2. ²¢·¢ºÍËüµÄ¹ÜÀí</a></span></dt>
+<dt><span class="sect1"><a href="ch05s03.html">5.3. Æì±êºÍ»¥³âÌå</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch05s03.html#TheLinuxSemaphoreImplementation.sect">5.3.1. Linux Æì±êÊµÏÖ</a></span></dt>
+<dt><span class="sect2"><a href="ch05s03.html#UsingSemaphoresinscull.sect">5.3.2. ÔÚ scull ÖÐÊ¹ÓÃÆì±ê</a></span></dt>
+<dt><span class="sect2"><a href="ch05s03.html#ReaderWriterSemphores.sect">5.3.3. ¶ÁÕß/Ð´ÕßÆì±ê</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch05s04.html">5.4. Completions »úÖÆ</a></span></dt>
+<dt><span class="sect1"><a href="ch05s05.html">5.5. ×ÔÐýËø</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch05s05.html#IntroductiontotheSpinlockAPI.sect">5.5.1. ×ÔÐýËø API ¼ò½é</a></span></dt>
+<dt><span class="sect2"><a href="ch05s05.html#SpinlocksandAtomicContext.sect">5.5.2. ×ÔÐýËøºÍÔ­×ÓÉÏÏÂÎÄ</a></span></dt>
+<dt><span class="sect2"><a href="ch05s05.html#TheSpinlockFunctions.sect">5.5.3. ×ÔÐýËøº¯Êý</a></span></dt>
+<dt><span class="sect2"><a href="ch05s05.html#ReaderWriterSpinlocks.sect">5.5.4. ¶ÁÕß/Ð´Õß×ÔÐýËø</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch05s06.html">5.6. ËøÏÝÚå</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch05s06.html#AmbiguousRules.sect">5.6.1. Ä£ºýµÄ¹æÔò</a></span></dt>
+<dt><span class="sect2"><a href="ch05s06.html#LockOrderingRules.sect">5.6.2. ¼ÓËøË³Ðò¹æÔò</a></span></dt>
+<dt><span class="sect2"><a href="ch05s06.html#FineVersusCoarseGrainedLocking.sect">5.6.3. Ï¸ -´Ö- Á£¶È¼ÓËø</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch05s07.html">5.7. ¼ÓËøµÄ¸÷ÖÖÑ¡Ôñ</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch05s07.html#LockFreeAlgorithms.sect">5.7.1. ²»¼ÓËøËã·¨</a></span></dt>
+<dt><span class="sect2"><a href="ch05s07.html#AtomicVariables.sect">5.7.2. Ô­×Ó±äÁ¿</a></span></dt>
+<dt><span class="sect2"><a href="ch05s07.html#BitOperations.sect">5.7.3. Î»²Ù×÷</a></span></dt>
+<dt><span class="sect2"><a href="ch05s07.html#seqlocks.sect">5.7.4. seqlock Ëø</a></span></dt>
+<dt><span class="sect2"><a href="ch05s07.html#ReadCopyUpdate.sect">5.7.5. ¶ÁÈ¡-¿½±´-¸üÐÂ</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch05s08.html">5.8. ¿ìËÙ²Î¿¼</a></span></dt>
+</dl>
+</div>
+<p>Æù½ñ, ÎÒÃÇÎ´Ôø¹ØÐÄ²¢·¢µÄÎÊÌâ -- ¾ÍÊÇËµ, µ±ÏµÍ³ÊÔÍ¼Ò»´Î×ö¶à¼þÊÂÊ±·¢ÉúµÄÇé¿ö. È»¶ø, ²¢·¢µÄ¹ÜÀíÊÇ²Ù×÷ÏµÍ³±à³ÌµÄºËÐÄÎÊÌâÖ®Ò». ²¢·¢Ïà¹ØµÄ´íÎóÊÇÒ»Ð©×îÒ×³öÏÖÓÖ×îÄÑ·¢ÏÖµÄÎÊÌâ. ¼´±ãÊÇ×¨¼Ò¼¶ Linux ÄÚºË³ÌÐòÔ±Å¼¶ûÒ²»á³öÏÖ²¢·¢Ïà¹ØµÄ´íÎó.</p>
+<p>ÔçÆÚµÄ Linux ÄÚºË, ½ÏÉÙÓÐ²¢·¢µÄÔ´Í·. ÄÚºË²»Ö§³Ö¶Ô³Æ¶à´¦ÀíÆ÷(SMP)ÏµÍ³, ²¢·¢Ö´ÐÐµÄÎ¨Ò»Ô­ÒòÊÇÓ²¼þÖÐ¶Ï·þÎñ. ÄÇ¸ö·½·¨Ìá¹©ÁË¼òµ¥ÐÔ, µ«ÊÇÔÚÓÐÔ½À´Ô½¶à´¦ÀíÆ÷µÄÏµÍ³ÉÏ×¢ÖØÐÔÄÜ²¢ÇÒ¼á³ÖÏµÍ³Òª¿ìËÙÏìÓ¦ÊÂ¼þµÄÊÀ½çÖÐËü²»ÔÙ¿ÉÐÐÁË. ÎªÏìÓ¦ÏÖ´úÓ²¼þºÍÓ¦ÓÃ³ÌÐòµÄÒªÇó, Linux ÄÚºËÒÑ¾­·¢Õ¹ÎªºÜ¶àÊÂÇéÔÚÍ¬Ê±½øÐÐ. Õâ¸ö½ø²½ÒÑ¾­²úÉúÁËºÜ´óµÄÐÔÄÜºÍ¿ÉÀ©Õ¹ÐÔ. È»¶ø, ËüÒ²ºÜ´óµØÊ¹ÄÚºË±à³ÌÈÎÎñ¸´ÔÓ»¯. Éè±¸Æô¶¯³ÌÐòÔ±ÏÖÔÚ±ØÐë´ÓÒ»¿ªÊ¼¾Í½«²¢·¢×÷ÎªËûÃÇÉè¼ÆµÄÒªËØ, ²¢ÇÒËûÃÇ±ØÐë¶ÔÄÚºËÌá¹©µÄ²¢·¢¹ÜÀíÉèÊ©ÓÐºÜÇ¿µÄÀí½â.</p>
+<p>±¾ÕÂµÄÄ¿µÄÊÇ¿ªÊ¼½¨Á¢ÄÇÖÖÀí½âµÄ¹ý³Ì. Îª´ËÄ¿µÄ, ÎÒÃÇ½éÉÜÒ»Ð©ÉèÊ©À´Á¢¿ÌÓ¦ÓÃµ½µÚ 3 ÕÂµÄ scull Çý¶¯. Õ¹Ê¾µÄÆäËûÉèÊ©ÔÝÊ±»¹²»Ê¹ÓÃ. µ«ÊÇÊ×ÏÈ, ÎÒÃÇ¿´Ò»ÏÂÎÒÃÇµÄ¼òµ¥ scull Çý¶¯¿ÉÄÜÄÄÀï³öÎÊÌâ²¢ÇÒÈçºÎ±ÜÃâÕâÐ©Ç±ÔÚµÄÎÊÌâ.</p>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="Pitfallsinscull.sect"></a>5.1.&#160;scull ÖÐµÄÈ±ÏÝ</h2></div></div></div>
+<p>ÈÃÎÒÃÇ¿ìËÙ¿´Ò»¶Î scull ÄÚ´æ¹ÜÀí´úÂë. ÔÚÐ´Âß¼­µÄÉî´¦, scull ±ØÐë¾ö¶¨ËüÇëÇóµÄÄÚ´æÊÇ·ñÒÑ¾­·ÖÅä. ´¦ÀíÕâ¸öÈÎÎñµÄ´úÂëÊÇ:</p>
+<pre class="programlisting">
+if (!dptr-&gt;data[s_pos]) {
+    dptr-&gt;data[s_pos] = kmalloc(quantum, GFP_KERNEL);
+    if (!dptr-&gt;data[s_pos])
+        goto out;
+}
+</pre>
+<p>¼ÙÉèÓÐ 2 ¸ö½ø³Ì( ÎÒÃÇ»á³ÆËüÃÇÎª"A"ºÍ"B" ) ¶ÀÁ¢µØÊÔÍ¼Ð´ÈëÍ¬Ò»¸ö schull Éè±¸µÄÏàÍ¬Æ«ÒÆ. Ã¿¸ö½ø³ÌÍ¬Ê±µ½´ïÉÏÃæÆ¬¶ÎµÄµÚÒ»ÐÐµÄ if ²âÊÔ. Èç¹û±»²âÊÔµÄÖ¸ÕëÊÇ NULL, Ã¿¸ö½ø³Ì¶¼»á¾ö¶¨·ÖÅäÄÚ´æ, ²¢ÇÒÃ¿¸ö¶¼»á¸´ÖÆ½á¹ûÖ¸Õë¸ø dptr-&gt;datat[s_pos]. ÒòÎª 2 ¸ö½ø³Ì¶¼ÔÚ¸³Öµ¸øÍ¬Ò»¸öÎ»ÖÃ, ÏÔÈ»Ö»ÓÐÒ»¸ö¸³Öµ¿ÉÒÔ³É¹¦.</p>
+<p>µ±È», ·¢ÉúµÄÊÇµÚ 2 ¸öÍê³É¸³ÖµµÄ½ø³Ì½«"Ê¤³ö". Èç¹û½ø³Ì A ÏÈ¸³Öµ, ËüµÄ¸³Öµ½«±»½ø³Ì B ¸²¸Ç. ÔÚ´Ë, scull ½«ÍêÈ«Íü¼Ç A ·ÖÅäµÄÄÚ´æ; ËüÖ»ÓÐÖ¸Ïò B µÄÄÚ´æµÄÖ¸Õë. A Ëù·ÖÅäµÄÖ¸Õë, Òò´Ë, ½«±»¶ªµô²¢ÇÒ²»ÔÙ·µ»Ø¸øÏµÍ³.</p>
+<p>ÊÂÇéµÄÕâ¸öË³ÐòÊÇÒ»¸ö¾ºÕùÇé¿öµÄÑÝÊ¾. ¾ºÕùÇé¿öÊÇ¶Ô¹²ÏíÊý¾ÝµÄÎÞ¿ØÖÆ´æÈ¡µÄ½á¹û. µ±´íÎóµÄ´æÈ¡Ä£Ê½·¢ÉúÁË, ²úÉúÁË²»Ï£ÍûµÄ¶«Î÷. ¶ÔÓÚÕâÀïÌÖÂÛµÄ¾ºÕùÇé¿ö, ½á¹ûÊÇÄÚ´æÐ¹Â©. ÕâÒÑ¾­×ã¹»»µÁË, µ«ÊÇ¾ºÕùÇé¿ö³£³£µ¼ÖÂÏµÍ³±ÀÀ£ºÍÊý¾ÝËð»µ. ³ÌÐòÔ±¿ÉÄÜ±»ÓÕ»ó¶øºöÊÓ¾ºÕùÇé¿öÎªÏàµ±µÍ¿ÉÄÜÐÔµÄÊÂ¼þ. µ«ÊÇ, ÔÚ¼ÆËã»úÊÀ½ç, °ÙÍò·ÖÖ®Ò»µÄÊÂ¼þ»áÃ¿¸ô¼¸Ãë·¢Éú, ²¢ÇÒºó¹û»áÊÇÑÏÖØµÄ.</p>
+<p>ºÜ¿ìÎÒÃÇ½«È¥µô scull µÄ¾ºÕùÇé¿ö, µ«ÊÇÊ×ÏÈÎÒÃÇÐèÒª¶Ô²¢·¢×öÒ»¸ö¸üÆÕ±éµÄ»Ø¹Ë.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch04s06.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch05s02.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">4.6.&#160;µ÷ÊÔÆ÷ºÍÏà¹Ø¹¤¾ß&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

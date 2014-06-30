@@ -1,0 +1,86 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>12.2.&#160;»Ø¹Ë: ISA-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch12.html" title="µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯">
+<link rel="prev" href="ch12.html" title="µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯">
+<link rel="next" href="ch12s03.html" title="12.3.&#160;PC/104 ºÍ PC/104+">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">12.2.&#160;»Ø¹Ë: ISA</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch12.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch12s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ALookBackISA.sect1"></a>12.2.&#160;»Ø¹Ë: ISA</h2></div></div></div>
+<p>Éè¼ÆÉÏ ISA ×ÜÏß·Ç³£ÀÏÁË, ²¢ÇÒÊÇ·Ç³£µØµÍÄÜ, µ«ÊÇËüÈÔÈ»³ÖÓÐÒ»¿éÍ¦´óµÄ¿ØÖÆÉè±¸µÄÊÐ³¡. Èç¹ûËÙ¶È²»ÖØÒª²¢ÇÒÄãÏëÖ§³ÖÀÏÊ½Ö÷°å, Ò»¸ö ISA ÊµÏÖÒªÓÅÓÚ PCI. Õâ¸öÀÏ±ê×¼µÄÁíÍâÒ»¸öºÃ´¦ÊÇÈç¹ûÄãÊÇÒ»¸öµç×Ó°®ºÃÕß, Äã¿ÉÇáÒ×½¨Á¢Äã×Ô¼ºµÄ ISA Éè±¸, ÏÔÈ»¶Ô PCI ÊÇ²»¿ÉÄÜµÄ.</p>
+<p>ÁíÒ»·½Ãæ, ISA µÄÐí¶àÈ±µãÊÇËü½ôÃÜ°ó¶¨ÔÚ PC ÌåÏµÉÏ; Õâ¸ö½Ó¿Ú×ÜÏßÓÐËùÓÐµÄ 80286 ´¦ÀíÆ÷µÄÏÞÖÆ²¢ÇÒ¸øÏµÍ³³ÌÐòÔ±´øÀ´ÎÞÇîµÄÍ´¿à. ISA Éè¼Æ(´ÓÔ­Ê¼µÄ IBM PC ¼Ì³ÐÏÂÀ´µÄ)µÄÁíÒ»¸ö´óÎÊÌâÊÇµØÀíÊ½Ñ°Ö·µÄÈ±·¦, ËüÒÑµ¼ÖÂÐí¶àÎÊÌâºÍ³¤Ê±¼äµÄ°ÎÏÂ-ÖØÖÃÌøÏß-²åÉÏ-²âÊÔ Ñ­»·À´Ìí¼ÓÐÂÉè±¸. ÓÐÈ¤µÄÊÇÒª×¢ÒâÉõÖÁÊÇ×îÀÏµÄ Aplle II ¼ÆËã»ú¶¼ÒÑ¾­²ÉÓÃÁËµØÀíÊ½Ñ°Ö·, ²¢ÇÒËüÃÇÌØÓÐÎÞÌøÏßÀ©Õ¹°å.</p>
+<p>²»¹ÜËüµÄ´óµÄÈ±µã, ISA ÈÔÈ»ÔÚ¼¸¸öÒâÏë²»µ½µÄµØ·½Ê¹ÓÃ. ÀýÈç, ÓÃÔÚ¼¸¸öÕÆÉÏµçÄÔµÄ VR41xx ÏµÁÐµÄ MIPS ´¦ÀíÆ÷ÌØÓÐÒ»¸ö ISA ¼æÈÝµÄÀ©Õ¹×ÜÏß, ¾ÍÏóËü¿´ÆðÀ´ÄÇÃ´Ææ¹Ö. ÔÚ ISA µÄÕâÐ©ÒâÏë²»µ½µÄÓÃ·¨Ö®ºóµÄÀíÓÉÊÇÒ»Ð©ÀÏÊ½Éè±¸µÄÏàµ±µÍµÄ³É±¾, ÀýÈç»ùÓÚ 8390 µÄÒÔÌ«Íø¿¨, Òò´ËÒ»¸ö´øÓÐ ISA µçÂ·ÐÅºÅµÄ CPU ¿ÉÇáÒ×²ÉÓÃÕâ¸öÔã¸âµÄ, µ«ÊÇ±ãÒËµÄ PC Éè±¸.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="HardwareResources.sect2"></a>12.2.1.&#160;Ó²¼þ×ÊÔ´</h3></div></div></div>
+<p>Ò»¸ö ISA Éè±¸¿ÉÅä±¸ÓÐ I/O ¶Ë¿Ú, ÄÚ´æÇø, ºÍÖÐ¶ÏÏß.</p>
+<p>¾¡¹Ü x86 ´¦ÀíÆ÷Ö§³Ö 64 KB I/O ¶Ë¿ÚÄÚ´æ(¼´, ´¦ÀíÆ÷ÓÐ 16 ÌõµØÖ·Ïß), Ò»Ð©ÀÏ PC Ó²¼þ½ö½âÂë×îµÍµÄ 10 Î»µØÖ·Ïß. ÕâÏÞÖÆ¿ÉÓÃµÄµØÖ·¿Õ¼äÎª 1024 ¸ö¶Ë¿Ú, ÒòÎªÈÎºÎÔÚ 1 KB µ½64 KB ·¶Î§ÄÚµÄµØÖ·¶¼±»Ö»½âÂëµÍµØÖ·µÄÈÎºÎÉè±¸´íµ±³ÉÒ»¸öµÍµØÖ·. Ò»Ð©ÍâÉè½â¾öÕâ¸öÏÞÖÆÍ¨¹ýÓ³ÉäÒ»¸ö¶Ë¿Úµ½µÍ KB ²¢ÇÒÊ¹ÓÃ¸ßµØÖ·ÏßÀ´Ñ¡Ôñ²»Í¬µÄÉè±¸¼Ä´æÆ÷. ÀýÈç, Ò»¸öÓ³ÉäÔÚ 0x340 µÄÉè±¸¿É°²È«µØÊ¹ÓÃ¶Ë¿Ú 0x740, 0x840, µÈµÈ.</p>
+<p>Èç¹û I/O ¶Ë¿ÚµÄ¿ÉÓÃÐÔ±»ÏÞÖÆ, ÄÚ´æ´æÈ¡¸ü¼ÓÂé·³. Ò»¸ö ISA Éè±¸¿ÉÖ»Ê¹ÓÃ 640KB µ½1 MB Ö®¼äµÄÄÚ´æ·¶Î§ºÍ 15 MB ºÍ 16MB Ö®¼äµÄ·¶Î§¸ø I/O ¼Ä´æÆ÷ºÍÉè±¸¿ØÖÆ. 640-KB µ½ 1-MB ·¶Î§±» PC BIOS , VAG-¼æÈÝµÄÊÓÆµ¿¨, ºÍ¸÷ÖÖÆäËûÉè±¸Ê¹ÓÃ, ¸øÐÂÉè±¸ÁôÏÂÁËºÜÉÙ¿Õ¼ä. ÁíÒ»·½Ãæ, ÔÚ 15MB µÄÄÚ´æ, ²»±» Linux Ö±½ÓÖ§³Ö, ²¢ÇÒ¸ÄÔìÄÚºËÀ´Ö§³ÖËüÊÇÀË·ÑÊ±¼ä.</p>
+<p>¶Ô ISA Éè±¸°åµÚ 3 ¸ö¿ÉÓÃ×ÊÔ´ÊÇÖÐ¶ÏÏß. Ò»¸öÓÐÏÞÊýÄ¿µÄÖÐ¶ÏÏß±»Á¬½Óµ½ ISA ×ÜÏß, ²¢ÇÒËüÃÇÓÉËùÓÐ½Ó¿Ú°å¹²Ïí. ½á¹ûÊÇ, Èç¹ûÉè±¸²»±»ÕýÈ·ÅäÖÃ, ËüÃÇ¿ÉÄÜ·¢ÏÖËüÃÇ×Ô¼ºÔÚÊ¹ÓÃÍ¬Ò»¸öÖÐ¶ÏÏß.</p>
+<p>¾¡¹ÜÔ­Ê¼µÄ ISA ¹æ·¶²»ÔÊÐíÔÚÉè±¸¼ä¹²Ïí, ´ó²¿·ÖÉè±¸°åÔÊÐíÕâÑù. <sup>[<a name="id471589" href="#ftn.id471589">44</a>]</sup>ÔÚÈí¼þ²ã´ÎµÄ¹²ÏíÔÚ"ÖÐ¶Ï¹²Ïí"Ò»½ÚÖÐÃèÊö, ÔÚµÚ 10 ÕÂ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ISAProgramming.sect2"></a>12.2.2.&#160;ISA ±à³Ì</h3></div></div></div>
+<p>¶ÔÓÚ±à³Ì, ÄÚºËÖÐÃ»ÓÐÌØ±ðµÄ°ïÖúÀ´Ò×ÓÚ´æÈ¡ ISA Éè±¸(Ïó¶Ô PCI ÄÇÑùÓÐ, ÀýÈç). Äã¿ÉÊ¹ÓÃµÄÎ¨Ò»¹¤¾ßÊÇ I/O ¶Ë¿ÚºÍ IRQ ÏßµÄ×¢²á, ÔÚ 10 ÕÂµÄ"°²×°Ò»¸öÖÐ¶Ï´¦Àí"Ò»½Ú.</p>
+<p>ÔÚ±¾ÊéµÚÒ»²¿·ÖËùÕ¹Ê¾µÄ±à³Ì¼¼ÊõÊÊÓÃÓÚ ISA Éè±¸; Çý¶¯¿ÉÌ½²â I/O ¶Ë¿Ú, ²¢ÇÒÖÐ¶ÏÏß±ØÐë±»×Ô¶¯Ì½²â, Ê¹ÓÃÔÚ 10 ÕÂµÄ"×Ô¶¯Ì½²â IRQ ºÅ"Ò»½ÚµÄÒ»¸ö¼¼Êõ.</p>
+<p>°ïÃ¦º¯Êý isa_readb ºÍ ËüµÄÅóÓÑÒÑ¾­ÔÚ"Ê¹ÓÃ I/O ÄÚ´æ" 9 ÕÂÖÐ¼òµ¥½éÉÜÁË, ²¢ÇÒ¶ÔËüÃÇÃ»ÓÐ¸ü¶àÒªËµµÄ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ThePlugandPlaySpecification.sect2"></a>12.2.3.&#160;¼´²å¼´ÓÃ¹æ·¶</h3></div></div></div>
+<p>Ò»Ð©ÐÂ ISA Éè±¸°å×ñÑ­ÌØÊâµÄÉè¼Æ¹æ·¶²¢ÇÒÐèÒªÒ»¸öÌØ±ðµÄ³õÊ¼»¯Ë³Ðò, ¶ÔÔö¼Ó½Ó¿Ú°åµÄ¼òµ¥°²×°ºÍÅäÖÃµÄÀ©Õ¹. ÕâÐ©°åµÄÉè¼Æ¹æ·¶³ÆÎª¼´²å¼´ÓÃ, ÓÉÒ»¸öÂé·³µÄ¹æÔò¼¯×é³É, À´½¨Á¢ºÍÅäÖÃÎÞÌøÏßµÄ ISA Éè±¸. PnP Éè±¸ÊµÏÖ¿ÉÖØ·ÖÅäµÄ I/O Çø; PC µÄ BIOS ¸ºÔðÖØÐÂ·ÖÅä -- »ØÏë PCI</p>
+<p>¼ò¶ÌÀ´Ëµ, PnP µÄÄ¿±êÊÇ»ñµÃÍ¬ÑùµÄÁé»îÐÔ, ÔÚ PCI Éè±¸ÖÐÓÐµÄ, ¶ø²»±Ø¹Ø±Õµ×²ãµÄµçÂ·½Ó¿Ú(ISA ×ÜÏß). Îª´Ë, Õâ¸ö¹æ·¶¶¨ÒåÁËÒ»Ì×Éè±¸¶ÀÁ¢µÄÅäÖÃ¼Ä´æÆ÷ºÍÒ»¸öµØÀíÊ½Ñ°Ö·½Ó¿Ú°åµÄ·½·¨, ¾¡¹ÜÎïÀí×ÜÏßÃ»ÓÐÃ¿¿é°å×ÓÏàÁ¬(µØÀíÉÏ)--Ã¿¸ö ISA ÐÅºÅÏßÁ¬½Óµ½Ã¿¸ö¿ÉÓÃµÄ²ÛÎ».</p>
+<p>µØÀíÊ½Ñ°Ö·Í¨¹ý·ÖÅäÒ»¸öÐ¡µÄÕûÊý, ³ÆÎª¿¨Ñ¡ÔñºÅ(CSN), ¸ø¼ÆËã»úÖÐµÄÃ¿¸ö PnP ÍâÉè. Ã¿¸ö PnP Éè±¸ÌØÓÐÒ»¸öÎ¨Ò»µÄÏµÁÐ±êÊ¶·û, 64-Î»¿í, ÕâÓ²Á¬Ïßµ½ÍâÉè°å. CSN ·ÖÅäÊ¹ÓÃÎ¨Ò»µÄÐòÁÐºÅÀ´±êÊ¶ PnP Éè±¸. µ«ÊÇ CSN ¿É±»·ÖÅäÖ»ÔÚÆô¶¯Ê±, ËüÒªÇó BISO ÊÇÖªµÀ PnP µÄ. ÓÉÓÚÕâ¸öÀíÓÉ, ÀÏÊ½¼ÆËã»úÒªÇóÓÃ»§À´»ñµÃ²¢²åÈëÒ»¸öÌØ±ðµÄÅäÖÃ´ÅÅÌ, ¼´±ãÕâ¸öÉè±¸ÊÇ PnP µÄ.</p>
+<p>×ñÑ­ PnP µÄ½Ó¿Ú°åÔÚÓ²¼þ¼¶±ðÉÏÊÇ¸´ÔÓµÄ. ËüÃÇ±È PCI °å¸ü¼Ó¾«Ï¸²¢ÇÒÐèÒª¸´ÔÓµÄÈí¼þ. °²×°ÕâÐ©Éè±¸ÓÐÀ§ÄÑÊÇ³£ÓÐµÄ, ²¢ÇÒ¼´±ã°²×°Ë³Àû, ÄãÈÔÈ»Ãæ¶ÔÐÔÄÜÏÞÖÆºÍ ISA ×ÜÏßµÄÊÜÏÞµÄ I/O ¿Õ¼ä. ×îºÃÔÚÈÎºÎ¿ÉÄÜÊ±°²×° PCI Éè±¸, ²¢ÇÒÏíÊÜÐÂ¼¼Êõ.</p>
+<p>Èç¹ûÄã¶Ô PnP ÅäÖÃÈí¼þ¸ÐÐËÈ¤, Äã¿Éä¯ÀÀ drivers/net/3c509.c, ËüµÄÌ½²âº¯Êý´¦Àí PnP Éè±¸. 2.6 ÄÚºËÓÐÐí¶à¹¤×÷ÔÚ PnP Éè±¸Ö§³ÖÁìÓò, Òò´ËÐí¶àÁé»îµÄ½Ó¿ÚºÍÖ®Ç°µÄÄÚºË·¢ÐÐÏà±È±»ÇåÀíÁË.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id471589" href="#id471589">44</a>] </sup>ÖÐ¶Ï¹²ÏíµÄÎÊÌâÊÇÒ»¸öµç×Ó¹¤³ÌµÄÎÊÌâ: Èç¹ûÒ»¸öÉè±¸Çý¶¯ÐÅºÅÏß·Ç¼¤»î -- Í¨¹ý¸øÒ»¸öµÍ×èµçÆ½ -- ÖÐ¶ÏÎÞ·¨±»¹²Ïí. Èç¹û, ÁíÒ»·½Ãæ, Éè±¸Ê¹ÓÃÒ»¸öÉÏÀ­µç×èÀ´È¥¼¤»îÂß¼­µçÆ½, ¹²ÏíÊÇ¿ÉÄÜµÄ. ÏÖÔÚÕâÊÇÕý³£µÄ. µ«ÊÇ, ÈÔÈ»ÓÐÇ±ÔÚµÄ¶ªÊ§ÖÐ¶ÏÊÂ¼þµÄÎ£ÏÕ, ÒòÎª ISA ÖÐ¶ÏÊÇÑØ´¥·¢µÄ¶ø²»ÊÇµçÆ½´¥·¢µÄ. ÑØ´¥·¢ÖÐ¶ÏÒ×ÓÚÔÚÓ²¼þÖÐÊµÏÖ, µ«ÊÇÃ»ÓÐÊ¹ËüÃÇ¿É°²È«¹²Ïí.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch12.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch12.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch12s03.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">µÚ&#160;12&#160;ÕÂ&#160;PCI Çý¶¯&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;12.3.&#160;PC/104 ºÍ PC/104+</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

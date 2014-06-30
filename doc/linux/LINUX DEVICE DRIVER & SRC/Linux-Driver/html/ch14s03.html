@@ -1,0 +1,90 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>14.3.&#160;ÈÈ²å°ÎÊÂ¼þ²úÉú-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch14.html" title="µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ">
+<link rel="prev" href="ch14s02.html" title="14.2.&#160;µÍ¼¶ sysfs ²Ù×÷">
+<link rel="next" href="ch14s04.html" title="14.4.&#160;×ÜÏß, Éè±¸, ºÍÇý¶¯">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">14.3.&#160;ÈÈ²å°ÎÊÂ¼þ²úÉú</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch14s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;14&#160;ÕÂ&#160;Linux Éè±¸Ä£ÐÍ</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch14s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="HotplugEventGeneration.sect"></a>14.3.&#160;ÈÈ²å°ÎÊÂ¼þ²úÉú</h2></div></div></div>
+<p>Ò»¸öÈÈ²å°ÎÊÂ¼þÊÇÒ»¸ö´ÓÄÚºËµ½ÓÃ»§¿Õ¼äµÄÍ¨Öª, ÔÚÏµÍ³ÅäÖÃÖÐÓÐÊÂÇéÒÑ¾­¸Ä±ä. ÎÞÂÛºÎÊ±Ò»¸ö kobject ±»´´½¨»òÏú»Ù¾Í²úÉúËüÃÇ. ÕâÑùÊÂ¼þ±»²úÉú, ÀýÈç, µ±Ò»¸öÊý×ÖÉãÏñÍ·Ê¹ÓÃÒ»¸ö USB ÏßÀÂ²åÈë, µ±Ò»¸öÓÃ»§ÇÐ»»¿ØÖÆÌ¨Ä£Ê½, »òÕßµ±Ò»¸ö´ÅÅÌ±»ÖØÐÂ·ÖÇø. ÈÈ²å°ÎÊÂ¼þ×ª±äÎªÒ»¸ö¶Ô /sbin/hotplug µÄµ÷ÓÃ, ËüÏìÓ¦Ã¿¸öÊÂ¼þ, Í¨¹ý¼ÓÔØÇý¶¯, ´´½¨Éè±¸½Úµã, °²×°·ÖÇø, »òÕß²ÉÈ¡ÈÎºÎÆäËûµÄºÏÊÊµÄ¶¯×÷.</p>
+<p>ÎÒÃÇËù¼ûµÄ×îºóÒ»¸öÖ÷ÒªµÄ kobject º¯ÊýÊÇÕâÐ©ÊÂ¼þµÄ²úÉú. Êµ¼ÊµÄÊÂ¼þÔÚµ±Ò»¸ö kobject ´«µÝµ½ kobject_add »ò kobject_del Ê±·¢Éú. ÔÚÕâ¸öÊÂ¼þ±»´«µÝµ½ÓÃ»§¿Õ¼äÖ®Ç°, ºÍÕâ¸ö kobject ¹ØÁªµÄ´úÂë( »òÕß, ¸üÌØ±ðµÄ, ËüËùÊôµÄ kset )ÓÐ»ú»áÀ´Ìí¼ÓÐÅÏ¢¸øÓÃ»§¿Õ¼ä»òÕßÀ´ÍêÈ«¹Ø±ÕÊÂ¼þµÄ²úÉú.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="HotplugOperations.sect"></a>14.3.1.&#160;ÈÈ²å°Î²Ù×÷</h3></div></div></div>
+<p>ÈÈ²å°ÎÊÂ¼þµÄÊµ¼Ê¿ØÖÆÊÇÍ¨¹ýÒ»Ì×´æ´¢ÓÚ kset_hotplug_ops ½á¹¹µÄ·½·¨Íê³É.</p>
+<pre class="programlisting">
+struct kset_hotplug_ops {
+ int (*filter)(struct kset *kset, struct kobject *kobj);
+ char *(*name)(struct kset *kset, struct kobject *kobj);
+ int (*hotplug)(struct kset *kset, struct kobject *kobj,
+ char **envp, int num_envp, char *buffer,
+ int buffer_size);
+};
+</pre>
+<p>Ò»¸öÖ¸ÏòÕâ¸ö½á¹¹µÄÖ¸ÕëÔÚ kset ½á¹¹µÄ hotplug_ops ³ÉÔ±ÖÐ. Èç¹ûÒ»¸ö¸ø¶¨µÄ kobject ²»°üº¬ÔÚÒ»¸ö kset ÖÐ, ÄÚºËËÑË÷Õû¸ö²ã´Î( Í¨¹ý parent Ö¸Õë) Ö±µ½Ëü·¢ÏÖÒ»¸ö kobject È·ÊµÓÐÒ»¸ö kset; ½Ó×ÅÊ¹ÓÃÕâ¸ö kset µÄÈÈ²å°Î²Ù×÷.</p>
+<p>filter ÈÈ²å°Î²Ù×÷±»µ÷ÓÃÎÞÂÛºÎÊ±ÄÚºËÔÚ¿¼ÂÇÎª¸ø¶¨ kobject ²úÉúÒ»¸öÊÂ¼þ. Èç¹û filter ·µ»Ø 0, ÊÂ¼þÃ»ÓÐ´´½¨. Õâ¸ö·½·¨, Òò´Ë, ¸ø kset ´úÂëÒ»¸ö»ú»áÀ´¾ö¶¨ÄÄ¸öÊÂ¼þÓ¦µ±±»´«µÝ¸øÓÃ»§¿Õ¼äÒÔ¼°ÄÄ¸ö²».</p>
+<p>×÷ÎªÒ»¸öÀý×Ó¹ØÓÚÕâ¸ö·½·¨ÔõÑù±»Ê¹ÓÃ, ¿¼ÂÇ¿éÉè±¸×ÓÏµÍ³. ÖÁÉÙÓÐ 3 Àà kobject ÓÃÔÚÄÇÀï, ±íÊ¾´ÅÅÌ, ·ÖÇø, ºÍÇëÇó¶ÓÁÐ. ÓÃ»§¿Õ¼ä¿ÉÄÜÏë¶Ô´ÅÅÌ»ò·ÖÇøµÄÔö¼Ó×÷³ö·´Ó¦, µ«ÊÇËüÕý³£µØ²»¹ØÐÄÇëÇó¶ÓÁÐ. Òò´Ë filter ·½·¨ÔÊÐíÊÂ¼þ²úÉúÖ»¸ø´ú±í´ÅÅÌºÍ·ÖÇøµÄ kobjects. Ëü¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+static int block_hotplug_filter(struct kset *kset, struct kobject *kobj)
+{
+
+ struct kobj_type *ktype = get_ktype(kobj);
+    return ((ktype == &amp;ktype_block) || (ktype == &amp;ktype_part));
+}
+</pre>
+<p>ÕâÀï, Ò»¸ö¿ìËÙµÄÔÚ kobject ÀàÐÍÉÏµÄ²âÊÔÊÇ×ãÒÔ¾ö¶¨ÊÇ·ñÕâ¸öÊÂ¼þÓ¦µ±²úÉú»òÕß²».</p>
+<p>µ±ÓÃ»§¿Õ¼äÈÈ²å°Î³ÌÐò±»µ÷ÓÃ, Ëü±»´«µÝ¸øÏà¹Ø×ÓÏµÍ³µÄ name ×÷ÎªËüÎ¨Ò»µÄÒ»¸ö²ÎÊý. name ÈÈ²å°Î·½·¨¸ºÔðÌá¹©Õâ¸öÃû×Ó. ËüÓ¦µ±·µ»ØÒ»¸ö¼òµ¥µÄÊÊºÏ´«µÝ¸øÓÃ»§¿Õ¼äµÄ×Ö´®.</p>
+<p>ÈÈ²å°Î½Å±¾µÄ¿ÉÄÜÏëÖªµÀµÄÆäËûËùÓÐ¶«¶«¶¼ÔÚ»·¾³ÖÐ´«µÝ. ×îÖÕµÄÈÈ²å°Î·½·¨( hotplug )¸øÁËÒ»¸ö»ú»áÀ´ÔÚµ÷ÓÃÕâ¸ö½Å±¾Ö®Ç°Ìí¼ÓÓÐÓÃµÄ»·¾³±äÁ¿. ÔÙ´Î, Õâ¸ö·½·¨µÄÔ­ÐÍÊÇ:</p>
+<pre class="programlisting">
+int (*hotplug)(struct kset *kset, struct kobject *kobj,
+ char **envp, int num_envp, char *buffer,
+ int buffer_size); 
+</pre>
+<p>Èç³£, kset ºÍ kobject ÃèÊöÊÂ¼þ²úÉú¸øµÄ¶ÔÏó. envp Êý×éÊÇÒ»¸öµØ·½À´´æ´¢¶îÍâµÄ»·¾³±äÁ¿¶¨Òå(ÒÔÍ¨³£µÄ NAME=Öµ µÄ¸ñÊ½); ËüÓÐ num_envp ¸öÈë¿Ú±äÁ¿. ÕâÐ©±äÁ¿×ÔÉíÓ¦µ±±»±àÂëÈë»º³å, »º³åÊÇ buffer_size ×Ö½Ú³¤. Èç¹ûÄãÌí¼ÓÈÎºÎ±äÁ¿µ½ envp, È·ÐÅÌí¼ÓÒ»¸ö NULL Èë¿ÚÔÚÄã×îºóµÄÌí¼ÓÏîºóÃæ, ÕâÑùÄÚºËÖªµÀ½áÎ²ÔÚÄÄÀï. ·µ»ØÖµÕý³£Ó¦µ±ÊÇ 0; ÈÎºÎ·ÇÁã·µ»Ø¶¼ÖÕÖ¹ÈÈ²å°ÎÊÂ¼þµÄ²úÉú.</p>
+<p>ÈÈ²å°ÎÊÂ¼þµÄ²úÉú(ÏóÔÚÉè±¸Ä£ÐÍÖÐ´ó²¿·Ö¹¤×÷)³£³£ÊÇÓÉÔÚ×ÜÏßÇý¶¯¼¶µÄÂß¼­´¦Àí.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch14s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch14.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch14s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">14.2.&#160;µÍ¼¶ sysfs ²Ù×÷&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;14.4.&#160;×ÜÏß, Éè±¸, ºÍÇý¶¯</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

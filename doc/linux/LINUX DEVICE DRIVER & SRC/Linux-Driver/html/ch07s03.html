@@ -1,0 +1,198 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>7.3.&#160;延后执行-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="ch07.html" title="第&#160;7&#160;章&#160;时间, 延时, 和延后工作">
+<link rel="prev" href="ch07s02.html" title="7.2.&#160;获知当前时间">
+<link rel="next" href="ch07s04.html" title="7.4.&#160;内核定时器">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.3.&#160;延后执行</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch07s02.html">上一页</a>&#160;</td>
+<th width="60%" align="center">第&#160;7&#160;章&#160;时间, 延时, 和延后工作</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch07s04.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="DelayingExecution.sect"></a>7.3.&#160;延后执行</h2></div></div></div>
+<p>设备驱动常常需要延后一段时间执行一个特定片段的代码, 常常允许硬件完成某个任务. 在这一节我们涉及许多不同的技术来获得延后. 每种情况的环境决定了使用哪种技术最好; 我们全都仔细检查它们, 并且指出每一个的长处和缺点.</p>
+<p>一件要考虑的重要的事情是你需要的延时如何与时钟嘀哒比较, 考虑到 HZ 的跨各种平台的范围. 那种可靠地比时钟嘀哒长并且不会受损于它的粗粒度的延时, 可以利用系统时钟. 每个短延时典型地必须使用软件循环来实现. 在这 2 种情况中存在一个灰色地带. 在本章, 我们使用短语" long " 延时来指一个多 jiffy 延时, 在一些平台上它可以如同几个毫秒一样少, 但是在 CPU 和内核看来仍然是长的.</p>
+<p>下面的几节讨论不同的延时, 通过采用一些长路径, 从各种直觉上不适合的方法到正确的方法. 我们选择这个途径因为它允许对内核相关定时方面的更深入的讨论. 如果你急于找出正确的代码, 只要快速浏览本节.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="LongDelays.sect"></a>7.3.1.&#160;长延时</h3></div></div></div>
+<p>偶尔地, 一个驱动需要延后执行相对长时间 -- 多于一个时钟嘀哒. 有几个方法实现这类延时; 我们从最简单的技术开始, 接着进入到高级些的技术.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Busywaiting.sect"></a>7.3.1.1.&#160;忙等待</h4></div></div></div>
+<p>如果你想延时执行多个时钟嘀哒, 允许在值中某些疏忽, 最容易的( 尽管不推荐 ) 的实现是一个监视 jiffy 计数器的循环. 这种忙等待实现常常看来象下面的代码, 这里 j1 是 jiffies 的在延时超时的值:</p>
+<pre class="programlisting">
+while (time_before(jiffies, j1))
+    cpu_relax();
+</pre>
+<p>对 cpu_relex  的调用使用了一个特定于体系的方式来说, 你此时没有在用处理器做事情. 在许多系统中它根本不做任何事; 在对称多线程(" 超线程" ) 系统中, 可能让出核心给其他线程. 在如何情况下, 无论何时有可能, 这个方法应当明确地避免. 我们展示它是因为偶尔你可能想运行这个代码来更好理解其他代码的内幕.</p>
+<p>我们来看一下这个代码如何工作. 这个循环被保证能工作因为 jiffies 被内核头文件声明做易失性的, 并且因此, 在任何时候 C 代码寻址它时都从内存中获取. 尽管技术上正确( 它如同设计的一样工作 ), 这种忙等待严重地降低了系统性能. 如果你不配置你的内核为抢占操作, 这个循环在延时期间完全锁住了处理器; 调度器永远不会抢占一个在内核中运行的进程, 并且计算机看起来完全死掉直到时间 j1 到时. 这个问题如果你运行一个可抢占的内核时会改善一点, 因为, 除非这个代码正持有一个锁, 处理器的一些时间可以被其他用途获得. 但是, 忙等待在可抢占系统中仍然是昂贵的.</p>
+<p>更坏的是, 当你进入循环时如果中断碰巧被禁止, jiffies 将不会被更新, 并且 while 条件永远保持真. 运行一个抢占的内核也不会有帮助, 并且你将被迫去击打大红按钮.</p>
+<p>这个延时代码的实现可拿到, 如同下列的, 在 jit 模块中. 模块创建的这些 /proc/jit* 文件每次你读取一行文本就延时一整秒, 并且这些行保证是每个 20 字节. 如果你想测试忙等待代码, 你可以读取 /proc/jitbusy, 每当它返回一行它忙-循环一秒.</p>
+<p>为确保读, 最多, 一行( 或者几行 ) 一次从 /proc/jitbusy. 简化的注册 /proc 文件的内核机制反复调用 read 方法来填充用户请求的数据缓存. 因此, 一个命令, 例如 cat /proc/jitbusy, 如果它一次读取 4KB, 会冻住计算机 205 秒.</p>
+<p>推荐的读 /proc/jitbusy 的命令是 dd bs=200 &lt; /proc/jitbusy, 可选地同时指定块数目. 文件返回的每 20-字节 的行表示 jiffy 计数器已有的值, 在延时之前和延时之后. 这是一个例子运行在一个其他方面无负担的计算机上:</p>
+<pre class="screen">
+phon% dd bs=20 count=5 &lt; /proc/jitbusy
+ 1686518 1687518
+ 1687519 1688519
+ 1688520 1689520
+ 1689520 1690520
+ 1690521 1691521 
+</pre>
+<p>看来都挺好: 延时精确地是 1 秒 ( 1000 jiffies ), 并且下一个 read 系统调用在上一个结束后立刻开始. 但是让我们看看在一个有大量 CPU-密集型进程在运行(并且是非抢占内核)的系统上会发生什么:</p>
+<pre class="screen">
+phon% dd bs=20 count=5 &lt; /proc/jitbusy
+ 1911226 1912226
+ 1913323 1914323
+ 1919529 1920529
+ 1925632 1926632
+ 1931835 1932835 
+</pre>
+<p>这里, 每个 read 系统调用精确地延时 1 秒, 但是内核耗费多过 5 秒在调度 dd 进程以便它可以发出下一个系统调用之前. 在一个多任务系统就期望是这样;  CPU 时间在所有运行的进程间共享, 并且一个 CPU-密集型 进程有它的动态减少的优先级. ( 调度策略的讨论在本书范围之外). </p>
+<p>上面所示的在负载下的测试已经在运行 load50 例子程序中进行了. 这个程序派生出许多什么都不做的进程, 但是以一种 CPU-密集的方式来做. 这个程序是伴随本书的例子文件的一部分, 并且缺省是派生 50 个进程, 尽管这个数字可以在命令行指定. 在本章, 以及在本书其他部分, 使用一个有负载的系统的测试已经用 load50 在一个其他方面空闲的计算机上运行来进行了.</p>
+<p>如果你在运行一个可抢占内核时重复这个命令, 你会发现没有显著差别在一个其他方面空闲的 CPU 上以及下面的在负载下的行为:</p>
+<pre class="screen">
+phon% dd bs=20 count=5 &lt; /proc/jitbusy
+ 14940680 14942777
+ 14942778 14945430
+ 14945431 14948491
+ 14948492 14951960
+ 14951961 14955840 
+</pre>
+<p>这里, 没有显著的延时在一个系统调用的末尾和下一个的开始之间, 但是单独的延时远远比 1 秒长: 直到 3.8 秒在展示的例子中并且随时间上升. 这些值显示了进程在它的延时当中被中断, 调度其他的进程. 系统调用之间的间隙不是唯一的这个进程的调度选项, 因此没有特别的延时在那里可以看到.</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Yieldingtheprocessor.sect"></a>7.3.1.2.&#160;让出处理器</h4></div></div></div>
+<p>如我们已见到的, 忙等待强加了一个重负载给系统总体; 我们乐意找出一个更好的技术. 想到的第一个改变是明确地释放 CPU 当我们对其不感兴趣时. 这是通过调用调度函数而实现地, 在 &lt;linux/sched.h&gt; 中声明:</p>
+<pre class="programlisting">
+while (time_before(jiffies, j1)) {
+    schedule();
+}
+</pre>
+<p>这个循环可以通过读取 /proc/jitsched 如同我们上面读 /proc/jitbusy 一样来测试. 但是, 还是不够优化. 当前进程除了释放 CPU 不作任何事情, 但是它保留在运行队列中. 如果它是唯一的可运行进程, 实际上它运行( 它调用调度器来选择同一个进程, 进程又调用调度器, 这样下去). 换句话说, 机器的负载( 在运行的进程的平均数 ) 最少是 1, 并且空闲任务 ( 进程号 0, 也称为对换进程, 由于历史原因) 从不运行. 尽管这个问题可能看来无关, 在计算机是空闲时运行空闲任务减轻了处理器工作负载, 降低它的温度以及提高它的生命期, 同时电池的使用时间如果这个计算机是你的膝上机. 更多的, 因为进程实际上在延时中执行, 它所耗费的时间都可以统计.</p>
+<p>/proc/jitsched 的行为实际上类似于运行 /proc/jitbusy 在一个抢占的内核下. 这是一个例子运行, 在一个无负载的系统:</p>
+<pre class="screen">
+phon% dd bs=20 count=5 &lt; /proc/jitsched
+ 1760205 1761207
+ 1761209 1762211
+ 1762212 1763212
+ 1763213 1764213
+ 1764214 1765217 
+</pre>
+<p>有趣的是要注意每次 read 有时结束于等待比要求的多几个时钟嘀哒. 这个问题随着系统变忙会变得越来越坏, 并且驱动可能结束于等待长于期望的时间. 一旦一个进程使用调度来释放处理器, 无法保证进程将拿回处理器在任何时间之后. 因此, 以这种方式调用调度器对于驱动的需求不是一个安全的解决方法, 另外对计算机系统整体是不好的. 如果你在运行 load50 时测试 jitsched, 你可以见到关联到每一行的延时被扩充了几秒, 因为当定时超时的时候其他进程在使用 CPU .</p>
+</div>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="Timeouts.sect"></a>7.3.1.3.&#160;超时</h4></div></div></div>
+<p>到目前为止所展示的次优化的延时循环通过查看 jiffy 计数器而不告诉任何人来工作. 但是最好的实现一个延时的方法, 如你可能猜想的, 常常是请求内核为你做. 有 2 种方法来建立一个基于 jiffy 的超时, 依赖于是否你的驱动在等待其他的事件.</p>
+<p>如果你的驱动使用一个等待队列来等待某些其他事件, 但是你也想确保它在一个确定时间段内运行, 可以使用 wait_event_timeout 或者 wait_event_interruptible_timeout:</p>
+<pre class="programlisting">
+#include &lt;linux/wait.h&gt;
+long wait_event_timeout(wait_queue_head_t q, condition, long timeout);
+long wait_event_interruptible_timeout(wait_queue_head_t q, condition, long timeout);
+</pre>
+<p>这些函数在给定队列上睡眠, 但是它们在超时(以 jiffies 表示)到后返回. 因此, 它们实现一个限定的睡眠不会一直睡下去. 注意超时值表示要等待的 jiffies 数, 不是一个绝对时间值. 这个值由一个有符号的数表示, 因为它有时是一个相减运算的结果, 尽管这些函数如果提供的超时值是负值通过一个 printk 语句抱怨. 如果超时到, 这些函数返回 0; 如果这个进程被其他事件唤醒, 它返回以 jiffies 表示的剩余超时值. 返回值从不会是负值, 甚至如果延时由于系统负载而比期望的值大.</p>
+<p>/proc/jitqueue 文件展示了一个基于 wait_event_interruptible_timeout 的延时, 结果这个模块没有事件来等待, 并且使用 0 作为一个条件:</p>
+<pre class="programlisting">
+wait_queue_head_t wait; 
+init_waitqueue_head (&amp;wait); 
+wait_event_interruptible_timeout(wait, 0, delay); 
+</pre>
+<p>当读取 /proc/jitqueue 时, 观察到的行为近乎优化的, 即便在负载下:</p>
+<pre class="screen">
+phon% dd bs=20 count=5 &lt; /proc/jitqueue
+ 2027024  2028024 
+ 2028025  2029025 
+ 2029026  2030026 
+ 2030027  2031027 
+ 2031028  2032028  
+</pre>
+<p>因为读进程当等待超时( 上面是 dd )不在运行队列中, 你看不到表现方面的差别, 无论代码是否运行在一个抢占内核中.</p>
+<p>wait_event_timeout 和 wait_event_interruptible_timeout 被设计为有硬件驱动存在, 这里可以用任何一种方法来恢复执行: 或者有人调用 wake_up 在等待队列上, 或者超时到. 这不适用于 jitqueue, 因为没人在等待队列上调用 wake_up ( 毕竟, 没有其他代码知道它 ), 因此这个进程当超时到时一直唤醒. 为适应这个特别的情况, 这里你想延后执行不等待特定事件, 内核提供了 schedule_timeout 函数, 因此你可以避免声明和使用一个多余的等待队列头:</p>
+<pre class="programlisting">
+#include &lt;linux/sched.h&gt;
+signed long schedule_timeout(signed long timeout);
+</pre>
+<p>这里, timeout 是要延时的 jiffies 数. 返回值是 0 除非这个函数在给定的 timeout 流失前返回(响应一个信号). schedule_timeout 请求调用者首先设置当前的进程状态, 因此一个典型调用看来如此:</p>
+<pre class="programlisting">
+set_current_state(TASK_INTERRUPTIBLE);
+schedule_timeout (delay);
+</pre>
+<p>前面的行( 来自 /proc/jitschedto ) 导致进程睡眠直到经过给定的时间. 因为 wait_event_interruptible_timeout 在内部依赖 schedule_timeout, 我们不会费劲显示 jitschedto 返回的数, 因为它们和 jitqueue 的相同. 再一次, 不值得有一个额外的时间间隔在超时到和你的进程实际被调度来执行之间.</p>
+<p>在刚刚展示的例子中, 第一行调用 set_current_state 来设定一些东西以便调度器不会再次运行当前进程, 直到超时将它置回 TASK_RUNNING 状态. 为获得一个不可中断的延时, 使用 TASK_UNINTERRUPTIBLE 代替. 如果你忘记改变当前进程的状态, 调用 schedule_time 如同调用 shcedule( 即, jitsched 的行为), 建立一个不用的定时器.</p>
+<p>如果你想使用这 4 个 jit 文件在不同的系统情况下或者不同的内核, 或者尝试其他的方式来延后执行, 你可能想配置延时量当加载模块时通过设定延时模块参数.</p>
+</div>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ShortDelays.sect"></a>7.3.2.&#160;短延时</h3></div></div></div>
+<p>当一个设备驱动需要处理它的硬件的反应时间, 涉及到的延时常常是最多几个毫秒. 在这个情况下, 依靠时钟嘀哒显然不对路.</p>
+The kernel functions ndelay, udelay, and mdelay serve well for short delays, delaying execution for the specified number of nanoseconds, microseconds, or milliseconds respectively.* Their prototypes are: 
+ * The u in udelay represents the Greek letter mu and stands for micro. 
+<p>内核函数 ndelay, udelay, 以及 mdelay 对于短延时好用, 分别延后执行指定的纳秒数, 微秒数或者毫秒数. <sup>[<a name="id444639" href="#ftn.id444639">27</a>]</sup>它们的原型是:</p>
+<pre class="programlisting">
+#include &lt;linux/delay.h&gt;
+void ndelay(unsigned long nsecs);
+void udelay(unsigned long usecs);
+void mdelay(unsigned long msecs);
+</pre>
+<p>这些函数的实际实现在 &lt;asm/delay.h&gt;, 是体系特定的, 并且有时建立在一个外部函数上. 每个体系都实现 udelay, 但是其他的函数可能或者不可能定义; 如果它们没有定义, &lt;linux/delay.h&gt; 提供一个缺省的基于 udelay 的版本. 在所有的情况中, 获得的延时至少是要求的值, 但可能更多; 实际上, 当前没有平台获得了纳秒的精度, 尽管有几个提供了次微秒的精度. 延时多于要求的值通常不是问题, 因为驱动中的短延时常常需要等待硬件, 并且这个要求是等待至少一个给定的时间流失.</p>
+<p>udelay 的实现( 可能 ndelay 也是) 使用一个软件循环基于在启动时计算的处理器速度, 使用整数变量 loos_per_jiffy. 如果你想看看实际的代码, 但是, 小心 x86 实现是相当复杂的一个因为它使用的不同的时间源, 基于什么 CPU 类型在运行代码.</p>
+<p>为避免在循环计算中整数溢出, udelay 和 ndelay 强加一个上限给传递给它们的值. 如果你的模块无法加载和显示一个未解决的符号, __bad_udelay, 这意味着你使用太大的参数调用 udleay. 注意, 但是, 编译时检查只对常量进行并且不是所有的平台实现它. 作为一个通用的规则, 如果你试图延时几千纳秒, 你应当使用 udelay 而不是 ndelay; 类似地, 毫秒规模的延时应当使用 mdelay 完成而不是一个更细粒度的函数. </p>
+<p>重要的是记住这 3 个延时函数是忙等待; 其他任务在时间流失时不能运行. 因此, 它们重复, 尽管在一个不同的规模上, jitbusy 的做法. 因此, 这些函数应当只用在没有实用的替代时.</p>
+<p>有另一个方法获得毫秒(和更长)延时而不用涉及到忙等待. 文件 &lt;linux/delay.h&gt; 声明这些函数:</p>
+<pre class="programlisting">
+void msleep(unsigned int millisecs);
+unsigned long msleep_interruptible(unsigned int millisecs);
+void ssleep(unsigned int seconds)
+</pre>
+<p>前 2 个函数使调用进程进入睡眠给定的毫秒数. 一个对 msleep 的调用是不可中断的; 你能确保进程睡眠至少给定的毫秒数. 如果你的驱动位于一个等待队列并且你想唤醒来打断睡眠, 使用 msleep_interruptible. 从 msleep_interruptible 的返回值正常地是 0; 如果, 但是, 这个进程被提早唤醒, 返回值是在初始请求睡眠周期中剩余的毫秒数. 对 ssleep 的调用使进程进入一个不可中断的睡眠给定的秒数.</p>
+<p>通常, 如果你能够容忍比请求的更长的延时, 你应当使用 schedule_timeout, msleep, 或者 ssleep.</p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id444639" href="#id444639">27</a>] </sup>udelay 中的 u 表示希腊字母 mu 并且代表 micro.</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch07s02.html">上一页</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">上一级</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch07s04.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.2.&#160;获知当前时间&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;7.4.&#160;内核定时器</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

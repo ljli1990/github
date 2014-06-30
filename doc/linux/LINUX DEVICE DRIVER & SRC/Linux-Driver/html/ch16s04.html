@@ -1,0 +1,114 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>16.4.&#160;Ò»Ð©ÆäËûµÄÏ¸½Ú-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©</title>
+<meta name="description" content="Çý¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch16.html" title="µÚ&#160;16&#160;ÕÂ&#160;¿éÇý¶¯">
+<link rel="prev" href="ch16s03.html" title="16.3.&#160;ÇëÇó´¦Àí">
+<link rel="next" href="ch16s05.html" title="16.5.&#160;¿ìËÙ²Î¿¼">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">16.4.&#160;Ò»Ð©ÆäËûµÄÏ¸½Ú</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch16s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;16&#160;ÕÂ&#160;¿éÇý¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch16s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SomeOtherDetails.sect1"></a>16.4.&#160;Ò»Ð©ÆäËûµÄÏ¸½Ú</h2></div></div></div>
+<p>±¾½Úº­¸Ç¿é²ãµÄ¼¸¸öÆäËûµÄ·½Ãæ, ¶ÔÓÚ¸ß¼¶¶ÁÕß¿ÉÄÜÓÐÐËÈ¤. ¶ÔÓÚ±àÐ´Ò»¸öÕýÈ·µÄÇý¶¯ÏÂÃæµÄÄÚÈÝ¶¼²»ÐèÒª, µ«ÊÇËüÃÇÔÚÄ³Ð©Çé¿öÏÂ¿ÉÄÜÊÇÓÐÓÃµÄ.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="CommandPrePreparation.sect2"></a>16.4.1.&#160;ÃüÁîÔ¤×¼±¸</h3></div></div></div>
+<p>¿é²ãÎªÇý¶¯Ìá¹©Ò»¸ö½øÖÆÀ´¼ì²éºÍÔ¤´¦ÀíÇëÇó, ÔÚËüÃÇ±»´Ó elv_next_request ·µ»ØÇ°. Õâ¸ö»úÖÆÔÊÐíÇý¶¯ÌáÇ°ÉèÁ¢ÕæÕýµÄÇý¶¯Æ÷ÃüÁî, ¾ö¶¨ÊÇ·ñÕâ¸öÇëÇó¿É±»ÍêÈ«´¦Àí, »òÕß½øÐÐÆäËûµÄÎ¬»¤¹¤×÷.</p>
+<p>Èç¹ûÄãÏëÊ¹ÓÃÕâ¸öÌØÐÔ, ´´½¨Ò»¸öÃüÁî×¼±¸º¯Êý, ËüÒªÊÊÓ¦Õâ¸öÔ­ÐÍ:</p>
+<pre class="programlisting">
+typedef int (prep_rq_fn) (request_queue_t *queue, struct request *req); 
+</pre>
+<p>ÇëÇó½á¹¹°üº¬Ò»¸ö³ÉÔ± cmd, ËüÊÇÒ»¸ö BLK_MAX_CDB ×Ö½ÚµÄÊý×é; Õâ¸öÊý×é¿É±»Õâ¸ö×¼±¸º¯ÊýÓÃÀ´´æ´¢Êµ¼ÊµÄÓ²¼þÃüÁî(»òÕßÈÎºÎÆäËûµÄÓÐÓÃÐÅÏ¢). Õâ¸öº¯ÊýÓ¦µ±·µ»ØÒ»¸öÏÂÁÐµÄÖµ:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>BLKPREP_OK </span></span></dt>
+<dd><p>ÃüÁî×¼±¸Õý³£½øÐÐ, ²¢ÇÒÕâ¸öÇëÇó¿É±»´«µÝ¸øÄãµÄÇý¶¯µÄÇëÇóº¯Êý.</p></dd>
+<dt><span class="term"><span>BLKPREP_KILL </span></span></dt>
+<dd><p>Õâ¸öÇëÇó²»ÄÜÍê³É; Ëü´øÓÐÒ»¸ö´íÎóÂë¶øÊ§°Ü.</p></dd>
+<dt><span class="term"><span>BLKPREP_DEFER </span></span></dt>
+<dd><p>Õâ¸öÇëÇóÕâ´ÎÎÞ·¨Íê³É. ËüÎ»ÓÚ¶ÓÁÐµÄÇ°Ãæ, µ«ÊÇ²»ÄÜ´«µÝ¸øÇëÇóº¯Êý.</p></dd>
+</dl></div>
+<p>×¼±¸º¯Êý±» elv_next_request ÔÚÇëÇó·µ»Øµ½ÄãµÄÇý¶¯Ö®Ç°Á¢¿Ìµ÷ÓÃ. Èç¹ûÕâ¸öº¯Êý·µ»Ø BLKPREP_DEFER, ´Ó elv_next_request ·µ»Ø¸øÄãµÄÇý¶¯µÄ·µ»ØÖµÊÇ NULL. Õâ¸ö²Ù×÷ÃèÊö¿ÉÄÜÊÇÓÐÓÃµÄ, Èç¹û, ÀýÈçÄãµÄÉè±¸ÒÑ´ïµ½ËüÄÜ¹»µÈºòµÄÇëÇóµÄ×î´óÊýÄ¿.</p>
+<p>ÎªÊ¹¿é²ãµ÷ÓÃÄãµÄ×¼±¸º¯Êý, ´«µÝËüµ½:</p>
+<pre class="programlisting">
+void blk_queue_prep_rq(request_queue_t *queue, prep_rq_fn *func); 
+</pre>
+<p>È±Ê¡µØ, ÇëÇó¶ÓÁÐÃ»ÓÐ×¼±¸º¯Êý.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TaggedCommandQueueing.sect2"></a>16.4.2.&#160;±»±êÊ¶µÄÃüÁîÅÅ¶Ó</h3></div></div></div>
+<p>¿ÉÍ¬Ê±ÓÐ¶à¸öÇëÇó±»¼¤»îµÄÓ²¼þ, ³£³£Ö§³ÖÄ³ÖÖ±»±êÊ¶µÄÃüÁîÅÅ¶Ó(TCQ). TCQ ¼òµ¥µØËµÊÇ¹ØÁªÒ»¸öÕûÊý "tag" µ½Ã¿¸öÇëÇóµÄ¼¼Êõ, ×¢Òâµ±Çý¶¯Æ÷Íê³ÉÃ¿¸öÇëÇóÊ±, Ëû¿É¸æÖªÇý¶¯ÊÇÄÄÒ»¸ö. ÔÚÒÔÇ°µÄÄÚºË°æ±¾, ÊµÏÖ TCQ µÄ¿éÇý¶¯²»µÃ²»×Ô¼º×öËùÓÐµÄ¹¤×÷; ÔÚ2.6, Ò»¸ö TCQ Ö§³Ö¿ò¼ÜÒÑ¾­±»Ìí¼Óµ½¿é²ã, ÒÔ¸øËùÓÐµÄÇý¶¯À´Ê¹ÓÃ.</p>
+<p>Èç¹ûÄãµÄÇý¶¯Æ÷½øÐÐ±ê¼ÇÃüÁîÅÅ¶Ó, ÄãÓ¦µ±ÔÚ³õÊ¼»¯Ê±Í¨ÖªÄÚºËÕâ¸öÊÂÊµ, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+int blk_queue_init_tags(request_queue_t *queue, int depth, struct blk_queue_tag *tags);
+</pre>
+<p>ÕâÀï, queue ÊÇÄãµÄÇëÇó¶ÓÁÐ, ¶ø depth ÊÇÄãµÄÉè±¸ÄÜ¹»ÔÚÈÎºÎÊ±¼äÓµÓÐµÄµÈ´ýµÄ±ê¼ÇÇëÇóµÄÊýÄ¿. tags ÊÇÒ»¸ö¿ÉÑ¡µÄÖ¸ÕëÖ¸ÏòÒ»¸ö struct blk_queue_tag ½á¹¹Êý×é; ±ØÐëÓÐ depth ¸ö. Õý³£µØ, tags ¿ÉÓÃ NULL, ²¢ÇÒ blk_queue_init_tags ·ÖÅäÕâ¸ö Êý×é. Èç¹û, µ«ÊÇ, ÄãÐèÒªºÍ¶à¸öÉè±¸·ÖÏíÍ¨ÓÃµÄ tags, Äã¿É´«µÝÕâ¸ö±ê¼ÇÊý×éÖ¸Õë(´æ´¢ÔÚ queue_tags ³ÉÔ±)´ÓÁíÒ»¸öÇëÇó¶ÓÁÐ. ÄãÓ¦µ±´Ó²»ÕæÕý×Ô¼º·ÖÅäÕâ¸ö±ê¼ÇÊý×é; ¿é²ãÐèÒª³õÊ¼»¯Õâ¸öÊý×é²¢ÇÒ²»Êä³öÕâ¸ö³õÊ¼»¯º¯Êý¸øÄ£¿é.</p>
+<p>ÒòÎª blk_queue_init_tags ·ÖÅäÄÚ´æ, Ëü¿ÉÄÜÊ§°Ü. ÔÚÄÇ¸öÇé¿öÏÂËü·µ»ØÒ»¸ö¸ºµÄ´íÎóÂë¸øµ÷ÓÃÕß.</p>
+<p>Èç¹ûÄãµÄÉè±¸¿É´¦ÀíµÄ±ê¼ÇµÄÊýÄ¿¸Ä±äÁË, Äã¿ÉÍ¨ÖªÄÚºË, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+int blk_queue_resize_tags(request_queue_t *queue, int new_depth); 
+</pre>
+<p>Õâ¸ö¶ÓÁÐËø±ØÐëÔÚÕâ¸öµ÷ÓÃÆÚ¼ä±»³ÖÓÐ. Õâ¸öµ÷ÓÃ¿ÉÄÜÊ§°Ü, ·µ»ØÒ»¸ö¸º´íÎóÂë.</p>
+<p>Ò»¸ö±ê¼ÇºÍÒ»¸öÇëÇó½á¹¹µÄ¹ØÁª±» blk_queue_start_tag À´Íê³É, Ëü±ØÐëÔÚ³ÉÔ±¶ÓÁÐËø±»³ÖÓÐÊ±µ÷ÓÃ:</p>
+<pre class="programlisting">
+int blk_queue_start_tag(request_queue_t *queue, struct request *req); 
+</pre>
+<p>Èç¹ûÒ»¸ö tag ¿ÉÓÃ, Õâ¸öº¯Êý·ÖÅäËü¸øÕâ¸öÇëÇó, ´æ´¢Õâ¸ö±êÊ¶ºÅÔÚ req-&gt;tag, ²¢ÇÒ·µ»Ø 0. Ëü»¹´Ó¶ÓÁÐÖÐ½â³ýÕâ¸öÇëÇó, ²¢ÇÒÁ¬½ÓËüµ½Ëü×Ô¼ºµÄ±êÊ¶¸ú×Ù½á¹¹, Òò´ËÄãµÄÇý¶¯Ó¦µ±Ð¡ÐÄ²»´Ó¶ÓÁÐÖÐ½â³ýÕâ¸öÇëÇó, Èç¹ûÔÚÊ¹ÓÃ±êÊ¶. Èç¹ûÃ»ÓÐ±êÊ¶¿ÉÓÃ, blk_queue_start_tag ½«Õâ¸öÇëÇóÁôÔÚ¶ÓÁÐ²¢ÇÒ·µ»ØÒ»¸ö·ÇÁãÖµ.</p>
+<p>µ±Ò»¸ö¸ø¶¨µÄÇëÇóµÄËùÓÐµÄ´«ËÍ¶¼ÒÑÍê³É, ÄãµÄÇý¶¯Ó¦µ±·µ»Ø±êÊ¶, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+void blk_queue_end_tag(request_queue_t *queue, struct request *req); 
+</pre>
+<p>ÔÙÒ»´Î, Äã±ØÐë³ÖÓÐ¶ÓÁÐËø, ÔÚµ÷ÓÃÕâ¸öº¯ÊýÖ®Ç°. Õâ¸öµ÷ÓÃÓ¦µ±ÔÚ end_that_request_first ·µ»Ø 0 Ö®ºó½øÐÐ(ÒâÎ¶×ÅÕâ¸öÇëÇóÍê³É), µ«ÒªÔÚµ÷ÓÃ end_that_request_last Ö®Ç°. ¼Ç×¡Õâ¸öÇëÇóÒÑ¾­´Ó¶ÓÁÐÖÐ½â³ý, Òò´ËËü¶ÔÓÚÄãµÄÇý¶¯ÔÚ´ËµãÕâÑù×ö¿ÉÄÜÊÇÒ»¸ö´íÎó.</p>
+<p>Èç¹ûÄãÐèÒªÕÒµ½¹ØÁªµ½Ò»¸ö¸ø¶¨±êÊ¶ÉÏµÄÇëÇó(µ±Çý¶¯Æ÷±¨¸æÍê³É, ÀýÈç), Ê¹ÓÃ blk_queue_find_tag:</p>
+<pre class="programlisting">
+struct request *blk_queue_find_tag(request_queue_t *qeue, int tag);
+</pre>
+<p>·µ»ØÖµÊÇ¹ØÁªµÄÇëÇó½á¹¹, ³ý·ÇÓÐÐ©ÊÂÇéÒÑ¾­ÕæµÄ³ö´íÁË.</p>
+<p>Èç¹ûÊÂÇéÕæµØ³ö´íÁË, ÄãµÄÇëÇó¿ÉÄÜ·¢ÏÖËü×Ô¼º²»µÃ²»¸´Î»»òÕß¶ÔÆäÖÐÒ»¸öËüµÄÉè±¸½øÐÐÒ»Ð©ÆäËûµÄ´ó¶¯×÷. ÔÚÕâÖÖÇé¿öÏÂ, ÈÎºÎµÈ´ýÖÐµÄ±êÊ¶ÃüÁî½«²»»áÍê³É. ¿é²ãÌá¹©Ò»¸öº¯Êý¿ÉÓÃ°ïÖúÔÚÕâÖÖÇé¿öÏÂ»Ö¸´:</p>
+<pre class="programlisting">
+void blk_queue_invalidate_tags(request_queue_t *queue); 
+</pre>
+<p>Õâ¸öº¯Êý·µ»ØËùÓÐµÄµÈ´ýµÄ±êÊ¶¸øÕâ¸ö³Ø, ²¢ÇÒ½«¹ØÁªµÄÇëÇó·Å»ØÇëÇó¶ÓÁÐ. Äãµ÷ÓÃÕâ¸öº¯ÊýÊ±±ØÐë³ÖÓÐ¶ÓÁÐËø.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch16s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch16.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch16s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">16.3.&#160;ÇëÇó´¦Àí&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;16.5.&#160;¿ìËÙ²Î¿¼</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

@@ -1,0 +1,109 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>18.8.&#160;tty_struct ½á¹¹µÄÏ¸½Ú-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch18.html" title="µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯">
+<link rel="prev" href="ch18s07.html" title="18.7.&#160;tty_operaions ½á¹¹µÄÏ¸½Ú">
+<link rel="next" href="ch18s09.html" title="18.9.&#160;¿ìËÙ²Î¿¼">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">18.8.&#160;tty_struct ½á¹¹µÄÏ¸½Ú</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch18s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch18s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ThettystructStructureinDetail.sect"></a>18.8.&#160;tty_struct ½á¹¹µÄÏ¸½Ú</h2></div></div></div>
+<p>tty_struct ±äÁ¿±» tty ºËĞÄÓÃÀ´±£³Öµ±Ç°µÄÌØ¶¨ tty ¶Ë¿ÚµÄ×´Ì¬. ¼¸ºõËüµÄËùÓĞµÄÅóÓÑ¶¼Ö»±» tty ºËĞÄÊ¹ÓÃ, ÓĞ¼¸¸öÀıÍâ. Ò»¸ö tty Çı¶¯¿ÉÒÔÊ¹ÓÃµÄ³ÉÔ±ÔÚ´ËÃèÊö:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>unsigned long flags;</span></span></dt>
+<dd>
+<p>tty Éè±¸µÄµ±Ç°×´Ì¬. ÕâÊÇÒ»¸öÎ»¶Î±äÁ¿, ²¢ÇÒÍ¨¹ıÏÂÃæµÄºê¶¨Òå´æÈ¡:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>TTY_THROTTLED </span></span></dt>
+<dd><p>µ±Çı¶¯ÒÔ¼°ÓĞÒÖÖÆº¯Êı±»µ÷ÓÃ. ²»Ó¦µ±±»Ò»¸ö tty Çı¶¯ÉèÖÃ, Ö»ÓĞ tty ºËĞÄ.</p></dd>
+<dt><span class="term"><span>TTY_IO_ERROR </span></span></dt>
+<dd><p>ÓÉÇı¶¯ÉèÖÃµ±Ëü²»ÏëÈÎºÎÊı¾İ±»¶Á³ö»òĞ´ÈëÇı¶¯. Èç¹ûÒ»¸öÓÃ»§³ÌĞòÊÔÍ¼×öÕâ¸ö, Ëü½ÓÊÕÒ»¸ö -EIO ´íÎó´ÓÄÚºËÖĞ. Õâ³£³£ÔÚÉè±¸±»¹Ø±ÕÊ±ÉèÖÃ.</p></dd>
+<dt><span class="term"><span>TTY_OTHER_CLOSED </span></span></dt>
+<dd><p>Ö»ÓÉ pty Çı¶¯Ê¹ÓÃÀ´Í¨Öª, µ±¶Ë¿ÚÒÑ¾­±»¹Ø±Õ.</p></dd>
+<dt><span class="term"><span>TTY_EXCLUSIVE </span></span></dt>
+<dd><p>ÓÉ tty ºËĞÄÉèÖÃÀ´Ö¸Ê¾Ò»¸ö¶Ë¿ÚÔÚ¶ÀÕ¼Ä£Ê½²¢ÇÒÖ»ÄÜÒ»´ÎÓÉÒ»¸öÓÃ»§´æÈ¡.</p></dd>
+<dt><span class="term"><span>TTY_DEBUG </span></span></dt>
+<dd><p>ÄÚºËÖĞÈÎºÎµØ·½¶¼²»ÓÃ.</p></dd>
+<dt><span class="term"><span>TTY_DO_WRITE_WAKEUP </span></span></dt>
+<dd><p>Èç¹û±»ÉèÖÃ, ÏßÂ·¹æ³ÌµÄ write_wakeup º¯Êı±»ÔÊĞíÀ´±»µ÷ÓÃ. ³£³£ÔÚ tty_driver µ÷ÓÃ wake_up_interruptible º¯ÊıµÄÍ¬Ò»Ê±¼ä±»µ÷ÓÃ.</p></dd>
+<dt><span class="term"><span>TTY_PUSH </span></span></dt>
+<dd><p>Ö»±»È±Ê¡µÄ tty ÏßÂ·¹æ³ÌÄÚ²¿Ê¹ÓÃ.</p></dd>
+<dt><span class="term"><span>TTY_CLOSING </span></span></dt>
+<dd><p>tty ºËĞÄÓÃÀ´¸ú×ÙÊÇ·ñÒ»¸ö¶Ë¿ÚÔÚÄÇ¸öÊ±¿Ì¼°Ê±´¦ÓÚ¹Ø±Õ¹ı³Ì.</p></dd>
+<dt><span class="term"><span>TTY_DONT_FLIP </span></span></dt>
+<dd><p>±»È±Ê¡µÄ tty ÏßÂ·¹æ³ÌÓÃÀ´Í¨Öª tty ºËĞÄ, Ëü²»Ó¦µ±¸Ä±ä flip »º³å, µ±Ëü±»ÖÃÎ».</p></dd>
+<dt><span class="term"><span>TTY_HW_COOK_OUT </span></span></dt>
+<dd><p>Èç¹û±»Ò»¸ö tty Çı¶¯ÉèÖÃ, ËüÍ¨ÖªÏßÂ·¹æ³ÌÓ¦µ±"Åëµ÷"·¢ËÍ¸øËüµÄÊä³ö. Èç¹ûËüÃ»ÓĞÉèÖÃ, ÏßÂ·¹æ³Ì³É¿é¿½±´Çı¶¯µÄÊä³ö; ·ñÔò, Ëü²»µÃ²»ÎªÏßÂ·¸Ä±ä½«µ¥¸ö·¢ËÍµÄ×Ö½ÚÖğ¸öÇóÖµ. Õâ¸ö±êÖ¾Ó¦µ±Í¨³£²»±» tty Çı¶¯ÉèÖÃ.</p></dd>
+<dt><span class="term"><span>TTY_HW_COOK_IN </span></span></dt>
+<dd><p>¼¸ºõºÍÉèÖÃÔÚÇı¶¯ÖĞµÄ flag ±äÁ¿ÖĞµÄ TTY_DRIVER_REAL_RAW ±êÖ¾Ò»ÖÂ. Õâ¸ö±êÖ¾Í¨³£Ó¦µ±²»±» tty Çı¶¯ÉèÖÃ.</p></dd>
+<dt><span class="term"><span>TTY_PTY_LOCK </span></span></dt>
+<dd><p>pty Çı¶¯ÓÃÀ´¼ÓËøºÍ½âËøÒ»¸ö¶Ë¿Ú.</p></dd>
+<dt><span class="term"><span>TTY_NO_WRITE_SPLIT </span></span></dt>
+<dd><p>Èç¹ûÉèÖÃ, tty ºËĞÄ²»½«¶Ô tty Çı¶¯µÄĞ´·Ö³ÉÕı³£´óĞ¡µÄ¿é. Õâ¸öÖµ²»Ó¦µ±ÓÃÀ´×èÖ¹¶Ô tty ¶Ë¿ÚÍ¨¹ı·¢ËÍ´óÁ¿Êı¾İµ½¶Ë¿ÚµÄDoS¹¥»÷, </p></dd>
+</dl></div>
+</dd>
+<dt><span class="term"><span>struct tty_flip_buffer flip;</span></span></dt>
+<dd><p>¸ø tty Éè±¸µÄ flip »º³å.</p></dd>
+<dt><span class="term"><span>struct tty_ldisc ldisc;</span></span></dt>
+<dd><p>¸ø tty Éè±¸µÄÏßÂ·¹æ³Ì.</p></dd>
+<dt><span class="term"><span>wait_queue_head_t write_wait;</span></span></dt>
+<dd><p>¸ø tty Ğ´º¯ÊıµÄ wait_queue. Ò»¸ö tty Çı¶¯Ó¦µ±»½ĞÑËü,µ±Ëü¿ÉÒÔ½ÓÊÕ¸ü¶àÊı¾İÊ±.</p></dd>
+<dt><span class="term"><span>struct termios *termios;</span></span></dt>
+<dd><p>Ö¸Ïò tty Éè±¸µÄµ±Ç° termios ÉèÖÃµÄÖ¸Õë.</p></dd>
+<dt><span class="term"><span>unsigned char stopped:1;</span></span></dt>
+<dd><p>Ö¸Ê¾ÊÇ·ñ tty Éè±¸±»Í£Ö¹. tty Çı¶¯¿ÉÒÔÉèÖÃÕâ¸öÖµ.</p></dd>
+<dt><span class="term"><span>unsigned char hw_stopped:1;</span></span></dt>
+<dd><p>Ö¸Ê¾ÊÇ·ñ tty Éè±¸µÄÒÑ¾­±»Í£Ö¹. tty Çı¶¯¿ÉÒÔÉèÖÃÕâ¸öÖµ.</p></dd>
+<dt><span class="term"><span>unsigned char low_latency:1;</span></span></dt>
+<dd><p>Ö¸Ê¾ÊÇ·ñ tty Éè±¸ÊÇÒ»¸öµÍ·´Ó¦ÖÜÆÚµÄÉè±¸, ÄÜ¹»¸ßËÙ½ÓÊÕÊı¾İ. tty Çı¶¯¿ÉÒÔÉèÖÃÕâ¸öÖµ.</p></dd>
+<dt><span class="term"><span>unsigned char closing:1;</span></span></dt>
+<dd><p>Ö¸Ê¾ÊÇ·ñ tty Éè±¸ÔÚ¹Ø±Õ¶Ë¿Úµ±ÖĞ. tty Çı¶¯¿ÉÒÔÉèÖÃÕâ¸öÖµ.</p></dd>
+<dt><span class="term"><span>struct tty_driver driver;</span></span></dt>
+<dd><p>µ±Ç°¿ØÖÆÕâ¸ö tty Éè±¸µÄ tty_driver ½á¹¹.</p></dd>
+<dt><span class="term"><span>void *driver_data;</span></span></dt>
+<dd><p>Ö¸Õë, tty_driver ¿ÉÒÔÓÃÀ´´æ´¢¶ÔÓÚ tty Çı¶¯±¾µØµÄÊı¾İ. Õâ¸ö±äÁ¿²»±» tty ºËĞÄĞŞ¸Ä.</p></dd>
+</dl></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch18s07.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch18.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch18s09.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">18.7.&#160;tty_operaions ½á¹¹µÄÏ¸½Ú&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;18.9.&#160;¿ìËÙ²Î¿¼</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

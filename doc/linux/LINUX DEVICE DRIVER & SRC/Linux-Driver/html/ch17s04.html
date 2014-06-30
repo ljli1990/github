@@ -1,0 +1,97 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>17.4.&#160;´ò¿ªÓë¹Ø±Õ-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch17.html" title="µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯">
+<link rel="prev" href="ch17s03.html" title="17.3.&#160;net_device ½á¹¹µÄÏêÇé">
+<link rel="next" href="ch17s05.html" title="17.5.&#160;±¨ÎÄ´«ËÍ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">17.4.&#160;´ò¿ªÓë¹Ø±Õ</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;17&#160;ÕÂ&#160;ÍøÂçÇı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch17s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="OpeningandClosing"></a>17.4.&#160;´ò¿ªÓë¹Ø±Õ</h2></div></div></div>
+<p>ÎÒÃÇµÄÇı¶¯¿ÉÒÔÔÚÄ£¿é¼ÓÔØÊ±»òÕßÄÚºËÆô¶¯Ê±Ì½²â½Ó¿Ú. ÔÚ½Ó¿ÚÄÜ¹»³ĞÔØ±¨ÎÄÇ°, µ«ÊÇ, ÄÚºË±ØĞë´ò¿ªËü²¢·ÖÅäÒ»¸öµØÖ·¸øËü. ÄÚºË´ò¿ª»òÕß¹Ø±ÕÒ»¸ö½Ó¿Ú¶ÔÓ¦ ifconfig ÃüÁî.</p>
+<p>µ± ifconfig ÓÃÀ´¸ø½Ó¿Ú°²ÅÅÒ»¸öµØÖ·, Ëü×ö 2 ¸öÈÎÎñ. µÚÒ», ËüÍ¨¹ı ioctl(SIOCSIFADDR)( Socket I/O Control Set Interface Address) À´°²ÅÅµØÖ·. ½Ó×ÅËüÉèÖÃ dev-&gt;flag µÄ IFF_UP Î», Í¨¹ı ioctl(SIOCSIFFLAGS) ( Socket I/O Control Set Interface Flags) À´´ò¿ª½Ó¿Ú.</p>
+<p>Ä¿Ç°ÎªÖ¹, ioctl(SIOCSIFADDR) ²»×öÈÎºÎÊÂ. Ã»ÓĞÇı¶¯º¯Êı±»µ÷ÓÃ -- Õâ¸öÈÎÎñÊÇ¶ÀÁ¢ÓÚÉè±¸µÄ, ²¢ÇÒÊÇÄÚºËÊµÏÖËü. ºóÃæµÄÃüÁî (ioctl(SIOCSIFFLAGS)), µ«ÊÇ, ÎªÉè±¸µ÷ÓÃ open ·½·¨.</p>
+<p>ÏàËÆµØ, µ±½Ó¿Ú¹Ø±Õ, ifconfig Ê¹ÓÃ ioctl(SIOCSIFFLAGS) À´Çå³ı IFF_UP, ²¢ÇÒ stop ·½·¨±»µ÷ÓÃ.</p>
+<p>2 ¸öÉè±¸·½·¨¶¼·µ»Ø 0 ÔÚ³É¹¦Ê±, ²¢ÇÒ³ö´íÊ±·µ»Ø¸ºÖµ.</p>
+<p>Ä¿Ç°ÎªÖ¹µÄÊµ¼Ê´úÂë, Çı¶¯²»µÃ²»½øĞĞĞí¶àÓë×Ö·ûºÍ¿éÇı¶¯Í¬ÑùµÄÈÎÎñ. open ÇëÇóÈÎºÎËüĞèÒªµÄÏµÍ³×ÊÔ´²¢ÇÒ¸æÖª½Ó¿ÚÆô¶¯; stop ¹Ø±Õ½Ó¿Ú²¢ÊÍ·ÅÏµÍ³×ÊÔ´. ÍøÂçÇı¶¯±ØĞë½øĞĞÒ»Ğ©¸½¼ÓµÄ²½ÖèÔÚ open Ê±, µ«ÊÇ.</p>
+<p>µÚÒ», Ó²¼ş (MAC) µØÖ·ĞèÒª´ÓÓ²¼şÉè±¸¿½±´µ½ dev-&gt;dev_addr, ÔÚ½Ó¿Ú¿ÉÒÔºÍÍâ²¿ÊÀ½çÍ¨Ñ¶Ö®Ç°. Ó²¼şµØÖ·½Ó×ÅÔÚ open Ê±¿½±´µ½Éè±¸. snull Èí¼ş½Ó¿ÚÔÚ open ÀïÃæ°²ÅÅËü; ËüÖ»ÊÇÊ¹ÓÃÁËÒ»¸ö³¤Îª ETH_ALEN µÄ×Ö·û´®Î±ÔìÁËÒ»¸öÓ²¼şºÅ, ETH_ALEN ÊÇÒÔÌ«ÍøÓ²¼şµØÖ·³¤¶È.</p>
+<p>open ·½·¨Ó¦µ±Ò²Æô¶¯½Ó¿ÚµÄ·¢ËÍ¶ÓÁĞ( ÔÊĞíËü½ÓÊÜ·¢ËÍ±¨ÎÄ ), Ò»µ©Ëü×¼±¸ºÃÆô¶¯·¢ËÍÊı¾İ. ÄÚºËÌá¹©ÁËÒ»¸öº¯ÊıÀ´Æô¶¯¶ÓÁĞ:</p>
+<pre class="programlisting">
+void netif_start_queue(struct net_device *dev); 
+</pre>
+<p>snull µÄ open ´úÂë¿´À´ÈçÏÂ:</p>
+<pre class="programlisting">
+int snull_open(struct net_device *dev)
+{
+
+        /* request_region(), request_irq( ), ....  (like fops-&gt;open) */
+        /*
+        * Assign the hardware address of the board: use "\0SNULx", where
+        * x is 0 or 1. The first byte is '\0' to avoid being a multicast
+        * address (the first byte of multicast addrs is odd).
+        */
+        memcpy(dev-&gt;dev_addr, "\0SNUL0", ETH_ALEN);
+        if (dev == snull_devs[1])
+
+                dev-&gt;dev_addr[ETH_ALEN-1]++; /* \0SNUL1 */
+        netif_start_queue(dev);
+        return 0;
+}
+</pre>
+<p>ÈçÄãËù¼û, ÔÚÈ±·¦ÕæÊµÓ²¼şµÄÇé¿öÏÂ, ÔÚ <span class="emphasis"><em>open</em></span> ·½·¨ÖĞÃ»Ê²Ã´¿É×ö. stop ·½·¨Ò²Ò»Ñù; ËüÖ»ÊÇ·´×ª open µÄ²Ù×÷. Òò´Ë, ÊµÏÖ stop µÄº¯Êı³£³£³ÆÎª close »òÕß release.</p>
+<pre class="programlisting">
+int snull_release(struct net_device *dev)
+{
+    /* release ports, irq and such -- like fops-&gt;close */
+    netif_stop_queue(dev); /* can't transmit any more */
+    return 0;
+}
+</pre>
+<p>º¯Êı:</p>
+<pre class="programlisting">
+void netif_stop_queue(struct net_device *dev); 
+</pre>
+<p>ÊÇ netif_start_queue µÄ¶ÔÁ¢Ãæ; Ëü±êÖ¾Éè±¸Îª²»ÄÜÔÙ·¢ËÍÈÎºÎ±¨ÎÄ. Õâ¸öº¯Êı±ØĞëÔÚ½Ó¿Ú¹Ø±Õ( ÔÚ stop ·½·¨ÖĞ )Ê±µ÷ÓÃ, µ«ÒÔ¿ÉÓÃÓÚÔİÊ±Í£Ö¹·¢ËÍ, ÈçÏÂÒ»½ÚÖĞ½âÊÍµÄ.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s03.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch17.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch17s05.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.3.&#160;net_device ½á¹¹µÄÏêÇé&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;17.5.&#160;±¨ÎÄ´«ËÍ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

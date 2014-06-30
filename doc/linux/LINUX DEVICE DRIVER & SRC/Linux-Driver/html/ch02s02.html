@@ -1,0 +1,102 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>2.2.&#160;Hello World дё©И-LinuxиХ╠╦гЩ╤╞╣зхЩ╟Фё╗жпнд╟Фё╘</title>
+<meta name="description" content="гЩ╤╞©╙╥╒" />
+<meta name="keywords" content="LinuxиХ╠╦гЩ╤╞,жпнд╟Ф,╣зхЩ╟Ф,ldd,linux device driver,гЩ╤╞©╙╥╒,╣Гвс╟Ф,ЁлпРиХ╪ф,хМ╪Ч©╙╥╒,©╙╥╒ф╣╣ю" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux иХ╠╦гЩ╤╞ Edition 3">
+<link rel="up" href="ch02.html" title="╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И">
+<link rel="prev" href="ch02.html" title="╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И">
+<link rel="next" href="ch02s03.html" title="2.3.&#160;дз╨кдё©ИоЮ╠хсзс╕сцЁлпР">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.2.&#160;Hello World дё©И</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch02.html">иор╩рЁ</a>&#160;</td>
+<th width="60%" align="center">╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch02s03.html">обр╩рЁ</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="TheHelloWorldModule.sect1"></a>2.2.&#160;Hello World дё©И</h2></div></div></div>
+<p> пМ╤Ю╠ЮЁлйИ╪╝╢ср╩╦Ж "hello world" юЩвс©╙й╪, вВн╙р╩╦Жу╧й╬©идэ╣двН╪Р╣╔╣дЁлпР╣д╥╫╥╗. ╠╬йИиФ╪╟╣дйгдз╨кдё©И╤Ь╡╩йгЁлпР; рР╢к, ╤тнчдмпд╣д╤ауъ, обцФ╣д╢ЗбКйгр╩╦ЖмЙуШ╣д "hello world"дё©И: </p>
+<pre class="programlisting">
+#include &lt;linux/init.h&gt;
+#include &lt;linux/module.h&gt;
+MODULE_LICENSE("Dual BSD/GPL");
+
+static int hello_init(void)
+{
+        printk(KERN_ALERT "Hello, world\n");
+        return 0;
+}
+static void hello_exit(void)
+{
+
+        printk(KERN_ALERT "Goodbye, cruel world\n");
+}
+
+module_init(hello_init);
+module_exit(hello_exit);
+</pre>
+<p> уБ╦Ждё©И╤╗рЕака╫╦Ж╨╞йЩ, р╩╦Жтздё©И╪сть╣╫дз╨кй╠╠╩╣Всц( hello_init )рт╪╟р╩╦Жтздё©И╠╩х╔ЁЩй╠╠╩╣Всц( hello_exit ). moudle_init ╨м module_exit уБ╪╦ппй╧сцакль╠П╣ддз╨к╨Йю╢ж╦ЁЖуБа╫╦Ж╨╞йЩ╣д╫ги╚. аМр╩╦Жль╠П╣д╨Й (MODULE_LICENSE) йгсцю╢╦Фж╙дз╨к, ╦цдё©И╢Ьспр╩╦Жвтси╣дпМ©иж╓; ц╩спуБяЫ╣дк╣цВ, тздё©И╪стьй╠дз╨к╩А╠╖т╧.  
+</p>
+<p> printk ╨╞йЩтз Linux дз╨кжп╤╗рЕ╡╒гр╤тдё©И©исц; кЭсК╠Йв╪ C ©Б╨╞йЩ printf ╣дппн╙оЮкф. дз╨кпХр╙кЭвт╪╨╣д╢Рс║╨╞йЩ, рРн╙кЭ©©вт╪╨ткпп, ц╩сп C ©Б╣д╟ОжЗ. дё©Идэ╧╩╣Всц printk йгрРн╙, тз insmod ╪стьаккЭж╝╨С, дё©И╠╩а╛╫с╣╫дз╨к╡╒гр©и╢Фх║дз╨к╣д╧╚сц╥Ш╨е (╨╞йЩ╨м╠Да©, обр╩╫зоЙйЖ). вж╢╝ KERN_ALERT йгоШо╒╣дсеох╪╤. <sup>[<a name="id408271" href="#ftn.id408271">3</a>]</sup></p>
+<p>нрцгтз╢кдё©Ижпж╦╤╗акр╩╦Ж╦ъсеох╪╤, рРн╙й╧сцх╠й║сеох╪╤╣доШо╒©идэ╡╩╩Атзхн╨нспсц╣д╣ь╥╫отй╬, уБрюю╣сздЦткпп╣ддз╨к╟Ф╠╬, klogd йь╩╓╫ЬЁл╣д╟Ф╠╬, рт╪╟дЦ╣деДжц. ожтздЦ©ирт╨ЖбтуБ╦ЖрРкь; нрцгтз╣з 4 уб╫╡╫БкЭ.  </p>
+<p> дЦ©иртсц insmod ╨м rmmod ╧╓╬ъю╢╡БйтуБ╦Ждё©И. в╒рБж╩спЁ╛╪╤сц╩╖©ирт╪сть╨мп╤тьдё©И.  </p>
+<pre class="screen">
+% make 
+make[1]: Entering directory `/usr/src/linux-2.6.10'
+ CC [M] /home/ldd3/src/misc-modules/hello.o
+ Building modules, stage 2.
+ MODPOST
+ CC /home/ldd3/src/misc-modules/hello.mod.o
+ LD [M] /home/ldd3/src/misc-modules/hello.ko 
+make[1]: Leaving directory `/usr/src/linux-2.6.10'
+% su
+root# insmod ./hello.ko
+Hello, world
+root# rmmod hello
+Goodbye cruel world
+root#
+</pre>
+<p> гКтыр╩╢нв╒рБ, н╙й╧иоцФ╣д╡ывВцЭаНкЁпР╧╓вВ, дЦ╠ьпКтздЁ╦Ж╣ь╥╫спуЩх╥еДжц╨м╫╗а╒╣ддз╨кйВ, тздгюО©иртур╣╫ makefile (/usr/src/linux-2.6.10, тзу╧й╬╣дюЩвсюОцФ ). нрцгтз "╠ЮрК╨м╪сть" уБр╩╫зиНхКдё©И╫╗а╒╣до╦╫з.  </p>
+<p> рю╬щдЦ╣до╣мЁсцю╢╣щ╫╩оШо╒пп╣д╩Зжф, дЦ╣дйДЁЖ©идэ╡╩м╛. ль╠П╣ь, г╟цФ╣дфад╩йДЁЖйгю╢втр╩╦Жвж╥Ш©ьжфл╗; хГ╧ШдЦ╢ср╩╦Жжу╤кдёдБфВ╩Руътз╢╟©зо╣мЁжпткпп insmod ╨м rmmod, дЦ╡╩╩АтздЦ╣дфад╩ио©╢╣╫хн╨н╤╚нВ. оШо╒╫ЬхКакфДжпр╩╦Жо╣мЁхуж╬нд╪Чжп, юЩхГ /var/log/messages (й╣╪йнд╪ЧцШвскФ Linux ╥╒╡╪╤Ь╠Д╩╞). дз╨к╣щ╫╩оШо╒╣д╩Зжфтз╣з 4 убцХйЖ.  </p>
+<p> хГдЦдэ╪Ш╣╫╣д, ╠Юп╢р╩╦Ждё©И╡╩йгхГдЦоКоС╣дю╖дя -- жаиы, тздё©Иц╩спр╙гСвЖхн╨нспсц╣дйбгИй╠. ю╖дя╣д╡©╥жйгюМ╫БдЦ╣диХ╠╦, рт╪╟хГ╨н╩Я╣цвН╦ъптдэ. м╗╧Щ╠╬убнрцгиНхКдё©И╩╞дз╡©╡╒гр╫╚иХ╠╦оЮ╧ь╣днйлБаТ╣╫╨СпЬуб╫з.  
+</p>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id408271" href="#id408271">3</a>] </sup> сеох╪╤ж╩йгр╩╦Жвж╢╝, юЩхГ &lt;1&gt;, г╟в╨сз printk ╦Яй╫╢╝ж╝г╟. в╒рБтз KERN_ALERT ж╝╨Сх╠иыр╩╦Ж╤╨╨е; лМ╪ср╩╦Ж╤╨╨етздгюОйгр╩╦Жфум╗╣длжяА╣д╢МнС ( пртк╣дйг, ╠ЮрКфВ╩А╡╤в╫╣╫ ).</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch02.html">иор╩рЁ</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">иор╩╪╤</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch02s03.html">обр╩рЁ</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">╣з&#160;2&#160;уб&#160;╫╗а╒╨мткппдё©И&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">фПй╪рЁ</a></td>
+<td width="40%" align="right" valign="top">&#160;2.3.&#160;дз╨кдё©ИоЮ╠хсзс╕сцЁлпР</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ЪйG█┤═б2BфдОЧРщ■x╨Щ8ЭДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щДюШ╨n*щ ┼░▌Ppхd></script>

@@ -1,0 +1,161 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>5.3.&#160;Æì±êºÍ»¥³âÌå-LinuxÉè±¸Çý¶¯µÚÈý°æ£¨ÖÐÎÄ°æ£©- - </title>
+<meta name="description" content="Çý¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çý¶¯,ÖÐÎÄ°æ,µÚÈý°æ,ldd,linux device driver,Çý¶¯¿ª·¢,µç×Ó°æ,³ÌÐòÉè¼Æ,Èí¼þ¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çý¶¯ Edition 3">
+<link rel="up" href="ch05.html" title="µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö">
+<link rel="prev" href="ch05s02.html" title="5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí">
+<link rel="next" href="ch05s04.html" title="5.4.&#160;Completions »úÖÆ">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.3.&#160;Æì±êºÍ»¥³âÌå</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;5&#160;ÕÂ&#160;²¢·¢ºÍ¾ºÕùÇé¿ö</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch05s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="SemaphoresandMutexes.sect"></a>5.3.&#160;Æì±êºÍ»¥³âÌå</h2></div></div></div>
+<p>ÈÃÎÒÃÇ¿´¿´ÎÒÃÇÈçºÎ¸ø scull ¼ÓËø. ÎÒÃÇµÄÄ¿±êÊÇÊ¹ÎÒÃÇ¶Ô scull Êý¾Ý½á¹¹µÄ²Ù×÷Ô­×Ó»¯, ¾ÍÊÇÔÚÓÐÆäËûÖ´ÐÐÏß³ÌµÄÇé¿öÏÂÕâ¸ö²Ù×÷Ò»´Î·¢Éú. ¶ÔÓÚÎÒÃÇµÄÄÚ´æÐ¹Â©Àý×Ó, ÎÒÃÇÐèÒª±£Ö¤, Èç¹ûÒ»¸öÏß³Ì·¢ÏÖ±ØÐë·ÖÅäÒ»¸öÌØÊâµÄÄÚ´æ¿é, ËüÓÐ»ú»á½øÐÐÕâ¸ö·ÖÅäÔÚÆäËûÏß³Ì¿É×ö²âÊÔÖ®Ç°. Îª´Ë, ÎÒÃÇ±ØÐë½¨Á¢ÁÙ½çÇø: ÔÚÈÎºÎ¸ø¶¨Ê±¼äÖ»ÓÐÒ»¸öÏß³Ì¿ÉÒÔÖ´ÐÐµÄ´úÂë.</p>
+<p>²»ÊÇËùÓÐµÄÁÙ½çÇøÊÇÍ¬ÑùµÄ, Òò´ËÄÚºËÌá¹©ÁË²»Í¬µÄÔ­ÓïÊÊÓÃ²»Í¬µÄÐèÇó. ÔÚÕâ¸öÀý×ÓÖÐ, Ã¿¸ö¶Ô scull Êý¾Ý½á¹¹µÄ´æÈ¡¶¼·¢ÉúÔÚÓÉÒ»¸öÖ±½ÓÓÃ»§ÇëÇóËù²úÉúµÄ½ø³ÌÉÏÏÂÎÄÖÐ; Ã»ÓÐ´ÓÖÐ¶Ï´¦Àí»òÕßÆäËûÒì²½ÉÏÏÂÎÄÖÐµÄ´æÈ¡. Ã»ÓÐÌØ±ðµÄÖÜÆÚ(ÏìÓ¦Ê±¼ä)ÒªÇó; Ó¦ÓÃ³ÌÐò³ÌÐòÔ±Àí½â I/O ÇëÇó³£³£²»ÊÇÂíÉÏ¾ÍÂú×ãµÄ. ½øÒ»²½½², scull Ã»ÓÐ³ÖÓÐÈÎºÎÆäËû¹Ø¼üÏµÍ³×ÊÔ´, ÔÚËü´æÈ¡Ëü×Ô¼ºµÄÊý¾Ý½á¹¹Ê±. ËùÓÐÕâÐ©ÒâÎ¶×ÅÈç¹û scull Çý¶¯ÔÚµÈ´ýÂÖµ½Ëü´æÈ¡Êý¾Ý½á¹¹Ê±½øÈëË¯Ãß, Ã»ÈË½éÒâ.</p>
+<p>"È¥Ë¯Ãß" ÔÚÕâ¸öÉÏÏÂÎÄÖÐÊÇÒ»¸öÃ÷È·¶¨ÒåµÄÊõÓï. µ±Ò»¸ö Linux ½ø³Ìµ½ÁËÒ»¸öËüÎÞ·¨×ö½øÒ»²½´¦ÀíµÄµØ·½Ê±, ËüÈ¥Ë¯Ãß(»òÕß "×èÈû"), ÈÃ³ö´¦ÀíÆ÷¸ø±ðÈËÖ±µ½ÒÔºóÄ³¸öÊ±¼äËüÄÜ¹»ÔÙ×öÊÂÇé. ½ø³Ì³£³£ÔÚµÈ´ý I/O Íê³ÉÊ±Ë¯Ãß. Ëæ×ÅÎÒÃÇÉîÈëÄÚºË, ÎÒÃÇ»áÓöµ½ºÜ¶àÇé¿öÎÒÃÇ²»ÄÜË¯Ãß. È»¶ø scull ÖÐµÄ write ·½·¨²»ÊÇÆäÖÐÒ»¸öÇé¿ö. Òò´ËÎÒÃÇ¿ÉÊ¹ÓÃÒ»¸ö¼ÓËø»úÖÆÊ¹½ø³ÌÔÚµÈ´ý´æÈ¡ÁÙ½çÇøÊ±Ë¯Ãß.</p>
+<p>ÕýÈçÖØÒªµØ, ÎÒÃÇ½«½øÐÐÒ»¸ö¿ÉÄÜ»áË¯ÃßµÄ²Ù×÷( Ê¹ÓÃ kmalloc ·ÖÅäÄÚ´æ ) -- Òò´ËË¯ÃßÊÇÒ»¸öÔÚÈÎºÎÇé¿öÏÂµÄ¿ÉÄÜÐÔ. Èç¹ûÎÒÃÇµÄÁÙ½çÇøÒªÕýÈ·¹¤×÷, ÎÒÃÇ±ØÐëÊ¹ÓÃÒ»¸ö¼ÓËøÔ­ÓïÔÚÒ»¸öÓµÓÐËøµÄ½ø³ÌË¯ÃßÊ±Æð×÷ÓÃ. ²»ÊÇËùÓÐµÄ¼ÓËø»úÖÆ¶¼ÄÜ¹»ÔÚ¿ÉÄÜË¯ÃßµÄµØ·½Ê¹ÓÃ( ÎÒÃÇÔÚ±¾ÕÂºóÃæ»á¿´µ½¼¸¸ö²»¿ÉÒÔµÄ ). È»¶ø, ¶ÔÎÒÃÇÏÖÔÚµÄÐèÒª, ×îÊÊºÏµÄ»úÖÆÊ±Ò»¸öÆì±ê. </p>
+<p>Æì±êÔÚ¼ÆËã»ú¿ÆÑ§ÖÐÊÇÒ»¸ö±»ºÜºÃÀí½âµÄ¸ÅÄî. ÔÚËüµÄºËÐÄ, Ò»¸öÆì±êÊÇÒ»¸öµ¥¸öÕûÐÍÖµ, ½áºÏÓÐÒ»¶Ôº¯Êý, µäÐÍµØ³ÆÎª P ºÍ V. Ò»¸öÏë½øÈëÁÙ½çÇøµÄ½ø³Ì½«ÔÚÏà¹ØÆì±êÉÏµ÷ÓÃ P; Èç¹ûÆì±êµÄÖµ´óÓÚÁã, Õâ¸öÖµµÝ¼õ 1 ²¢ÇÒ½ø³Ì¼ÌÐø. Ïà·´, Èç¹ûÆì±êµÄÖµÊÇ 0 ( »ò¸üÐ¡ ), ½ø³Ì±ØÐëµÈ´ýÖ±µ½±ðÈËÊÍ·ÅÆì±ê. ½âËøÒ»¸öÆì±êÍ¨¹ýµ÷ÓÃ V Íê³É; Õâ¸öº¯ÊýµÝÔöÆì±êµÄÖµ, ²¢ÇÒ, Èç¹ûÐèÒª, »½ÐÑµÈ´ýµÄ½ø³Ì.</p>
+<p>µ±Æì±êÓÃ×÷»¥³â -- ×èÖ¹¶à¸ö½ø³ÌÍ¬Ê±ÔÚÍ¬Ò»¸öÁÙ½çÇøÄÚÔËÐÐ -- ËüÃÇµÄÖµ½«³õÊ¼»¯Îª 1. ÕâÑùµÄÆì±êÔÚÈÎºÎ¸ø¶¨Ê±¼äÖ»ÄÜÓÉÒ»¸öµ¥¸ö½ø³Ì»òÕßÏß³Ì³ÖÓÐ. ÒÔÕâÖÖÄ£Ê½Ê¹ÓÃµÄÆì±êÓÐÊ±³ÆÎªÒ»¸ö»¥³âËø, ¾ÍÊÇ, µ±È», "»¥³â"µÄËõÐ´. ¼¸ºõËùÓÐÔÚ Linux ÄÚºËÖÐ·¢ÏÖµÄÆì±ê¶¼ÊÇÓÃ×÷»¥³â.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="TheLinuxSemaphoreImplementation.sect"></a>5.3.1.&#160;Linux Æì±êÊµÏÖ</h3></div></div></div>
+<p>Linux ÄÚºËÌá¹©ÁËÒ»¸ö×ñÊØÉÏÃæÓïÒåµÄÆì±êÊµÏÖ, ¾¡¹ÜÊõÓïÓÐÐ©²»Í¬. ÎªÊ¹ÓÃÆì±ê, ÄÚºË´úÂë±ØÐë°üº¬ &lt;asm/semaphore.h&gt;. Ïà¹ØµÄÀàÐÍÊÇ struct semaphore; Êµ¼ÊÆì±ê¿ÉÒÔÓÃ¼¸ÖÖ·½·¨À´ÉùÃ÷ºÍ³õÊ¼»¯. Ò»ÖÖÊÇÖ±½Ó´´½¨Ò»¸öÆì±ê, ½Ó×ÅÊ¹ÓÃ sema_init À´Éè¶¨Ëü:</p>
+<pre class="programlisting">
+void sema_init(struct semaphore *sem, int val);
+</pre>
+<p>ÕâÀï val ÊÇ°²ÅÅ¸øÆì±êµÄ³õÊ¼Öµ.</p>
+<p>È»¶ø, Í¨³£Æì±êÒÔ»¥³âËøµÄÄ£Ê½Ê¹ÓÃ. ÎªÊ¹Õâ¸öÍ¨ÓÃµÄÀý×Ó¸üÈÝÒ×Ð©, ÄÚºËÌá¹©ÁËÒ»Ì×°ïÖúº¯ÊýºÍºê¶¨Òå. Òò´Ë, Ò»¸ö»¥³âËø¿ÉÒÔÉùÃ÷ºÍ³õÊ¼»¯, Ê¹ÓÃÏÂÃæµÄÒ»ÖÖ:</p>
+<pre class="programlisting">
+DECLARE_MUTEX(name); 
+DECLARE_MUTEX_LOCKED(name);
+</pre>
+<p>ÕâÀï, ½á¹ûÊÇÒ»¸öÆì±ê±äÁ¿( ³ÆÎª name ), ³õÊ¼»¯Îª 1 ( Ê¹ÓÃ DECLARE_MUTEX ) »òÕß 0 (Ê¹ÓÃ DECLARE_MUTEX_LOCKED ). ÔÚºóÒ»ÖÖÇé¿ö, »¥³âËø¿ªÊ¼ÓÚÉÏËøµÄ×´Ì¬; ÔÚÔÊÐíÈÎºÎÏß³Ì´æÈ¡Ö®Ç°½«²»µÃ²»ÏÔÊ½½âËøËü.</p>
+<p>Èç¹û»¥³âËø±ØÐëÔÚÔËÐÐÊ±¼ä³õÊ¼»¯( ÕâÊÇÈç¹û¶¯Ì¬·ÖÅäËüµÄÇé¿ö, ¾ÙÀýÀ´Ëµ), Ê¹ÓÃÏÂÁÐÖÐµÄÒ»¸ö:</p>
+<pre class="programlisting">
+void init_MUTEX(struct semaphore *sem);
+void init_MUTEX_LOCKED(struct semaphore *sem);
+</pre>
+<p>ÔÚ Linux ÊÀ½çÖÐ, P º¯Êý³ÆÎª down -- »òÕßÕâ¸öÃû×ÓµÄÄ³¸ö±äÌå. ÕâÀï, "down" Ö¸µÄÊÇÕâÑùµÄÊÂÊµ, Õâ¸öº¯ÊýµÝ¼õÆì±êµÄÖµ, ²¢ÇÒ, Ò²ÐíÔÚÊ¹µ÷ÓÃÕßË¯ÃßÒ»»á¶ùÀ´µÈ´ýÆì±ê±ä¿ÉÓÃÖ®ºó, ¸øÓè¶Ô±»±£»¤×ÊÔ´µÄ´æÈ¡. ÓÐ 3 ¸ö°æ±¾µÄ down:</p>
+<pre class="programlisting">
+void down(struct semaphore *sem);
+int down_interruptible(struct semaphore *sem);
+int down_trylock(struct semaphore *sem);
+</pre>
+<p>down µÝ¼õÆì±êÖµ²¢ÇÒµÈ´ýÐèÒªµÄÊ±¼ä. down_interruptible Í¬Ñù, µ«ÊÇ²Ù×÷ÊÇ¿ÉÖÐ¶ÏµÄ. Õâ¸ö¿ÉÖÐ¶ÏµÄ°æ±¾¼¸ºõÒ»Ö±ÊÇÄãÒªµÄÄÇ¸ö; ËüÔÊÐíÒ»¸öÔÚµÈ´ýÒ»¸öÆì±êµÄÓÃ»§¿Õ¼ä½ø³Ì±»ÓÃ»§ÖÐ¶Ï. ×÷ÎªÒ»¸öÍ¨ÓÃµÄ¹æÔò, Äã²»ÏëÊ¹ÓÃ²»¿ÉÖÐ¶ÏµÄ²Ù×÷, ³ý·ÇÊµÔÚÊÇÃ»ÓÐÑ¡Ôñ. ²»¿ÉÖÐ¶Ï²Ù×÷ÊÇÒ»¸ö´´½¨²»¿ÉÉ±ËÀµÄ½ø³Ì( ÔÚ ps ÖÐ¼ûµ½µÄ¿ÉÅÂµÄ "D ×´Ì¬" )ºÍÈÇÄÕÄãµÄÓÃ»§µÄºÃ·½·¨, Ê¹ÓÃ down_interruptible ÐèÒªÒ»Ð©¸ñÍâµÄÐ¡ÐÄ, µ«ÊÇ, Èç¹û²Ù×÷ÊÇ¿ÉÖÐ¶ÏµÄ, º¯Êý·µ»ØÒ»¸ö·ÇÁãÖµ, ²¢ÇÒµ÷ÓÃÕß²»³ÖÓÐÆì±ê. ÕýÈ·µÄÊ¹ÓÃ down_interruptible ÐèÒªÒ»Ö±¼ì²é·µ»ØÖµ²¢ÇÒÕë¶ÔÐÔµØÏìÓ¦.</p>
+<p>×îºóµÄ°æ±¾ ( down_trylock ) ´Ó²»Ë¯Ãß; Èç¹ûÆì±êÔÚµ÷ÓÃÊ±²»¿ÉÓÃ, down_trylock Á¢¿Ì·µ»ØÒ»¸ö·ÇÁãÖµ.</p>
+<p>Ò»µ©Ò»¸öÏß³ÌÒÑ¾­³É¹¦µ÷ÓÃ down ¸÷¸ö°æ±¾ÖÐµÄÒ»¸ö, ¾ÍËµËü³ÖÓÐ×ÅÆì±ê(»òÕßÒÑ¾­"È¡µÃ"»òÕß"»ñµÃ"Æì±ê). Õâ¸öÏß³ÌÏÖÔÚÓÐÈ¨Á¦´æÈ¡Õâ¸öÆì±ê±£»¤µÄÁÙ½çÇø. µ±Õâ¸öÐèÒª»¥³âµÄ²Ù×÷Íê³ÉÊ±, Æì±ê±ØÐë±»·µ»Ø. V µÄ Linux ¶ÔÓ¦ÎïÊÇ up:</p>
+<pre class="programlisting">
+void up(struct semaphore *sem); 
+</pre>
+<p>Ò»µ© up ±»µ÷ÓÃ, µ÷ÓÃÕß¾Í²»ÔÙÓµÓÐÆì±ê.</p>
+<p>ÈçÄãËùÔ¸, ÒªÇó»ñÈ¡Ò»¸öÆì±êµÄÈÎºÎÏß³Ì, Ê¹ÓÃÒ»¸ö(ÇÒÖ»ÄÜÒ»¸ö)¶Ô up µÄµ÷ÓÃÊÍ·ÅËü. ÔÚ´íÎóÂ·¾¶ÖÐ³£³£ÐèÒªÌØ±ðµÄÐ¡ÐÄ; Èç¹ûÔÚ³ÖÓÐÒ»¸öÆì±êÊ±Óöµ½Ò»¸ö´íÎó, Æì±ê±ØÐëÔÚ·µ»Ø´íÎó×´Ì¬¸øµ÷ÓÃÕßÖ®Ç°ÊÍ·ÅÆì±ê. Ã»ÓÐÊÍ·ÅÆì±êÊÇÈÝÒ×·¸µÄÒ»¸ö´íÎó; Õâ¸ö½á¹û( ½ø³Ì¹ÒÔÚ¿´À´ÎÞ¹ØµÄµØ·½ )¿ÉÄÜÊÇÄÑÓÚÖØÏÖºÍ¸ú×ÙµÄ.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="UsingSemaphoresinscull.sect"></a>5.3.2.&#160;ÔÚ scull ÖÐÊ¹ÓÃÆì±ê</h3></div></div></div>
+<p>Æì±ê»úÖÆ¸øÓè scull Ò»¸ö¹¤¾ß, ¿ÉÒÔÔÚ´æÈ¡ scull_dev Êý¾Ý½á¹¹Ê±ÓÃÀ´±ÜÃâ¾ºÕùÇé¿ö. µ«ÊÇÕýÈ·Ê¹ÓÃÕâ¸ö¹¤¾ßÊÇÎÒÃÇµÄÔðÈÎ. ÕýÈ·Ê¹ÓÃ¼ÓËøÔ­ÓïµÄ¹Ø¼üÊÇÑÏÃÜµØÖ¸¶¨Òª±£»¤ÄÄ¸ö×ÊÔ´²¢ÇÒÈ·ÈÏÃ¿¸ö¶ÔÕâÐ©×ÊÔ´µÄ´æÈ¡¶¼Ê¹ÓÃÁËÕýÈ·µÄ¼ÓËø·½·¨. ÔÚÎÒÃÇµÄÀý×ÓÇý¶¯ÖÐ, ¸ÐÐËÈ¤µÄËùÓÐ¶«Î÷¶¼°üº¬ÔÚ scull_dev ½á¹¹ÀïÃæ, Òò´ËËüÊÇÎÒÃÇµÄ¼ÓËøÌåÖÆµÄÂß¼­·¶Î§.</p>
+<p>ÈÃÎÒÃÇÔÚ¿´¿´Õâ¸ö½á¹¹:</p>
+<pre class="programlisting">
+struct scull_dev {
+    struct scull_qset *data; /* Pointer to first quantum set */
+    int quantum; /* the current quantum size */
+    int qset; /* the current array size */
+    unsigned long size; /* amount of data stored here */
+    unsigned int access_key; /* used by sculluid and scullpriv */
+    struct semaphore sem; /* mutual exclusion semaphore */
+    struct cdev cdev; /* Char device structure */
+};
+</pre>
+<p>µ½½á¹¹µÄµ×²¿ÊÇÒ»¸ö³ÆÎª sem µÄ³ÉÔ±, µ±È», ËüÊÇÎÒÃÇµÄÆì±ê. ÎÒÃÇÒÑ¾­Ñ¡ÔñÎªÃ¿¸öÐéÄâ scull Éè±¸Ê¹ÓÃµ¥¶ÀµÄÆì±ê. Ê¹ÓÃÒ»¸öµ¥¸öµÄÈ«¾ÖµÄÆì±êÒ²¿ÉÄÜ»áÊÇÍ¬ÑùÕýÈ·. Í¨³£¸÷ÖÖ scull Éè±¸²»¹²Ïí×ÊÔ´, È»¶ø, ²¢ÇÒÃ»ÓÐÀíÓÉÊ¹Ò»¸ö½ø³ÌµÈ´ý, ¶øÁíÒ»¸ö½ø³ÌÔÚÊ¹ÓÃ²»Í¬ scull Éè±¸. ²»Í¬Éè±¸Ê¹ÓÃµ¥¶ÀµÄÆì±êÔÊÐí²¢ÐÐ½øÐÐ¶Ô²»Í¬Éè±¸µÄ²Ù×÷, Òò´Ë, Ìá¸ßÁËÐÔÄÜ.</p>
+<p>Æì±êÔÚÊ¹ÓÃÇ°±ØÐë³õÊ¼»¯. scull ÔÚ¼ÓÔØÊ±½øÐÐÕâ¸ö³õÊ¼»¯, ÔÚÕâ¸öÑ­»·ÖÐ:</p>
+<pre class="programlisting">
+for (i = 0; i &lt; scull_nr_devs; i++) {
+    scull_devices[i].quantum = scull_quantum;
+    scull_devices[i].qset = scull_qset;
+    init_MUTEX(&amp;scull_devices[i].sem);
+    scull_setup_cdev(&amp;scull_devices[i], i);
+}
+</pre>
+<p>×¢Òâ, Æì±ê±ØÐëÔÚ scull Éè±¸¶ÔÏµÍ³ÆäËû²¿·Ö¿ÉÓÃÇ°³õÊ¼»¯. Òò´Ë, init_MUTEX ÔÚ scull_setup_cdev Ç°±»µ÷ÓÃ. ÒÔÏà·´µÄ´ÎÐò½øÐÐÕâ¸ö²Ù×÷¿ÉÄÜ²úÉúÒ»¸ö¾ºÕùÇé¿ö, Æì±ê¿ÉÄÜÔÚËü×¼±¸ºÃÖ®Ç°±»´æÈ¡.</p>
+<p>ÏÂÒ»²½, ÎÒÃÇ±ØÐëä¯ÀÀ´úÂë, ²¢ÇÒÈ·ÈÏÔÚÃ»ÓÐ³ÖÓÐÆì±êÊ±Ã»ÓÐ¶Ô scull_dev Êý¾Ý½á¹¹µÄ´æÈ¡. Òò´Ë, ÀýÈç, scull_write ÒÔÕâ¸ö´úÂë¿ªÊ¼:</p>
+<pre class="programlisting">
+if (down_interruptible(&amp;dev-&gt;sem))
+    return -ERESTARTSYS;
+</pre>
+<p>×¢Òâ¶Ô down_interruptible ·µ»ØÖµµÄ¼ì²é; Èç¹ûËü·µ»Ø·ÇÁã, ²Ù×÷±»´ò¶ÏÁË. ÔÚÕâ¸öÇé¿öÏÂÍ¨³£Òª×öµÄÊÇ·µ»Ø -ERESTARTSYS. ¿´µ½Õâ¸ö·µ»ØÖµºó, ÄÚºËµÄ¸ß²ãÒªÃ´´ÓÍ·ÖØÆôÕâ¸öµ÷ÓÃÒªÃ´·µ»ØÕâ¸ö´íÎó¸øÓÃ»§. Èç¹ûÄã·µ»Ø -ERESTARTSYS, Äã±ØÐëÊ×ÏÈ»Ö¸´ÈÎºÎÓÃ»§¿É¼ûµÄÒÑ¾­×öÁËµÄ¸Ä±ä, ÒÔ±£Ö¤µ±ÖØÊÔÏµÍ³µ÷ÓÃÊ±ÕýÈ·µÄÊÂÇé·¢Éú. Èç¹ûÄã²»ÄÜÒÔÕâ¸ö·½Ê½»Ö¸´, ÄãÓ¦µ±ÌæÖ®·µ»Ø -EINTR. </p>
+<p>scull_write ±ØÐëÊÍ·ÅÆì±ê, ²»¹ÜËüÊÇ·ñÄÜ¹»³É¹¦½øÐÐËüµÄÆäËûÈÎÎñ. Èç¹ûÊÂÊÂ¶¼Ë³Àû, Ö´ÐÐÂäµ½Õâ¸öº¯ÊýµÄ×îºó¼¸ÐÐ:</p>
+<pre class="programlisting">
+out:
+ up(&amp;dev-&gt;sem);
+ return retval; 
+</pre>
+<p>Õâ¸ö´úÂëÊÍ·ÅÆì±ê²¢ÇÒ·µ»ØÈÎºÎÐèÒªµÄ×´Ì¬. ÔÚ scull_write ÖÐÓÐ¼¸¸öµØ·½¿ÉÄÜ»á³ö´í; ÕâÐ©µØ·½°üÀ¨ÄÚ´æ·ÖÅäÊ§°Ü»òÕßÔÚÊÔÍ¼´ÓÓÃ»§¿Õ¼ä¿½±´Êý¾ÝÊ±³ö´í. ÔÚÕâÐ©Çé¿öÖÐ, ´úÂë½øÐÐÁËÒ»¸ö goto out, ÒÔÈ·±£½øÐÐÕýÈ·µÄÇåÀí.</p>
+</div>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ReaderWriterSemphores.sect"></a>5.3.3.&#160;¶ÁÕß/Ð´ÕßÆì±ê</h3></div></div></div>
+<p>Æì±êÎªËùÓÐµ÷ÓÃÕß½øÐÐ»¥³â, ²»¹ÜÃ¿¸öÏß³Ì¿ÉÄÜÏë×öÊ²Ã´. È»¶ø, ºÜ¶àÈÎÎñ·ÖÎª 2 ÖÖÇå³þµÄÀàÐÍ: Ö»ÐèÒª¶ÁÈ¡±»±£»¤µÄÊý¾Ý½á¹¹µÄÀàÐÍ, ºÍ±ØÐë×ö¸Ä±äµÄÀàÐÍ. ÔÊÐí¶à¸ö²¢·¢¶ÁÕß³£³£ÊÇ¿ÉÄÜµÄ, Ö»ÒªÃ»ÓÐÈËÊÔÍ¼×öÈÎºÎ¸Ä±ä. ÕâÑù×öÄÜ¹»ÏÔÖøÌá¸ßÐÔÄÜ; Ö»¶ÁµÄÈÎÎñ¿ÉÒÔ²¢ÐÐ½øÐÐËüÃÇµÄ¹¤×÷¶ø²»±ØµÈ´ýÆäËû¶ÁÕßÍË³öÁÙ½çÇø.</p>
+<p>Linux ÄÚºËÎªÕâÖÖÇé¿öÌá¹©Ò»¸öÌØÊâµÄÆì±êÀàÐÍ³ÆÎª rwsem (»òÕß" reader/writer semaphore"). rwsem ÔÚÇý¶¯ÖÐµÄÊ¹ÓÃÏà¶Ô½ÏÉÙ, µ«ÊÇÓÐÊ±ËüÃÇÓÐÓÃ.</p>
+<p>Ê¹ÓÃ rwsem µÄ´úÂë±ØÐë°üº¬ &lt;linux/rwsem.h&gt;. ¶ÁÕßÐ´ÕßÆì±ê µÄÏà¹ØÊý¾ÝÀàÐÍÊÇ struct rw_semaphore; Ò»¸ö rwsem ±ØÐëÔÚÔËÐÐÊ±ÏÔÊ½³õÊ¼»¯:</p>
+<pre class="programlisting">
+void init_rwsem(struct rw_semaphore *sem); 
+</pre>
+<p>Ò»¸öÐÂ³õÊ¼»¯µÄ rwsem ¶Ô³öÏÖµÄÏÂÒ»¸öÈÎÎñ( ¶ÁÕß»òÕßÐ´Õß )ÊÇ¿ÉÓÃµÄ. ¶ÔÐèÒªÖ»¶Á´æÈ¡µÄ´úÂëµÄ½Ó¿ÚÊÇ:</p>
+<pre class="programlisting">
+void down_read(struct rw_semaphore *sem);
+int down_read_trylock(struct rw_semaphore *sem);
+void up_read(struct rw_semaphore *sem);
+</pre>
+<p>¶Ô down_read µÄµ÷ÓÃÌá¹©ÁË¶Ô±»±£»¤×ÊÔ´µÄÖ»¶Á´æÈ¡, ÓëÆäËû¶ÁÕß¿ÉÄÜµØ²¢·¢µØ´æÈ¡. ×¢Òâ down_read ¿ÉÄÜ½«µ÷ÓÃ½ø³ÌÖÃÎª²»¿ÉÖÐ¶ÏµÄË¯Ãß. down_read_trylock Èç¹û¶Á´æÈ¡ÊÇ²»¿ÉÓÃÊ±²»»áµÈ´ý; Èç¹û±»×¼Óè´æÈ¡Ëü·µ»Ø·ÇÁã, ·ñÔòÊÇ 0. ×¢Òâ down_read_trylock µÄ¹ßÀý²»Í¬ÓÚ´ó²¿·ÖµÄÄÚºËº¯Êý, ·µ»ØÖµ 0 Ö¸Ê¾³É¹¦. Ò»¸öÊ¹ÓÃ down_read »ñÈ¡µÄ rwsem ±ØÐë×îÖÕÊ¹ÓÃ up_read ÊÍ·Å.</p>
+<p>¶ÁÕßµÄ½Ó¿ÚÀàËÆ:</p>
+<pre class="programlisting">
+void down_write(struct rw_semaphore *sem);
+int down_write_trylock(struct rw_semaphore *sem);
+void up_write(struct rw_semaphore *sem);
+void downgrade_write(struct rw_semaphore *sem);
+</pre>
+<p>down_write, down_write_trylock, ºÍ up_write È«²¿¾ÍÏñËüÃÇµÄ¶ÁÕß¶ÔÓ¦²¿·Ö, ³ýÁË, µ±È», ËüÃÇÌá¹©Ð´´æÈ¡. Èç¹ûÄã´¦ÓÚÕâÑùµÄÇé¿ö, ÐèÒªÒ»¸öÐ´ÕßËøÀ´×öÒ»¸ö¿ìËÙ¸Ä±ä, ½Ó×ÅÒ»¸ö³¤Ê±¼äµÄÖ»¶Á´æÈ¡, Äã¿ÉÒÔÊ¹ÓÃ downgrade_write ÔÚÒ»µ©ÄãÒÑÍê³É¸Ä±äºóÔÊÐíÆäËû¶ÁÕß½øÈë.</p>
+<p>Ò»¸ö rwsem ÔÊÐíÒ»¸ö¶ÁÕß»òÕß²»ÏÞÊýÄ¿µÄ¶ÁÕßÀ´³ÖÓÐÆì±ê. Ð´ÕßÓÐÓÅÏÈÈ¨; µ±Ò»¸öÐ´ÕßÊÔÍ¼½øÈëÁÙ½çÇø, ¾Í²»»áÔÊÐí¶ÁÕß½øÈëÖ±µ½ËùÓÐµÄÐ´ÕßÍê³ÉÁËËüÃÇµÄ¹¤×÷. Õâ¸öÊµÏÖ¿ÉÄÜµ¼ÖÂ¶ÁÕß¼¢¶ö -- ¶ÁÕß±»³¤Ê±¼ä¾Ü¾ø´æÈ¡ -- Èç¹ûÄãÓÐ´óÁ¿µÄÐ´ÕßÀ´¾ºÕùÆì±ê. ÓÉÓÚÕâ¸öÔ­Òò, rwsem ×îºÃÓÃÔÚºÜÉÙÇëÇóÐ´µÄÊ±ºò, ²¢ÇÒÐ´ÕßÖ»Õ¼ÓÃ¶ÌÊ±¼ä.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch05s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.2.&#160;²¢·¢ºÍËüµÄ¹ÜÀí&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆðÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;5.4.&#160;Completions »úÖÆ</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïþòÝ”xºý8üäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝäÀûºn*ÝšŠŽPpÈd></script>

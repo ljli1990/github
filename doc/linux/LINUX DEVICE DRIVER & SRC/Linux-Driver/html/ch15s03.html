@@ -1,0 +1,205 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>15.3.&#160;½øĞĞÖ±½Ó I/O-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©</title>
+<meta name="description" content="Çı¶¯¿ª·¢" />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢,¿ª·¢ÆµµÀ" />
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch15.html" title="µÚ&#160;15&#160;ÕÂ&#160;ÄÚ´æÓ³ÉäºÍ DMA ">
+<link rel="prev" href="ch15s02.html" title="15.2.&#160;mmap Éè±¸²Ù×÷">
+<link rel="next" href="ch15s04.html" title="15.4.&#160;Ö±½ÓÄÚ´æ´æÈ¡">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">15.3.&#160;½øĞĞÖ±½Ó I/O</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch15s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;15&#160;ÕÂ&#160;ÄÚ´æÓ³ÉäºÍ DMA </th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch15s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="PerformingDirectIO.sect1"></a>15.3.&#160;½øĞĞÖ±½Ó I/O</h2></div></div></div>
+<p>´ó²¿·Ö I/O ²Ù×÷ÊÇÍ¨¹ıÄÚºË»º³åµÄ. Ò»¸öÄÚºË¿Õ¼ä»º³åÇøµÄÊ¹ÓÃÔÊĞíÒ»¶¨³Ì¶ÈµÄÓÃ»§¿Õ¼äºÍÊµ¼ÊÉè±¸µÄ·ÖÀë; ÕâÖÖ·ÖÀëÄÜ¹»Ê¹±à³ÌÈİÒ×²¢ÇÒ»¹¿ÉÒÔÔÚĞí¶àÇé¿öÏÂÓĞĞÔÄÜµÄºÃ´¦. µ«ÊÇ, ÓĞÕâÑùµÄÇé¿öËü¶ÔÓÚ½øĞĞ I/O Ö±½Óµ½»ò´ÓÒ»¸öÓÃ»§¿Õ¼ä»º³åÇøÊÇÓĞºÃ´¦µÄ. Èç¹ûÕı±»´«ÊäµÄÊı¾İÁ¿´ó, ²»Ê¹ÓÃÒ»¸ö¶îÍâµÄ¿½±´Ö±½ÓÍ¨¹ıÄÚºË¿Õ¼ä´«ÊäÊı¾İ¿ÉÒÔ¼Ó¿ìÊÂÇé½øÕ¹.</p>
+<p>2.6 ÄÚºËÖĞÒ»¸öÖ±½Ó I/O Ê¹ÓÃµÄÀı×ÓÊÇ SCSI ´Å´øÇı¶¯. Á÷¶¯µÄ´Å´øÄÜ¹»´«ËÍ´óÁ¿Êı¾İÍ¨¹ıÏµÍ³, ²¢ÇÒ´Å´ø´«ËÍ³£³£ÊÇÃæÏò¼ÇÂ¼µÄ, Òò´ËÔÚÄÚºËÖĞ»º³åÊı¾İÃ»ÓĞºÃ´¦. Òò´Ë, µ±Ìõ¼şÕıÈ·(ÓÃ»§¿Õ¼ä»º³åÇøÊÇÒ³¶ÔÆëµÄ, ÀıÈç), SCSI ´Å´øÇı¶¯½øĞĞËüµÄ I/O ¶ø²»¿½±´Êı¾İ.</p>
+<p>¾ÍÊÇËµ, ÖØÒªµÄÊÇÈÏÊ¶µ½Ö±½Ó I/O ²»ÊÇÒ»Ö±Ìá¹©ÈËÃÇÆÚÍûµÄĞÔÄÜÌá¸ß. ÉèÖÃÖ±½Ó I/O (Ëüµ÷ÓÃ³ö´í»»Èë²¢ÇÒ³ıÏÂÏà¹ØµÄÓÃ»§¿Õ¼ä)µÄ¿ªÏú¿ÉÄÜÊÇ²»Ğ¡µÄ, ²¢ÇÒ±»»º³åµÄ I/O µÄºÃ´¦¶ªÊ§ÁË. ÀıÈç, Ö±½Ó I/O µÄÊ¹ÓÃÒªÇó write ÏµÍ³µ÷ÓÃÍ¬²½²Ù×÷; ·ñÔòÓ¦ÓÃ³ÌĞò²»ÄÜÖªµÀÊ²Ã´Ê±¼äËü¿ÉÒÔÖØĞÂÊ¹ÓÃËüµÄ I/O »º³å. Í£Ö¹Ó¦ÓÃ³ÌĞòÖ±µ½Ã¿¸ö write Íê³É¿ÉÄÜÍÏÂıÊÂÇé, ÕâÊÇÎªÊ²Ã´Ê¹ÓÃÖ±½Ó I/O µÄÓ¦ÓÃ³ÌĞòÒ²³£³£Ê¹ÓÃÒì²½ I/O ²Ù×÷µÄÔ­Òò.</p>
+<p>ÊÂÇéµÄÕæÕıÄÚº­ÊÇ, ÔÚÈÎºÎÇé¿öÏÂ, ÔÚÒ»¸ö×Ö·ûÇı¶¯ÊµÏÖÖ±½Ó I/O ³£³£ÊÇ²»±ØÒª²¢ÇÒ¿ÉÄÜÊÇÓĞº¦µÄ. ÄãÓ¦µ±Ö»ÔÚÄãÈ·¶¨»º³åµÄ I/O µÄ¿ªÏúÈ·ÊµÍÏÂıÁËÏµÍ³µÄÇé¿öÏÂ²ÉÈ¡Õâ¸ö²½Öè. »¹Òª×¢Òâ, ¿éºÍÍøÂçÇı¶¯²»±Øµ£ĞÄÊµÏÖÖ±½Ó I/O; Õâ 2 ÖÖÇé¿öÏÂ, ÄÚºËÖĞµÄ¸ß¼¶µÄ´úÂëÔÚĞèÒªÊ±½¨Á¢ºÍÊ¹ÓÃÖ±½Ó I/O, ²¢ÇÒÇı¶¯¼¶±ğµÄ´úÂëÉõÖÁ²»ĞèÒªÖªµÀÖ±½Ó I/O ÔÚ±»½øĞĞÖĞ.</p>
+<p>ÊµÏÖÖ±½Ó I/O µÄ¹Ø¼üÊÇÒ»¸ö³ÆÎª get_user_pages µÄº¯Êı, ËüÔÚ &lt;linux/mm.h&gt; ÖĞ¶¨ÒåÊ¹ÓÃÏÂÁĞÔ­ĞÍ:</p>
+<pre class="programlisting">
+int get_user_pages(struct task_struct *tsk,
+ struct mm_struct *mm,
+ unsigned long start,
+ int len,
+ int write,
+ int force,
+ struct page **pages,
+ struct vm_area_struct **vmas); 
+</pre>
+<p>Õâ¸öº¯ÊıÓĞ¼¸¸ö²ÎÊı:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>tsk </span></span></dt>
+<dd><p>Ò»¸öÖ¸Ïò½øĞĞ I/O µÄÈÎÎñµÄÖ¸Õë; ËüµÄÖ÷ÒªÄ¿µÄÊÇ¸æÖªÄÚºËË­Ó¦µ±¸ºÔğÈÎºÎÒ»¸öµ±ÉèÖÃ»º³åÊ±µ¼ÖÂµÄÒ³´í. Õâ¸ö²ÎÊı¼¸ºõÒ»Ö±×÷Îª current ´«µİ.</p></dd>
+<dt><span class="term"><span>mm</span></span></dt>
+<dd><p>Ò»¸öÄÚ´æ¹ÜÀí½á¹¹µÄÖ¸Õë, ÃèÊö±»Ó³ÉäµÄµØÖ·¿Õ¼ä. mm_struct ½á¹¹ÊÇÀ¦°óÒ»¸ö½ø³ÌµÄĞéÄâµØÖ·¿Õ¼äËùÓĞµÄ²¿·ÖÔÚÒ»ÆğµÄ. ¶ÔÓÚÇı¶¯µÄÊ¹ÓÃ, Õâ¸ö²ÎÊıÓ¦µ±Ò»Ö±ÊÇ current-&gt;mm.</p></dd>
+<dt><span class="term"><span>start len</span></span></dt>
+<dd><p>start ÊÇ(Ò³¶ÔÆëµÄ)ÓÃ»§¿Õ¼ä»º³åµÄµØÖ·, ²¢ÇÒ len ÊÇ»º³åµÄ³¤¶ÈÒÔÒ³¼Æ.</p></dd>
+<dt><span class="term"><span>write force </span></span></dt>
+<dd><p>Èç¹û write ÊÇ·ÇÁã, ÕâĞ©Ò³±»Ó³ÉäÀ´Ğ´(µ±È», Òşº¬×ÅÓÃ»§¿Õ¼äÔÚ½øĞĞÒ»¸ö¶Á²Ù×÷). force ±êÖ¾¸æÖª get_user_pages À´¸²¸ÇÔÚ¸ø¶¨Ò³ÉÏµÄ±£»¤, À´Ìá¹©ÒªÇóµÄÈ¨ÏŞ; Çı¶¯Ó¦µ±Ò»Ö±´«µİ 0 ÔÚÕâÀï.</p></dd>
+<dt><span class="term"><span>pages vmas </span></span></dt>
+<dd><p>Êä³ö²ÎÊı. ÔÚ³É¹¦Íê³Éºó, Ò³°üº¬Ò»ÏµÁĞÖ¸Ïò struct page ½á¹¹µÄÖ¸ÕëÀ´ÃèÊöÓÃ»§¿Õ¼ä»º³å, ²¢ÇÒ vmas °üº¬Ö¸Ïò±»¹ØÁªµÄ VMA µÄÖ¸Õë. ÕâĞ©²ÎÊıÓ¦µ±, ÏÔÈ», Ö¸ÏòÄÜ¹»³ÖÓĞÖÁÉÙ len ¸öÖ¸ÕëµÄÊı×é. ÈÎÒ»¸ö²ÎÊı¿ÉÄÜÊÇ NULL, µ«ÊÇÄãĞèÒª, ÖÁÉÙ, struct page Ö¸ÕëÀ´Êµ¼Ê¶Ô»º³å²Ù×÷.</p></dd>
+</dl></div>
+<p>get_user_pages ÊÇÒ»¸öµÍ¼¶ÄÚ´æ¹ÜÀíº¯Êı, ´øÒ»¸öÏà³ÆµÄ¸´ÔÓµÄ½Ó¿Ú. Ëü»¹ÒªÇó¸øÕâ¸öµØÖ·¿Õ¼äµÄ mmap ¶ÁÕß/Ğ´Õß Æì±êÔÚµ÷ÓÃÇ°±»ÒÔ¶ÁÄ£Ê½»ñµÃ. ½á¹ûÊÇ, ¶Ô get_user_pages ³£³£¿´À´Ïó:</p>
+<pre class="programlisting">
+down_read(&amp;current-&gt;mm-&gt;mmap_sem);
+
+result = get_user_pages(current, current-&gt;mm, ...);
+up_read(&amp;current-&gt;mm-&gt;mmap_sem);
+</pre>
+<p>·µ»ØÖµÊÇÊµ¼ÊÓ³ÉäµÄÒ³Êı, Ëü¿ÉÄÜĞ¡ÓÚÇëÇóµÄÊıÄ¿(µ«ÊÇ´óÓÚ 0).</p>
+<p>Ò»µ©³É¹¦Íê³É, µ÷ÓÃÕßÓĞÒ»¸öÒ³Êı×éÖ¸ÏòÓÃ»§¿Õ¼ä»º³å, Ëü±»ËøÈëÄÚ´æ. ÎªÖ±½ÓÔÚ»º³åÉÏ²Ù×÷, ÄÚºË¿Õ¼ä´úÂë±ØĞë½«Ã¿¸ö struct page Ö¸Õë×ª»»ÎªÒ»¸öÄÚºËĞéÄâµØÖ·, Ê¹ÓÃ kmap »òÕß kmap_atomic. ³£³£µØ, µ«ÊÇ, ¶ÔÓÚ¿ÉÒÔÊ¹ÓÃÖ±½Ó I/O µÄÉè±¸ÔÚÊ¹ÓÃ DMA ²Ù×÷, Òò´ËÄãµÄÇı¶¯½«¿ÉÄÜÏë´Ó struct page Ö¸ÕëÊı×é´´½¨Ò»¸ö·¢É¢/»ã¾ÛÁĞ±í. ÎÒÃÇÔÚ "·¢É¢/»ã¾ÛÓ³Éä"Ò»½ÚÖĞÌÖÂÛÈçºÎ×öÕâ¸ö.</p>
+<p>Ò»µ©ÄãµÄÖ±½Ó I/O ²Ù×÷Íê³ÉÁË, Äã±ØĞëÊÍ·ÅÓÃ»§Ò³. ÔÚÕâÑù×öÖ®Ç°, µ«ÊÇ, Äã±ØĞëÍ¨ÖªÄÚºËÈç¹ûÄã¸Ä±äÁËÕâĞ©Ò³µÄÄÚÈİ. ·ñÔò, ÄÚºË¿ÉÄÜÈÏÎªÕâĞ©Ò³ÊÇ"¸É¾»"µÄ, ÒâÎ¶×ÅËüÃÇÆ¥ÅäÒ»¸öÔÚ½»»»Éè±¸ÖĞ·¢ÏÖµÄÒ»¸ö¿½±´, ²¢ÇÒÊÍ·ÅËüÃÇ²»Ğ´³öËüÃÇµ½±¸·İ´æ´¢. Òò´Ë, Èç¹ûÄãÒÑ¸Ä±äÁËÕâĞ©Ò³(ÏìÓ¦Ò»¸öÓÃ»§¿Õ¼äĞ´ÇëÇó), Äã±ØĞë±êÖ¾Ã¿¸ö±»Ó°Ïìµ½µÄÒ³ÎªÔà, Ê¹ÓÃÒ»¸öµ÷ÓÃ:</p>
+<pre class="programlisting">
+void SetPageDirty(struct page *page); 
+</pre>
+<p>(Õâ¸öºê¶¨ÒåÔÚ &lt;linux/page-flags.h&gt;). ½øĞĞÕâ¸ö²Ù×÷µÄ´úÂëÊ×ÏÈ¼ì²éÀ´±£Ö¤Ò³²»ÔÚÄÚ´æÓ³ÉäµÄ±£Áô²¿·Ö, Õâ²¿·Ö´Ó²»±»»»³ö. Òò´Ë, ´úÂë³£³£¿´À´Èç´Ë:</p>
+<pre class="programlisting">
+if (! PageReserved(page))
+ SetPageDirty(page);
+</pre>
+<p>ÒòÎªÓÃ»§¿Õ¼äÄÚ´æÕı³£µØ²»ÖÃÎª±£ÁôµÄ, Õâ¸ö¼ì²éÑÏ¸ñµØ²»Ó¦µ±ÊÇ±ØÒªµÄ, µ«ÊÇµ±ÄãÉîÈëÄÚ´æ¹ÜÀí×ÓÏµÍ³Ê±, ×îºÃÈ«Ãæ²¢ÇÒ×ĞÏ¸.</p>
+<p>²»¹ÜÕâĞ©Ò³ÊÇ·ñÒÑ±»¸Ä±ä, ËüÃÇ±ØĞë´ÓÒ³»º´æÖĞÊÍ·Å, »òÕßËüÃÇÒ»Ö±ÁôÔÚÄÇÀï. Õâ¸öµ÷ÓÃÊÇ:</p>
+<pre class="programlisting">
+void page_cache_release(struct page *page); 
+</pre>
+<p>Õâ¸öµ÷ÓÃÓ¦µ±, µ±È», ÔÚÒ³ÒÑ±»±êÊ¶ÎªÔàÖ®ºó½øĞĞ, Èç¹ûĞèÒª.</p>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="AsynchronousIO.sect2"></a>15.3.1.&#160;Òì²½ I/O</h3></div></div></div>
+<p>Ôö¼Óµ½ 2.6 ÄÚºËµÄÒ»¸öĞÂµÄÌØĞÔÊÇÒì²½ I/O ÄÜÁ¦. Òì²½ I/O ÔÊĞíÓÃ»§¿Õ¼äÀ´³õÊ¼»¯²Ù×÷¶ø²»±ØµÈ´ıËüÃÇµÄÍê³É; Òò´Ë, Ò»¸öÓ¦ÓÃ³ÌĞò¿ÉÒÔÔÚËüµÄ I/O ÔÚ½øĞĞÖĞÊ±×öÆäËûµÄ´¦Àí. Ò»¸ö¸´ÔÓµÄ, ¸ßĞÔÄÜµÄÓ¦ÓÃ³ÌĞò»¹¿ÉÊ¹ÓÃÒì²½ I/O À´Ê¹¶à¸ö²Ù×÷ÔÚÍ¬Ò»¸öÊ±¼ä½øĞĞ.</p>
+<p>Òì²½ I/O µÄÊµÏÖÊÇ¿ÉÑ¡µÄ, ²¢ÇÒºÜÉÙ¼¸¸öÇı¶¯×÷Õß¹ØĞÄ; ´ó²¿·ÖÉè±¸²»»á´ÓÕâ¸öÄÜÁ¦ÖĞÊÜÒæ. ÈçÍ¬ÎÒÃÇ½«ÔÚ½ÓÏÂÀ´µÄÕÂ½ÚÖĞ¼ûµ½µÄ, ¿éºÍÍøÂçÇı¶¯ÔÚÕû¸öÊ±¼äÊÇÍêÈ«Òì²½µÄ, Òò´ËÖ»ÓĞ×Ö·ûÇı¶¯¶ÔÓÚÃ÷È·µÄÒì²½ I/O Ö§³ÖÊÇºòÑ¡µÄ. Ò»¸ö×Ö·ûÉè±¸ÄÜ¹»´ÓÕâ¸öÖ§³ÖÖĞÊÜÒæ, Èç¹ûÓĞºÃµÄÀíÓÉÀ´Ê¹¶à¸ö I/O ²Ù×÷ÔÚÈÎÒ»¸ø¶¨Ê±¼äÍ¬Ê±½øĞĞ. Ò»¸öºÃÀı×ÓÊÇÁ÷»¯´Å´øÇı¶¯, ÕâÀïÕâ¸öÇı¶¯¿ÉÍ£Ö¹²¢ÇÒÃ÷ÏÔÂıÏÂÀ´Èç¹û I/O ²Ù×÷Ã»ÓĞ¾¡¿ìµ½´ï. Ò»¸öÓ¦ÓÃ³ÌĞòÊÔÍ¼´ÓÒ»¸öÁ÷Çı¶¯ÖĞ»ñµÃ×îºÃµÄĞÔÄÜ, ¿ÉÒÔÊ¹ÓÃÒì²½ I/O À´Ê¹¶à¸ö²Ù×÷ÔÚÈÎºÎÊ±¼ä×¼±¸ºÃ½øĞĞ.</p>
+<p>¶ÔÓÚÉÙ¼ûµÄĞèÒªÊµÏÖÒì²½ I/O µÄÇı¶¯×÷Õß, ÎÒÃÇÌá¹©Ò»¸ö¿ìËÙµÄ¹ØÓÚËüÈçºÎ¹¤×÷µÄ¸Å¹Û. ÎÒÃÇÉæ¼°Òì²½ I/O ÔÚ±¾ÕÂ, ÒòÎªËüµÄÊµÏÖ¼¸ºõÒ»Ö±Ò²°üÀ¨Ö±½Ó I/O ²Ù×÷(Èç¹ûÄãÔÚÄÚºËÖĞ»º³åÊı¾İ, Äã¿ÉÄÜ³£³£ÊµÏÖÒì²½¶¯×÷¶ø²»±ØÔÚÓÃ»§¿Õ¼ä³öÏÖ²»±ØÒªµÄ¸´ÔÓĞÔ).</p>
+<p>Ö§³ÖÒì²½ I/O µÄÇı¶¯Ó¦µ±°üº¬ &lt;linux/aio.h&gt;. ÓĞ 3 ¸ö file_operation ·½·¨¸øÒì²½ I/O ÊµÏÖ:</p>
+<pre class="programlisting">
+ssize_t (*aio_read) (struct kiocb *iocb, char *buffer,
+ size_t count, loff_t offset);
+ssize_t (*aio_write) (struct kiocb *iocb, const char *buffer,
+ size_t count, loff_t offset);
+int (*aio_fsync) (struct kiocb *iocb, int datasync);
+</pre>
+<p>aio_fsync ²Ù×÷Ö»¶ÔÎÄ¼şÏµÍ³´úÂë¸ĞĞËÈ¤, Òò´ËÎÒÃÇÔÚ´Ë²»±ØÌÖÂÛËü. ÆäËû 2 ¸ö, aio_read ºÍ aio_write, ¿´ÆğÀ´·Ç³£Ïó³£¹æµÄ read ºÍ write ·½·¨, µ«ÊÇÓĞ¼¸¸öÀıÍâ. Ò»¸öÊÇ offset ²ÎÊıÓÉÖµ´«µİ; Òì²½²Ù×÷´Ó²»¸Ä±äÎÄ¼şÎ»ÖÃ, Òò´ËÃ»ÓĞÀíÓÉ´«Ò»¸öÖ¸Õë¸øËü. ÕâĞ©·½·¨»¹Ê¹ÓÃ iocb ("I/O ¿ØÖÆ¿é")²ÎÊı, Õâ¸öÎÒÃÇÒ»»á¶ù¾Íµ½.</p>
+<p>aio_read ºÍ aio_write ·½·¨µÄÄ¿µÄÊÇ³õÊ¼»¯Ò»¸ö¶Á»òĞ´²Ù×÷, ÔÚËüÃÇ·µ»ØÊ±¿ÉÄÜÍê³É»òÕß¿ÉÄÜÃ»Íê³É. Èç¹ûÓĞ¿ÉÄÜÁ¢¿ÌÍê³É²Ù×÷, Õâ¸ö·½·¨Ó¦µ±ÕâÑù×ö²¢ÇÒ·µ»ØÍ¨³£µÄ×´Ì¬: ±»´«ÊäµÄ×Ö½ÚÊı»òÕßÒ»¸ö¸ºµÄ´íÎóÂë. Òò´Ë, Èç¹ûÄãµÄÇı¶¯ÓĞÒ»¸ö³ÆÎª my_read µÄ¶Á·½·¨, ÏÂÃæµÄ aio_read ·½·¨ÊÇÈ«¶¼ÕıÈ·µÄ(¾¡¹ÜÌØ±ğÎŞÒâÒå):</p>
+<pre class="programlisting">
+static ssize_t my_aio_read(struct kiocb *iocb, char *buffer, ssize_t count, loff_t offset)
+{
+ return my_read(iocb-&gt;ki_filp, buffer, count, &amp;offset);
+}
+</pre>
+<p>×¢Òâ,  struct file Ö¸ÕëÔÚ kocb ½á¹¹µÄ ki_filp ³ÉÔ±ÖĞ.</p>
+<p>Èç¹ûÄãÖ§³ÖÒì²½ I/O, Äã±ØĞëÖªµÀÕâ¸öÊÂÊµ, ÄÚºË¿ÉÄÜ, Å¼¶û, ´´½¨"Òì²½ IOCB". ËüÃÇÊÇ, ±¾ÖÊÉÏ, ±ØĞëÊµ¼ÊÉÏ±»Í¬²½Ö´ĞĞµÄÒì²½²Ù×÷. ÓĞÈË¿ÉÄÜ·Ç³£Ææ¹ÖÎªÊ²Ã´ÒªÕâÑù×ö, µ«ÊÇ×îºÃÖ»×öÄÚºËÒªÇó×öµÄ. Í¬²½²Ù×÷ÔÚ IOCB ÖĞ±êÊ¶; ÄãµÄÇı¶¯Ó¦µ±Ñ¯ÎÊ×´Ì¬, Ê¹ÓÃ:</p>
+<pre class="programlisting">
+int is_sync_kiocb(struct kiocb *iocb); 
+</pre>
+<p>Èç¹ûÕâ¸öº¯Êı·µ»ØÒ»¸ö·ÇÁãÖµ, ÄãµÄÇı¶¯±ØĞëÍ¬²½Ö´ĞĞÕâ¸ö²Ù×÷.</p>
+<p>µ«ÊÇ, ×îºó, ËùÓĞÕâ¸ö½á¹¹µÄÒâÒåÔÚÓÚÊ¹ÄÜÒì²½²Ù×÷. Èç¹ûÄãµÄÇı¶¯ÄÜ¹»³õÊ¼»¯Õâ¸ö²Ù×÷(»òÕß, ¼òµ¥µØ, ½«ËüÅÅ¶Óµ½ËüÄÜ¹»±»Ö´ĞĞÊ±), Ëü±ØĞë×öÁ½¼şÊÂÇé: ¼Ç×¡ËüĞèÒªÖªµÀµÄ¹ØÓÚÕâ¸ö²Ù×÷µÄËùÓĞ¶«Î÷, ²¢ÇÒ·µ»Ø -EIOCBQUEUED ¸øµ÷ÓÃÕß. ¼Ç×¡²Ù×÷ĞÅÏ¢°üÀ¨°²ÅÅ¶ÔÓÃ»§¿Õ¼ä»º³åµÄ´æÈ¡; Ò»µ©Äã·µ»Ø, Äã½«²»ÔÙÓĞ»ú»áÀ´´æÈ¡»º³å, µ±ÔÙµ÷ÓÃ½ø³ÌµÄÉÏÏÂÎÄÔËĞĞÊ±. Í¨³£, ÄÇÒâÎ¶×ÅÄã½«¿ÉÄÜ²»µÃ²»½¨Á¢Ò»¸öÖ±½ÓÄÚºËÓ³Éä( Ê¹ÓÃ get_user_pages ) »òÕßÒ»¸ö DMA Ó³Éä. -EIOCBQUEUED ´íÎóÂëÖ¸Ê¾²Ù×÷»¹Ã»ÓĞÍê³É, ²¢ÇÒËü×îÖÕµÄ×´Ì¬½«Ö®ºó´«µİ.</p>
+<p>µ±"Ö®ºó"µ½À´Ê±, ÄãµÄÇı¶¯±ØĞëÍ¨ÖªÄÚºË²Ù×÷ÒÑ¾­Íê³É. ÄÇÍ¨¹ıµ÷ÓÃ aio_complete À´Íê³É:</p>
+<pre class="programlisting">
+int aio_complete(struct kiocb *iocb, long res, long res2);
+</pre>
+<p>ÕâÀï, iocb ÊÇÆğ³õ´«µİ¸øÄãµÄÍ¬Ò»¸ö IOCB, ²¢ÇÒ res ÊÇÕâ¸ö²Ù×÷µÄÍ¨³£µÄ½á¹û×´Ì¬. res2 ÊÇ½«±»·µ»Ø¸øÓÃ»§¿Õ¼äµÄµÚ 2 ¸ö½á¹ûÂë; ´ó²¿·ÖµÄÒì²½ I/O ÊµÏÖ×÷Îª 0 ´«µİ res2. Ò»µ©Äãµ÷ÓÃ aio_complete, Äã²»Ó¦µ±ÔÙÅö IOCB »òÕßÓÃ»§»º³å.</p>
+<div class="sect3" lang="zh-cn">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="AnasynchronousIOexample.sect3"></a>15.3.1.1.&#160;Ò»¸öÒì²½ I/O Àı×Ó</h4></div></div></div>
+<p>Àı×Ó´úÂëÖĞµÄÃæÏòÒ³µÄ scullp Çı¶¯ÊµÏÖÒì²½ I/O. ÊµÏÖÊÇ¼òµ¥µÄ, µ«ÊÇ×ã¹»À´Õ¹Ê¾Òì²½²Ù×÷Ó¦µ±ÈçºÎ±»¹¹Ôì.</p>
+<p>aio_read ºÍ aio_write ·½·¨Êµ¼ÊÉÏ²»×öÌ«¶à:</p>
+<pre class="programlisting">
+static ssize_t scullp_aio_read(struct kiocb *iocb, char *buf, size_t count, loff_t pos)
+{
+        return scullp_defer_op(0, iocb, buf, count, pos);
+}
+
+static ssize_t scullp_aio_write(struct kiocb *iocb, const char *buf, size_t count, loff_t pos)
+{
+        return scullp_defer_op(1, iocb, (char *) buf, count, pos);
+}
+</pre>
+<p>ÕâĞ©·½·¨½ö½öµ÷ÓÃÒ»¸öÆÕÍ¨µÄº¯Êı:</p>
+<pre class="programlisting">
+struct async_work
+{
+        struct kiocb *iocb;
+        int result;
+        struct work_struct work;
+
+};
+
+static int scullp_defer_op(int write, struct kiocb *iocb, char *buf, size_t count, loff_t pos)
+{
+        struct async_work *stuff;
+        int result;
+
+        /* Copy now while we can access the buffer */
+        if (write)
+                result = scullp_write(iocb-&gt;ki_filp, buf, count, &amp;pos);
+        else
+                result = scullp_read(iocb-&gt;ki_filp, buf, count, &amp;pos);
+
+        /* If this is a synchronous IOCB, we return our status now. */
+        if (is_sync_kiocb(iocb))
+                return result;
+
+        /* Otherwise defer the completion for a few milliseconds. */
+        stuff = kmalloc (sizeof (*stuff), GFP_KERNEL);
+        if (stuff == NULL)
+
+                return result; /* No memory, just complete now */
+        stuff-&gt;iocb = iocb;
+        stuff-&gt;result = result;
+        INIT_WORK(&amp;stuff-&gt;work, scullp_do_deferred_op, stuff);
+        schedule_delayed_work(&amp;stuff-&gt;work, HZ/100);
+        return -EIOCBQUEUED;
+}
+</pre>
+<p>Ò»¸ö¸ü¼ÓÍêÕûµÄÊµÏÖÓ¦µ±Ê¹ÓÃ get_user_pages À´Ó³ÉäÓÃ»§»º³åµ½ÄÚºË¿Õ¼ä. ÎÒÃÇÑ¡ÔñÀ´Ê¹Éú»î¼òµ¥Ğ©, Í¨¹ıÖ»¿½±´ÔÚ outset µÄÊı¾İ. ½Ó×Åµ÷ÓÃ is_sync_kiocb À´¿´ÊÇ·ñÕâ¸ö²Ù×÷±ØĞëÍ¬²½Íê³É; Èç¹ûÊÇ, ½á¹û×´Ì¬±»·µ»Ø, ²¢ÇÒÎÒÃÇÍê³ÉÁË. ·ñÔòÎÒÃÇ¼Ç×¡Ïà¹ØµÄĞÅÏ¢ÔÚÒ»¸öĞ¡½á¹¹, Í¨¹ıÒ»¸ö¹¤×÷¶ÓÁĞÀ´Îª"Íê³É"¶ø°²ÅÅ, ²¢ÇÒ·µ»Ø -EIOCBQUEUED. ÔÚÕâµãÉÏ, ¿ØÖÆ·µ»Øµ½ÓÃ»§¿Õ¼ä.</p>
+<p>Ö®ºó, ¹¤×÷¶ÓÁĞÖ´ĞĞÎÒÃÇµÄÍê³Éº¯Êı:</p>
+<pre class="programlisting">
+static void scullp_do_deferred_op(void *p) 
+{
+ struct async_work *stuff = (struct async_work *) p;
+ aio_complete(stuff-&gt;iocb, stuff-&gt;result, 0);
+ kfree(stuff); 
+} 
+</pre>
+<p>ÕâÀï, Ö»ÊÇÓÃÎÒÃÇ±£´æµÄĞÅÏ¢µ÷ÓÃ aio_complete µÄÊÂÇé. Ò»¸öÕæÕıµÄÇı¶¯µÄÒì²½ I/O ÊµÏÖÊÇÓĞĞ©¸´ÔÓ, µ±È», µ«ÊÇËü×ñÑ­ÕâÀà½á¹¹.</p>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch15s02.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch15.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch15s04.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">15.2.&#160;mmap Éè±¸²Ù×÷&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;15.4.&#160;Ö±½ÓÄÚ´æ´æÈ¡</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>

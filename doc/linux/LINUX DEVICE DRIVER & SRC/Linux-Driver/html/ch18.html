@@ -1,0 +1,279 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>第&#160;18&#160;章&#160;TTY 驱动-Linux设备驱动第三版（中文版）- - </title>
+<meta name="description" content="驱动开发- - " />
+<meta name="keywords" content="Linux设备驱动,中文版,第三版,ldd,linux device driver,驱动开发,电子版,程序设计,软件开发, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="up" href="index.html" title="Linux 设备驱动 Edition 3">
+<link rel="prev" href="ch17s16.html" title="17.16.&#160;快速参考">
+<link rel="next" href="ch18s02.html" title="18.2.&#160;tty_driver 函数指针">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">第&#160;18&#160;章&#160;TTY 驱动</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch17s16.html">上一页</a>&#160;</td>
+<th width="60%" align="center">&#160;</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch18s02.html">下一页</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="TTYDrivers.chap"></a>第&#160;18&#160;章&#160;TTY 驱动</h2></div></div></div>
+<div class="toc">
+<p><b>目录</b></p>
+<dl>
+<dt><span class="sect1"><a href="ch18.html#ASmallTTYDriver.sect">18.1. 一个小 TTY 驱动</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="ch18.html#structtermios.sect">18.1.1. 结构 struct termios</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="ch18s02.html">18.2. tty_driver 函数指针</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch18s02.html#openandclose.sect">18.2.1. open 和 close</a></span></dt>
+<dt><span class="sect2"><a href="ch18s02.html#FlowofData.sect">18.2.2. 数据流</a></span></dt>
+<dt><span class="sect2"><a href="ch18s02.html#OtherBufferingFunctions.sect">18.2.3. 其他缓冲函数</a></span></dt>
+<dt><span class="sect2"><a href="ch18s02.html#NoreadFunction.sect">18.2.4. 无 read 函数?</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch18s03.html">18.3. TTY 线路设置</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="ch18s03.html#settermios.sect">18.3.1. set_termios 函数</a></span></dt>
+<dt><span class="sect2"><a href="ch18s03.html#tiocmgetandtiocmset.sect">18.3.2. tiocmget 和 tiocmset</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="ch18s04.html">18.4. ioctls 函数</a></span></dt>
+<dt><span class="sect1"><a href="ch18s05.html">18.5. TTY 设备的 proc 和 sysfs 处理</a></span></dt>
+<dt><span class="sect1"><a href="ch18s06.html">18.6. tty_driver 结构的细节</a></span></dt>
+<dt><span class="sect1"><a href="ch18s07.html">18.7. tty_operaions 结构的细节</a></span></dt>
+<dt><span class="sect1"><a href="ch18s08.html">18.8. tty_struct 结构的细节</a></span></dt>
+<dt><span class="sect1"><a href="ch18s09.html">18.9. 快速参考</a></span></dt>
+</dl>
+</div>
+<p>一个 tty 设备得名于电传打字机的很老的简称, 并且起初只和连接到一台 UNIX 机器的物理或者虚拟终端有关联. 长时间以来, 这个名子还逐渐表示任何串口类型的设备, 因为终端连接也能够在这样的一个连接上建立. 一些物理 tty 设备的例子是串口, USB-串口 转换器, 以及某些类型的需要特殊处理来正确工作的调制解调器(例如传统的 Win-Modem 类型设备). tty 虚拟设备支持虚拟控制台以用来登录到一台计算机, 或者从键盘, 或者从网络连接, 或者通过一个 xterm 会话.</p>
+<p>Linux tty 驱动的核心正好位于标准字符驱动级别之下, 并且提供了一些特性集中在为使用终端类型设备提供一个接口. 这个核心负责控制跨越一个 tty 设备的数据流和数据格式. 这允许 tty 驱动以一种一致的方式集中于处理到硬件和出自硬件的数据, 而不必担心如何控制对用户空间的接口. 为控制数据流, 有几个不同的线路规程可以虚拟地"插入"任何一个 tty 设备. 这由不同的 tty 线路规程驱动来完成.</p>
+<p>如同图<a href="ch18.html#ldd3-18-1.fig" title="图&#160;18.1.&#160;tty 核心概览">tty 核心概览</a>所示, tty 核心从一个用户获取将要发送给一个 tty 设备的数据. 它接着传递它到一个 tty 线路规程驱动, 接着传递它到一个 tty 驱动. 这个 tty 驱动转换数据为可以发送给硬件的格式. 从 tty 硬件收到的数据向上回流通过 tty 驱动, 进入 tty 线路规程驱动, 再进入 tty 核心, 在这里它被一个用户获取. 有时 tty 驱动直接和 tty 核心通讯, 并且 tty 核心直接发送数据到 tty 驱动, 但是常常 tty 线路规程有机会修改在 2 者之间发送的数据.</p>
+<div class="figure">
+<a name="ldd3-18-1.fig"></a><p class="title"><b>图&#160;18.1.&#160;tty 核心概览</b></p>
+<div><img src="images/snagitldd3/ldd3-18-1.png" alt="tty 核心概览"></div>
+</div>
+<p>tty 驱动从未看见 tty 线路规程. 这个驱动不能直接和线路规程通讯, 它甚至也不知道它存在. 驱动的工作是以硬件能够理解的方式格式化发送给它的数据, 并且从硬件接收数据. tty 线路规程的工作是以特殊的方式格式化从一个用户或者硬件收到的数据. 这种格式化常常采用一个协议转换的形式, 例如 PPP 和 Bluetooth. </p>
+<p>有 3 种不同类型 tty 驱动: 控制台, 串口, 和 pty. 控制台和 pty 驱动硬件已经被编写以及可能是唯一需要的 tty 驱动的类型. 这使得任何使用 tty 核心来与用户和系统交互的新驱动作为串口驱动.</p>
+<p>为知道什么类型的 tty 驱动当前被加载到内核以及什么 tty 设备当前存在, 查看 /proc/tty/drivers 文件. 这个文件包括一个当前存在的不同 tty 驱动的列表, 显示驱动的名子, 缺省的节点名子, 驱动的主编号, 这个驱动使用的次编号范围, 以及 tty 驱动的类型. 下面是一个这个文件的例子:</p>
+<pre class="screen">
+/dev/tty      /dev/tty      5     0     system:/dev/tty  
+/dev/console  /dev/console  5     1     system:console  
+/dev/ptmx     /dev/ptmx     5     2     system  
+/dev/vc/0     /dev/vc/0     4     0     system:vtmaster  
+usbserial     /dev/ttyUSB   188   0-254 serial  
+serial        /dev/ttyS     4     64-67 serial  
+pty_slave     /dev/pts      136   0-255 pty:slave  
+pty_master    /dev/ptm      128   0-255 pty:master  
+pty_slave     /dev/ttyp     3     0-255 pty:slave  
+pty_master    /dev/pty      2     0-255 pty:master  
+unknown       /dev/tty      4     1-63  console  
+</pre>
+<p>/proc/tty/driver/ 目录给一些 tty 驱动包含了单独的文件, 如果它们实现这个功能. 缺省的串口驱动创建一个文件在这个目录中来展示许多串口特定的硬件信息. 如何在这个目录建立一个文件的信息后面描述.</p>
+<p>所有的当前注册的以及在内核中出现的 tty 设备有它们自己的子目录在 /sys/class/tty 下面. 在那个子目录下, 有一个 "dev" 文件包含有分配给那个 tty 设备的主次编号. 如果这个驱动告知内核物理设备和关联到这个 tty 设备的驱动的所在, 它创建符号连接到它们. 这个树的一个例子是:</p>
+<pre class="screen">
+/sys/class/tty/
+|-- console
+| `-- dev
+|-- ptmx
+| `-- dev
+|-- tty
+| `-- dev
+|-- tty0
+| `-- dev
+ ...
+|-- ttyS1
+| `-- dev
+|-- ttyS2
+| `-- dev
+|-- ttyS3
+| `-- dev
+ ...
+|-- ttyUSB0
+|  |-- dev  
+|  |-- device -&gt; ../../../devices/pci0000:00/0000:00:09.0/usb3/3-1/3-1:1.0/ttyUSB0  
+|  `-- driver -&gt; ../../../bus/usb-serial/drivers/keyspan_4  
+|-- ttyUSB1
+| |-- dev
+| |-- device -&gt; ../../../devices/pci0000:00/0000:00:09.0/usb3/3-1/3-1:1.0/ttyUSB1
+| `-- driver -&gt; ../../../bus/usb-serial/drivers/keyspan_4
+|-- ttyUSB2
+| |-- dev
+| |-- device -&gt; ../../../devices/pci0000:00/0000:00:09.0/usb3/3-1/3-1:1.0/ttyUSB2
+| `-- driver -&gt; ../../../bus/usb-serial/drivers/keyspan_4
+`-- ttyUSB3
+|-- dev
+|-- device -&gt; ../../../devices/pci0000:00/0000:00:09.0/usb3/3-1/3-1:1.0/ttyUSB3
+`-- driver -&gt; ../../../bus/usb-serial/drivers/keyspan_4 
+</pre>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ASmallTTYDriver.sect"></a>18.1.&#160;一个小 TTY 驱动</h2></div></div></div>
+<p>为解释 tty 核心如何工作, 我们创建一个小 tty 驱动, 可以被加载, 以及写入读出, 并且卸载. 任何一个 tty 驱动的主要数据结构是 struct tty_driver. 它用来注册和注销一个 tty 驱动到 tty 内核, 在内核头文件 &lt;linux/tty_driver.h&gt; 中描述.</p>
+<p>为创建一个 struct tty_driver, 函数 alloc_tty_driver 必须用这个驱动作为参数而支持的 tty 设备号来调用. 这可使用下面的简短代码来完成:</p>
+<pre class="programlisting">
+/* allocate the tty driver */
+tiny_tty_driver = alloc_tty_driver(TINY_TTY_MINORS);
+if (!tiny_tty_driver)
+ return -ENOMEM; 
+</pre>
+<p>在 alloc_tty_driver 函数被成功调用后, struct tty_driver 应当用基于 tty 驱动的需要的正确信息被初始化. 这个结构包含很多不同成员, 但不是为了有一个可工作的 tty 驱动而全部都必须被初始化. 这里有一个例子展示如何初始化这个结构并且建立足够的成员来创建一个工作的 tty 驱动. 它使用 tty_set_operations 函数来帮助拷贝驱动中定义的函数操作集合:</p>
+<pre class="programlisting">
+static struct tty_operations serial_ops = {
+ .open = tiny_open,
+ .close = tiny_close,
+ .write = tiny_write,
+ .write_room = tiny_write_room,
+ .set_termios = tiny_set_termios,
+}; 
+...
+ /* initialize the tty driver */
+ tiny_tty_driver-&gt;owner = THIS_MODULE;
+ tiny_tty_driver-&gt;driver_name = "tiny_tty";
+ tiny_tty_driver-&gt;name = "ttty";
+ tiny_tty_driver-&gt;devfs_name = "tts/ttty%d";
+ tiny_tty_driver-&gt;major = TINY_TTY_MAJOR,
+ tiny_tty_driver-&gt;type = TTY_DRIVER_TYPE_SERIAL,
+ tiny_tty_driver-&gt;subtype = SERIAL_TYPE_NORMAL,
+ tiny_tty_driver-&gt;flags = TTY_DRIVER_REAL_RAW | TTY_DRIVER_NO_DEVFS,
+ tiny_tty_driver-&gt;init_termios = tty_std_termios;
+ tiny_tty_driver-&gt;init_termios.c_cflag = B9600 | CS8 | CREAD | HUPCL | CLOCAL;
+ tty_set_operations(tiny_tty_driver, &amp;serial_ops);
+</pre>
+<p>上面列出的变量和函数, 以及这个结构如何使用, 在本章的剩下部分讲解.</p>
+<p>为注册这个驱动到 tty 核心, struct tty_driver 必须传递到 tty_register_driver 函数:</p>
+<pre class="programlisting">
+/* register the tty driver */
+retval = tty_register_driver(tiny_tty_driver);
+if (retval)
+{
+        printk(KERN_ERR "failed to register tiny tty driver");
+        put_tty_driver(tiny_tty_driver);
+        return retval;
+}
+</pre>
+<p>当调用 tty_register_driver, 内核创建了所有的不同 sysfs tty 文件为这个 tty 驱动可能有的整个范围的次设备. 如果你使用 devfs ( 本书不涉及 ) 并且除非指定 TTY_DRIVER_NO_DEVFS 标志, devfs 文件也被创建. 这个标志可被指定如果你只想为这个实际在系统中存在的设备调用 tty_register_device, 因此用户一直有一个内核中有的最新的设备视图, 这就是 devfs 用户期望的.</p>
+<p>在注册它自己后, 这个驱动通过 tty_register_device 注册它控制的设备. 这个函数有 3 个参数:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>一个指针指向这个设备所属的 struct tty_driver. </p></li>
+<li><p>设备的次编号</p></li>
+<li><p>一个指针指向这个 tty 设备所绑定的 struct device. 如果这个 tty 设备没绑定到任何一个 struct device, 这个参数可被设为 NULL. </p></li>
+</ul></div>
+<p>我们的驱动一次注册所有的 tty 设备, 因为它们是虚拟的并且没有绑定到任何一个物理设备:</p>
+<pre class="programlisting">
+for (i = 0; i &lt; TINY_TTY_MINORS; ++i)
+        tty_register_device(tiny_tty_driver, i, NULL);
+</pre>
+<p>为从 tty 核心注销这个驱动, 所有的通过调用 tty_register_device 而注册的 tty 设备需要使用对 tty_unregister_device 的调用来清理. 接着 struct tty_driver 必须使用一个 tty_unregister_driver 调用来注销.</p>
+<pre class="programlisting">
+for (i = 0; i &lt; TINY_TTY_MINORS; ++i)
+        tty_unregister_device(tiny_tty_driver, i);
+tty_unregister_driver(tiny_tty_driver);
+</pre>
+<div class="sect2" lang="zh-cn">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="structtermios.sect"></a>18.1.1.&#160;结构 struct termios</h3></div></div></div>
+<p>在 struct tty_driver 中的 init_termios 变量是一个 struct termios. 这个变量被用来提供一个健全的线路设置集合, 如果这个端口在被用户初始化前使用. 驱动初始化这个变量使用一个标准的数值集, 它拷贝自 tty_std_termios 变量. tty_std_termos 在 tty 核心被定义为:</p>
+<pre class="programlisting">
+struct termios tty_std_termios = {
+ .c_iflag = ICRNL | IXON,
+ .c_oflag = OPOST | ONLCR,
+ .c_cflag = B38400 | CS8 | CREAD | HUPCL,
+ .c_lflag = ISIG | ICANON | ECHO | ECHOE | ECHOK |
+ ECHOCTL | ECHOKE | IEXTEN,
+ .c_cc = INIT_C_CC
+};
+</pre>
+<p>这个 struct termios 结构用来持有所有的当前线路设置, 给这个 tty 设备的一个特定端口. 这些线路设置控制当前波特率, 数据大小, 数据流控设置, 以及许多其他值. 这个结构的不同成员是:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>tcflag_t c_iflag;</span></span></dt>
+<dd><p>输入模式标志</p></dd>
+<dt><span class="term"><span>tcflag_t c_oflag;</span></span></dt>
+<dd><p>输出模式标志</p></dd>
+<dt><span class="term"><span>tcflag_t c_cflag;</span></span></dt>
+<dd><p>控制模式标志</p></dd>
+<dt><span class="term"><span>tcflag_t c_lflag;</span></span></dt>
+<dd><p>本地模式标志</p></dd>
+<dt><span class="term"><span>cc_t c_line;</span></span></dt>
+<dd><p>线路规程类型</p></dd>
+<dt><span class="term"><span>cc_t c_cc[NCCS];</span></span></dt>
+<dd><p>一个控制字符数组</p></dd>
+</dl></div>
+<p>所有的模式标志被定义为一个大的位段. 模式的不同值, 以及它们用在哪里, 可以见在任何 Linux 发布中都有的 termios 手册页. 内核提供了一套有用的宏定义来获得不同的位. 这些宏定义在头文件 include/linux/tty.h 中定义.</p>
+<p>所有的在 tiny_tty_driver 变量中定义的成员有必要有一个工作的 tty 驱动. owner 成员是为了防止 tty 驱动在 tty 端口打开时被卸载. 在以前的内核版本, 它由 tty 驱动自己负责处理模块引用计数逻辑. 但是内核程序员认为可能有困难来解决所有的不同的可能的竞争条件, 因此 tty 核心为 tty 驱动处理所有的这样的控制..</p>
+<p>driver_name 和 name 成员看起来非常相似, 然而用于不同用途. driver_name 变量应当设为某个简单的, 描述性的并且和内核中所有 tty 驱动中是唯一的值. 这是因为它在 /proc/tty/drivers 文件中出现来描述这个驱动给用户, 以及在当前已加载的 tty 驱动的 sysfs tty 类目录. name 成员用来定义一个名子给单独的分配给这个 tty 驱动的 tty 节点在 /dev 树中. 这个字符串用来创建一个 tty 设备通过在这个字串的后面追加在使用的 tty 设备号. 它还用来创建一个设备名子在 sysfs /sys/class/tty 目录中. 如果 devfs 在内核中被使能, 这个名子应当包含任何这个  tty 驱动想被放入的子目录. 作为一个例子, 内核中的串口驱动设置这个 name 成员为 tts/ 如果 devfs 被使能, ttyS 如果它没有被使能. 这个字串也显示在 /proc/tty/drivers 文件中.</p>
+<p>如同我们提及的, /proc/tty/drivers 文件展示所有的当前注册的 tty 驱动. 在内核中注册的 tiny_tty 驱动并且没有 devfs, 这个文件看来如下:</p>
+<pre class="screen">
+$ cat /proc/tty/drivers 
+tiny_tty      /dev/ttty     240   0-3     serial  
+usbserial     /dev/ttyUSB   188   0-254   serial  
+serial        /dev/ttyS     4     64-107  serial  
+pty_slave     /dev/pts      136   0-255   pty:slave  
+pty_master    /dev/ptm      128   0-255   pty:master 
+pty_slave     /dev/ttyp     3     0-255   pty:slave  
+pty_master    /dev/pty      2     0-255   pty:master  
+unknown       /dev/vc/      4     1-63    console  
+/dev/vc/0     /dev/vc/0     4     0       system:vtmaster  
+/dev/ptmx     /dev/ptmx     5     2       system  
+/dev/console  /dev/console  5     1       system:console  
+/dev/tty      /dev/tty      5     0       system:/dev/tty  
+</pre>
+<p>还有, 当 tny_tty driver 被注册到 tty 核心, sysfs 目录 /sys/class/tty 看来有些象下面:</p>
+<pre class="screen">
+$ tree /sys/class/tty/ttty*
+/sys/class/tty/ttty0
+`-- dev
+/sys/class/tty/ttty1
+`-- dev
+/sys/class/tty/ttty2
+`-- dev
+/sys/class/tty/ttty3
+`-- dev
+
+$ cat /sys/class/tty/ttty0/dev
+240:0
+</pre>
+<p>major 变量描述这个驱动的主编号是什么. type 和 subtype 变量声明这个驱动是什么 tty 驱动. 对于我们的例子, 我们是一个"正常"类型的串口驱动. 一个 tty 驱动的唯一的其他子类型可能是一个 "callout" 类型. callout 设备传统上用来控制一个设备的线路设置. 数据应当通过一个设备节点被发送和接收, 并且任何路线设置改变应当被发送给一个不同的设备节点, 它是这个 callout 设备. 这要求使用 2 个次编号为每个 tty 设备. 感激地, 所有的驱动既处理数据也处理线路设置在同一个设备节点, 并且这个 callout 类型很少用在新驱动中.</p>
+<p>tty 驱动和 tty 核心都使用 flags 变量来指示驱动的当前状态和它是什么类型 tty 驱动. 几个在测试或者操作 flags 时你必须使用的位掩码宏被定义了. flags 变量中的 3 个位可被驱动设置:</p>
+<div class="variablelist"><dl>
+<dt><span class="term"><span>TTY_DRIVER_RESET_TERMIOS </span></span></dt>
+<dd><p>这个标志说明 tty 核心复位了 termios 设置, 无论何时最后一个进程已关闭这个设备. 对于控制台和 pty 驱动这是有用的. 例如, 假定用户留置一个终端在一个奇怪的状态. 在设置了这个标志时, 这个终端被复位为一个正常值当用户注销或者控制个会话的进程被"杀掉".</p></dd>
+<dt><span class="term"><span>TTY_DRIVER_REAL_RAW </span></span></dt>
+<dd><p>这个标志说明 tty 驱动保证发送奇偶或者坏字符通知给线路规程. 这允许线路规程以一种更快的方式来处理接收到的字符, 因为它不必查看从 tty 驱动收到的每个字符. 因为速度的得益, 这个值常常为所有 tty 驱动设置.</p></dd>
+<dt><span class="term"><span>TTY_DRIVER_NO_DEVFS </span></span></dt>
+<dd><p>这个标志说明当调用 tty_register_driver 时, tty 核心不创建任何 devfs 入口给这个 tty 设备. 这对任何动态创建和销毁次设备的驱动都是有益的. 设置这个的驱动的例子是这个 USB-到-串口 驱动, USB 猫驱动, USB 蓝牙 tty 驱动, 以及好多标准串口设备.</p></dd>
+</dl></div>
+<p>当 tty 驱动后来想注册一个特殊的 tty 设备到 tty 核心, 它必须调用 tty_register_device, 有一个指针到这个 tty 驱动, 并且设备的次编号已被创建. 如果这个没有完成, tty 核心仍然传递所有的调用到这个 tty 驱动, 但是一些内部的 tty 相关的功能可能不存在. 这个包括新 tty 设备的 /sbin/hotplug 通知和 tty 设备的 sysfs 表示. 当注册的 tty 设备从机器中被移出, tty 驱动必须调用 tty_unregister_device.</p>
+The one remaining bit in this variable is controlled by the tty core and is called TTY_DRIVER_INSTALLED. This flag is set by the tty core after the driver has been regis-tered and should never be set by a tty driver. 
+</div>这个变量中剩下的一位被 tty 核心控制, 被称为 TTY_DRIVER_INSTALLED. 这个标志被tty 核心在驱动已注册后设置并且应当从不被 tty 驱动设置.</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch17s16.html">上一页</a>&#160;</td>
+<td width="20%" align="center">&#160;</td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch18s02.html">下一页</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">17.16.&#160;快速参考&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">起始页</a></td>
+<td width="40%" align="right" valign="top">&#160;18.2.&#160;tty_driver 函数指针</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=�蔊崌犅2B颇稔蜉攛糊8利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*蒌利�n*輾姁嶱p萪></script>

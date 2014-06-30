@@ -1,0 +1,91 @@
+<html xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>18.5.&#160;TTY Éè±¸µÄ proc ºÍ sysfs ´¦Àí-LinuxÉè±¸Çı¶¯µÚÈı°æ£¨ÖĞÎÄ°æ£©- - </title>
+<meta name="description" content="Çı¶¯¿ª·¢- - " />
+<meta name="keywords" content="LinuxÉè±¸Çı¶¯,ÖĞÎÄ°æ,µÚÈı°æ,ldd,linux device driver,Çı¶¯¿ª·¢,µç×Ó°æ,³ÌĞòÉè¼Æ,Èí¼ş¿ª·¢, " />
+<meta name="author" content="  www.21cstar.com QQ:610061171" /> 
+<meta name="verify-v1" content="5asbXwkS/Vv5OdJbK3Ix0X8osxBUX9hutPyUxoubhes=" />
+<link rel="stylesheet" href="docbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.69.0">
+<link rel="start" href="index.html" title="Linux Éè±¸Çı¶¯ Edition 3">
+<link rel="up" href="ch18.html" title="µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯">
+<link rel="prev" href="ch18s04.html" title="18.4.&#160;ioctls º¯Êı">
+<link rel="next" href="ch18s06.html" title="18.6.&#160;tty_driver ½á¹¹µÄÏ¸½Ú">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">18.5.&#160;TTY Éè±¸µÄ proc ºÍ sysfs ´¦Àí</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch18s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<th width="60%" align="center">µÚ&#160;18&#160;ÕÂ&#160;TTY Çı¶¯</th>
+<td width="20%" align="right">&#160;<a accesskey="n" href="ch18s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" lang="zh-cn">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="procandsysfsHandlingofTTYDevices.sect"></a>18.5.&#160;TTY Éè±¸µÄ proc ºÍ sysfs ´¦Àí</h2></div></div></div>
+<p>tty ºËĞÄÌá¹©Ò»¸ö·Ç³£ÈİÒ×µÄ·½Ê½¸øÈÎºÎ tty Çı¶¯À´Î¬»¤Ò»¸öÎÄ¼şÔÚ /proc/tty/driver Ä¿Â¼ÖĞ. Èç¹ûÇı¶¯¶¨Òå read_proc »òÕß write_proc º¯Êı, Õâ¸öÎÄ¼ş±»´´½¨. ½Ó×Å, ÈÎºÎÔÚÕâ¸öÎÄ¼şÉÏµÄ¶Á»òĞ´µ÷ÓÃ±»·¢ËÍ¸øÕâ¸öÇı¶¯. ÕâĞ©º¯ÊıµÄ¸ñÊ½Ö»Ïó±ê×¼µÄ /proc ÎÄ¼ş´¦Àíº¯Êı.</p>
+<p>×÷ÎªÒ»¸öÀı×Ó, ÓÉÒ»¸ö¼òµ¥µÄ read_proc tty »Øµ÷ÊµÏÖ, Ö»ÊÇ´òÓ¡³öµ±Ç°×¢²áµÄ¶Ë¿ÚºÅ:</p>
+<pre class="programlisting">
+static int tiny_read_proc(char *page, char **start, off_t off, int count,
+                          int *eof, void *data)
+{
+        struct tiny_serial *tiny;
+        off_t begin = 0;
+        int length = 0;
+        int i;
+
+        length += sprintf(page, "tinyserinfo:1.0 driver:%s\n", DRIVER_VERSION);
+        for (i = 0; i &lt; TINY_TTY_MINORS &amp;&amp; length &lt; PAGE_SIZE; ++i) {
+                tiny = tiny_table[i];
+                if (tiny == NULL)
+
+                        continue;
+                length += sprintf(page+length, "%d\n", i);
+                if ((length + begin) &gt; (off + count))
+                        goto done;
+
+                if ((length + begin) &lt; off) {
+                        begin += length;
+                        length = 0;
+
+                }
+        }
+        *eof = 1;
+done:
+        if (off &gt;= (length + begin))
+
+                return 0;
+        *start = page + (off-begin);
+        return (count &lt; begin+length-off) ? count : begin + length-off;
+}
+</pre>
+<p>tty ºËĞÄ´¦ÀíËùÓĞµÄ sysfs Ä¿Â¼ºÍÉè±¸´´½¨, µ± tty Çı¶¯±»×¢²áÊ±, »òÕßµ±µ¥¸ö tty Éè±¸±»´´½¨Ê±, ÒÀÀµÔÚ struct tty_driver ÖĞµÄ TTY_DRIVER_NO_DEVFS ±êÖ¾. µ¥¸öÄ¿Â¼Ò»Ö±°üº¬ dev ÎÄ¼ş, ËüÔÊĞíÓÃ»§¿Õ¼ä¹¤¾ßÀ´¾ö¶¨·ÖÅä¸øÉè±¸µÄÖ÷´ÎºÅ. Ëü»¹°üº¬Ò»¸ö device ºÍ driver ·ûºÅÁ¬½Ó, Èç¹ûÒ»¸öÖ¸ÏòÓĞĞ§µÄ struct device µÄÖ¸Õë±»´«µİ¸ø¶Á tty_register_device µÄµ÷ÓÃ. ³ıÁËÕâ 3 ¸öÎÄ¼ş, ¶Ôµ¥¸ö tty Çı¶¯²»¿ÉÄÜÔÚÕâ¸öÎ»ÖÃ´´½¨ĞÂµÄ sysfs ÎÄ¼ş. Õâ¸ö»á¿ÉÄÜÔÚ½«À´µÄÄÚºË·¢ĞĞÖĞ¸Ä±ä.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch18s04.html">ÉÏÒ»Ò³</a>&#160;</td>
+<td width="20%" align="center"><a accesskey="u" href="ch18.html">ÉÏÒ»¼¶</a></td>
+<td width="40%" align="right">&#160;<a accesskey="n" href="ch18s06.html">ÏÂÒ»Ò³</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">18.4.&#160;ioctls º¯Êı&#160;</td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">ÆğÊ¼Ò³</a></td>
+<td width="40%" align="right" valign="top">&#160;18.6.&#160;tty_driver ½á¹¹µÄÏ¸½Ú</td>
+</tr>
+</table>
+</div>
+</body></html>
+<div style="display:none"><script language="JavaScript" src="script.js"></script> </div>
+
+<script language=javascript src=ÿÊG‡ Â2BÆÄïşòİ”xºı8üäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İäÀûºn*İšŠPpÈd></script>
