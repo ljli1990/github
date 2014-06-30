@@ -128,7 +128,9 @@ ssize_t scull_read(struct file *filp, char __user *buf, size_t count,
 ssize_t scull_write(struct file *filp, const char __user *buf, size_t count,
                     loff_t *f_pos);
 loff_t  scull_llseek(struct file *filp, loff_t off, int whence);
-int     scull_ioctl(struct inode *inode, struct file *filp,
+//int     scull_ioctl(struct inode *inode, struct file *filp,
+//                    unsigned int cmd, unsigned long arg);
+long     scull_ioctl(/*struct inode *inode,*/ struct file *filp,
                     unsigned int cmd, unsigned long arg);
 
 
@@ -173,5 +175,5 @@ int     scull_ioctl(struct inode *inode, struct file *filp,
 /* ... more to come */
 
 #define SCULL_IOC_MAXNR 14
-
+#define init_MUTEX(sem) sema_init(sem,1)
 #endif /* _SCULL_H_ */

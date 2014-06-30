@@ -27,6 +27,7 @@
 #include <linux/poll.h>
 #include <linux/cdev.h>
 #include <asm/uaccess.h>
+#include <linux/sched.h>
 
 #include "scull.h"		/* local definitions */
 
@@ -316,7 +317,8 @@ struct file_operations scull_pipe_fops = {
 	.read =		scull_p_read,
 	.write =	scull_p_write,
 	.poll =		scull_p_poll,
-	.ioctl =	scull_ioctl,
+	//.ioctl =	scull_ioctl,
+	.unlocked_ioctl =	scull_ioctl,
 	.open =		scull_p_open,
 	.release =	scull_p_release,
 	.fasync =	scull_p_fasync,

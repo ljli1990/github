@@ -14,7 +14,7 @@
  *
  */
 
-#include <linux/config.h>
+//#include <linux/config.h> removed from 2.6.19
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -390,7 +390,9 @@ ssize_t scull_write(struct file *filp, const char __user *buf, size_t count,
  * The ioctl() implementation
  */
 
-int scull_ioctl(struct inode *inode, struct file *filp,
+//int scull_ioctl(struct inode *inode, struct file *filp,
+//                 unsigned int cmd, unsigned long arg)
+long scull_ioctl(/*struct inode *inode,*/ struct file *filp,
                  unsigned int cmd, unsigned long arg)
 {
 
@@ -553,7 +555,8 @@ struct file_operations scull_fops = {
 	.llseek =   scull_llseek,
 	.read =     scull_read,
 	.write =    scull_write,
-	.ioctl =    scull_ioctl,
+	//.ioctl =    scull_ioctl,
+	.unlocked_ioctl =    scull_ioctl,
 	.open =     scull_open,
 	.release =  scull_release,
 };
