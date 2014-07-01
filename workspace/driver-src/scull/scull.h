@@ -37,8 +37,8 @@
 #  define PDEBUG(fmt, args...) /* not debugging: nothing */
 #endif
 
-#undef PDEBUGG
-#define PDEBUGG(fmt, args...) /* nothing: it's a placeholder */
+//#undef PDEBUGG
+//#define PDEBUGG(fmt, args...) /* nothing: it's a placeholder */
 
 #ifndef SCULL_MAJOR
 #define SCULL_MAJOR 0   /* dynamic major by default */
