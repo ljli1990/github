@@ -30,13 +30,15 @@ static struct proc_dir_entry *root = NULL;
 
 int read_proc_func(char *page, char **start, off_t off,int count, int *eof, void *data)
 {
+	int readc = 0;
+
     printk(KERN_DEBUG "page = %p off = %ld, count = %d",page,off,count);	
 
-    sprintf(page,"\ntest_read_proc_func %d, off = %ld, count = %d \n",read_count++,off,count);
+    readc = sprintf(page,"\ntest_read_proc_func %d, off = %ld, count = %d \n",read_count++,off,count);
 
 	*eof = 1;
 
-	return 0;
+	return readc;
 }
 
 static __init int test_init(void)
