@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      8.4.&nbsp;Making the LFS System Bootable
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;8.&nbsp;Making the LFS System Bootable
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="kernel.html" title=
+          "Linux-2.6.11.12">Prev</a>
+          <p>
+            Linux-2.6.11.12
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../chapter09/chapter09.html" title=
+          "The End">Next</a>
+          <p>
+            The End
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          8.4. Making the LFS System Bootable
+        </h1>
+      </div>
+      <p>
+        Your shiny new LFS system is almost complete. One of the last things
+        to do is to ensure that the system can be properly booted. The
+        instructions below apply only to computers of IA-32 architecture,
+        meaning mainstream PCs. Information on &ldquo;<span class=
+        "quote">boot loading</span>&rdquo; for other architectures should be
+        available in the usual resource-specific locations for those
+        architectures.
+      </p>
+      <p>
+        Boot loading can be a complex area, so a few cautionary words are in
+        order. Be familiar with the current boot loader and any other
+        operating systems present on the hard drive(s) that need to be
+        bootable. Make sure that an emergency boot disk is ready to
+        &ldquo;<span class="quote">rescue</span>&rdquo; the computer if the
+        computer becomes unusable (un-bootable).
+      </p>
+      <p>
+        Earlier, we compiled and installed the GRUB boot loader software in
+        preparation for this step. The procedure involves writing some
+        special GRUB files to specific locations on the hard drive. We highly
+        recommend creating a GRUB boot floppy diskette as a backup. Insert a
+        blank floppy diskette and run the following commands:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">dd if=/boot/grub/stage1 of=/dev/fd0 bs=512 count=1
+dd if=/boot/grub/stage2 of=/dev/fd0 bs=512 seek=1</kbd></pre>
+      <p>
+        Remove the diskette and store it somewhere safe. Now, run the
+        <span><strong class="command">grub</strong></span> shell:
+      </p>
+      <pre class="userinput"><kbd class="command">grub</kbd></pre>
+      <p>
+        GRUB uses its own naming structure for drives and partitions in the
+        form of <span class="emphasis"><em>(hdn,m)</em></span>, where
+        <span class="emphasis"><em>n</em></span> is the hard drive number and
+        <span class="emphasis"><em>m</em></span> is the partition number,
+        both starting from zero. For example, partition <tt class=
+        "filename">hda1</tt> is <span class=
+        "emphasis"><em>(hd0,0)</em></span> to GRUB and <tt class=
+        "filename">hdb3</tt> is <span class=
+        "emphasis"><em>(hd1,2)</em></span>. In contrast to Linux, GRUB does
+        not consider CD-ROM drives to be hard drives. For example, if using a
+        CD on <tt class="filename">hdb</tt> and a second hard drive on
+        <tt class="filename">hdc</tt>, that second hard drive would still be
+        <span class="emphasis"><em>(hd1)</em></span>.
+      </p>
+      <p>
+        Using the above information, determine the appropriate designator for
+        the root partition (or boot partition, if a separate one is used).
+        For the following example, it is assumed that the root (or separate
+        boot) partition is <tt class="filename">hda4</tt>.
+      </p>
+      <p>
+        Tell GRUB where to search for its <tt class=
+        "filename">stage{1,2}</tt> files. The Tab key can be used everywhere
+        to make GRUB show the alternatives:
+      </p>
+      <pre class="userinput"><kbd class="command">root (hd0,3)</kbd></pre>
+      <div class="warning">
+        <div class="admonhead">
+          <img alt="[Warning]" src="../images/warning.png" />
+          <h3 class="admontitle">
+            Warning
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            The following command will overwrite the current boot loader. Do
+            not run the command if this is not desired, for example, if using
+            a third party boot manager to manage the Master Boot Record
+            (MBR). In this scenario, it would make more sense to install GRUB
+            into the &ldquo;<span class="quote">boot sector</span>&rdquo; of
+            the LFS partition. In this case, this next command would become
+            <strong class="userinput"><tt>setup (hd0,3)</tt></strong>.
+          </p>
+        </div>
+      </div>
+      <p>
+        Tell GRUB to install itself into the MBR of <tt class=
+        "filename">hda</tt>:
+      </p>
+      <pre class="userinput"><kbd class="command">setup (hd0)</kbd></pre>
+      <p>
+        If all went well, GRUB will have reported finding its files in
+        <tt class="filename">/boot/grub</tt>. That's all there is to it. Quit
+        the <span><strong class="command">grub</strong></span> shell:
+      </p>
+      <pre class="userinput"><kbd class="command">quit</kbd></pre>
+      <p>
+        Create a &ldquo;<span class="quote">menu list</span>&rdquo; file
+        defining GRUB's boot menu:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; /boot/grub/menu.lst &lt;&lt; "EOF"
+<tt class="literal"># Begin /boot/grub/menu.lst
+
+# By default boot the first menu entry.
+default 0
+
+# Allow 30 seconds before booting the default.
+timeout 30
+
+# Use prettier colors.
+color green/black light-green/black
+
+# The first entry is for LFS.
+title LFS 6.1
+root (hd0,3)
+kernel /boot/lfskernel-2.6.11.12 root=/dev/hda4</tt>
+EOF</kbd></pre>
+      <p>
+        Add an entry for the host distribution if desired. It might look like
+        this:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt;&gt; /boot/grub/menu.lst &lt;&lt; "EOF"
+<tt class="literal">title Red Hat
+root (hd0,2)
+kernel /boot/kernel-2.6.5 root=/dev/hda3
+initrd /boot/initrd-2.6.5</tt>
+EOF</kbd></pre>
+      <p>
+        If dual-booting Windows, the following entry will allow booting it:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt;&gt; /boot/grub/menu.lst &lt;&lt; "EOF"
+<tt class="literal">title Windows
+rootnoverify (hd0,0)
+chainloader +1</tt>
+EOF</kbd></pre>
+      <p>
+        If <span><strong class="command">info grub</strong></span> does not
+        provide all necessary material, additional information regarding GRUB
+        is located on its website at: <a href=
+        "http://www.gnu.org/software/grub/"><i>http://www.gnu.org/software/grub/</i></a>.
+      </p>
+      <p>
+        The FHS stipulates that GRUB's <tt class="filename">menu.lst</tt>
+        file should be symlinked to <tt class=
+        "filename">/etc/grub/menu.lst</tt>. To satisfy this requirement,
+        issue the following command:
+      </p>
+      <pre class="userinput"><kbd class="command">mkdir /etc/grub &amp;&amp;
+ln -s /boot/grub/menu.lst /etc/grub</kbd></pre>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="kernel.html" title=
+          "Linux-2.6.11.12">Prev</a>
+          <p>
+            Linux-2.6.11.12
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../chapter09/chapter09.html" title=
+          "The End">Next</a>
+          <p>
+            The End
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

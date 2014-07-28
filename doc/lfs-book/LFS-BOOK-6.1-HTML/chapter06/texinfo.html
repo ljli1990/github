@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.34.&nbsp;Texinfo-4.8
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="perl.html" title="Perl-5.8.6">Prev</a>
+          <p>
+            Perl-5.8.6
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="autoconf.html" title=
+          "Autoconf-2.59">Next</a>
+          <p>
+            Autoconf-2.59
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.34. Texinfo-4.8
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Texinfo package contains programs for reading, writing, and
+          converting info pages.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">14.7 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make, Ncurses,
+              and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.34.1. Installation of Texinfo
+          </h2>
+        </div>
+        <p>
+          Prepare Texinfo for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Optionally, install the components belonging in a TeX installation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make TEXMF=/usr/share/texmf install-tex</kbd></pre>
+        <p>
+          The meaning of the make parameter:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>TEXMF=/usr/share/texmf</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                The <tt class="envar">TEXMF</tt> makefile variable holds the
+                location of the root of the TeX tree if, for example, a TeX
+                package will be installed later.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          The Info documentation system uses a plain text file to hold its
+          list of menu entries. The file is located at <tt class=
+          "filename">/usr/share/info/dir</tt>. Unfortunately, due to
+          occasional problems in the Makefiles of various packages, it can
+          sometimes get out of sync with the info pages installed on the
+          system. If the <tt class="filename">/usr/share/info/dir</tt> file
+          ever needs to be recreated, the following optional commands will
+          accomplish the task:
+        </p>
+        <pre class="userinput"><kbd class="command">cd /usr/share/info
+rm dir
+for f in *
+do install-info $f dir 2&gt;/dev/null
+done</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-texinfo" name="contents-texinfo"></a>
+          <h2 class="sect2">
+            6.34.2. Contents of Texinfo
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">info, infokey,
+              install-info, makeinfo, texi2dvi, and texindex</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3327598" name="id3327598"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="info" name="info"></a><span class=
+                  "term"><span><strong class=
+                  "command">info</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Used to read info pages which are similar to man pages,
+                    but often go much deeper than just explaining all the
+                    available command line options. For example, compare
+                    <span><strong class="command">man bison</strong></span>
+                    and <span><strong class="command">info
+                    bison</strong></span>.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="infokey" name="infokey"></a><span class=
+                  "term"><span><strong class=
+                  "command">infokey</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compiles a source file containing Info customizations
+                    into a binary format
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="install-info" name="install-info"></a><span class=
+                  "term"><span><strong class=
+                  "command">install-info</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Used to install info pages; it updates entries in the
+                    <span><strong class="command">info</strong></span> index
+                    file
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="makeinfo" name="makeinfo"></a><span class=
+                  "term"><span><strong class=
+                  "command">makeinfo</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Translates the given Texinfo source documents into info
+                    pages, plain text, or HTML
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="texi2dvi" name="texi2dvi"></a><span class=
+                  "term"><span><strong class=
+                  "command">texi2dvi</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Used to format the given Texinfo document into a
+                    device-independent file that can be printed
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="texindex" name="texindex"></a><span class=
+                  "term"><span><strong class=
+                  "command">texindex</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Used to sort Texinfo index files
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="perl.html" title="Perl-5.8.6">Prev</a>
+          <p>
+            Perl-5.8.6
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="autoconf.html" title=
+          "Autoconf-2.59">Next</a>
+          <p>
+            Autoconf-2.59
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

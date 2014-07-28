@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.30.&nbsp;Flex-2.5.31
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="bison.html" title="Bison-2.0">Prev</a>
+          <p>
+            Bison-2.0
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="util-linux.html" title=
+          "Util-linux-2.12q">Next</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.30. Flex-2.5.31
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Flex package contains a utility for generating programs that
+          recognize patterns in text.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.6 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">22.5 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils, Bison,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, M4, Make, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.30.1. Installation of Flex
+          </h2>
+        </div>
+        <p>
+          Flex contains several known bugs. These can be fixed with the
+          following patch:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../flex-2.5.31-debian_fixes-3.patch</kbd></pre>
+        <p>
+          The GNU autotools will detect that the Flex source code has been
+          modified by the previous patch and tries to update the man page
+          accordingly. This does not work on many systems, and the default
+          page is fine, so make sure it does not get regenerated:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">touch doc/flex.1</kbd></pre>
+        <p>
+          Now prepare Flex for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/tools</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/flex.html#contents-flex" title=
+          "6.29.2.&nbsp;Contents of Flex">Section&nbsp;6.29.2,
+          &ldquo;Contents of Flex.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="bison.html" title="Bison-2.0">Prev</a>
+          <p>
+            Bison-2.0
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="util-linux.html" title=
+          "Util-linux-2.12q">Next</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      2.4.&nbsp;Mounting the New Partition
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;2.&nbsp;Preparing a New Partition
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="creatingfilesystem.html" title=
+          "Creating a File System on the Partition">Prev</a>
+          <p>
+            Creating a File System on the Partition
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../part2.html" title=
+          "Preparing for the Build">Next</a>
+          <p>
+            Preparing for the Build
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter02.html" title=
+          "Chapter&nbsp;2.&nbsp;Preparing a New Partition">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          2.4. Mounting the New Partition
+        </h1>
+      </div>
+      <p>
+        Now that a file system has been created, the partition needs to be
+        made accessible. In order to do this, the partition needs to be
+        mounted at a chosen mount point. For the purposes of this book, it is
+        assumed that the file system is mounted under <tt class=
+        "filename">/mnt/lfs</tt>, but the directory choice is up to you.
+      </p>
+      <p>
+        Choose a mount point and assign it to the <tt class="envar">LFS</tt>
+        environment variable by running:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">export LFS=/mnt/lfs</kbd></pre>
+      <p>
+        Next, create the mount point and mount the LFS file system by
+        running:
+      </p>
+      <pre class="userinput"><kbd class="command">mkdir -p $LFS
+mount /dev/<em class="replaceable"><tt>[xxx]</tt></em> $LFS</kbd></pre>
+      <p>
+        Replace <em class="replaceable"><tt>[xxx]</tt></em> with the
+        designation of the LFS partition.
+      </p>
+      <p>
+        If using multiple partitions for LFS (e.g., one for <tt class=
+        "filename">/</tt> and another for <tt class="filename">/usr</tt>),
+        mount them using:
+      </p>
+      <pre class="userinput"><kbd class="command">mkdir -p $LFS
+mount /dev/<em class="replaceable"><tt>[xxx]</tt></em> $LFS
+mkdir $LFS/usr
+mount /dev/<em class="replaceable"><tt>[yyy]</tt></em> $LFS/usr</kbd></pre>
+      <p>
+        Replace <em class="replaceable"><tt>[xxx]</tt></em> and <em class=
+        "replaceable"><tt>[yyy]</tt></em> with the appropriate partition
+        names.
+      </p>
+      <p>
+        Ensure that this new partition is not mounted with permissions that
+        are too restrictive (such as the nosuid, nodev, or noatime options).
+        Run the <span><strong class="command">mount</strong></span> command
+        without any parameters to see what options are set for the mounted
+        LFS partition. If <em class="parameter"><tt>nosuid</tt></em>,
+        <em class="parameter"><tt>nodev</tt></em>, and/or <em class=
+        "parameter"><tt>noatime</tt></em> are set, the partition will need to
+        be remounted.
+      </p>
+      <p>
+        Now that there is an established place to work, it is time to
+        download the packages.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="creatingfilesystem.html" title=
+          "Creating a File System on the Partition">Prev</a>
+          <p>
+            Creating a File System on the Partition
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../part2.html" title=
+          "Preparing for the Build">Next</a>
+          <p>
+            Preparing for the Build
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter02.html" title=
+          "Chapter&nbsp;2.&nbsp;Preparing a New Partition">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

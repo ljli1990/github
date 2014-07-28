@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.4.&nbsp;Device and Module Handling on an LFS System
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="usage.html" title=
+          "How Do These Bootscripts Work?">Prev</a>
+          <p>
+            How Do These Bootscripts Work?
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="setclock.html" title=
+          "Configuring the setclock Script">Next</a>
+          <p>
+            Configuring the setclock Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.4. Device and Module Handling on an LFS System
+        </h1>
+      </div>
+      <p>
+        In <a href="../chapter06/chapter06.html">Chapter 6</a>, we installed
+        the Udev package. Before we go into the details regarding how this
+        works, a brief history of previous methods of handling devices is in
+        order.
+      </p>
+      <p>
+        Linux systems in general traditionally use a static device creation
+        method, whereby a great many device nodes are created under
+        <tt class="filename">/dev</tt> (sometimes literally thousands of
+        nodes), regardless of whether the corresponding hardware devices
+        actually exist. This is typically done via a <span><strong class=
+        "command">MAKEDEV</strong></span> script, which contains a number of
+        calls to the <span><strong class="command">mknod</strong></span>
+        program with the relevant major and minor device numbers for every
+        possible device that might exist in the world. Using the Udev method,
+        only those devices which are detected by the kernel get device nodes
+        created for them. Because these device nodes will be created each
+        time the system boots, they will be stored on a <tt class=
+        "systemitem">tmpfs</tt> file system (a virtual file system that
+        resides entirely in system memory). Device nodes do not require much
+        space, so the memory that is used is negligible.
+      </p>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.4.1. History
+          </h2>
+        </div>
+        <p>
+          In February 2000, a new filesystem called <tt class=
+          "systemitem">devfs</tt> was merged into the 2.3.46 kernel and was
+          made available during the 2.4 series of stable kernels. Although it
+          was present in the kernel source itself, this method of creating
+          devices dynamically never received overwhelming support from the
+          core kernel developers.
+        </p>
+        <p>
+          The main problem with the approach adopted by <tt class=
+          "systemitem">devfs</tt> was the way it handled device detection,
+          creation, and naming. The latter issue, that of device node naming,
+          was perhaps the most critical. It is generally accepted that if
+          device names are allowed to be configurable, then the device naming
+          policy should be up to a system administrator, not imposed on them
+          by any particular developer(s). The <tt class=
+          "systemitem">devfs</tt> file system also suffers from race
+          conditions that are inherent in its design and cannot be fixed
+          without a substantial revision to the kernel. It has also been
+          marked as deprecated due to a lack of recent maintenance.
+        </p>
+        <p>
+          With the development of the unstable 2.5 kernel tree, later
+          released as the 2.6 series of stable kernels, a new virtual
+          filesystem called <tt class="systemitem">sysfs</tt> came to be. The
+          job of <tt class="systemitem">sysfs</tt> is to export a view of the
+          system's hardrware configuration to userspace processes. With this
+          userspace-visible representation, the possibility of seeing a
+          userspace replacement for <tt class="systemitem">devfs</tt> became
+          much more realistic.
+        </p>
+      </div>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.4.2. Udev Implementation
+          </h2>
+        </div>
+        <p>
+          The <tt class="systemitem">sysfs</tt> filesystem was mentioned
+          briefly above. One may wonder how <tt class="systemitem">sysfs</tt>
+          knows about the devices present on a system and what device numbers
+          should be used for them. Drivers that have been compiled into the
+          kernel directly register their objects with <tt class=
+          "systemitem">sysfs</tt> as they are detected by the kernel. For
+          drivers compiled as modules, this registration will happen when the
+          module is loaded. Once the <tt class="systemitem">sysfs</tt>
+          filesystem is mounted (on <tt class="filename">/sys</tt>), data
+          which the built-in drivers registered with <tt class=
+          "systemitem">sysfs</tt> are available to userspace processes and to
+          <span><strong class="command">udev</strong></span> for device node
+          creation.
+        </p>
+        <p>
+          The <span><strong class="command">S10udev</strong></span>
+          initscript takes care of creating these device nodes when Linux is
+          booted. This script starts by registering <span><strong class=
+          "command">/sbin/udevsend</strong></span> as a hotplug event
+          handler. Hotplug events (discussed below) are not usually generated
+          during this stage, but <span><strong class=
+          "command">udev</strong></span> is registered just in case they do
+          occur. The <span><strong class="command">udevstart</strong></span>
+          program then walks through the <tt class="systemitem">/sys</tt>
+          filesystem and creates devices under <tt class="filename">/dev</tt>
+          that match the descriptions. For example, <tt class=
+          "filename">/sys/class/tty/vcs/dev</tt> contains the string
+          &ldquo;<span class="quote">7:0</span>&rdquo; This string is used by
+          <span><strong class="command">udevstart</strong></span> to create
+          <tt class="filename">/dev/vcs</tt> with major number <span class=
+          "emphasis"><em>7</em></span> and minor <span class=
+          "emphasis"><em>0</em></span>. The names and permissions of the
+          nodes created under the <tt class="filename">/dev</tt> directory
+          are configured according to the rules specified in the files within
+          the <tt class="filename">/etc/udev/rules.d/</tt> directory. These
+          are numbered in a similar fashion to the LFS-Bootscripts package.
+          If <span><strong class="command">udev</strong></span> can't find a
+          rule for the device it is creating, it will default permissions to
+          <span class="emphasis"><em>660</em></span> and ownership to
+          <span class="emphasis"><em>root:root</em></span>.
+        </p>
+        <p>
+          Once the above stage is complete, all devices that were already
+          present and have compiled-in drivers will be available for use.
+          This leads us to the devices that have modular drivers.
+        </p>
+        <p>
+          Earlier, we mentioned the concept of a &ldquo;<span class=
+          "quote">hotplug event handler.</span>&rdquo; When a new device
+          connection is detected by the kernel, the kernel will generate a
+          hotplug event and look at the file <tt class=
+          "filename">/proc/sys/kernel/hotplug</tt> to determine the userspace
+          program that handles the device's connection. The
+          <span><strong class="command">udev</strong></span> bootscript
+          registered <span><strong class="command">udevsend</strong></span>
+          as this handler. When these hotplug events are generated, the
+          kernel will tell <span><strong class="command">udev</strong></span>
+          to check the <tt class="filename">/sys</tt> filesystem for the
+          information pertaining to this new device and create the <tt class=
+          "filename">/dev</tt> entry for it.
+        </p>
+        <p>
+          This brings us to one problem that exists with <span><strong class=
+          "command">udev</strong></span>, and likewise with <tt class=
+          "systemitem">devfs</tt> before it. It is commonly referred to as
+          the &ldquo;<span class="quote">chicken and egg</span>&rdquo;
+          problem. Most Linux distributions handle loading modules via
+          entries in <tt class="filename">/etc/modules.conf</tt>. Access to a
+          device node causes the appropriate kernel module to load. With
+          <span><strong class="command">udev</strong></span>, this method
+          will not work because the device node does not exist until the
+          module is loaded. To solve this, the <span><strong class=
+          "command">S05modules</strong></span> bootscript was added to the
+          LFS-Bootscripts package, along with the <tt class=
+          "filename">/etc/sysconfig/modules</tt> file. By adding module names
+          to the <tt class="filename">modules</tt> file, these modules will
+          be loaded when the computer starts up. This allows
+          <span><strong class="command">udev</strong></span> to detect the
+          devices and create the appropriate device nodes.
+        </p>
+        <p>
+          Note that on slower machines or for drivers that create a lot of
+          device nodes, the process of creating devices may take a few
+          seconds to complete. This means that some device nodes may not be
+          immediately accessible.
+        </p>
+      </div>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.4.3. Handling Hotpluggable/Dynamic Devices
+          </h2>
+        </div>
+        <p>
+          When you plug in a device, such as a Universal Serial Bus (USB) MP3
+          player, the kernel recognizes that the device is now connected and
+          generates a hotplug event. If the driver is already loaded (either
+          because it was compiled into the kernel or because it was loaded
+          via the <span><strong class="command">S05modules</strong></span>
+          bootscript), <span><strong class="command">udev</strong></span>
+          will be called upon to create the relevant device node(s) according
+          to the <tt class="systemitem">sysfs</tt> data available in
+          <tt class="filename">/sys</tt>.
+        </p>
+        <p>
+          If the driver for the just plugged in device is available as a
+          module but currently unloaded, the Hotplug package will load the
+          appropriate module and make this device available by creating the
+          device node(s) for it.
+        </p>
+      </div>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.4.4. Problems with Creating Devices
+          </h2>
+        </div>
+        <p>
+          There are a few known problems when it comes to automatically
+          creating device nodes:
+        </p>
+        <p>
+          1) A kernel driver may not export its data to <tt class=
+          "systemitem">sysfs</tt>.
+        </p>
+        <p>
+          This is most common with third party drivers from outside the
+          kernel tree. Udev will be unable to automatically create device
+          nodes for such drivers. Use the <tt class=
+          "filename">/etc/sysconfig/createfiles</tt> configuration file to
+          manually create the devices. Consult the <tt class=
+          "filename">devices.txt</tt> file inside the kernel documentation or
+          the documentation for that driver to find the proper major/minor
+          numbers.
+        </p>
+        <p>
+          2) A non-hardware device is required. This is most common with the
+          Advanced Linux Sound Architecture (ALSA) project's Open Sound
+          System (OSS) compatibility module. These types of devices can be
+          handled in one of two ways:
+        </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p>
+                Adding the module names to <tt class=
+                "filename">/etc/sysconfig/modules</tt>
+              </p>
+            </li>
+            <li>
+              <p>
+                Using an &ldquo;<span class="quote">install</span>&rdquo;
+                line in <tt class="filename">/etc/modprobe.conf</tt>. This
+                tells the <span><strong class=
+                "command">modprobe</strong></span> command
+                &ldquo;<span class="quote">when loading this module, also
+                load this other module, at the same time.</span>&rdquo; For
+                example:
+              </p>
+              <pre class="userinput"><kbd class=
+              "command">install snd-pcm modprobe -i snd-pcm ; modprobe \
+    snd-pcm-oss ; true</kbd></pre>
+              <p>
+                This will cause the system to load both the <span class=
+                "emphasis"><em>snd-pcm</em></span> and <span class=
+                "emphasis"><em>snd-pcm-oss</em></span> modules when any
+                request is made to load the driver <span class=
+                "emphasis"><em>snd-pcm</em></span>.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.4.5. Useful Reading
+          </h2>
+        </div>
+        <p>
+          Additional helpful documentation is available at the following
+          sites:
+        </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p>
+                A Userspace Implementation of <tt class=
+                "systemitem">devfs</tt> <a href=
+                "http://www.kroah.com/linux/talks/ols_2003_udev_paper/Reprint-Kroah-Hartman-OLS2003.pdf">
+                <i>http://www.kroah.com/linux/talks/ols_2003_udev_paper/Reprint-Kroah-Hartman-OLS2003.pdf</i></a>
+              </p>
+            </li>
+            <li>
+              <p>
+                udev FAQ <a href=
+                "http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-FAQ">
+                <i>http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-FAQ</i></a>
+              </p>
+            </li>
+            <li>
+              <p>
+                The Linux Kernel Driver Model <a href=
+                "http://public.planetmirror.com/pub/lca/2003/proceedings/papers/Patrick_Mochel/Patrick_Mochel.pdf">
+                <i>http://public.planetmirror.com/pub/lca/2003/proceedings/papers/Patrick_Mochel/Patrick_Mochel.pdf</i></a>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="usage.html" title=
+          "How Do These Bootscripts Work?">Prev</a>
+          <p>
+            How Do These Bootscripts Work?
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="setclock.html" title=
+          "Configuring the setclock Script">Next</a>
+          <p>
+            Configuring the setclock Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

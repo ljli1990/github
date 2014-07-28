@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.17.&nbsp;Mktemp-1.5
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="zlib.html" title="Zlib-1.2.2">Prev</a>
+          <p>
+            Zlib-1.2.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iana-etc.html" title=
+          "Iana-Etc-1.04">Next</a>
+          <p>
+            Iana-Etc-1.04
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.17. Mktemp-1.5
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Mktemp package contains programs used to create secure
+          temporary files in shell scripts.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">436 KB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Coreutils, Make, and
+              Patch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.17.1. Installation of Mktemp
+          </h2>
+        </div>
+        <p>
+          Many scripts still use the deprecated <span><strong class=
+          "command">tempfile</strong></span> program, which has functionality
+          similar to <span><strong class="command">mktemp</strong></span>.
+          Patch Mktemp to include a <span><strong class=
+          "command">tempfile</strong></span> wrapper:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../mktemp-1.5-add_tempfile-2.patch</kbd></pre>
+        <p>
+          Prepare Mktemp for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --with-libc</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-libc</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This causes the <span><strong class=
+                "command">mktemp</strong></span> program to use the
+                <span class="emphasis"><em>mkstemp</em></span> and
+                <span class="emphasis"><em>mkdtemp</em></span> functions from
+                the system C library.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install
+make install-tempfile</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-mktemp" name="contents-mktemp"></a>
+          <h2 class="sect2">
+            6.17.2. Contents of Mktemp
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">mktemp and
+              tempfile</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3320651" name="id3320651"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="mktemp" name="mktemp"></a><span class=
+                  "term"><span><strong class=
+                  "command">mktemp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates temporary files in a secure manner; it is used in
+                    scripts
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="tempfile" name="tempfile"></a><span class=
+                  "term"><span><strong class=
+                  "command">tempfile</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates temporary files in a less secure manner than
+                    <span><strong class="command">mktemp</strong></span>; it
+                    is installed for backwards-compatibility
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="zlib.html" title="Zlib-1.2.2">Prev</a>
+          <p>
+            Zlib-1.2.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iana-etc.html" title=
+          "Iana-Etc-1.04">Next</a>
+          <p>
+            Iana-Etc-1.04
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.11.&nbsp;Creating the /etc/hosts File
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="hostname.html" title=
+          "Configuring the localnet Script">Prev</a>
+          <p>
+            Configuring the localnet Script
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="network.html" title=
+          "Configuring the network Script">Next</a>
+          <p>
+            Configuring the network Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.11. Creating the /etc/hosts File
+        </h1>
+      </div>
+      <p>
+        If a network card is to be configured, decide on the IP address,
+        FQDN, and possible aliases for use in the <tt class=
+        "filename">/etc/hosts</tt> file. The syntax is:
+      </p>
+      <pre class="screen">&lt;IP address&gt; myhost.example.org aliases</pre>
+      <p>
+        Unless the computer is to be visible to the Internet (i.e., there is
+        a registered domain and a valid block of assigned IP
+        addresses&mdash;most users do not have this), make sure that the IP
+        address is in the private network IP address range. Valid ranges are:
+      </p>
+      <pre class="screen">    Class Networks
+        A     10.0.0.0
+        B     172.16.0.0 through 172.31.0.255
+        C     192.168.0.0 through 192.168.255.255</pre>
+      <p>
+        A valid IP address could be 192.168.1.1. A valid FQDN for this IP
+        could be www.linuxfromscratch.org (not recommended because this is a
+        valid registered domain address and could cause domain name server
+        issues).
+      </p>
+      <p>
+        Even if not using a network card, an FQDN is still required. This is
+        necessary for certain programs to operate correctly.
+      </p>
+      <p>
+        Create the <tt class="filename">/etc/hosts</tt> file by running:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; /etc/hosts &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/hosts (network card version)
+
+127.0.0.1 localhost
+<em class="replaceable"><tt>[192.168.1.1]</tt></em> <em class=
+"replaceable"><tt>[&lt;HOSTNAME&gt;.example.org]</tt></em> <em class=
+"replaceable"><tt>[HOSTNAME]</tt></em>
+
+# End /etc/hosts (network card version)</tt>
+EOF</kbd></pre>
+      <p>
+        The <em class="replaceable"><tt>[192.168.1.1]</tt></em> and
+        <em class="replaceable"><tt>[&lt;HOSTNAME&gt;.example.org]</tt></em>
+        values need to be changed for specific users or requirements (if
+        assigned an IP address by a network/system administrator and the
+        machine will be connected to an existing network).
+      </p>
+      <p>
+        If a network card is not going to be configured, create the
+        <tt class="filename">/etc/hosts</tt> file by running:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; /etc/hosts &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/hosts (no network card version)
+
+127.0.0.1 <em class=
+"replaceable"><tt>[&lt;HOSTNAME&gt;.example.org]</tt></em> <em class=
+"replaceable"><tt>[HOSTNAME]</tt></em> localhost
+
+# End /etc/hosts (no network card version)</tt>
+EOF</kbd></pre>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="hostname.html" title=
+          "Configuring the localnet Script">Prev</a>
+          <p>
+            Configuring the localnet Script
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="network.html" title=
+          "Configuring the network Script">Next</a>
+          <p>
+            Configuring the network Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

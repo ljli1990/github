@@ -1,0 +1,1038 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.11.&nbsp;Glibc-2.3.4
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="man-pages.html" title=
+          "Man-pages-2.01">Prev</a>
+          <p>
+            Man-pages-2.01
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="readjusting.html" title=
+          "Re-adjusting the Toolchain">Next</a>
+          <p>
+            Re-adjusting the Toolchain
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.11. Glibc-2.3.4
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Glibc package contains the main C library. This library
+          provides the basic routines for allocating memory, searching
+          directories, opening and closing files, reading and writing files,
+          string handling, pattern matching, arithmetic, and so on.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">12.3 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">476</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Gawk, GCC, Gettext, Grep, Make, Perl,
+              Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.11.1. Installation of Glibc
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building Glibc.
+        </p>
+        <p>
+          The Glibc build system is self-contained and will install
+          perfectly, even though the compiler specs file and linker are still
+          pointing at <tt class="filename">/tools</tt>. The specs and linker
+          cannot be adjusted before the Glibc install because the Glibc
+          autoconf tests would give false results and defeat the goal of
+          achieving a clean build.
+        </p>
+        <p>
+          The linuxthreads tarball contains the man pages for the threading
+          libraries installed by Glibc. Unpack the tarball from within the
+          Glibc source directory:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">tar -xjvf /sources/glibc-linuxthreads-2.3.4.tar.bz2</kbd></pre>
+        <p>
+          Glibc has two tests which fail when the running kernel is 2.6.11.x
+          The problem has been determined to be with the tests themselves,
+          not with the libc nor the kernel. This patch fixes the problem:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../glibc-2.3.4-fix_test-1.patch</kbd></pre>
+        <p>
+          The Glibc documentation recommends building Glibc outside of the
+          source directory in a dedicated build directory:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../glibc-build
+cd ../glibc-build</kbd></pre>
+        <p>
+          Prepare Glibc for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../glibc-2.3.4/configure --prefix=/usr \
+    --disable-profile --enable-add-ons \
+    --enable-kernel=2.6.0 --libexecdir=/usr/lib/glibc</kbd></pre>
+        <p>
+          The meaning of the new configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--libexecdir=/usr/lib/glibc</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This changes the location of the <span><strong class=
+                "command">pt_chown</strong></span> program from its default
+                of <tt class="filename">/usr/libexec</tt> to <tt class=
+                "filename">/usr/lib/glibc</tt>.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <div class="important">
+          <div class="admonhead">
+            <img alt="[Important]" src="../images/important.png" />
+            <h3 class="admontitle">
+              Important
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              In this section, the test suite for Glibc is considered
+              critical. Do not skip it under any circumstance.
+            </p>
+          </div>
+        </div>
+        <p>
+          Test the results:
+        </p>
+        <pre class="userinput"><kbd class="command">make check</kbd></pre>
+        <p>
+          The Glibc test suite is highly dependent on certain functions of
+          the host system, in particular the kernel. In general, the Glibc
+          test suite is always expected to pass. However, in certain
+          circumstances, some failures are unavoidable. This is a list of the
+          most common issues:
+        </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p>
+                The <span class="emphasis"><em>math</em></span> tests
+                sometimes fail when running on systems where the CPU is not a
+                relatively new genuine Intel or authentic AMD. Certain
+                optimization settings are also known to be a factor here.
+              </p>
+            </li>
+            <li>
+              <p>
+                The <span class="emphasis"><em>gettext</em></span> test
+                sometimes fails due to host system issues. The exact reasons
+                are not yet clear.
+              </p>
+            </li>
+            <li>
+              <p>
+                If you have mounted the LFS partition with the <em class=
+                "parameter"><tt>noatime</tt></em> option, the <span class=
+                "emphasis"><em>atime</em></span> test will fail. As mentioned
+                in <a href="../chapter02/mounting.html" title=
+                "2.4.&nbsp;Mounting the New Partition">Section 2.4,
+                &ldquo;Mounting the New Partition&rdquo;</a>, do not use the
+                <em class="parameter"><tt>noatime</tt></em> option while
+                building LFS.
+              </p>
+            </li>
+            <li>
+              <p>
+                When running on older and slower hardware, some tests can
+                fail because of test timeouts being exceeded.
+              </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+          Though it is a harmless message, the install stage of Glibc will
+          complain about the absence of <tt class=
+          "filename">/etc/ld.so.conf</tt>. Prevent this warning with:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">touch /etc/ld.so.conf</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          The locales that can make the system respond in a different
+          language were not installed by the above command. Install this
+          with:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make localedata/install-locales</kbd></pre>
+        <p>
+          To save time, an alternative to running the previous command (which
+          generates and installs every locale Glibc is aware of) is to
+          install only those locales that are wanted and needed. This can be
+          achieved by using the <span><strong class=
+          "command">localedef</strong></span> command. Information on this
+          command is located in the <tt class="filename">INSTALL</tt> file in
+          the Glibc source. However, there are a number of locales that are
+          essential in order for the tests of future packages to pass, in
+          particular, the <span class="emphasis"><em>libstdc++</em></span>
+          tests from GCC. The following instructions, instead of the
+          <em class="parameter"><tt>install-locales</tt></em> target used
+          above, will install the minimum set of locales necessary for the
+          tests to run successfully:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir -p /usr/lib/locale
+localedef -i de_DE -f ISO-8859-1 de_DE
+localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro
+localedef -i en_HK -f ISO-8859-1 en_HK
+localedef -i en_PH -f ISO-8859-1 en_PH
+localedef -i en_US -f ISO-8859-1 en_US
+localedef -i es_MX -f ISO-8859-1 es_MX
+localedef -i fa_IR -f UTF-8 fa_IR
+localedef -i fr_FR -f ISO-8859-1 fr_FR
+localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro
+localedef -i it_IT -f ISO-8859-1 it_IT
+localedef -i ja_JP -f EUC-JP ja_JP</kbd></pre>
+        <p>
+          Some locales installed by the <span><strong class="command">make
+          localedata/install-locales</strong></span> command above are not
+          properly supported by some applications that are in the LFS and
+          BLFS books. Because of the various problems that arise due to
+          application programmers making assumptions that break in such
+          locales, LFS should not be used in locales that utilize multibyte
+          character sets (including UTF-8) or right-to-left writing order.
+          Numerous unofficial and unstable patches are required to fix these
+          problems, and it has been decided by the LFS developers not to
+          support such complex locales. This applies to the ja_JP and fa_IR
+          locales as well&mdash;they have been installed only for GCC and
+          Gettext tests to pass, and the <span><strong class=
+          "command">watch</strong></span> program (part of the Procps
+          package) does not work properly in them. Various attempts to
+          circumvent these restrictions are documented in
+          internationalization-related hints.
+        </p>
+        <p>
+          Build the linuxthreads man pages, which are a great reference on
+          the threading API (applicable to NPTL as well):
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make -C ../glibc-2.3.4/linuxthreads/man</kbd></pre>
+        <p>
+          Install these pages:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make -C ../glibc-2.3.4/linuxthreads/man install</kbd></pre>
+      </div>
+      <div class="configuration" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="conf-glibc" name="conf-glibc"></a>
+          <h2 class="sect2">
+            6.11.2. Configuring Glibc
+          </h2>
+        </div>
+        <p>
+          The <tt class="filename">/etc/nsswitch.conf</tt> file needs to be
+          created because, although Glibc provides defaults when this file is
+          missing or corrupt, the Glibc defaults do not work well in a
+          networked environment. The time zone also needs to be configured.
+        </p>
+        <p>
+          Create a new file <tt class="filename">/etc/nsswitch.conf</tt> by
+          running the following:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cat &gt; /etc/nsswitch.conf &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/nsswitch.conf
+
+passwd: files
+group: files
+shadow: files
+
+hosts: files dns
+networks: files
+
+protocols: files
+services: files
+ethers: files
+rpc: files
+
+# End /etc/nsswitch.conf</tt>
+EOF</kbd></pre>
+        <p>
+          To determine the local time zone, run the following script:
+        </p>
+        <pre class="userinput"><kbd class="command">tzselect</kbd></pre>
+        <p>
+          After answering a few questions about the location, the script will
+          output the name of the time zone (e.g., <span class=
+          "emphasis"><em>EST5EDT</em></span> or <span class=
+          "emphasis"><em>Canada/Eastern</em></span>). Then create the
+          <tt class="filename">/etc/localtime</tt> file by running:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp --remove-destination /usr/share/zoneinfo/<em class=
+        "replaceable"><tt>[xxx]</tt></em> \
+    /etc/localtime</kbd></pre>
+        <p>
+          Replace <em class="replaceable"><tt>[xxx]</tt></em> with the name
+          of the time zone that <span><strong class=
+          "command">tzselect</strong></span> provided (e.g., Canada/Eastern).
+        </p>
+        <p>
+          The meaning of the cp option:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--remove-destination</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This is needed to force removal of the already existing
+                symbolic link. The reason for copying the file instead of
+                using a symlink is to cover the situation where <tt class=
+                "filename">/usr</tt> is on a separate partition. This could
+                be important when booted into single user mode.
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="configuration" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="conf-ld" name="conf-ld"></a>
+          <h2 class="sect2">
+            6.11.3. Configuring Dynamic Loader
+          </h2>
+        </div>
+        <p>
+          By default, the dynamic loader (<tt class=
+          "filename">/lib/ld-linux.so.2</tt>) searches through <tt class=
+          "filename">/lib</tt> and <tt class="filename">/usr/lib</tt> for
+          dynamic libraries that are needed by programs as they are run.
+          However, if there are libraries in directories other than
+          <tt class="filename">/lib</tt> and <tt class=
+          "filename">/usr/lib</tt>, these need to be added to the <tt class=
+          "filename">/etc/ld.so.conf</tt> file in order for the dynamic
+          loader to find them. Two directories that are commonly known to
+          contain additional libraries are <tt class=
+          "filename">/usr/local/lib</tt> and <tt class=
+          "filename">/opt/lib</tt>, so add those directories to the dynamic
+          loader's search path.
+        </p>
+        <p>
+          Create a new file <tt class="filename">/etc/ld.so.conf</tt> by
+          running the following:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cat &gt; /etc/ld.so.conf &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/ld.so.conf
+
+/usr/local/lib
+/opt/lib
+
+# End /etc/ld.so.conf</tt>
+EOF</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-glibc" name="contents-glibc"></a>
+          <h2 class="sect2">
+            6.11.4. Contents of Glibc
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">catchsegv, gencat,
+              getconf, getent, iconv, iconvconfig, ldconfig, ldd, lddlibc4,
+              locale, localedef, mtrace, nscd, nscd_nischeck, pcprofiledump,
+              pt_chown, rpcgen, rpcinfo, sln, sprof, tzselect, xtrace, zdump,
+              and zic</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              libraries:</span></strong> <span class="seg">ld.so,
+              libBrokenLocale.[a,so], libSegFault.so, libanl.[a,so],
+              libbsd-compat.a, libc.[a,so], libcrypt.[a,so], libdl.[a,so],
+              libg.a, libieee.a, libm.[a,so], libmcheck.a, libmemusage.so,
+              libnsl.a, libnss_compat.so, libnss_dns.so, libnss_files.so,
+              libnss_hesiod.so, libnss_nis.so, libnss_nisplus.so,
+              libpcprofile.so, libpthread.[a,so], libresolv.[a,so],
+              librpcsvc.a, librt.[a,so], libthread_db.so, and
+              libutil.[a,so]</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3315936" name="id3315936"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="catchsegv" name="catchsegv"></a><span class=
+                  "term"><span><strong class=
+                  "command">catchsegv</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Can be used to create a stack trace when a program
+                    terminates with a segmentation fault
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gencat" name="gencat"></a><span class=
+                  "term"><span><strong class=
+                  "command">gencat</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Generates message catalogues
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="getconf" name="getconf"></a><span class=
+                  "term"><span><strong class=
+                  "command">getconf</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Displays the system configuration values for file system
+                    specific variables
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="getent" name="getent"></a><span class=
+                  "term"><span><strong class=
+                  "command">getent</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Gets entries from an administrative database
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="iconv" name="iconv"></a><span class=
+                  "term"><span><strong class=
+                  "command">iconv</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Performs character set conversion
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="iconvconfig" name="iconvconfig"></a><span class=
+                  "term"><span><strong class=
+                  "command">iconvconfig</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates fastloading <span><strong class=
+                    "command">iconv</strong></span> module configuration
+                    files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ldconfig" name="ldconfig"></a><span class=
+                  "term"><span><strong class=
+                  "command">ldconfig</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Configures the dynamic linker runtime bindings
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ldd" name="ldd"></a><span class=
+                  "term"><span><strong class=
+                  "command">ldd</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reports which shared libraries are required by each given
+                    program or shared library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="lddlibc4" name="lddlibc4"></a><span class=
+                  "term"><span><strong class=
+                  "command">lddlibc4</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Assists <span><strong class="command">ldd</strong></span>
+                    with object files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="locale" name="locale"></a><span class=
+                  "term"><span><strong class=
+                  "command">locale</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Tells the compiler to enable or disable the use of POSIX
+                    locales for built-in operations
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="localedef" name="localedef"></a><span class=
+                  "term"><span><strong class=
+                  "command">localedef</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compiles locale specifications
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mtrace" name="mtrace"></a><span class=
+                  "term"><span><strong class=
+                  "command">mtrace</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reads and interprets a memory trace file and displays a
+                    summary in human-readable format
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="nscd" name="nscd"></a><span class=
+                  "term"><span><strong class=
+                  "command">nscd</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A daemon that provides a cache for the most common name
+                    service requests
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="nscd_nischeck" name="nscd_nischeck"></a><span class=
+                  "term"><span><strong class=
+                  "command">nscd_nischeck</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Checks whether or not secure mode is necessary for NIS+
+                    lookup
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pcprofiledump" name="pcprofiledump"></a><span class=
+                  "term"><span><strong class=
+                  "command">pcprofiledump</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Dumps information generated by PC profiling
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pt_chown" name="pt_chown"></a><span class=
+                  "term"><span><strong class=
+                  "command">pt_chown</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A helper program for <span><strong class=
+                    "command">grantpt</strong></span> to set the owner, group
+                    and access permissions of a slave pseudo terminal
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rpcgen" name="rpcgen"></a><span class=
+                  "term"><span><strong class=
+                  "command">rpcgen</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Generates C code to implement the Remote Procecure Call
+                    (RPC) protocol
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rpcinfo" name="rpcinfo"></a><span class=
+                  "term"><span><strong class=
+                  "command">rpcinfo</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Makes an RPC call to an RPC server
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="sln" name="sln"></a><span class=
+                  "term"><span><strong class=
+                  "command">sln</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A statically linked <span><strong class=
+                    "command">ln</strong></span> program
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="sprof" name="sprof"></a><span class=
+                  "term"><span><strong class=
+                  "command">sprof</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reads and displays shared object profiling data
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="tzselect" name="tzselect"></a><span class=
+                  "term"><span><strong class=
+                  "command">tzselect</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Asks the user about the location of the system and
+                    reports the corresponding time zone description
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="xtrace" name="xtrace"></a><span class=
+                  "term"><span><strong class=
+                  "command">xtrace</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Traces the execution of a program by printing the
+                    currently executed function
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zdump" name="zdump"></a><span class=
+                  "term"><span><strong class=
+                  "command">zdump</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The time zone dumper
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zic" name="zic"></a><span class=
+                  "term"><span><strong class=
+                  "command">zic</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The time zone compiler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ld.so" name="ld.so"></a><span class=
+                  "term"><tt class="filename">ld.so</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The helper program for shared library executables
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libBrokenLocale" name=
+                  "libBrokenLocale"></a><span class="term"><tt class=
+                  "filename">libBrokenLocale</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Used by programs, such as Mozilla, to solve broken
+                    locales
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libSegFault" name="libSegFault"></a><span class=
+                  "term"><tt class="filename">libSegFault</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The segmentation fault signal handler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libanl" name="libanl"></a><span class=
+                  "term"><tt class="filename">libanl</tt></span>
+                </td>
+                <td>
+                  <p>
+                    An asynchronous name lookup library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libbsd-compat" name="libbsd-compat"></a><span class=
+                  "term"><tt class="filename">libbsd-compat</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Provides the portability needed in order to run certain
+                    Berkey Software Distribution (BSD) programs under Linux
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libc" name="libc"></a><span class="term"><tt class=
+                  "filename">libc</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The main C library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libcrypt" name="libcrypt"></a><span class=
+                  "term"><tt class="filename">libcrypt</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The cryptography library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libdl" name="libdl"></a><span class=
+                  "term"><tt class="filename">libdl</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The dynamic linking interface library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libg" name="libg"></a><span class="term"><tt class=
+                  "filename">libg</tt></span>
+                </td>
+                <td>
+                  <p>
+                    A runtime library for <span><strong class=
+                    "command">g++</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libieee" name="libieee"></a><span class=
+                  "term"><tt class="filename">libieee</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The Institute of Electrical and Electronic Engineers
+                    (IEEE) floating point library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libm" name="libm"></a><span class="term"><tt class=
+                  "filename">libm</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The mathematical library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libmcheck" name="libmcheck"></a><span class=
+                  "term"><tt class="filename">libmcheck</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains code run at boot
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libmemusage" name="libmemusage"></a><span class=
+                  "term"><tt class="filename">libmemusage</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Used by <span><strong class=
+                    "command">memusage</strong></span> to help collect
+                    information about the memory usage of a program
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libnsl" name="libnsl"></a><span class=
+                  "term"><tt class="filename">libnsl</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The network services library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libnss" name="libnss"></a><span class=
+                  "term"><tt class="filename">libnss</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The Name Service Switch libraries, containing functions
+                    for resolving host names, user names, group names,
+                    aliases, services, protocols, etc.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libpcprofile" name="libpcprofile"></a><span class=
+                  "term"><tt class="filename">libpcprofile</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains profiling functions used to track the amount of
+                    CPU time spent in specific source code lines
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libpthread" name="libpthread"></a><span class=
+                  "term"><tt class="filename">libpthread</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The POSIX threads library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libresolv" name="libresolv"></a><span class=
+                  "term"><tt class="filename">libresolv</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains functions for creating, sending, and
+                    interpreting packets to the Internet domain name servers
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="librpcsvc" name="librpcsvc"></a><span class=
+                  "term"><tt class="filename">librpcsvc</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains functions providing miscellaneous RPC services
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="librt" name="librt"></a><span class=
+                  "term"><tt class="filename">librt</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains functions providing most of the interfaces
+                    specified by the POSIX.1b Realtime Extension
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libthread_db" name="libthread_db"></a><span class=
+                  "term"><tt class="filename">libthread_db</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains functions useful for building debuggers for
+                    multi-threaded programs
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libutil" name="libutil"></a><span class=
+                  "term"><tt class="filename">libutil</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains code for &ldquo;<span class=
+                    "quote">standard</span>&rdquo; functions used in many
+                    different Unix utilities
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="man-pages.html" title=
+          "Man-pages-2.01">Prev</a>
+          <p>
+            Man-pages-2.01
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="readjusting.html" title=
+          "Re-adjusting the Toolchain">Next</a>
+          <p>
+            Re-adjusting the Toolchain
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

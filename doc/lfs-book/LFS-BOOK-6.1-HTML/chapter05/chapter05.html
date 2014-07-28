@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Part&nbsp;II.&nbsp;Preparing for the Build
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="../chapter04/abouttestsuites.html" title=
+          "About the Test Suites">Prev</a>
+          <p>
+            About the Test Suites
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="toolchaintechnotes.html" title=
+          "Toolchain Technical Notes">Next</a>
+          <p>
+            Toolchain Technical Notes
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part2.html" title=
+          "Part&nbsp;II.&nbsp;Preparing for the Build">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="chapter">
+          5. Constructing a Temporary System
+        </h1>
+      </div>
+      <div class="sect1" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="ch-tools-introduction" name="ch-tools-introduction"></a>
+          <h2 class="sect1">
+            5.1. Introduction
+          </h2>
+        </div>
+        <p>
+          This chapter shows how to compile and install a minimal Linux
+          system. This system will contain just enough tools to start
+          constructing the final LFS system in <a href=
+          "../chapter06/chapter06.html">Chapter 6</a> and allow a working
+          environment with more user convenience than a minimum environment
+          would.
+        </p>
+        <p>
+          There are two steps in building this minimal system. The first step
+          is to build a new and host-independent toolchain (compiler,
+          assembler, linker, libraries, and a few useful utilities). The
+          second step uses this toolchain to build the other essential tools.
+        </p>
+        <p>
+          The files compiled in this chapter will be installed under the
+          <tt class="filename">$LFS/tools</tt> directory to keep them
+          separate from the files installed in the next chapter and the host
+          production directories. Since the packages compiled here are
+          temporary, we do not want them to pollute the soon-to-be LFS
+          system.
+        </p>
+        <p>
+          Before issuing the build instructions for a package, the package
+          should be unpacked as user <span class=
+          "emphasis"><em>lfs</em></span>, and a <span><strong class=
+          "command">cd</strong></span> into the created directory should be
+          performed. The build instructions assume that the
+          <span><strong class="command">bash</strong></span> shell is in use.
+        </p>
+        <p>
+          Several of the packages are patched before compilation, but only
+          when the patch is needed to circumvent a problem. A patch is often
+          needed in both this and the next chapter, but sometimes in only one
+          or the other. Therefore, do not be concerned if instructions for a
+          downloaded patch seem to be missing. Warning messages about
+          <span class="emphasis"><em>offset</em></span> or <span class=
+          "emphasis"><em>fuzz</em></span> may also be encountered when
+          applying a patch. Do not worry about these warnings, as the patch
+          was still successfully applied.
+        </p>
+        <p>
+          During the compilation of most packages, there will be several
+          warnings that scroll by on the screen. These are normal and can
+          safely be ignored. These warnings are as they appear&mdash;warnings
+          about deprecated, but not invalid, use of the C or C++ syntax. C
+          standards change fairly often, and some packages still use the
+          older standard. This is not a problem, but does prompt the warning.
+        </p>
+        <p>
+          After installing each package, delete its source and build
+          directories, unless specifically instructed otherwise. Deleting the
+          sources saves space and prevents mis-configuration when the same
+          package is reinstalled later. Only three of the packages need to
+          retain the source and build directories in order for their contents
+          to be used by later commands. Pay special attention to these
+          reminders.
+        </p>
+        <p>
+          Check one last time that the <tt class="envar">LFS</tt> environment
+          variable is set up properly:
+        </p>
+        <pre class="userinput"><kbd class="command">echo $LFS</kbd></pre>
+        <p>
+          Make sure the output shows the path to the LFS partition's mount
+          point, which is <tt class="filename">/mnt/lfs</tt>, using our
+          example.
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="../chapter04/abouttestsuites.html" title=
+          "About the Test Suites">Prev</a>
+          <p>
+            About the Test Suites
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="toolchaintechnotes.html" title=
+          "Toolchain Technical Notes">Next</a>
+          <p>
+            Toolchain Technical Notes
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part2.html" title=
+          "Part&nbsp;II.&nbsp;Preparing for the Build">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

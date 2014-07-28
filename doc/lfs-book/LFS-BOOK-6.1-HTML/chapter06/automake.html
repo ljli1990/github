@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.36.&nbsp;Automake-1.9.5
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="autoconf.html" title=
+          "Autoconf-2.59">Prev</a>
+          <p>
+            Autoconf-2.59
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="bash.html" title="Bash-3.0">Next</a>
+          <p>
+            Bash-3.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.36. Automake-1.9.5
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Automake package contains programs for generating Makefiles for
+          use with Autoconf.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">8.8 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Autoconf, Bash,
+              Coreutils, Diffutils, Grep, M4, Make, Perl, and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.36.1. Installation of Automake
+          </h2>
+        </div>
+        <p>
+          Prepare Automake for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>. This takes a long time, about 5 SBUs.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-automake" name="contents-automake"></a>
+          <h2 class="sect2">
+            6.36.2. Contents of Automake
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">acinstall, aclocal,
+              aclocal-1.9.5, automake, automake-1.9.5, compile, config.guess,
+              config.sub, depcomp, elisp-comp, install-sh, mdate-sh, missing,
+              mkinstalldirs, py-compile, symlink-tree, and ylwrap</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3328238" name="id3328238"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="acinstall" name="acinstall"></a><span class=
+                  "term"><span><strong class=
+                  "command">acinstall</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that installs aclocal-style M4 files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="aclocal" name="aclocal"></a><span class=
+                  "term"><span><strong class=
+                  "command">aclocal</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Generates <tt class="filename">aclocal.m4</tt> files
+                    based on the contents of <tt class=
+                    "filename">configure.in</tt> files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="aclocal-version" name=
+                  "aclocal-version"></a><span class=
+                  "term"><span><strong class=
+                  "command">aclocal-1.9.5</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A hard link to <span><strong class=
+                    "command">aclocal</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="automake" name="automake"></a><span class=
+                  "term"><span><strong class=
+                  "command">automake</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A tool for automatically generating <tt class=
+                    "filename">Makefile.in</tt> files from <tt class=
+                    "filename">Makefile.am</tt> files. To create all the
+                    <tt class="filename">Makefile.in</tt> files for a
+                    package, run this program in the top-level directory. By
+                    scanning the <tt class="filename">configure.in</tt> file,
+                    it automatically finds each appropriate <tt class=
+                    "filename">Makefile.am</tt> file and generates the
+                    corresponding <tt class="filename">Makefile.in</tt> file
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="automake-version" name=
+                  "automake-version"></a><span class=
+                  "term"><span><strong class=
+                  "command">automake-1.9.5</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A hard link to <span><strong class=
+                    "command">automake</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="compile" name="compile"></a><span class=
+                  "term"><span><strong class=
+                  "command">compile</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A wrapper for compilers
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="config.guess" name="config.guess"></a><span class=
+                  "term"><span><strong class=
+                  "command">config.guess</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that attempts to guess the canonical triplet for
+                    the given build, host, or target architecture
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="config.sub" name="config.sub"></a><span class=
+                  "term"><span><strong class=
+                  "command">config.sub</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A configuration validation subroutine script
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="depcomp" name="depcomp"></a><span class=
+                  "term"><span><strong class=
+                  "command">depcomp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script for compiling a program so that dependency
+                    information is generated in addition to the desired
+                    output
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="elisp-comp" name="elisp-comp"></a><span class=
+                  "term"><span><strong class=
+                  "command">elisp-comp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Byte-compiles Emacs Lisp code
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="install-sh" name="install-sh"></a><span class=
+                  "term"><span><strong class=
+                  "command">install-sh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that installs a program, script, or data file
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mdate-sh" name="mdate-sh"></a><span class=
+                  "term"><span><strong class=
+                  "command">mdate-sh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that prints the modification time of a file or
+                    directory
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="missing" name="missing"></a><span class=
+                  "term"><span><strong class=
+                  "command">missing</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script acting as a common stub for missing GNU programs
+                    during an installation
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mkinstalldirs" name="mkinstalldirs"></a><span class=
+                  "term"><span><strong class=
+                  "command">mkinstalldirs</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that creates a directory tree
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="py-compile" name="py-compile"></a><span class=
+                  "term"><span><strong class=
+                  "command">py-compile</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compiles a Python program
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="symlink-tree" name="symlink-tree"></a><span class=
+                  "term"><span><strong class=
+                  "command">symlink-tree</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script to create a symlink tree of a directory tree
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ylwrap" name="ylwrap"></a><span class=
+                  "term"><span><strong class=
+                  "command">ylwrap</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A wrapper for <span><strong class=
+                    "command">lex</strong></span> and <span><strong class=
+                    "command">yacc</strong></span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="autoconf.html" title=
+          "Autoconf-2.59">Prev</a>
+          <p>
+            Autoconf-2.59
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="bash.html" title="Bash-3.0">Next</a>
+          <p>
+            Bash-3.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

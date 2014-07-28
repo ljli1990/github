@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.32.&nbsp;Perl-5.8.6
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="util-linux.html" title=
+          "Util-linux-2.12q">Prev</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="stripping.html" title="Stripping">Next</a>
+          <p>
+            Stripping
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.32. Perl-5.8.6
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Perl package contains the Practical Extraction and Report
+          Language.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.8 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">79.8 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, Make, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.32.1. Installation of Perl
+          </h2>
+        </div>
+        <p>
+          First adapt some hard-wired paths to the C library by applying the
+          following patch:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../perl-5.8.6-libc-1.patch</kbd></pre>
+        <p>
+          Prepare Perl for compilation (make sure to get the 'IO Fcntl POSIX'
+          part of the command correct&mdash;they are all letters):
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure.gnu --prefix=/tools -Dstatic_ext='IO Fcntl POSIX'</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class="parameter"><tt>-Dstatic_ext='IO
+              Fcntl POSIX'</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells Perl to build the minimum set of static extensions
+                needed for installing and testing the Coreutils package in
+                the next chapter.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Only a few of the utilities contained in this package need to be
+          built:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make perl utilities</kbd></pre>
+        <p>
+          Although Perl comes with a test suite, it is not recommended to run
+          it at this point. Only part of Perl was built and running
+          <strong class="userinput"><tt>make test</tt></strong> now will
+          cause the rest of Perl to be built as well, which is unnecessary at
+          this point. The test suite can be run in the next chapter if
+          desired.
+        </p>
+        <p>
+          Install these tools and their libraries:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp perl pod/pod2man /tools/bin
+mkdir -p /tools/lib/perl5/5.8.6
+cp -R lib/* /tools/lib/perl5/5.8.6</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/perl.html#contents-perl" title=
+          "6.33.2.&nbsp;Contents of Perl">Section&nbsp;6.33.2,
+          &ldquo;Contents of Perl.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="util-linux.html" title=
+          "Util-linux-2.12q">Prev</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="stripping.html" title="Stripping">Next</a>
+          <p>
+            Stripping
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

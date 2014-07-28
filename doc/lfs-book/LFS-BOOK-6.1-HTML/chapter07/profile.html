@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.9.&nbsp;The Bash Shell Startup Files
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="inputrc.html" title=
+          "Creating the /etc/inputrc File">Prev</a>
+          <p>
+            Creating the /etc/inputrc File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="hostname.html" title=
+          "Configuring the localnet Script">Next</a>
+          <p>
+            Configuring the localnet Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.9. The Bash Shell Startup Files
+        </h1>
+      </div>
+      <p>
+        The shell program <span><strong class=
+        "command">/bin/bash</strong></span> (hereafter referred to as
+        &ldquo;<span class="quote">the shell</span>&rdquo;) uses a collection
+        of startup files to help create an environment to run in. Each file
+        has a specific use and may affect login and interactive environments
+        differently. The files in the <tt class="filename">/etc</tt>
+        directory provide global settings. If an equivalent file exists in
+        the home directory, it may override the global settings.
+      </p>
+      <p>
+        An interactive login shell is started after a successful login, using
+        <span><strong class="command">/bin/login</strong></span>, by reading
+        the <tt class="filename">/etc/passwd</tt> file. An interactive
+        non-login shell is started at the command-line (e.g., <tt class=
+        "prompt">[prompt]$</tt><span><strong class=
+        "command">/bin/bash</strong></span>). A non-interactive shell is
+        usually present when a shell script is running. It is non-interactive
+        because it is processing a script and not waiting for user input
+        between commands.
+      </p>
+      <p>
+        For more information, see <span><strong class="command">info
+        bash</strong></span> under the <span class="emphasis"><em>Bash
+        Startup Files and Interactive Shells</em></span> section.
+      </p>
+      <p>
+        The files <tt class="filename">/etc/profile</tt> and <tt class=
+        "filename">~/.bash_profile</tt> are read when the shell is invoked as
+        an interactive login shell.
+      </p>
+      <p>
+        The base <tt class="filename">/etc/profile</tt> below sets some
+        environment variables necessary for native language support. Setting
+        them properly results in:
+      </p>
+      <div class="itemizedlist">
+        <ul>
+          <li>
+            <p>
+              The output of programs translated into the native language
+            </p>
+          </li>
+          <li>
+            <p>
+              Correct classification of characters into letters, digits and
+              other classes. This is necessary for <span><strong class=
+              "command">bash</strong></span> to properly accept non-ASCII
+              characters in command lines in non-English locales
+            </p>
+          </li>
+          <li>
+            <p>
+              The correct alphabetical sorting order for the country
+            </p>
+          </li>
+          <li>
+            <p>
+              Appropriate default paper size
+            </p>
+          </li>
+          <li>
+            <p>
+              Correct formatting of monetary, time, and date values
+            </p>
+          </li>
+        </ul>
+      </div>
+      <p>
+        This script also sets the <tt class="envar">INPUTRC</tt> environment
+        variable that makes Bash and Readline use the <tt class=
+        "filename">/etc/inputrc</tt> file created earlier.
+      </p>
+      <p>
+        Replace <em class="replaceable"><tt>[ll]</tt></em> below with the
+        two-letter code for the desired language (e.g., &ldquo;<span class=
+        "quote">en</span>&rdquo;) and <em class=
+        "replaceable"><tt>[CC]</tt></em> with the two-letter code for the
+        appropriate country (e.g., &ldquo;<span class=
+        "quote">GB</span>&rdquo;). <em class=
+        "replaceable"><tt>[charmap]</tt></em> should be replaced with the
+        canonical charmap for your chosen locale.
+      </p>
+      <p>
+        The list of all locales supported by Glibc can be obtained by running
+        the following command:
+      </p>
+      <pre class="userinput"><kbd class="command">locale -a</kbd></pre>
+      <p>
+        Locales can have a number of synonyms, e.g. &ldquo;<span class=
+        "quote">ISO-8859-1</span>&rdquo; is also referred to as
+        &ldquo;<span class="quote">iso8859-1</span>&rdquo; and
+        &ldquo;<span class="quote">iso88591</span>&rdquo;. Some applications
+        cannot handle the various synonyms correctly, so it is safest to
+        choose the canonical name for a particular locale. To determine the
+        canonical name, run the following command, where <em class=
+        "replaceable"><tt>[locale name]</tt></em> is the output given by
+        <span><strong class="command">locale -a</strong></span> for your
+        preferred locale (&ldquo;<span class=
+        "quote">en_GB.iso88591</span>&rdquo; in our example).
+      </p>
+      <pre class="userinput"><kbd class="command">LC_ALL=<em class=
+      "replaceable"><tt>[locale name]</tt></em> locale charmap</kbd></pre>
+      <p>
+        For the &ldquo;<span class="quote">en_GB.iso88591</span>&rdquo;
+        locale, the above command will print:
+      </p>
+      <pre class="screen">ISO-8859-1</pre>
+      <p>
+        This results in a final locale setting of &ldquo;<span class=
+        "quote">en_GB.ISO-8859-1</span>&rdquo;.
+      </p>
+      <p>
+        Once the proper locale settings have been determined, create the
+        <tt class="filename">/etc/profile</tt> file:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; /etc/profile &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/profile
+
+export LANG=<em class="replaceable"><tt>[ll]</tt></em>_<em class=
+"replaceable"><tt>[CC]</tt></em>.<em class=
+"replaceable"><tt>[charmap]</tt></em>
+export INPUTRC=/etc/inputrc
+
+# End /etc/profile</tt>
+EOF</kbd></pre>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            The &ldquo;<span class="quote">C</span>&rdquo; (default) and
+            &ldquo;<span class="quote">en_US</span>&rdquo; (the recommended
+            one for United States English users) locales are different.
+          </p>
+        </div>
+      </div>
+      <p>
+        Setting the keyboard layout, screen font, and locale-related
+        environment variables are the only internationalization steps needed
+        to support locales that use ordinary single-byte encodings and
+        left-to-right writing direction. More complex cases (including UTF-8
+        based locales) require additional steps and additional patches
+        because many applications tend to not work properly under such
+        conditions. These steps and patches are not included in the LFS book
+        and such locales are not yet supported by LFS.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="inputrc.html" title=
+          "Creating the /etc/inputrc File">Prev</a>
+          <p>
+            Creating the /etc/inputrc File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="hostname.html" title=
+          "Configuring the localnet Script">Next</a>
+          <p>
+            Configuring the localnet Script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

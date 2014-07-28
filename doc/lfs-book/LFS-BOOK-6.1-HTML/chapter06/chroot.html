@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.3.&nbsp;Entering the Chroot Environment
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="kernfs.html" title=
+          "Mounting Virtual Kernel File Systems">Prev</a>
+          <p>
+            Mounting Virtual Kernel File Systems
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="changingowner.html" title=
+          "Changing Ownership">Next</a>
+          <p>
+            Changing Ownership
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.3. Entering the Chroot Environment
+        </h1>
+      </div>
+      <p>
+        It is time to enter the chroot environment to begin building and
+        installing the final LFS system. As user <span class=
+        "emphasis"><em>root</em></span>, run the following command to enter
+        the realm that is, at the moment, populated with only the temporary
+        tools:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">chroot "$LFS" /tools/bin/env -i \
+    HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
+    /tools/bin/bash --login +h</kbd></pre>
+      <p>
+        The <em class="parameter"><tt>-i</tt></em> option given to the
+        <span><strong class="command">env</strong></span> command will clear
+        all variables of the chroot environment. After that, only the
+        <tt class="envar">HOME</tt>, <tt class="envar">TERM</tt>, <tt class=
+        "envar">PS1</tt>, and <tt class="envar">PATH</tt> variables are set
+        again. The <em class="parameter"><tt>TERM=$TERM</tt></em> construct
+        will set the <tt class="envar">TERM</tt> variable inside chroot to
+        the same value as outside chroot. This variable is needed for
+        programs like <span><strong class="command">vim</strong></span> and
+        <span><strong class="command">less</strong></span> to operate
+        properly. If other variables are needed, such as <tt class=
+        "envar">CFLAGS</tt> or <tt class="envar">CXXFLAGS</tt>, this is a
+        good place to set them again.
+      </p>
+      <p>
+        From this point on, there is no need to use the <tt class=
+        "envar">LFS</tt> variable anymore, because all work will be
+        restricted to the LFS file system. This is because the Bash shell is
+        told that <tt class="filename">$LFS</tt> is now the root (<tt class=
+        "filename">/</tt>) directory.
+      </p>
+      <p>
+        Notice that <tt class="filename">/tools/bin</tt> comes last in the
+        <tt class="envar">PATH</tt>. This means that a temporary tool will no
+        longer be used once its final version is installed. This occurs when
+        the shell does not &ldquo;<span class="quote">remember</span>&rdquo;
+        the locations of executed binaries&mdash;for this reason, hashing is
+        switched off by passing the <em class="parameter"><tt>+h</tt></em>
+        option to <span><strong class="command">bash</strong></span>.
+      </p>
+      <p>
+        It is important that all the commands throughout the remainder of
+        this chapter and the following chapters are run from within the
+        chroot environment. If you leave this environment for any reason
+        (rebooting for example), remember to first mount the <tt class=
+        "systemitem">proc</tt> and <tt class="systemitem">devpts</tt> file
+        systems (discussed in the previous section) and enter chroot again
+        before continuing with the installations.
+      </p>
+      <p>
+        Note that the <span><strong class="command">bash</strong></span>
+        prompt will say <tt class="computeroutput">I have no name!</tt> This
+        is normal because the <tt class="filename">/etc/passwd</tt> file has
+        not been created yet.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="kernfs.html" title=
+          "Mounting Virtual Kernel File Systems">Prev</a>
+          <p>
+            Mounting Virtual Kernel File Systems
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="changingowner.html" title=
+          "Changing Ownership">Next</a>
+          <p>
+            Changing Ownership
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.53.&nbsp;Psmisc-21.6
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="procps.html" title="Procps-3.2.5">Prev</a>
+          <p>
+            Procps-3.2.5
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="shadow.html" title="Shadow-4.0.9">Next</a>
+          <p>
+            Shadow-4.0.9
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.53. Psmisc-21.6
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Psmisc package contains programs for displaying information
+          about running processes.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">1.7 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make, Ncurses,
+              and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.53.1. Installation of Psmisc
+          </h2>
+        </div>
+        <p>
+          Prepare Psmisc for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --exec-prefix=""</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--exec-prefix=""</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This ensures that the Psmisc binaries will install into
+                <tt class="filename">/bin</tt> instead of <tt class=
+                "filename">/usr/bin</tt>. This is the correct location
+                according to the FHS, because some of the Psmisc binaries are
+                used by the LFS-Bootscripts package.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          There is no reason for the <span><strong class=
+          "command">pstree</strong></span> and <span><strong class=
+          "command">pstree.x11</strong></span> programs to reside in
+          <tt class="filename">/bin</tt>. Therefore, move them to <tt class=
+          "filename">/usr/bin</tt>:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">mv /bin/pstree* /usr/bin</kbd></pre>
+        <p>
+          By default, Psmisc's <span><strong class=
+          "command">pidof</strong></span> program is not installed. This
+          usually is not a problem because it is installed later in the
+          Sysvinit package, which provides a better <span><strong class=
+          "command">pidof</strong></span> program. If Sysvinit will not be
+          used for a particular system, complete the installation of Psmisc
+          by creating the following symlink:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">ln -s killall /bin/pidof</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-psmisc" name="contents-psmisc"></a>
+          <h2 class="sect2">
+            6.53.2. Contents of Psmisc
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">fuser, killall,
+              pstree, and pstree.x11 (link to pstree)</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3333936" name="id3333936"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="fuser" name="fuser"></a><span class=
+                  "term"><span><strong class=
+                  "command">fuser</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reports the Process IDs (PIDs) of processes that use the
+                    given files or file systems
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="killall" name="killall"></a><span class=
+                  "term"><span><strong class=
+                  "command">killall</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Kills processes by name; it sends a signal to all
+                    processes running any of the given commands
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pstree" name="pstree"></a><span class=
+                  "term"><span><strong class=
+                  "command">pstree</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Displays running processes as a tree
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pstree.x11" name="pstree.x11"></a><span class=
+                  "term"><span><strong class=
+                  "command">pstree.x11</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Same as <span><strong class=
+                    "command">pstree</strong></span>, except that it waits
+                    for confirmation before exiting
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="procps.html" title="Procps-3.2.5">Prev</a>
+          <p>
+            Procps-3.2.5
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="shadow.html" title="Shadow-4.0.9">Next</a>
+          <p>
+            Shadow-4.0.9
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

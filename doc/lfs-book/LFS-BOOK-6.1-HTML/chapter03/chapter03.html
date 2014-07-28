@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      Chapter&nbsp;3.&nbsp;Packages and Patches
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Part&nbsp;II.&nbsp;Preparing for the Build
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="../part2.html" title=
+          "Preparing for the Build">Prev</a>
+          <p>
+            Preparing for the Build
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="packages.html" title="All Packages">Next</a>
+          <p>
+            All Packages
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part2.html" title=
+          "Part&nbsp;II.&nbsp;Preparing for the Build">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="chapter">
+          3. Packages and Patches
+        </h1>
+      </div>
+      <div class="sect1" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="materials-introduction" name="materials-introduction"></a>
+          <h2 class="sect1">
+            3.1. Introduction
+          </h2>
+        </div>
+        <p>
+          This chapter includes a list of packages that need to be downloaded
+          for building a basic Linux system. The listed version numbers
+          correspond to versions of the software that are known to work, and
+          this book is based on their use. We highly recommend not using
+          newer versions because the build commands for one version may not
+          work with a newer version. The newest package versions may also
+          have problems that require work-arounds. These work-arounds will be
+          developed and stabilized in the development version of the book.
+        </p>
+        <p>
+          Download locations may not always be accessible. If a download
+          location has changed since this book was published, Google
+          (<a href="http://www.google.com/"><i>http://www.google.com/</i></a>)
+          provides a useful search engine for most packages. If this search
+          is unsuccessful, try one of the alternative means of downloading
+          discussed at <a href=
+          "http://www.linuxfromscratch.org/lfs/packages.html"><i>http://www.linuxfromscratch.org/lfs/packages.html</i></a>.
+        </p>
+        <p>
+          Downloaded packages and patches will need to be stored somewhere
+          that is conveniently available throughout the entire build. A
+          working directory is also required to unpack the sources and build
+          them. <tt class="filename">$LFS/sources</tt> can be used both as
+          the place to store the tarballs and patches and as a working
+          directory. By using this directory, the required elements will be
+          located on the LFS partition and will be available during all
+          stages of the building process.
+        </p>
+        <p>
+          To create this directory, execute, as user <span class=
+          "emphasis"><em>root</em></span>, the following command before
+          starting the download session:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">mkdir $LFS/sources</kbd></pre>
+        <p>
+          Make this directory writable and sticky. &ldquo;<span class=
+          "quote">Sticky</span>&rdquo; means that even if multiple users have
+          write permission on a directory, only the owner of a file can
+          delete the file within a sticky directory. The following command
+          will enable the write and sticky modes:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">chmod a+wt $LFS/sources</kbd></pre>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="../part2.html" title=
+          "Preparing for the Build">Prev</a>
+          <p>
+            Preparing for the Build
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="packages.html" title="All Packages">Next</a>
+          <p>
+            All Packages
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part2.html" title=
+          "Part&nbsp;II.&nbsp;Preparing for the Build">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.22.&nbsp;Readline-5.0
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="ncurses.html" title="Ncurses-5.4">Prev</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="vim.html" title="Vim-6.3">Next</a>
+          <p>
+            Vim-6.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.22. Readline-5.0
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Readline package is a set of libraries that offers command-line
+          editing and history capabilities.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.11 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">9.1 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Binutils, Coreutils,
+              Diffutils, Gawk, GCC, Glibc, Grep, Make, Ncurses, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.22.1. Installation of Readline
+          </h2>
+        </div>
+        <p>
+          The following patch includes a fix for a problem where Readline
+          sometimes only shows 33 characters on a line and then wraps to the
+          next line. It also includes other fixes recommended by the Readline
+          author.
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../readline-5.0-fixes-1.patch</kbd></pre>
+        <p>
+          Prepare Readline for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --libdir=/lib</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make SHLIB_XLDFLAGS=-lncurses</kbd></pre>
+        <p>
+          The meaning of the make option:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>SHLIB_XLDFLAGS=-lncurses</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option forces Readline to link against the <tt class=
+                "filename">libncurses</tt> library.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Give Readline's dynamic libraries more appropriate permissions:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">chmod 755 /lib/lib{readline,history}.so*</kbd></pre>
+        <p>
+          Now move the static libraries to a more appropriate location:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">mv /lib/lib{readline,history}.a /usr/lib</kbd></pre>
+        <p>
+          Next, remove the <tt class="filename">.so</tt> files in <tt class=
+          "filename">/lib</tt> and relink them into <tt class=
+          "filename">/usr/lib</tt>.
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">rm /lib/lib{readline,history}.so
+ln -sf ../../lib/libreadline.so.5 /usr/lib/libreadline.so
+ln -sf ../../lib/libhistory.so.5 /usr/lib/libhistory.so</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-readline" name="contents-readline"></a>
+          <h2 class="sect2">
+            6.22.2. Contents of Readline
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              libraries:</span></strong> <span class="seg">libhistory.[a,so],
+              and libreadline.[a,so]</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3322124" name="id3322124"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="libhistory" name="libhistory"></a><span class=
+                  "term"><tt class="filename">libhistory</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Provides a consistent user interface for recalling lines
+                    of history
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libreadline" name="libreadline"></a><span class=
+                  "term"><tt class="filename">libreadline</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Aids in the consistency of user interface across discrete
+                    programs that need to provide a command line interface
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="ncurses.html" title="Ncurses-5.4">Prev</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="vim.html" title="Vim-6.3">Next</a>
+          <p>
+            Vim-6.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

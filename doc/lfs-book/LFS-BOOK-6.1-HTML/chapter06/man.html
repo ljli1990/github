@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.48.&nbsp;Man-1.5p
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="hotplug.html" title=
+          "Hotplug-2004_09_23">Prev</a>
+          <p>
+            Hotplug-2004_09_23
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="make.html" title="Make-3.80">Next</a>
+          <p>
+            Make-3.80
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.48. Man-1.5p
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Man package contains programs for finding and viewing man
+          pages.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">2.9 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Gawk, GCC, Glibc, Grep, Make, and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.48.1. Installation of Man
+          </h2>
+        </div>
+        <p>
+          Two adjustments need to be made to the sources of Man.
+        </p>
+        <p>
+          The first is a <span><strong class="command">sed</strong></span>
+          substitution to add the <em class="parameter"><tt>-R</tt></em>
+          switch to the <tt class="envar">PAGER</tt> variable so that escape
+          sequences are properly handled by Less:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's@-is@&amp;R@g' configure</kbd></pre>
+        <p>
+          The second is also a <span><strong class=
+          "command">sed</strong></span> substitution to comment out the
+          &ldquo;<span class="quote">MANPATH /usr/man</span>&rdquo; line in
+          the <tt class="filename">man.conf</tt> file to prevent redundant
+          results when using programs such as <span><strong class=
+          "command">whatis</strong></span>:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's@MANPATH./usr/man@#&amp;@g' src/man.conf.in</kbd></pre>
+        <p>
+          Prepare Man for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure -confdir=/etc</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>-confdir=/etc</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells the <span><strong class=
+                "command">man</strong></span> program to look for the
+                <tt class="filename">man.conf</tt> configuration file in the
+                <tt class="filename">/etc</tt> directory.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              If you will be working on a terminal that does not support text
+              attributes such as color and bold, you can disable Select
+              Graphic Rendition (SGR) escape sequences by editing the
+              <tt class="filename">man.conf</tt> file and adding the
+              <em class="parameter"><tt>-c</tt></em> option to the <tt class=
+              "envar">NROFF</tt> variable. If you use multiple terminal types
+              for one computer it may be better to selectively add the
+              <tt class="envar">GROFF_NO_SGR</tt> environment variable for
+              the terminals that do not support SGR.
+            </p>
+          </div>
+        </div>
+        <p>
+          If the character set of the locale uses 8-bit characters, search
+          for the line beginning with &ldquo;<span class=
+          "quote">NROFF</span>&rdquo; in <tt class=
+          "filename">/etc/man.conf</tt>, and verify that it matches the
+          following:
+        </p>
+        <pre class="screen">NROFF  /usr/bin/nroff -Tlatin1 -mandoc</pre>
+        <p>
+          Note that &ldquo;<span class="quote">latin1</span>&rdquo; should be
+          used even if it is not the character set of the locale. The reason
+          is that, according to the specification, <span><strong class=
+          "command">groff</strong></span> has no means of typesetting
+          characters outside International Organization for Standards (ISO)
+          8859-1 without some strange escape codes. When formatting man
+          pages, <span><strong class="command">groff</strong></span> thinks
+          that they are in the ISO 8859-1 encoding and this <em class=
+          "parameter"><tt>-Tlatin1</tt></em> switch tells
+          <span><strong class="command">groff</strong></span> to use the same
+          encoding for output. Since <span><strong class=
+          "command">groff</strong></span> does no recoding of input
+          characters, the formatted result is really in the same encoding as
+          input, and therefore it is usable as the input for a pager.
+        </p>
+        <p>
+          This does not solve the problem of a non-working
+          <span><strong class="command">man2dvi</strong></span> program for
+          localized man pages in non-ISO 8859-1 locales. Also, it does not
+          work with multibyte character sets. The first problem does not
+          currently have a solution. The second issue is not of concern
+          because the LFS installation does not support multibyte character
+          sets.
+        </p>
+        <p>
+          Additional information with regards to the compression of man and
+          info pages can be found in the BLFS book at <a href=
+          "http://www.linuxfromscratch.org/blfs/view/cvs/postlfs/compressdoc.html">
+          <i>http://www.linuxfromscratch.org/blfs/view/cvs/postlfs/compressdoc.html</i></a>.
+        </p>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-man" name="contents-man"></a>
+          <h2 class="sect2">
+            6.48.2. Contents of Man
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">apropos,
+              makewhatis, man, man2dvi, man2html, and whatis</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3333105" name="id3333105"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="apropos" name="apropos"></a><span class=
+                  "term"><span><strong class=
+                  "command">apropos</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Searches the <span><strong class=
+                    "command">whatis</strong></span> database and displays
+                    the short descriptions of system commands that contain a
+                    given string
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="makewhatis" name="makewhatis"></a><span class=
+                  "term"><span><strong class=
+                  "command">makewhatis</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Builds the <span><strong class=
+                    "command">whatis</strong></span> database; it reads all
+                    the man pages in the <tt class="envar">MANPATH</tt> and
+                    writes the name and a short description in the
+                    <span><strong class="command">whatis</strong></span>
+                    database for each page
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="man" name="man"></a><span class=
+                  "term"><span><strong class=
+                  "command">man</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Formats and displays the requested on-line man page
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="man2dvi" name="man2dvi"></a><span class=
+                  "term"><span><strong class=
+                  "command">man2dvi</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Converts a man page into dvi format
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="man2html" name="man2html"></a><span class=
+                  "term"><span><strong class=
+                  "command">man2html</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Converts a man page into HTML
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="whatis" name="whatis"></a><span class=
+                  "term"><span><strong class=
+                  "command">whatis</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Searches the <span><strong class=
+                    "command">whatis</strong></span> database and displays
+                    the short descriptions of system commands that contain
+                    the given keyword as a separate word
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="hotplug.html" title=
+          "Hotplug-2004_09_23">Prev</a>
+          <p>
+            Hotplug-2004_09_23
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="make.html" title="Make-3.80">Next</a>
+          <p>
+            Make-3.80
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

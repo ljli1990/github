@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.22.&nbsp;Gettext-0.14.3
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="sed.html" title="Sed-4.1.4">Prev</a>
+          <p>
+            Sed-4.1.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ncurses.html" title="Ncurses-5.4">Next</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.22. Gettext-0.14.3
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Gettext package contains utilities for internationalization and
+          localization. These allow programs to be compiled with NLS (Native
+          Language Support), enabling them to output messages in the user's
+          native language.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.5 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">63.0 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils, Bison,
+              Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, Make, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.22.1. Installation of Gettext
+          </h2>
+        </div>
+        <p>
+          Prepare Gettext for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/tools --disable-libasprintf \
+    --without-csharp</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-libasprintf</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This flag tells Gettext not to build the <tt class=
+                "filename">asprintf</tt> library. Because nothing in this
+                chapter or the next requires this library and Gettext gets
+                rebuilt later, exclude it to save time and space.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--without-csharp</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This ensures that Gettext does not build support for the C#
+                compiler which may be present on the host but will not be
+                available once we enter the <span><strong class=
+                "command">chroot</strong></span> environment.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>. This takes quite some time, around 7 SBUs. The
+          Gettext test suite is known to experience failures under certain
+          host conditions, for example when it finds a Java compiler on the
+          host. An experimental patch to disable Java is available from the
+          LFS Patches project at <a href=
+          "http://www.linuxfromscratch.org/patches/"><i>http://www.linuxfromscratch.org/patches/</i></a>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/gettext.html#contents-gettext" title=
+          "6.30.2.&nbsp;Contents of Gettext">Section&nbsp;6.30.2,
+          &ldquo;Contents of Gettext.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="sed.html" title="Sed-4.1.4">Prev</a>
+          <p>
+            Sed-4.1.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ncurses.html" title="Ncurses-5.4">Next</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

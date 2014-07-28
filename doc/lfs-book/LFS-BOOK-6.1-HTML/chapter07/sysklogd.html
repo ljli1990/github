@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.7.&nbsp;Configuring the sysklogd script
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="console.html" title=
+          "Configuring the Linux Console">Prev</a>
+          <p>
+            Configuring the Linux Console
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="inputrc.html" title=
+          "Creating the /etc/inputrc File">Next</a>
+          <p>
+            Creating the /etc/inputrc File
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.7. Configuring the sysklogd script
+        </h1>
+      </div>
+      <p>
+        The <tt class="filename">sysklogd</tt> script invokes the
+        <span><strong class="command">syslogd</strong></span> program with
+        the <em class="parameter"><tt>-m 0</tt></em> option. This option
+        turns off the periodic timestamp mark that <span><strong class=
+        "command">syslogd</strong></span> writes to the log files every 20
+        minutes by default. If you want to turn on this periodic timestamp
+        mark, edit the <tt class="filename">sysklogd</tt> script and make the
+        changes accordingly. See <strong class="userinput"><tt>man
+        syslogd</tt></strong> for more information.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="console.html" title=
+          "Configuring the Linux Console">Prev</a>
+          <p>
+            Configuring the Linux Console
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="inputrc.html" title=
+          "Creating the /etc/inputrc File">Next</a>
+          <p>
+            Creating the /etc/inputrc File
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.31.&nbsp;Util-linux-2.12q
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="flex.html" title="Flex-2.5.31">Prev</a>
+          <p>
+            Flex-2.5.31
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="perl.html" title="Perl-5.8.6">Next</a>
+          <p>
+            Perl-5.8.6
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.31. Util-linux-2.12q
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Util-linux package contains miscellaneous utility programs.
+          Among them are utilities for handling file systems, consoles,
+          partitions, and messages.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">8.9 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make, Ncurses,
+              Sed, and Zlib</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.31.1. Installation of Util-linux
+          </h2>
+        </div>
+        <p>
+          Util-linux does not use the freshly installed headers and libraries
+          from the <tt class="filename">/tools</tt> directory by default.
+          This is fixed by altering the configure script:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's@/usr/include@/tools/include@g' configure</kbd></pre>
+        <p>
+          Prepare Util-linux for compilation:
+        </p>
+        <pre class="userinput"><kbd class="command">./configure</kbd></pre>
+        <p>
+          Compile some support routines:
+        </p>
+        <pre class="userinput"><kbd class="command">make -C lib</kbd></pre>
+        <p>
+          Only a few of the utilities contained in this package need to be
+          built:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make -C mount mount umount
+make -C text-utils more</kbd></pre>
+        <p>
+          This package does not come with a test suite.
+        </p>
+        <p>
+          Copy these programs to the temporary tools directory:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp mount/{,u}mount text-utils/more /tools/bin</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/util-linux.html#contents-utillinux" title=
+          "6.59.3.&nbsp;Contents of Util-linux">Section&nbsp;6.59.3,
+          &ldquo;Contents of Util-linux.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="flex.html" title="Flex-2.5.31">Prev</a>
+          <p>
+            Flex-2.5.31
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="perl.html" title="Perl-5.8.6">Next</a>
+          <p>
+            Perl-5.8.6
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

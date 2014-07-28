@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      2.3.&nbsp;Creating a File System on the Partition
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;2.&nbsp;Preparing a New Partition
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="creatingpartition.html" title=
+          "Creating a New Partition">Prev</a>
+          <p>
+            Creating a New Partition
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="mounting.html" title=
+          "Mounting the New Partition">Next</a>
+          <p>
+            Mounting the New Partition
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter02.html" title=
+          "Chapter&nbsp;2.&nbsp;Preparing a New Partition">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          2.3. Creating a File System on the Partition
+        </h1>
+      </div>
+      <p>
+        Now that a blank partition has been set up, the file system can be
+        created. The most widely-used system in the Linux world is the second
+        extended file system (ext2), but with newer high-capacity hard disks,
+        journaling file systems are becoming increasingly popular. We will
+        create an ext2 file system. Build instructions for other file systems
+        can be found at <a href=
+        "http://www.linuxfromscratch.org/blfs/view/svn/postlfs/filesystems.html">
+        <i>http://www.linuxfromscratch.org/blfs/view/svn/postlfs/filesystems.html</i></a>.
+      </p>
+      <p>
+        To create an ext2 file system on the LFS partition, run the
+        following:
+      </p>
+      <pre class="userinput"><kbd class="command">mke2fs /dev/<em class=
+      "replaceable"><tt>[xxx]</tt></em></kbd></pre>
+      <p>
+        Replace <em class="replaceable"><tt>[xxx]</tt></em> with the name of
+        the LFS partition (<tt class="filename">hda5</tt> in our previous
+        example).
+      </p>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            Some host distributions use custom features in their filesystem
+            creation tools (e2fsprogs). This can cause problems when booting
+            into your new LFS in Chapter 9, as those features will not be
+            supported by the LFS-installed e2fsprogs; you will get an error
+            similar to &ldquo;<span class="quote">unsupported filesystem
+            features, upgrade your e2fsprogs</span>&rdquo;. To check if your
+            host system uses custom enhancements, run the following command:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">debugfs -R feature /dev/<em class=
+          "replaceable"><tt>[xxx]</tt></em></kbd></pre>
+          <p>
+            If the output contains features other than: dir_index; filetype;
+            large_file; resize_inode or sparse_super then your host system
+            may have custom enhancements. In that case, to avoid later
+            problems, you should compile the stock e2fsprogs package and use
+            the resulting binaries to re-create the filesystem on your LFS
+            partition:
+          </p>
+          <pre class="userinput"><kbd class="command">cd /tmp
+tar xjf /path/to/sources/e2fsprogs-1.37.tar.bz2
+cd e2fsprogs-1.37
+mkdir build
+cd build
+../configure
+make #note that we intentionally don't 'make install' here!
+./misc/mke2fs /dev/<em class="replaceable"><tt>[xxx]</tt></em>
+cd /tmp
+rm -rf e2fsprogs-1.37</kbd></pre>
+        </div>
+      </div>
+      <p>
+        If a swap partition was created, it will need to be initialized for
+        use by issuing the command below. If you are using an existing swap
+        partition, there is no need to format it.
+      </p>
+      <pre class="userinput"><kbd class="command">mkswap /dev/<em class=
+      "replaceable"><tt>[yyy]</tt></em></kbd></pre>
+      <p>
+        Replace <em class="replaceable"><tt>[yyy]</tt></em> with the name of
+        the swap partition.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="creatingpartition.html" title=
+          "Creating a New Partition">Prev</a>
+          <p>
+            Creating a New Partition
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="mounting.html" title=
+          "Mounting the New Partition">Next</a>
+          <p>
+            Mounting the New Partition
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter02.html" title=
+          "Chapter&nbsp;2.&nbsp;Preparing a New Partition">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.44.&nbsp;Grep-2.5.1a
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="e2fsprogs.html" title=
+          "E2fsprogs-1.37">Prev</a>
+          <p>
+            E2fsprogs-1.37
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="grub.html" title="GRUB-0.96">Next</a>
+          <p>
+            GRUB-0.96
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.44. Grep-2.5.1a
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Grep package contains programs for searching through files.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">4.5 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Make, Sed, and
+              Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.44.1. Installation of Grep
+          </h2>
+        </div>
+        <p>
+          Prepare Grep for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --bindir=/bin</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-grep" name="contents-grep"></a>
+          <h2 class="sect2">
+            6.44.2. Contents of Grep
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">egrep (link to
+              grep), fgrep (link to grep), and grep</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3331557" name="id3331557"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="egrep" name="egrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">egrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Prints lines matching an extended regular expression
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="fgrep" name="fgrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">fgrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Prints lines matching a list of fixed strings
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="grep" name="grep"></a><span class=
+                  "term"><span><strong class=
+                  "command">grep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Prints lines matching a basic regular expression
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="e2fsprogs.html" title=
+          "E2fsprogs-1.37">Prev</a>
+          <p>
+            E2fsprogs-1.37
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="grub.html" title="GRUB-0.96">Next</a>
+          <p>
+            GRUB-0.96
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

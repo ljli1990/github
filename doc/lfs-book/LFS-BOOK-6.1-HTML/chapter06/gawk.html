@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.20.&nbsp;Gawk-3.1.4
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="findutils.html" title=
+          "Findutils-4.2.23">Prev</a>
+          <p>
+            Findutils-4.2.23
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ncurses.html" title="Ncurses-5.4">Next</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.20. Gawk-3.1.4
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Gawk package contains programs for manipulating text files.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">16.4 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.20.1. Installation of Gawk
+          </h2>
+        </div>
+        <p>
+          Prepare Gawk for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --libexecdir=/usr/lib</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-gawk" name="contents-gawk"></a>
+          <h2 class="sect2">
+            6.20.2. Contents of Gawk
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">awk (link to gawk),
+              gawk, gawk-3.1.4, grcat, igawk, pgawk, pgawk-3.1.4, and
+              pwcat</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3321306" name="id3321306"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="awk" name="awk"></a><span class=
+                  "term"><span><strong class=
+                  "command">awk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A link to <span><strong class=
+                    "command">gawk</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gawk" name="gawk"></a><span class=
+                  "term"><span><strong class=
+                  "command">gawk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A program for manipulating text files; it is the GNU
+                    implementation of <span><strong class=
+                    "command">awk</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gawk-version" name="gawk-version"></a><span class=
+                  "term"><span><strong class=
+                  "command">gawk-3.1.4</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A hard link to <span><strong class=
+                    "command">gawk</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="grcat" name="grcat"></a><span class=
+                  "term"><span><strong class=
+                  "command">grcat</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Dumps the group database <tt class=
+                    "filename">/etc/group</tt>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="igawk" name="igawk"></a><span class=
+                  "term"><span><strong class=
+                  "command">igawk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Gives <span><strong class="command">gawk</strong></span>
+                    the ability to include files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pgawk" name="pgawk"></a><span class=
+                  "term"><span><strong class=
+                  "command">pgawk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The profiling version of <span><strong class=
+                    "command">gawk</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pgawk-version" name="pgawk-version"></a><span class=
+                  "term"><span><strong class=
+                  "command">pgawk-3.1.4</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Hard link to <span><strong class=
+                    "command">pgawk</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pwcat" name="pwcat"></a><span class=
+                  "term"><span><strong class=
+                  "command">pwcat</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Dumps the password database <tt class=
+                    "filename">/etc/passwd</tt>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="findutils.html" title=
+          "Findutils-4.2.23">Prev</a>
+          <p>
+            Findutils-4.2.23
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="ncurses.html" title="Ncurses-5.4">Next</a>
+          <p>
+            Ncurses-5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

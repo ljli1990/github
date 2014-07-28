@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.9.&nbsp;Linux-Libc-Headers-2.6.11.2
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="devices.html" title=
+          "Populating /dev">Prev</a>
+          <p>
+            Populating /dev
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="man-pages.html" title=
+          "Man-pages-2.01">Next</a>
+          <p>
+            Man-pages-2.01
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.9. Linux-Libc-Headers-2.6.11.2
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Linux-Libc-Headers package contains the &ldquo;<span class=
+          "quote">sanitized</span>&rdquo; kernel headers.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">26.9 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Coreutils</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.9.1. Installation of Linux-Libc-Headers
+          </h2>
+        </div>
+        <p>
+          For years it has been common practice to use &ldquo;<span class=
+          "quote">raw</span>&rdquo; kernel headers (straight from a kernel
+          tarball) in <tt class="filename">/usr/include</tt>, but over the
+          last few years, the kernel developers have taken a strong stance
+          that this should not be done. This gave birth to the
+          Linux-Libc-Headers Project, which was designed to maintain an API
+          stable version of the Linux headers.
+        </p>
+        <p>
+          Install the header files:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp -R include/asm-i386 /usr/include/asm
+cp -R include/linux /usr/include</kbd></pre>
+        <p>
+          Ensure that all the headers are owned by root:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">chown -R root:root /usr/include/{asm,linux}</kbd></pre>
+        <p>
+          Make sure the users can read the headers:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">find /usr/include/{asm,linux} -type d -exec chmod 755 {} \;
+find /usr/include/{asm,linux} -type f -exec chmod 644 {} \;</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-linux-libc-headers" name=
+          "contents-linux-libc-headers"></a>
+          <h2 class="sect2">
+            6.9.2. Contents of Linux-Libc-Headers
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              headers:</span></strong> <span class=
+              "seg">/usr/include/{asm,linux}/*.h</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3315080" name="id3315080"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="linux-libc-headers" name=
+                  "linux-libc-headers"></a><span class="term"><tt class=
+                  "filename">/usr/include/{asm,linux}/*.h</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The Linux headers API
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="devices.html" title=
+          "Populating /dev">Prev</a>
+          <p>
+            Populating /dev
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="man-pages.html" title=
+          "Man-pages-2.01">Next</a>
+          <p>
+            Man-pages-2.01
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

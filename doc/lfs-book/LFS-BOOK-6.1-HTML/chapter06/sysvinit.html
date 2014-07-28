@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.56.&nbsp;Sysvinit-2.86
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="sysklogd.html" title=
+          "Sysklogd-1.4.1">Prev</a>
+          <p>
+            Sysklogd-1.4.1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="tar.html" title="Tar-1.15.1">Next</a>
+          <p>
+            Tar-1.15.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.56. Sysvinit-2.86
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Sysvinit package contains programs for controlling the startup,
+          running, and shutdown of the system.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">1012 KB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Binutils, Coreutils, GCC,
+              Glibc, and Make</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.56.1. Installation of Sysvinit
+          </h2>
+        </div>
+        <p>
+          When run-levels are changed (for example, when halting the system),
+          <span><strong class="command">init</strong></span> sends
+          termination signals to those processes that <span><strong class=
+          "command">init</strong></span> itself started and that should not
+          be running in the new run-level. While doing this,
+          <span><strong class="command">init</strong></span> outputs messages
+          like &ldquo;<span class="quote">Sending processes the TERM
+          signal</span>&rdquo; which seem to imply that it is sending these
+          signals to all currently running processes. To avoid this
+          misinterpretation, modify the source so that these messages read
+          like &ldquo;<span class="quote">Sending processes started by init
+          the TERM signal</span>&rdquo; instead:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's@Sending processes@&amp; started by init@g' \
+    src/init.c</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make -C src</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make -C src install</kbd></pre>
+      </div>
+      <div class="configuration" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="conf-sysvinit" name="conf-sysvinit"></a>
+          <h2 class="sect2">
+            6.56.2. Configuring Sysvinit
+          </h2>
+        </div>
+        <p>
+          Create a new file <tt class="filename">/etc/inittab</tt> by running
+          the following:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cat &gt; /etc/inittab &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/inittab
+
+id:3:initdefault:
+
+si::sysinit:/etc/rc.d/init.d/rc sysinit
+
+l0:0:wait:/etc/rc.d/init.d/rc 0
+l1:S1:wait:/etc/rc.d/init.d/rc 1
+l2:2:wait:/etc/rc.d/init.d/rc 2
+l3:3:wait:/etc/rc.d/init.d/rc 3
+l4:4:wait:/etc/rc.d/init.d/rc 4
+l5:5:wait:/etc/rc.d/init.d/rc 5
+l6:6:wait:/etc/rc.d/init.d/rc 6
+
+ca:12345:ctrlaltdel:/sbin/shutdown -t1 -a -r now
+
+su:S016:once:/sbin/sulogin
+
+1:2345:respawn:/sbin/agetty -I '\033(K' tty1 9600
+2:2345:respawn:/sbin/agetty -I '\033(K' tty2 9600
+3:2345:respawn:/sbin/agetty -I '\033(K' tty3 9600
+4:2345:respawn:/sbin/agetty -I '\033(K' tty4 9600
+5:2345:respawn:/sbin/agetty -I '\033(K' tty5 9600
+6:2345:respawn:/sbin/agetty -I '\033(K' tty6 9600
+
+# End /etc/inittab</tt>
+EOF</kbd></pre>
+        <p>
+          The <em class="parameter"><tt>-I '\033(K'</tt></em> option tells
+          <span><strong class="command">agetty</strong></span> to send this
+          escape sequence to the terminal before doing anything else. This
+          escape sequence switches the console character set to a
+          user-defined one, which can be modified by running the
+          <span><strong class="command">setfont</strong></span> program. The
+          <span><strong class="command">console</strong></span> initscript
+          from the LFS-Bootscripts package calls the <span><strong class=
+          "command">setfont</strong></span> program during system startup.
+          Sending this escape sequence is necessary for people who use
+          non-ISO 8859-1 screen fonts, but it does not affect native English
+          speakers.
+        </p>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-sysvinit" name="contents-sysvinit"></a>
+          <h2 class="sect2">
+            6.56.3. Contents of Sysvinit
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">halt, init,
+              killall5, last, lastb (link to last), mesg, pidof (link to
+              killall5), poweroff (link to halt), reboot (link to halt),
+              runlevel, shutdown, sulogin, telinit (link to init), utmpdump,
+              and wall</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3336057" name="id3336057"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="halt" name="halt"></a><span class=
+                  "term"><span><strong class=
+                  "command">halt</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Normally invokes <span><strong class=
+                    "command">shutdown</strong></span> with the <em class=
+                    "parameter"><tt>-h</tt></em> option, except when already
+                    in run-level 0, then it tells the kernel to halt the
+                    system; it notes in the file <tt class=
+                    "filename">/var/log/wtmp</tt> that the system is being
+                    brought down
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="init" name="init"></a><span class=
+                  "term"><span><strong class=
+                  "command">init</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The first process to be started when the kernel has
+                    initialized the hardware which takes over the boot
+                    process and starts all the proceses it is instructed to
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="killall5" name="killall5"></a><span class=
+                  "term"><span><strong class=
+                  "command">killall5</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Sends a signal to all processes, except the processes in
+                    its own session so it will not kill the shell running the
+                    script that called it
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="last" name="last"></a><span class=
+                  "term"><span><strong class=
+                  "command">last</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Shows which users last logged in (and out), searching
+                    back through the <tt class="filename">/var/log/wtmp</tt>
+                    file; it also shows system boots, shutdowns, and
+                    run-level changes
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="lastb" name="lastb"></a><span class=
+                  "term"><span><strong class=
+                  "command">lastb</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Shows the failed login attempts, as logged in <tt class=
+                    "filename">/var/log/btmp</tt>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mesg" name="mesg"></a><span class=
+                  "term"><span><strong class=
+                  "command">mesg</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Controls whether other users can send messages to the
+                    current user's terminal
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mountpoint" name="mountpoint"></a><span class=
+                  "term"><span><strong class=
+                  "command">mountpoint</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Checks if the directory is a mountpoint
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pidof" name="pidof"></a><span class=
+                  "term"><span><strong class=
+                  "command">pidof</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reports the PIDs of the given programs
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="poweroff" name="poweroff"></a><span class=
+                  "term"><span><strong class=
+                  "command">poweroff</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Tells the kernel to halt the system and switch off the
+                    computer (see <span><strong class=
+                    "command">halt</strong></span>)
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="reboot" name="reboot"></a><span class=
+                  "term"><span><strong class=
+                  "command">reboot</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Tells the kernel to reboot the system (see
+                    <span><strong class="command">halt</strong></span>)
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="runlevel" name="runlevel"></a><span class=
+                  "term"><span><strong class=
+                  "command">runlevel</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reports the previous and the current run-level, as noted
+                    in the last run-level record in <tt class=
+                    "filename">/var/run/utmp</tt>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="shutdown" name="shutdown"></a><span class=
+                  "term"><span><strong class=
+                  "command">shutdown</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Brings the system down in a secure way, signaling all
+                    processes and notifying all logged-in users
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="sulogin" name="sulogin"></a><span class=
+                  "term"><span><strong class=
+                  "command">sulogin</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Allows <span class="emphasis"><em>root</em></span> to log
+                    in; it is normally invoked by <span><strong class=
+                    "command">init</strong></span> when the system goes into
+                    single user mode
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="telinit" name="telinit"></a><span class=
+                  "term"><span><strong class=
+                  "command">telinit</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Tells <span><strong class="command">init</strong></span>
+                    which run-level to change to
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="utmpdump" name="utmpdump"></a><span class=
+                  "term"><span><strong class=
+                  "command">utmpdump</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Displays the content of the given login file in a more
+                    user-friendly format
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="wall" name="wall"></a><span class=
+                  "term"><span><strong class=
+                  "command">wall</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Writes a message to all logged-in users
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="sysklogd.html" title=
+          "Sysklogd-1.4.1">Prev</a>
+          <p>
+            Sysklogd-1.4.1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="tar.html" title="Tar-1.15.1">Next</a>
+          <p>
+            Tar-1.15.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

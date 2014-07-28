@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      4.2.&nbsp;Creating the $LFS/tools Directory
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;4.&nbsp;Final Preparations
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="chapter04.html" title=
+          "Final Preparations">Prev</a>
+          <p>
+            Final Preparations
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="addinguser.html" title=
+          "Adding the LFS User">Next</a>
+          <p>
+            Adding the LFS User
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter04.html" title=
+          "Chapter&nbsp;4.&nbsp;Final Preparations">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          4.2. Creating the $LFS/tools Directory
+        </h1>
+      </div>
+      <p>
+        All programs compiled in <a href=
+        "../chapter05/chapter05.html">Chapter 5</a> will be installed under
+        <tt class="filename">$LFS/tools</tt> to keep them separate from the
+        programs compiled in <a href="../chapter06/chapter06.html">Chapter
+        6</a>. The programs compiled here are temporary tools and will not be
+        a part of the final LFS system. By keeping these programs in a
+        separate directory, they can easily be discarded later after their
+        use. This also prevents these programs from ending up in the host
+        production directories (easy to do by accident in <a href=
+        "../chapter05/chapter05.html">Chapter 5</a>).
+      </p>
+      <p>
+        Create the required directory by running the following as
+        <span class="emphasis"><em>root</em></span>:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">mkdir $LFS/tools</kbd></pre>
+      <p>
+        The next step is to create a <tt class="filename">/tools</tt> symlink
+        on the host system. This will point to the newly-created directory on
+        the LFS partition. Run this command as <span class=
+        "emphasis"><em>root</em></span> as well:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">ln -s $LFS/tools /</kbd></pre>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            The above command is correct. The <span><strong class=
+            "command">ln</strong></span> command has a few syntactic
+            variations, so be sure to check <span><strong class=
+            "command">info coreutils ln</strong></span> and <tt class=
+            "filename">ln(1)</tt> before reporting what you may think is an
+            error.
+          </p>
+        </div>
+      </div>
+      <p>
+        The created symlink enables the toolchain to be compiled so that it
+        always refers to <tt class="filename">/tools</tt>, meaning that the
+        compiler, assembler, and linker will work both in this chapter (when
+        we are still using some tools from the host) and in the next (when we
+        are &ldquo;<span class="quote">chrooted</span>&rdquo; to the LFS
+        partition).
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="chapter04.html" title=
+          "Final Preparations">Prev</a>
+          <p>
+            Final Preparations
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="addinguser.html" title=
+          "Adding the LFS User">Next</a>
+          <p>
+            Adding the LFS User
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter04.html" title=
+          "Chapter&nbsp;4.&nbsp;Final Preparations">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

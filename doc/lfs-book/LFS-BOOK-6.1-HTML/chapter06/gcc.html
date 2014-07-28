@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.14.&nbsp;GCC-3.4.3
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="binutils.html" title=
+          "Binutils-2.15.94.0.2.2">Prev</a>
+          <p>
+            Binutils-2.15.94.0.2.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="coreutils.html" title=
+          "Coreutils-5.2.1">Next</a>
+          <p>
+            Coreutils-5.2.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.14. GCC-3.4.3
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The GCC package contains the GNU compiler collection, which
+          includes the C and C++ compilers.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">11.7 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">451 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Findutils, Gawk, Gettext, Glibc, Grep,
+              Make, Perl, Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.14.1. Installation of GCC
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building GCC.
+        </p>
+        <p>
+          Apply only the No-Fixincludes patch (not the Specs patch) also used
+          in the previous chapter:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../gcc-3.4.3-no_fixincludes-1.patch</kbd></pre>
+        <p>
+          GCC fails to compile some packages outside of a base Linux From
+          Scratch install (e.g., Mozilla and kdegraphics) when used in
+          conjunction with newer versions of Binutils. Apply the following
+          patch to fix this issue:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../gcc-3.4.3-linkonce-1.patch</kbd></pre>
+        <p>
+          Apply a <span><strong class="command">sed</strong></span>
+          substitution that will suppress the installation of <tt class=
+          "filename">libiberty.a</tt>. The version of <tt class=
+          "filename">libiberty.a</tt> provided by Binutils will be used
+          instead:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</kbd></pre>
+        <p>
+          The GCC documentation recommends building GCC outside of the source
+          directory in a dedicated build directory:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../gcc-build
+cd ../gcc-build</kbd></pre>
+        <p>
+          Prepare GCC for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../gcc-3.4.3/configure --prefix=/usr \
+    --libexecdir=/usr/lib --enable-shared \
+    --enable-threads=posix --enable-__cxa_atexit \
+    --enable-clocale=gnu --enable-languages=c,c++</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <div class="important">
+          <div class="admonhead">
+            <img alt="[Important]" src="../images/important.png" />
+            <h3 class="admontitle">
+              Important
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              In this section, the test suite for GCC is considered critical.
+              Do not skip it under any circumstance.
+            </p>
+          </div>
+        </div>
+        <p>
+          Test the results, but do not stop at errors:
+        </p>
+        <pre class="userinput"><kbd class="command">make -k check</kbd></pre>
+        <p>
+          Some of the errors are known issues and were noted in the previous
+          chapter. The test suite notes from <a href=
+          "../chapter05/gcc-pass2.html" title=
+          "5.11.&nbsp;GCC-3.4.3 - Pass 2">Section 5.11, &ldquo;GCC-3.4.3 -
+          Pass 2,&rdquo;</a> are still relevant here. Be sure to refer back
+          to them as necessary.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Some packages expect the C preprocessor to be installed in the
+          <tt class="filename">/lib</tt> directory. To support those
+          packages, create this symlink:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">ln -s ../usr/bin/cpp /lib</kbd></pre>
+        <p>
+          Many packages use the name <span><strong class=
+          "command">cc</strong></span> to call the C compiler. To satisfy
+          those packages, create a symlink:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">ln -s gcc /usr/bin/cc</kbd></pre>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              At this point, it is strongly recommended to repeat the sanity
+              check performed earlier in this chapter. Refer back to <a href=
+              "readjusting.html" title=
+              "6.12.&nbsp;Re-adjusting the Toolchain">Section 6.12,
+              &ldquo;Re-adjusting the Toolchain,&rdquo;</a> and repeat the
+              check. If the results are in error, then the most likely reason
+              is that the GCC Specs patch from <a href=
+              "../chapter05/chapter05.html">Chapter 5</a> was erroneously
+              applied here.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-gcc" name="contents-gcc"></a>
+          <h2 class="sect2">
+            6.14.2. Contents of GCC
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">c++, cc (link to
+              gcc), cpp, g++, gcc, gccbug, and gcov</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              libraries:</span></strong> <span class="seg">libgcc.a,
+              libgcc_eh.a, libgcc_s.so, libstdc++.[a,so], and
+              libsupc++.a</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3317978" name="id3317978"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="cc" name="cc"></a><span class=
+                  "term"><span><strong class=
+                  "command">cc</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The C compiler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="cpp" name="cpp"></a><span class=
+                  "term"><span><strong class=
+                  "command">cpp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The C preprocessor; it is used by the compiler to expand
+                    the #include, #define, and similar statements in the
+                    source files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="c" name="c"></a><span class=
+                  "term"><span><strong class=
+                  "command">c++</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The C++ compiler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="g" name="g"></a><span class=
+                  "term"><span><strong class=
+                  "command">g++</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The C++ compiler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gcc" name="gcc"></a><span class=
+                  "term"><span><strong class=
+                  "command">gcc</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    The C compiler
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gccbug" name="gccbug"></a><span class=
+                  "term"><span><strong class=
+                  "command">gccbug</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A shell script used to help create useful bug reports
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gcov" name="gcov"></a><span class=
+                  "term"><span><strong class=
+                  "command">gcov</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A coverage testing tool; it is used to analyze programs
+                    to determine where optimizations will have the most
+                    effect
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libgcc" name="libgcc"></a><span class=
+                  "term"><tt class="filename">libgcc</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains run-time support for <span><strong class=
+                    "command">gcc</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libstdc" name="libstdc"></a><span class=
+                  "term"><tt class="filename">libstdc++</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The standard C++ library
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libsupc" name="libsupc"></a><span class=
+                  "term"><tt class="filename">libsupc++</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Provides supporting routines for the C++ programming
+                    language
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="binutils.html" title=
+          "Binutils-2.15.94.0.2.2">Prev</a>
+          <p>
+            Binutils-2.15.94.0.2.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="coreutils.html" title=
+          "Coreutils-5.2.1">Next</a>
+          <p>
+            Coreutils-5.2.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

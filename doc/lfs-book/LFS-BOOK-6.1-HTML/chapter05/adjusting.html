@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.7.&nbsp;Adjusting the Toolchain
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="glibc.html" title="Glibc-2.3.4">Prev</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="tcl.html" title="Tcl-8.4.9">Next</a>
+          <p>
+            Tcl-8.4.9
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.7. Adjusting the Toolchain
+        </h1>
+      </div>
+      <p>
+        Now that the temporary C libraries have been installed, all tools
+        compiled in the rest of this chapter should be linked against these
+        libraries. In order to accomplish this, the linker and the compiler's
+        specs file need to be adjusted.
+      </p>
+      <p>
+        The linker, adjusted at the end of the first pass of Binutils, is
+        installed by running the following command from within the <tt class=
+        "filename">binutils-build</tt> directory:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">make -C ld install</kbd></pre>
+      <p>
+        From this point onwards, everything will link only against the
+        libraries in <tt class="filename">/tools/lib</tt>.
+      </p>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            If the earlier warning to retain the Binutils source and build
+            directories from the first pass was missed, ignore the above
+            command. This results in a small chance that the subsequent
+            testing programs will link against libraries on the host. This is
+            not ideal, but it is not a major problem. The situation is
+            corrected when the second pass of Binutils is installed later.
+          </p>
+        </div>
+      </div>
+      <p>
+        Now that the adjusted linker is installed, the Binutils build and
+        source directories should be removed.
+      </p>
+      <p>
+        The next task is to amend the GCC specs file so that it points to the
+        new dynamic linker. A simple sed script will accomplish this:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">SPECFILE=`gcc --print-file specs` &amp;&amp;
+sed 's@ /lib/ld-linux.so.2@ /tools/lib/ld-linux.so.2@g' \
+    $SPECFILE &gt; tempspecfile &amp;&amp;
+mv -f tempspecfile $SPECFILE &amp;&amp;
+unset SPECFILE</kbd></pre>
+      <p>
+        <span>It is recommended that the above command be copy-and-pasted in
+        order to ensure accuracy.</span> Alternatively, the specs file can be
+        edited by hand. This is done by replacing every occurrence of
+        &ldquo;<span class="quote">/lib/ld-linux.so.2</span>&rdquo; with
+        &ldquo;<span class="quote">/tools/lib/ld-linux.so.2</span>&rdquo;
+      </p>
+      <p>
+        Be sure to visually inspect the specs file in order to verify the
+        intended changes have been made.
+      </p>
+      <div class="important">
+        <div class="admonhead">
+          <img alt="[Important]" src="../images/important.png" />
+          <h3 class="admontitle">
+            Important
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            If working on a platform where the name of the dynamic linker is
+            something other than <tt class="filename">ld-linux.so.2</tt>,
+            replace &ldquo;<span class="quote">ld-linux.so.2</span>&rdquo;
+            with the name of the platform's dynamic linker in the above
+            commands. Refer back to <a href="toolchaintechnotes.html" title=
+            "5.2.&nbsp;Toolchain Technical Notes">Section 5.2,
+            &ldquo;Toolchain Technical Notes,&rdquo;</a> if necessary.
+          </p>
+        </div>
+      </div>
+      <p>
+        There is a possibility that some include files from the host system
+        have found their way into GCC's private include dir. This can happen
+        as a result of GCC's &ldquo;<span class=
+        "quote">fixincludes</span>&rdquo; process, which runs as part of the
+        GCC build. This is explained in more detail later in this chapter.
+        Run the following command to eliminate this possibility:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">rm -f /tools/lib/gcc/*/*/include/{pthread.h,bits/sigthread.h}</kbd></pre>
+      <div class="caution">
+        <div class="admonhead">
+          <img alt="[Caution]" src="../images/caution.png" />
+          <h3 class="admontitle">
+            Caution
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            At this point, it is imperative to stop and ensure that the basic
+            functions (compiling and linking) of the new toolchain are
+            working as expected. To perform a sanity check, run the following
+            commands:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">echo 'main(){}' &gt; dummy.c
+cc dummy.c
+readelf -l a.out | grep ': /tools'</kbd></pre>
+          <p>
+            If everything is working correctly, there should be no errors,
+            and the output of the last command will be of the form:
+          </p>
+          <pre class="screen"><tt class=
+          "computeroutput">[Requesting program interpreter: 
+    /tools/lib/ld-linux.so.2]</tt></pre>
+          <p>
+            Note that <tt class="filename">/tools/lib</tt> appears as the
+            prefix of the dynamic linker.
+          </p>
+          <p>
+            If the output is not shown as above or there was no output at
+            all, then something is wrong. Investigate and retrace the steps
+            to find out where the problem is and correct it. This issue must
+            be resolved before continuing on. First, perform the sanity check
+            again, using <span><strong class="command">gcc</strong></span>
+            instead of <span><strong class="command">cc</strong></span>. If
+            this works, then the <tt class="filename">/tools/bin/cc</tt>
+            symlink is missing. Revisit <a href="gcc-pass1.html" title=
+            "5.4.&nbsp;GCC-3.4.3 - Pass 1">Section 5.4, &ldquo;GCC-3.4.3 -
+            Pass 1,&rdquo;</a> and install the symlink. Next, ensure that the
+            <tt class="envar">PATH</tt> is correct. This can be checked by
+            running <span><strong class="command">echo $PATH</strong></span>
+            and verifying that <tt class="filename">/tools/bin</tt> is at the
+            head of the list. If the <tt class="envar">PATH</tt> is wrong it
+            could mean that you are not logged in as user <span class=
+            "emphasis"><em>lfs</em></span> or that something went wrong back
+            in <a href="../chapter04/settingenvironment.html" title=
+            "4.4.&nbsp;Setting Up the Environment">Section 4.4,
+            &ldquo;Setting Up the Environment.&rdquo;</a> Another option is
+            that something may have gone wrong with the specs file amendment
+            above. In this case, redo the specs file amendment<span>, being
+            careful to copy-and-paste the commands</span>.
+          </p>
+          <p>
+            Once all is well, clean up the test files:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">rm dummy.c a.out</kbd></pre>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="glibc.html" title="Glibc-2.3.4">Prev</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="tcl.html" title="Tcl-8.4.9">Next</a>
+          <p>
+            Tcl-8.4.9
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

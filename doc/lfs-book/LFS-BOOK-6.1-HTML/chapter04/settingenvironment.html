@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      4.4.&nbsp;Setting Up the Environment
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;4.&nbsp;Final Preparations
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="addinguser.html" title=
+          "Adding the LFS User">Prev</a>
+          <p>
+            Adding the LFS User
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="aboutsbus.html" title="About SBUs">Next</a>
+          <p>
+            About SBUs
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter04.html" title=
+          "Chapter&nbsp;4.&nbsp;Final Preparations">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          4.4. Setting Up the Environment
+        </h1>
+      </div>
+      <p>
+        Set up a good working environment by creating two new startup files
+        for the <span><strong class="command">bash</strong></span> shell.
+        While logged in as user <span class="emphasis"><em>lfs</em></span>,
+        issue the following command to create a new <tt class=
+        "filename">.bash_profile</tt>:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; ~/.bash_profile &lt;&lt; "EOF"
+<tt class=
+"literal">exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash</tt>
+EOF</kbd></pre>
+      <p>
+        When logged on as user <span class="emphasis"><em>lfs</em></span>,
+        the initial shell is usually a <span class=
+        "emphasis"><em>login</em></span> shell which reads the <tt class=
+        "filename">/etc/profile</tt> of the host (probably containing some
+        settings and environment variables) and then <tt class=
+        "filename">.bash_profile</tt>. The <span><strong class="command">exec
+        env -i.../bin/bash</strong></span> command in the <tt class=
+        "filename">.bash_profile</tt> file replaces the running shell with a
+        new one with a completely empty environment, except for the
+        <tt class="envar">HOME</tt>, <tt class="envar">TERM</tt>, and
+        <tt class="envar">PS1</tt> variables. This ensures that no unwanted
+        and potentially hazardous environment variables from the host system
+        leak into the build environment. The technique used here achieves the
+        goal of ensuring a clean environment.
+      </p>
+      <p>
+        The new instance of the shell is a <span class=
+        "emphasis"><em>non-login</em></span> shell, which does not read the
+        <tt class="filename">/etc/profile</tt> or <tt class=
+        "filename">.bash_profile</tt> files, but rather reads the <tt class=
+        "filename">.bashrc</tt> file instead. Create the <tt class=
+        "filename">.bashrc</tt> file now:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; ~/.bashrc &lt;&lt; "EOF"
+<tt class="literal">set +h
+umask 022
+LFS=/mnt/lfs
+LC_ALL=POSIX
+PATH=/tools/bin:/bin:/usr/bin
+export LFS LC_ALL PATH</tt>
+EOF</kbd></pre>
+      <p>
+        The <span><strong class="command">set +h</strong></span> command
+        turns off <span><strong class="command">bash</strong></span>'s hash
+        function. Hashing is ordinarily a useful
+        feature&mdash;<span><strong class="command">bash</strong></span> uses
+        a hash table to remember the full path of executable files to avoid
+        searching the <tt class="envar">PATH</tt> time and again to find the
+        same executable. However, the new tools should be used as soon as
+        they are installed. By switching off the hash function, the shell
+        will always search the <tt class="envar">PATH</tt> when a program is
+        to be run. As such, the shell will find the newly compiled tools in
+        <tt class="filename">$LFS/tools</tt> as soon as they are available
+        without remembering a previous version of the same program in a
+        different location.
+      </p>
+      <p>
+        Setting the user file-creation mask (umask) to 022 ensures that newly
+        created files and directories are only writable by their owner, but
+        are readable and executable by anyone (assuming default modes are
+        used by the open(2) system call, new files will end up with
+        permission mode 644 and directories with mode 755).
+      </p>
+      <p>
+        The <tt class="envar">LFS</tt> variable should be set to the chosen
+        mount point.
+      </p>
+      <p>
+        The <tt class="envar">LC_ALL</tt> variable controls the localization
+        of certain programs, making their messages follow the conventions of
+        a specified country. If the host system uses a version of Glibc older
+        than 2.2.4, having <tt class="envar">LC_ALL</tt> set to something
+        other than &ldquo;<span class="quote">POSIX</span>&rdquo; or
+        &ldquo;<span class="quote">C</span>&rdquo; (during this chapter) may
+        cause issues if you exit the chroot environment and wish to return
+        later. Setting <tt class="envar">LC_ALL</tt> to &ldquo;<span class=
+        "quote">POSIX</span>&rdquo; or &ldquo;<span class=
+        "quote">C</span>&rdquo; (the two are equivalent) ensures that
+        everything will work as expected in the chroot environment.
+      </p>
+      <p>
+        By putting <tt class="filename">/tools/bin</tt> ahead of the standard
+        <tt class="envar">PATH</tt>, all the programs installed in <a href=
+        "../chapter05/chapter05.html">Chapter 5</a> are picked up by the
+        shell immediately after their installation. This, combined with
+        turning off hashing, limits the risk that old programs are used from
+        the host when the same programs are available in the chapter 5
+        environment.
+      </p>
+      <p>
+        Finally, to have the environment fully prepared for building the
+        temporary tools, source the just-created user profile:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">source ~/.bash_profile</kbd></pre>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="addinguser.html" title=
+          "Adding the LFS User">Prev</a>
+          <p>
+            Adding the LFS User
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="aboutsbus.html" title="About SBUs">Next</a>
+          <p>
+            About SBUs
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter04.html" title=
+          "Chapter&nbsp;4.&nbsp;Final Preparations">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

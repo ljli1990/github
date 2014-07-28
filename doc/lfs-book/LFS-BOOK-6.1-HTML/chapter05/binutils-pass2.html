@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.12.&nbsp;Binutils-2.15.94.0.2.2 - Pass 2
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="gcc-pass2.html" title=
+          "GCC-3.4.3 - Pass 2">Prev</a>
+          <p>
+            GCC-3.4.3 - Pass 2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="gawk.html" title="Gawk-3.1.4">Next</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.12. Binutils-2.15.94.0.2.2 - Pass 2
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Binutils package contains a linker, an assembler, and other
+          tools for handling object files.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">1.5 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">114 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Bison, Coreutils,
+              Diffutils, Flex, GCC, Gettext, Glibc, Grep, M4, Make, Perl,
+              Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.12.1. Re-installation of Binutils
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building Binutils.
+        </p>
+        <p>
+          Create a separate build directory again:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../binutils-build
+cd ../binutils-build</kbd></pre>
+        <p>
+          Prepare Binutils for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../binutils-2.15.94.0.2.2/configure --prefix=/tools \
+    --disable-nls --enable-shared --with-lib-path=/tools/lib</kbd></pre>
+        <p>
+          The meaning of the new configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-lib-path=/tools/lib</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells the configure script to specify the library search
+                path during the compilation of Binutils, resulting in
+                <tt class="filename">/tools/lib</tt> being passed to the
+                linker. This prevents the linker from searching through
+                library directories on the host.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Compilation is now complete. As discussed earlier, running the test
+          suite is not mandatory for the temporary tools here in this
+          chapter. To run the Binutils test suite anyway, issue the following
+          command:
+        </p>
+        <pre class="userinput"><kbd class="command">make check</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Now prepare the linker for the &ldquo;<span class=
+          "quote">Re-adjusting</span>&rdquo; phase in the next chapter:
+        </p>
+        <pre class="userinput"><kbd class="command">make -C ld clean
+make -C ld LIB_PATH=/usr/lib:/lib</kbd></pre>
+        <div class="warning">
+          <div class="admonhead">
+            <img alt="[Warning]" src="../images/warning.png" />
+            <h3 class="admontitle">
+              Warning
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              <span class="emphasis"><em>Do not</em></span> remove the
+              Binutils source and build directories yet. These directories
+              will be needed again in the next chapter in their current
+              state.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/binutils.html#contents-binutils" title=
+          "6.13.2.&nbsp;Contents of Binutils">Section&nbsp;6.13.2,
+          &ldquo;Contents of Binutils.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gcc-pass2.html" title=
+          "GCC-3.4.3 - Pass 2">Prev</a>
+          <p>
+            GCC-3.4.3 - Pass 2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="gawk.html" title="Gawk-3.1.4">Next</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

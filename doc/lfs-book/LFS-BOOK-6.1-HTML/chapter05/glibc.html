@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.6.&nbsp;Glibc-2.3.4
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="linux-libc-headers.html" title=
+          "Linux-Libc-Headers-2.6.11.2">Prev</a>
+          <p>
+            Linux-Libc-Headers-2.6.11.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="adjusting.html" title=
+          "Adjusting the Toolchain">Next</a>
+          <p>
+            Adjusting the Toolchain
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.6. Glibc-2.3.4
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Glibc package contains the main C library. This library
+          provides the basic routines for allocating memory, searching
+          directories, opening and closing files, reading and writing files,
+          string handling, pattern matching, arithmetic, and so on.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">11.8 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">454 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Gawk, GCC, Gettext, Grep, Make, Perl,
+              Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.6.1. Installation of Glibc
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building Glibc.
+        </p>
+        <p>
+          It should be noted that compiling Glibc in any way other than the
+          method suggested in this book puts the stability of the system at
+          risk.
+        </p>
+        <p>
+          Glibc has two tests which fail when the running kernel is 2.6.11.x
+          The problem has been determined to be with the tests themselves,
+          not with the libc nor the kernel. If you plan to run the testsuite
+          apply this patch:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../glibc-2.3.4-fix_test-1.patch</kbd></pre>
+        <p>
+          The Glibc documentation recommends building Glibc outside of the
+          source directory in a dedicated build directory:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../glibc-build
+cd ../glibc-build</kbd></pre>
+        <p>
+          Next, prepare Glibc for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../glibc-2.3.4/configure --prefix=/tools \
+    --disable-profile --enable-add-ons \
+    --enable-kernel=2.6.0 --with-binutils=/tools/bin \
+    --without-gd --with-headers=/tools/include \
+    --without-selinux</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-profile</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This builds the libraries without profiling information. Omit
+                this option if profiling on the temporary tools is necessary.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-add-ons</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells Glibc to use the NPTL add-on as its threading
+                library.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-kernel=2.6.0</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells Glibc to compile the library with support for
+                2.6.x Linux kernels.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-binutils=/tools/bin</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                While not required, this switch ensures that there are no
+                errors pertaining to which Binutils programs get used during
+                the Glibc build.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--without-gd</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This prevents the build of the <span><strong class=
+                "command">memusagestat</strong></span> program, which insists
+                on linking against the host's libraries (libgd, libpng, libz,
+                etc.).
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-headers=/tools/include</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells Glibc to compile itself against the headers
+                recently installed to the tools directory, so that it knows
+                exactly what features the kernel has and can optimize itself
+                accordingly.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--without-selinux</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                When building from hosts that include SELinux functionality
+                (e.g. Fedora Core 3), Glibc will build with support for
+                SELinux. As the LFS tools environment does not contain
+                support for SELinux, a Glibc compiled with such support will
+                fail to operate correctly.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          During this stage the following warning might appear:
+        </p>
+        <div class="blockquote">
+          <blockquote class="blockquote">
+            <pre class="screen"><tt class=
+            "computeroutput">configure: WARNING:
+*** These auxiliary programs are missing or 
+*** incompatible versions: msgfmt
+*** some features will be disabled.
+*** Check the INSTALL file for required versions.</tt></pre>
+          </blockquote>
+        </div>
+        <p>
+          The missing or incompatible <span><strong class=
+          "command">msgfmt</strong></span> program is generally harmless, but
+          it can sometimes cause issues when running the test suite. This
+          <span><strong class="command">msgfmt</strong></span> program is
+          part of the Gettext package which the host distribution should
+          provide. If <span><strong class="command">msgfmt</strong></span> is
+          present but deemed incompatible, upgrade the host system's Gettext
+          package or continue without it and see if the test suite runs
+          without problems regardless.
+        </p>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Compilation is now complete. As mentioned earlier, running the test
+          suites for the temporary tools installed in this chapter is not
+          mandatory. To run the Glibc test suite (if desired), the following
+          command will do so:
+        </p>
+        <pre class="userinput"><kbd class="command">make check</kbd></pre>
+        <p>
+          For a discussion of test failures that are of particular
+          importance, please see <a href="../chapter06/glibc.html" title=
+          "6.11.&nbsp;Glibc-2.3.4">Section 6.11,
+          &ldquo;Glibc-2.3.4.&rdquo;</a>
+        </p>
+        <p>
+          In this chapter, some tests can be adversely affected by existing
+          tools or environmental issues on the host system. Glibc test suite
+          failures in this chapter are typically not worrisome. The Glibc
+          installed in <a href="../chapter06/chapter06.html">Chapter 6</a> is
+          the one that will ultimately end up being used, so that is the one
+          that needs to pass most tests (even in <a href=
+          "../chapter06/chapter06.html">Chapter 6</a>, some failures could
+          still occur, for example, with the math tests).
+        </p>
+        <p>
+          When experiencing a failure, make a note of it, then continue by
+          reissuing the <span><strong class="command">make
+          check</strong></span> command. The test suite should pick up where
+          it left off and continue. This stop-start sequence can be
+          circumvented by issuing a <span><strong class="command">make -k
+          check</strong></span> command. If using this option, be sure to log
+          the output so that the log file can be examined for failures later.
+        </p>
+        <p>
+          The install stage of Glibc will issue a harmless warning at the end
+          about the absence of <tt class=
+          "filename">/tools/etc/ld.so.conf</tt>. Prevent this warning with:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir /tools/etc
+touch /tools/etc/ld.so.conf</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Different countries and cultures have varying conventions for how
+          to communicate. These conventions range from the format for
+          representing dates and times to more complex issues, such as the
+          language spoken. The &ldquo;<span class=
+          "quote">internationalization</span>&rdquo; of GNU programs works by
+          locale.
+        </p>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              If the test suites are not being run in this chapter (as per
+              the recommendation), there is no need to install the locales
+              now. The appropriate locales will be installed in the next
+              chapter.
+            </p>
+          </div>
+        </div>
+        <p>
+          To install the Glibc locales anyway, use the following command:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make localedata/install-locales</kbd></pre>
+        <p>
+          To save time, an alternative to running the previous command (which
+          generates and installs every locale Glibc is aware of) is to
+          install only those locales that are wanted and needed. This can be
+          achieved by using the <span><strong class=
+          "command">localedef</strong></span> command. Information on this
+          command is located in the <tt class="filename">INSTALL</tt> file in
+          the Glibc source. However, there are a number of locales that are
+          essential in order for the tests of future packages to pass, in
+          particular, the <span class="emphasis"><em>libstdc++</em></span>
+          tests from GCC. The following instructions, instead of the
+          <em class="parameter"><tt>install-locales</tt></em> target used
+          above, will install the minimum set of locales necessary for the
+          tests to run successfully:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">mkdir -p /tools/lib/locale
+localedef -i de_DE -f ISO-8859-1 de_DE
+localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro
+localedef -i en_HK -f ISO-8859-1 en_HK
+localedef -i en_PH -f ISO-8859-1 en_PH
+localedef -i en_US -f ISO-8859-1 en_US
+localedef -i es_MX -f ISO-8859-1 es_MX
+localedef -i fa_IR -f UTF-8 fa_IR
+localedef -i fr_FR -f ISO-8859-1 fr_FR
+localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro
+localedef -i it_IT -f ISO-8859-1 it_IT
+localedef -i ja_JP -f EUC-JP ja_JP</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/glibc.html#contents-glibc" title=
+          "6.11.4.&nbsp;Contents of Glibc">Section&nbsp;6.11.4,
+          &ldquo;Contents of Glibc.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="linux-libc-headers.html" title=
+          "Linux-Libc-Headers-2.6.11.2">Prev</a>
+          <p>
+            Linux-Libc-Headers-2.6.11.2
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="adjusting.html" title=
+          "Adjusting the Toolchain">Next</a>
+          <p>
+            Adjusting the Toolchain
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

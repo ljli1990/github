@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.19.&nbsp;Findutils-4.2.23
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="iana-etc.html" title=
+          "Iana-Etc-1.04">Prev</a>
+          <p>
+            Iana-Etc-1.04
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="gawk.html" title="Gawk-3.1.4">Next</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.19. Findutils-4.2.23
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Findutils package contains programs to find files. These
+          programs are provided to recursively search through a directory
+          tree and to create, maintain, and search a database (often faster
+          than the recursive find, but unreliable if the database has not
+          been recently updated).
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">9.4 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.19.1. Installation of Findutils
+          </h2>
+        </div>
+        <p>
+          Prepare Findutils for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --libexecdir=/usr/lib/locate \
+    --localstatedir=/var/lib/locate</kbd></pre>
+        <p>
+          The <em class="parameter"><tt>localstatedir</tt></em> option above
+          changes the location of the <span><strong class=
+          "command">locate</strong></span> database to be in <tt class=
+          "filename">/var/lib/locate</tt>, which is FHS-compliant.
+        </p>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          check</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-findutils" name="contents-findutils"></a>
+          <h2 class="sect2">
+            6.19.2. Contents of Findutils
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">bigram, code, find,
+              frcode, locate, updatedb, and xargs</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3321030" name="id3321030"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="bigram" name="bigram"></a><span class=
+                  "term"><span><strong class=
+                  "command">bigram</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Was formerly used to produce <span><strong class=
+                    "command">locate</strong></span> databases
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="code" name="code"></a><span class=
+                  "term"><span><strong class=
+                  "command">code</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Was formerly used to produce <span><strong class=
+                    "command">locate</strong></span> databases; it is the
+                    ancestor of <span><strong class=
+                    "command">frcode</strong></span>.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="find" name="find"></a><span class=
+                  "term"><span><strong class=
+                  "command">find</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Searches given directory trees for files matching the
+                    specified criteria
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="frcode" name="frcode"></a><span class=
+                  "term"><span><strong class=
+                  "command">frcode</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is called by <span><strong class=
+                    "command">updatedb</strong></span> to compress the list
+                    of file names; it uses front-compression, reducing the
+                    database size by a factor of four to five.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="locate" name="locate"></a><span class=
+                  "term"><span><strong class=
+                  "command">locate</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Searches through a database of file names and reports the
+                    names that contain a given string or match a given
+                    pattern
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="updatedb" name="updatedb"></a><span class=
+                  "term"><span><strong class=
+                  "command">updatedb</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Updates the <span><strong class=
+                    "command">locate</strong></span> database; it scans the
+                    entire file system (including other file systems that are
+                    currently mounted, unless told not to) and puts every
+                    file name it finds into the database
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="xargs" name="xargs"></a><span class=
+                  "term"><span><strong class=
+                  "command">xargs</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Can be used to apply a given command to a list of files
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="iana-etc.html" title=
+          "Iana-Etc-1.04">Prev</a>
+          <p>
+            Iana-Etc-1.04
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="gawk.html" title="Gawk-3.1.4">Next</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

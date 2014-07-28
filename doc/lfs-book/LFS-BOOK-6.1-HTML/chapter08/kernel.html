@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      8.3.&nbsp;Linux-2.6.11.12
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;8.&nbsp;Making the LFS System Bootable
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="fstab.html" title=
+          "Creating the /etc/fstab File">Prev</a>
+          <p>
+            Creating the /etc/fstab File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="grub.html" title=
+          "Making the LFS System Bootable">Next</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          8.3. Linux-2.6.11.12
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Linux package contains the Linux kernel.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">4.20 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">181 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Findutils, GCC, Glibc, Grep, Gzip, Make, Modutils,
+              Perl, and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            8.3.1. Installation of the kernel
+          </h2>
+        </div>
+        <p>
+          Building the kernel involves a few steps&mdash;configuration,
+          compilation, and installation. Read the <tt class=
+          "filename">README</tt> file in the kernel source tree for
+          alternative methods to the way this book configures the kernel.
+        </p>
+        <p>
+          Prepare for compilation by running the following command:
+        </p>
+        <pre class="userinput"><kbd class="command">make mrproper</kbd></pre>
+        <p>
+          This ensures that the kernel tree is absolutely clean. The kernel
+          team recommends that this command be issued prior to each kernel
+          compilation. Do not rely on the source tree being clean after
+          un-tarring.
+        </p>
+        <p>
+          If, in <a href="../chapter07/console.html" title=
+          "7.6.&nbsp;Configuring the Linux Console">Section 7.6,
+          &ldquo;Configuring the Linux Console,&rdquo;</a> it was decided to
+          compile the keymap into the kernel, issue the command below:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">loadkeys -m /usr/share/kbd/keymaps/<em class=
+        "replaceable"><tt>[path to  keymap]</tt></em> &gt; \
+    drivers/char/defkeymap.c</kbd></pre>
+        <p>
+          For example, if using a Dutch keyboard, use <tt class=
+          "filename">/usr/share/kbd/keymaps/i386/qwerty/nl.map.gz</tt>.
+        </p>
+        <p>
+          Configure the kernel via a menu-driven interface. BLFS has some
+          information regarding particular kernel configuration requirements
+          of packages outside of LFS at <a href=
+          "http://www.linuxfromscratch.org/blfs/view/svn/longindex.html#kernel-config-index">
+          <i>http://www.linuxfromscratch.org/blfs/view/svn/longindex.html#kernel-config-index</i></a>:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make menuconfig</kbd></pre>
+        <p>
+          Alternatively, <span><strong class="command">make
+          oldconfig</strong></span> may be more appropriate in some
+          situations. See the <tt class="filename">README</tt> file for more
+          information.
+        </p>
+        <p>
+          If desired, skip kernel configuration by copying the kernel config
+          file, <tt class="filename">.config</tt>, from the host system
+          (assuming it is available) to the unpacked <tt class=
+          "filename">linux-2.6.11.12</tt> directory. However, we do not
+          recommend this option. It is often better to explore all the
+          configuration menus and create the kernel configuration from
+          scratch.
+        </p>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              NPTL requires the kernel to be compiled with GCC-3.x, in this
+              case 3.4.3. It is not recommended to compile the kernel with
+              GCC-2.95.x, as this causes failures in the Glibc test suite.
+              Normally, this wouldn't be mentioned as LFS doesn't build
+              GCC-2.95.x. Unfortunately, the kernel documentation is outdated
+              and still claims GCC-2.95.3 is the recommended compiler.
+            </p>
+          </div>
+        </div>
+        <p>
+          Compile the kernel image and modules:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          If using kernel modules, an <tt class=
+          "filename">/etc/modprobe.conf</tt> file may be needed. Information
+          pertaining to modules and kernel configuration is located in the
+          kernel documentation in the <tt class=
+          "filename">linux-2.6.11.12/Documentation</tt> directory. Also,
+          <tt class="filename">modprobe.conf(5)</tt> may be of interest.
+        </p>
+        <p>
+          Be very careful when reading other documentation relating to kernel
+          modules because it usually applies to 2.4.x kernels only. As far as
+          we know, kernel configuration issues specific to Hotplug and Udev
+          are not documented. The problem is that Udev will create a device
+          node only if Hotplug or a user-written script inserts the
+          corresponding module into the kernel, and not all modules are
+          detectable by Hotplug. Note that statements like the one below in
+          the <tt class="filename">/etc/modprobe.conf</tt> file do not work
+          with Udev:
+        </p>
+        <pre class="screen">alias char-major-XXX some-module</pre>
+        <p>
+          Because of the complications with Hotplug, Udev, and modules, we
+          strongly recommend starting with a completely non-modular kernel
+          configuration, especially if this is the first time using Udev.
+        </p>
+        <p>
+          Install the modules, if the kernel configuration uses them:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make modules_install</kbd></pre>
+        <p>
+          After kernel compilation is complete, additional steps are required
+          to complete the installation. Some files need to be copied to the
+          <tt class="filename">/boot</tt> directory.
+        </p>
+        <p>
+          The path to the kernel image may vary depending on the platform
+          being used. The following command assumes an x86 architecture:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp arch/i386/boot/bzImage /boot/lfskernel-2.6.11.12</kbd></pre>
+        <p>
+          <tt class="filename">System.map</tt> is a symbol file for the
+          kernel. It maps the function entry points of every function in the
+          kernel API, as well as the addresses of the kernel data structures
+          for the running kernel. Issue the following command to install the
+          map file:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp System.map /boot/System.map-2.6.11.12</kbd></pre>
+        <p>
+          The kernel configuration file <tt class="filename">.config</tt>
+          produced by the <span><strong class="command">make
+          menuconfig</strong></span> step above contains all the
+          configuration selections for the kernel that was just compiled. It
+          is a good idea to keep this file for future reference:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp .config /boot/config-2.6.11.12</kbd></pre>
+        <p>
+          It is important to note that the files in the kernel source
+          directory are not owned by <span class=
+          "emphasis"><em>root</em></span>. Whenever a package is unpacked as
+          user <span class="emphasis"><em>root</em></span> (like we did
+          inside chroot), the files have the user and group IDs of whatever
+          they were on the packager's computer. This is usually not a problem
+          for any other package to be installed because the source tree is
+          removed after the installation. However, the Linux source tree is
+          often retained for a long time. Because of this, there is a chance
+          that whatever user ID the packager used will be assigned to
+          somebody on the machine. That person would then have write access
+          to the kernel source.
+        </p>
+        <p>
+          If the kernel source tree is going to be retained, run
+          <span><strong class="command">chown -R 0:0</strong></span> on the
+          <tt class="filename">linux-2.6.11.12</tt> directory to ensure all
+          files are owned by user <span class=
+          "emphasis"><em>root</em></span>.
+        </p>
+        <div class="warning">
+          <div class="admonhead">
+            <img alt="[Warning]" src="../images/warning.png" />
+            <h3 class="admontitle">
+              Warning
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              Some kernel documentation recommends creating a symlink from
+              <tt class="filename">/usr/src/linux</tt> pointing to the kernel
+              source directory. This is specific to kernels prior to the 2.6
+              series and <span class="emphasis"><em>must not</em></span> be
+              created on an LFS system as it can cause problems for packages
+              you may wish to build once your base LFS system is complete.
+            </p>
+            <p>
+              Also, the headers in the system's <tt class=
+              "filename">include</tt> directory should <span class=
+              "emphasis"><em>always</em></span> be the ones against which
+              Glibc was compiled, that is, the ones from the
+              Linux-Libc-Headers package, and therefore, should <span class=
+              "emphasis"><em>never</em></span> be replaced by the kernel
+              headers.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-kernel" name="contents-kernel"></a>
+          <h2 class="sect2">
+            8.3.2. Contents of Linux
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed files:</span></strong>
+              <span class="seg">config-2.6.11.12, lfskernel-2.6.11.12, and
+              System.map-2.6.11.12</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3342026" name="id3342026"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="config" name="config"></a><span class=
+                  "term"><tt class="filename">config-2.6.11.12</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains all the configuration selections for the kernel
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="lfskernel" name="lfskernel"></a><span class=
+                  "term"><tt class="filename">lfskernel-2.6.11.12</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The engine of the Linux system. When turning on the
+                    computer, the kernel is the first part of the operating
+                    system that gets loaded. It detects and initializes all
+                    components of the computer's hardware, then makes these
+                    components available as a tree of files to the software
+                    and turns a single CPU into a multitasking machine
+                    capable of running scores of programs seemingly at the
+                    same time
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="System.map" name="System.map"></a><span class=
+                  "term"><tt class=
+                  "filename">System.map-2.6.11.12</tt></span>
+                </td>
+                <td>
+                  <p>
+                    A list of addresses and symbols; it maps the entry points
+                    and addresses of all the functions and data structures in
+                    the kernel
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="fstab.html" title=
+          "Creating the /etc/fstab File">Prev</a>
+          <p>
+            Creating the /etc/fstab File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="grub.html" title=
+          "Making the LFS System Bootable">Next</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

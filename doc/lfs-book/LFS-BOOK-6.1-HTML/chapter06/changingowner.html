@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.4.&nbsp;Changing Ownership
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="chroot.html" title=
+          "Entering the Chroot Environment">Prev</a>
+          <p>
+            Entering the Chroot Environment
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="creatingdirs.html" title=
+          "Creating Directories">Next</a>
+          <p>
+            Creating Directories
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.4. Changing Ownership
+        </h1>
+      </div>
+      <p>
+        Currently, the <tt class="filename">/tools</tt> directory is owned by
+        the user <span class="emphasis"><em>lfs</em></span>, a user that
+        exists only on the host system. Although the <tt class=
+        "filename">/tools</tt> directory can be deleted once the LFS system
+        has been finished, it can be retained to build additional LFS
+        systems. If the <tt class="filename">/tools</tt> directory is kept as
+        is, the files are owned by a user ID without a corresponding account.
+        This is dangerous because a user account created later could get this
+        same user ID and would own the <tt class="filename">/tools</tt>
+        directory and all the files therein, thus exposing these files to
+        possible malicious manipulation.
+      </p>
+      <p>
+        To avoid this issue, add the <span class=
+        "emphasis"><em>lfs</em></span> user to the new LFS system later when
+        creating the <tt class="filename">/etc/passwd</tt> file, taking care
+        to assign it the same user and group IDs as on the host system.
+        Alternatively, assign the contents of the <tt class=
+        "filename">/tools</tt> directory to user <span class=
+        "emphasis"><em>root</em></span> by running the following command:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">chown -R 0:0 /tools</kbd></pre>
+      <p>
+        The command uses <em class="parameter"><tt>0:0</tt></em> instead of
+        <em class="parameter"><tt>root:root</tt></em>, because
+        <span><strong class="command">chown</strong></span> is unable to
+        resolve the name &ldquo;<span class="quote">root</span>&rdquo; until
+        the password file has been created. This book assumes you ran this
+        <span><strong class="command">chown</strong></span> command.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="chroot.html" title=
+          "Entering the Chroot Environment">Prev</a>
+          <p>
+            Entering the Chroot Environment
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="creatingdirs.html" title=
+          "Creating Directories">Next</a>
+          <p>
+            Creating Directories
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

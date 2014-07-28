@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.12.&nbsp;Re-adjusting the Toolchain
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="glibc.html" title="Glibc-2.3.4">Prev</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="binutils.html" title=
+          "Binutils-2.15.94.0.2.2">Next</a>
+          <p>
+            Binutils-2.15.94.0.2.2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.12. Re-adjusting the Toolchain
+        </h1>
+      </div>
+      <p>
+        Now that the final C libraries have been installed, it is time to
+        adjust the toolchain again. The toolchain will be adjusted so that it
+        will link any newly compiled program against these new libraries.
+        This is the same process used in the &ldquo;<span class=
+        "quote">Adjusting</span>&rdquo; phase in the beginning of <a href=
+        "../chapter05/chapter05.html">Chapter 5</a>, but with the adjustments
+        reversed. In <a href="../chapter05/chapter05.html">Chapter 5</a>, the
+        chain was guided from the host's <tt class=
+        "filename">/{,usr/}lib</tt> directories to the new <tt class=
+        "filename">/tools/lib</tt> directory. Now, the chain will be guided
+        from that same <tt class="filename">/tools/lib</tt> directory to the
+        LFS <tt class="filename">/{,usr/}lib</tt> directories.
+      </p>
+      <p>
+        Start by adjusting the linker. The source and build directories from
+        the second pass of Binutils were retained for this purpose. Install
+        the adjusted linker by running the following command from within the
+        <tt class="filename">binutils-build</tt> directory:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">make -C ld INSTALL=/tools/bin/install install</kbd></pre>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            If the earlier warning to retain the Binutils source and build
+            directories from the second pass in <a href=
+            "../chapter05/chapter05.html">Chapter 5</a> was missed, or if
+            they were accidentally deleted or are inaccessible, ignore the
+            above command. The result will be that the next package,
+            Binutils, will link against the C libraries in <tt class=
+            "filename">/tools</tt> rather than in <tt class=
+            "filename">/{,usr/}lib</tt>. This is not ideal, however, testing
+            has shown that the resulting Binutils program binaries should be
+            identical.
+          </p>
+        </div>
+      </div>
+      <p>
+        From now on, every compiled program will link only against the
+        libraries in <tt class="filename">/usr/lib</tt> and <tt class=
+        "filename">/lib</tt>. The extra <em class=
+        "parameter"><tt>INSTALL=/tools/bin/install</tt></em> option is needed
+        because the <tt class="filename">Makefile</tt> file created during
+        the second pass still contains the reference to <span><strong class=
+        "command">/usr/bin/install</strong></span>, which has not been
+        installed yet. Some host distributions contain a <tt class=
+        "filename">ginstall</tt> symbolic link which takes precedence in the
+        <tt class="filename">Makefile</tt> file and can cause a problem. The
+        above command takes care of this issue.
+      </p>
+      <p>
+        Remove the Binutils source and build directories now.
+      </p>
+      <p>
+        Next, amend the GCC specs file so that it points to the new dynamic
+        linker. A <span><strong class="command">perl</strong></span> command
+        accomplishes this:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">perl -pi -e 's@ /tools/lib/ld-linux.so.2@ /lib/ld-linux.so.2@g;' \
+    -e 's@\*startfile_prefix_spec:\n@$_/usr/lib/ @g;' \
+        `gcc --print-file specs`</kbd></pre>
+      <p>
+        It is a good idea to visually inspect the specs file to verify the
+        intended change was actually made.
+      </p>
+      <div class="important">
+        <div class="admonhead">
+          <img alt="[Important]" src="../images/important.png" />
+          <h3 class="admontitle">
+            Important
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            If working on a platform where the name of the dynamic linker is
+            something other than <tt class="filename">ld-linux.so.2</tt>,
+            substitute &ldquo;<span class="quote">ld-linux.so.2</span>&rdquo;
+            with the name of the platform's dynamic linker in the above
+            commands. Refer back to <a href=
+            "../chapter05/toolchaintechnotes.html" title=
+            "5.2.&nbsp;Toolchain Technical Notes">Section 5.2,
+            &ldquo;Toolchain Technical Notes,&rdquo;</a> if necessary.
+          </p>
+        </div>
+      </div>
+      <div class="caution">
+        <div class="admonhead">
+          <img alt="[Caution]" src="../images/caution.png" />
+          <h3 class="admontitle">
+            Caution
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            It is imperative at this point to stop and ensure that the basic
+            functions (compiling and linking) of the adjusted toolchain are
+            working as expected. To do this, perform a sanity check:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">echo 'main(){}' &gt; dummy.c
+cc dummy.c
+readelf -l a.out | grep ': /lib'</kbd></pre>
+          <p>
+            If everything is working correctly, there should be no errors,
+            and the output of the last command will be (allowing for
+            platform-specific differences in dynamic linker name):
+          </p>
+          <pre class="screen"><tt class=
+          "computeroutput">[Requesting program interpreter: /lib/ld-linux.so.2]</tt></pre>
+          <p>
+            Note that <tt class="filename">/lib</tt> is now the prefix of our
+            dynamic linker.
+          </p>
+          <p>
+            If the output does not appear as shown above or is not received
+            at all, then something is seriously wrong. Investigate and
+            retrace the steps to find out where the problem is and correct
+            it. The most likely reason is that something went wrong with the
+            specs file amendment above. Any issues will need to be resolved
+            before continuing on with the process.
+          </p>
+          <p>
+            Once everything is working correctly, clean up the test files:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">rm dummy.c a.out</kbd></pre>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="glibc.html" title="Glibc-2.3.4">Prev</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="binutils.html" title=
+          "Binutils-2.15.94.0.2.2">Next</a>
+          <p>
+            Binutils-2.15.94.0.2.2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

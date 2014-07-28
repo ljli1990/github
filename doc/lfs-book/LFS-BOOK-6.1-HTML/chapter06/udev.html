@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.58.&nbsp;Udev-056
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="tar.html" title="Tar-1.15.1">Prev</a>
+          <p>
+            Tar-1.15.1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="util-linux.html" title=
+          "Util-linux-2.12q">Next</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.58. Udev-056
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Udev package contains programs for dynamic creation of device
+          nodes.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">6.7 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Coreutils and Make</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.58.1. Installation of Udev
+          </h2>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make udevdir=/dev</kbd></pre>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>udevdir=/dev</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells <span><strong class="command">udev</strong></span>
+                in which directory devices nodes are to be created.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          test</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make udevdir=/dev install</kbd></pre>
+        <p>
+          Udev's configuration is far from ideal by default, so install the
+          configuration files here:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp ../udev-config-3.rules /etc/udev/rules.d/25-lfs.rules</kbd></pre>
+        <p>
+          Run the <span><strong class="command">udevstart</strong></span>
+          program to create our full complement of device nodes.
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">/sbin/udevstart</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-udev" name="contents-udev"></a>
+          <h2 class="sect2">
+            6.58.2. Contents of Udev
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">udev, udevd,
+              udevsend, udevstart, udevinfo, and udevtest</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              directory:</span></strong> <span class="seg">/etc/udev</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3304055" name="id3304055"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="udev" name="udev"></a><span class=
+                  "term"><span><strong class=
+                  "command">udev</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates device nodes in <tt class="filename">/dev</tt> or
+                    renames network interfaces (not in LFS) in response to
+                    hotplug events
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="udevd" name="udevd"></a><span class=
+                  "term"><span><strong class=
+                  "command">udevd</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A daemon that reorders hotplug events before submitting
+                    them to <span><strong class=
+                    "command">udev</strong></span>, thus avoiding various
+                    race conditions
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="udevsend" name="udevsend"></a><span class=
+                  "term"><span><strong class=
+                  "command">udevsend</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Delivers hotplug events to <span><strong class=
+                    "command">udevd</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="udevstart" name="udevstart"></a><span class=
+                  "term"><span><strong class=
+                  "command">udevstart</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates device nodes in <tt class="filename">/dev</tt>
+                    that correspond to drivers compiled directly into the
+                    kernel; it performs that task by simulating hotplug
+                    events presumably dropped by the kernel before invocation
+                    of this program (e.g., because the root filesystem has
+                    not been mounted) and submitting such synthetic hotplug
+                    events to <span><strong class=
+                    "command">udev</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="udevinfo" name="udevinfo"></a><span class=
+                  "term"><span><strong class=
+                  "command">udevinfo</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Allows users to query the <span><strong class=
+                    "command">udev</strong></span> database for information
+                    on any device currently present on the system; it also
+                    provides a way to query any device in the <tt class=
+                    "systemitem">sysfs</tt> tree to help create udev rules
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="udevtest" name="udevtest"></a><span class=
+                  "term"><span><strong class=
+                  "command">udevtest</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Simulates a <span><strong class=
+                    "command">udev</strong></span> run for the given device,
+                    and prints out the name of the node the real
+                    <span><strong class="command">udev</strong></span> would
+                    have created or (not in LFS) the name of the renamed
+                    network interface
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="etc-udev" name="etc-udev"></a><span class=
+                  "term"><tt class="filename">/etc/udev</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains <span><strong class=
+                    "command">udev</strong></span> configuation files, device
+                    permissions, and rules for device naming
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="tar.html" title="Tar-1.15.1">Prev</a>
+          <p>
+            Tar-1.15.1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="util-linux.html" title=
+          "Util-linux-2.12q">Next</a>
+          <p>
+            Util-linux-2.12q
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

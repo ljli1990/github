@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.11.&nbsp;GCC-3.4.3 - Pass 2
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="dejagnu.html" title="DejaGNU-1.4.4">Prev</a>
+          <p>
+            DejaGNU-1.4.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="binutils-pass2.html" title=
+          "Binutils-2.15.94.0.2.2 - Pass 2">Next</a>
+          <p>
+            Binutils-2.15.94.0.2.2 - Pass 2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.11. GCC-3.4.3 - Pass 2
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">11.0 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">292 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Findutils, Gawk, Gettext, Glibc, Grep,
+              Make, Perl, Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.11.1. Re-installation of GCC
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building GCC.
+        </p>
+        <p>
+          The tools required to test GCC and Binutils&mdash;Tcl, Expect and
+          DejaGNU&mdash;are installed now. GCC and Binutils can now be
+          rebuilt, linking them against the new Glibc and testing them
+          properly (if running the test suites in this chapter). Please note
+          that these test suites are highly dependent on properly functioning
+          PTYs which are provided by the host. PTYs are most commonly
+          implemented via the <tt class="systemitem">devpts</tt> file system.
+          Check to see if the host system is set up correctly in this regard
+          by performing a quick test:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">expect -c "spawn ls"</kbd></pre>
+        <p>
+          The response might be:
+        </p>
+        <pre class="screen"><tt class=
+        "computeroutput">The system has no more ptys.  
+Ask your system administrator to create more.</tt></pre>
+        <p>
+          If the above message is received, the host does not have its PTYs
+          set up properly. In this case, there is no point in running the
+          test suites for GCC and Binutils until this issue is resolved.
+          Please consult the LFS FAQ at <a href=
+          "http://www.linuxfromscratch.org//lfs/faq.html#no-ptys"><i>http://www.linuxfromscratch.org//lfs/faq.html#no-ptys</i></a>
+          for more information on how to get PTYs working.
+        </p>
+        <p>
+          First correct a known problem and make an essential adjustment:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../gcc-3.4.3-no_fixincludes-1.patch
+patch -Np1 -i ../gcc-3.4.3-specs-2.patch</kbd></pre>
+        <p>
+          The first patch disables the GCC <span><strong class=
+          "command">fixincludes</strong></span> script. This was briefly
+          mentioned earlier, but a more in-depth explanation of the
+          fixincludes process is warranted here. Under normal circumstances,
+          the GCC <span><strong class="command">fixincludes</strong></span>
+          script scans the system for header files that need to be fixed. It
+          might find that some Glibc header files on the host system need to
+          be fixed, and will fix them and put them in the GCC private include
+          directory. In <a href="../chapter06/chapter06.html">Chapter 6</a>,
+          after the newer Glibc has been installed, this private include
+          directory will be searched before the system include directory.
+          This may result in GCC finding the fixed headers from the host
+          system, which most likely will not match the Glibc version used for
+          the LFS system.
+        </p>
+        <p>
+          The second patch changes GCC's default location of the dynamic
+          linker (typically <tt class="filename">ld-linux.so.2</tt>). It also
+          removes <tt class="filename">/usr/include</tt> from GCC's include
+          search path. Patching now rather than adjusting the specs file
+          after installation ensures that the new dynamic linker is used
+          during the actual build of GCC. That is, all of the final (and
+          temporary) binaries created during the build will link against the
+          new Glibc.
+        </p>
+        <div class="important">
+          <div class="admonhead">
+            <img alt="[Important]" src="../images/important.png" />
+            <h3 class="admontitle">
+              Important
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              The above patches are critical in ensuring a successful overall
+              build. Do not forget to apply them.
+            </p>
+          </div>
+        </div>
+        <p>
+          Create a separate build directory again:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../gcc-build
+cd ../gcc-build</kbd></pre>
+        <p>
+          Before starting to build GCC, remember to unset any environment
+          variables that override the default optimization flags.
+        </p>
+        <p>
+          Now prepare GCC for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../gcc-3.4.3/configure --prefix=/tools \
+    --libexecdir=/tools/lib --with-local-prefix=/tools \
+    --enable-clocale=gnu --enable-shared \
+    --enable-threads=posix --enable-__cxa_atexit \
+    --enable-languages=c,c++ --disable-libstdcxx-pch</kbd></pre>
+        <p>
+          The meaning of the new configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-clocale=gnu</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option ensures the correct locale model is selected for
+                the C++ libraries under all circumstances. If the configure
+                script finds the <span class="emphasis"><em>de_DE</em></span>
+                locale installed, it will select the correct gnu locale
+                model. However, if the <span class=
+                "emphasis"><em>de_DE</em></span> locale is not installed,
+                there is the risk of building Application Binary Interface
+                (ABI)-incompatible C++ libraries because the incorrect
+                generic locale model may be selected.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-threads=posix</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This enables C++ exception handling for multi-threaded code.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-__cxa_atexit</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option allows use of <span class=
+                "emphasis"><em>__cxa_atexit</em></span>, rather than
+                <span class="emphasis"><em>atexit</em></span>, to register
+                C++ destructors for local statics and global objects. This
+                option is essential for fully standards-compliant handling of
+                destructors. It also affects the C++ ABI, and therefore
+                results in C++ shared libraries and C++ programs that are
+                interoperable with other Linux distributions.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-languages=c,c++</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option ensures that both the C and C++ compilers are
+                built.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-libstdcxx-pch</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                Do not build the pre-compiled header (PCH) for <tt class=
+                "filename">libstdc++</tt>. It takes up a lot of space, and we
+                have no use for it.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          There is no need to use the <em class=
+          "parameter"><tt>bootstrap</tt></em> target now because the compiler
+          being used to compile this GCC was built from the exact same
+          version of the GCC sources used earlier.
+        </p>
+        <p>
+          Compilation is now complete. As previously mentioned, running the
+          test suites for the temporary tools compiled in this chapter is not
+          mandatory. To run the GCC test suite anyway, use the following
+          command:
+        </p>
+        <pre class="userinput"><kbd class="command">make -k check</kbd></pre>
+        <p>
+          The <em class="parameter"><tt>-k</tt></em> flag is used to make the
+          test suite run through to completion and not stop at the first
+          failure. The GCC test suite is very comprehensive and is almost
+          guaranteed to generate a few failures. To receive a summary of the
+          test suite results, run:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../gcc-3.4.3/contrib/test_summary</kbd></pre>
+        <p>
+          For only the summaries, pipe the output through <strong class=
+          "userinput"><tt>grep -A7 Summ</tt></strong>.
+        </p>
+        <p>
+          Results can be compared with those located at <a href=
+          "http://www.linuxfromscratch.org/lfs/build-logs/6.1/"><i>http://www.linuxfromscratch.org/lfs/build-logs/6.1/</i></a>.
+        </p>
+        <p>
+          A few unexpected failures cannot always be avoided. The GCC
+          developers are usually aware of these issues, but have not resolved
+          them yet. Unless the test results are vastly different from those
+          at the above URL, it is safe to continue.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              At this point it is strongly recommended to repeat the sanity
+              check we performed earlier in this chapter. Refer back to
+              <a href="adjusting.html" title=
+              "5.7.&nbsp;Adjusting the Toolchain">Section 5.7,
+              &ldquo;Adjusting the Toolchain,&rdquo;</a> and repeat the test
+              compilation. If the result is wrong, the most likely reason is
+              that the GCC Specs patch was not properly applied.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/gcc.html#contents-gcc" title=
+          "6.14.2.&nbsp;Contents of GCC">Section&nbsp;6.14.2, &ldquo;Contents
+          of GCC.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="dejagnu.html" title="DejaGNU-1.4.4">Prev</a>
+          <p>
+            DejaGNU-1.4.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="binutils-pass2.html" title=
+          "Binutils-2.15.94.0.2.2 - Pass 2">Next</a>
+          <p>
+            Binutils-2.15.94.0.2.2 - Pass 2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

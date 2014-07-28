@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.9.&nbsp;Expect-5.43.0
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="tcl.html" title="Tcl-8.4.9">Prev</a>
+          <p>
+            Tcl-8.4.9
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="dejagnu.html" title="DejaGNU-1.4.4">Next</a>
+          <p>
+            DejaGNU-1.4.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.9. Expect-5.43.0
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Expect package contains a program for carrying out scripted
+          dialogues with other interactive programs.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">4.0 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Glibc, Grep, Make, Sed, and
+              Tcl</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.9.1. Installation of Expect
+          </h2>
+        </div>
+        <p>
+          First, fix a bug that can result in false failures during the GCC
+          test suite run:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../expect-5.43.0-spawn-1.patch</kbd></pre>
+        <p>
+          Now prepare Expect for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/tools --with-tcl=/tools/lib \
+   --with-tclinclude=$TCLPATH --with-x=no</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-tcl=/tools/lib</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This ensures that the configure script finds the Tcl
+                installation in the temporary tools location instead of
+                possibly locating an existing one on the host system.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-tclinclude=$TCLPATH</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This explicitly tells Expect where to find Tcl's source
+                directory and internal headers. Using this option avoids
+                conditions where <span><strong class=
+                "command">configure</strong></span> fails because it cannot
+                automatically discover the location of the Tcl source
+                directory.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-x=no</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells the configure script not to search for Tk (the Tcl
+                GUI component) or the X Window System libraries, both of
+                which may reside on the host system but will not exist in the
+                temporary environment.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Build the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          test</tt></strong>. Note that the Expect test suite is known to
+          experience failures under certain host conditions that are not
+          within our control. Therefore, test suite failures here are not
+          surprising and are not considered critical.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make SCRIPTS="" install</kbd></pre>
+        <p>
+          The meaning of the make parameter:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>SCRIPTS=""</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This prevents installation of the supplementary expect
+                scripts, which are not needed.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Now remove the <tt class="envar">TCLPATH</tt> variable:
+        </p>
+        <pre class="userinput"><kbd class="command">unset TCLPATH</kbd></pre>
+        <p>
+          The source directories of both Tcl and Expect can now be removed.
+        </p>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-expect" name="contents-expect"></a>
+          <h2 class="sect2">
+            5.9.2. Contents of Expect
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              program:</span></strong> <span class="seg">expect</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              library:</span></strong> <span class=
+              "seg">libexpect-5.42.a</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3310548" name="id3310548"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="expect" name="expect"></a><span class=
+                  "term"><span><strong class=
+                  "command">expect</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Communicates with other interactive programs according to
+                    a script
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libexpect" name="libexpect"></a><span class=
+                  "term"><tt class="filename">libexpect-5.42.a</tt></span>
+                </td>
+                <td>
+                  <p>
+                    Contains functions that allow Expect to be used as a Tcl
+                    extension or to be used directly from C or C++ (without
+                    Tcl)
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="tcl.html" title="Tcl-8.4.9">Prev</a>
+          <p>
+            Tcl-8.4.9
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="dejagnu.html" title="DejaGNU-1.4.4">Next</a>
+          <p>
+            DejaGNU-1.4.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

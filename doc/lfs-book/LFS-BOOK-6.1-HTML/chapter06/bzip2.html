@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.40.&nbsp;Bzip2-1.0.3
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="libtool.html" title=
+          "Libtool-1.5.14">Prev</a>
+          <p>
+            Libtool-1.5.14
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="diffutils.html" title=
+          "Diffutils-2.8.1">Next</a>
+          <p>
+            Diffutils-2.8.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.40. Bzip2-1.0.3
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Bzip2 package contains programs for compressing and
+          decompressing files. Compressing text files with
+          <span><strong class="command">bzip2</strong></span> yields a much
+          better compression percentage than with the traditional
+          <span><strong class="command">gzip</strong></span>.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">3.9 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Glibc, and Make</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.40.1. Installation of Bzip2
+          </h2>
+        </div>
+        <p>
+          Prepare Bzip2 for compilation with:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make -f Makefile-libbz2_so
+make clean</kbd></pre>
+        <p>
+          The <em class="parameter"><tt>-f</tt></em> flag will cause Bzip2 to
+          be built using a different <tt class="filename">Makefile</tt> file,
+          in this case the <tt class="filename">Makefile-libbz2_so</tt> file,
+          which creates a dynamic <tt class="filename">libbz2.so</tt> library
+          and links the Bzip2 utilities against it.
+        </p>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          test</tt></strong>.
+        </p>
+        <p>
+          If reinstalling Bzip2, perform <strong class="userinput"><tt>rm -f
+          /usr/bin/bz*</tt></strong> first, otherwise the following
+          <span><strong class="command">make install</strong></span> will
+          fail.
+        </p>
+        <p>
+          Install the programs:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Install the shared <span><strong class=
+          "command">bzip2</strong></span> binary into the <tt class=
+          "filename">/bin</tt> directory, make some necessary symbolic links,
+          and clean up:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp bzip2-shared /bin/bzip2
+cp -a libbz2.so* /lib
+ln -s ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so
+rm /usr/bin/{bunzip2,bzcat,bzip2}
+ln -s bzip2 /bin/bunzip2
+ln -s bzip2 /bin/bzcat</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-bzip2" name="contents-bzip2"></a>
+          <h2 class="sect2">
+            6.40.2. Contents of Bzip2
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">bunzip2 (link to
+              bzip2), bzcat (link to bzip2), bzcmp, bzdiff, bzegrep, bzfgrep,
+              bzgrep, bzip2, bzip2recover, bzless, and bzmore</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              libraries:</span></strong> <span class=
+              "seg">libbz2.[a,so]</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3329398" name="id3329398"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="bunzip2" name="bunzip2"></a><span class=
+                  "term"><span><strong class=
+                  "command">bunzip2</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Decompresses bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzcat" name="bzcat"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzcat</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Decompresses to standard output
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzcmp" name="bzcmp"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzcmp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">cmp</strong></span> on
+                    bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzdiff" name="bzdiff"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzdiff</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">diff</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzgrep" name="bzgrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzgrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">grep</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzegrep" name="bzegrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzegrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">egrep</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzfgrep" name="bzfgrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzfgrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">fgrep</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzip2" name="bzip2"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzip2</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compresses files using the Burrows-Wheeler block sorting
+                    text compression algorithm with Huffman coding; the
+                    compression rate is better than that achieved by more
+                    conventional compressors using &ldquo;<span class=
+                    "quote">Lempel-Ziv</span>&rdquo; algorithms, like
+                    <span><strong class="command">gzip</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzip2recover" name="bzip2recover"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzip2recover</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Tries to recover data from damaged bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzless" name="bzless"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzless</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">less</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bzmore" name="bzmore"></a><span class=
+                  "term"><span><strong class=
+                  "command">bzmore</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">more</strong></span>
+                    on bzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="libbz2" name="libbz2"></a><span class=
+                  "term"><tt class="filename">libbz2*</tt></span>
+                </td>
+                <td>
+                  <p>
+                    The library implementing lossless, block-sorting data
+                    compression, using the Burrows-Wheeler algorithm
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="libtool.html" title=
+          "Libtool-1.5.14">Prev</a>
+          <p>
+            Libtool-1.5.14
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="diffutils.html" title=
+          "Diffutils-2.8.1">Next</a>
+          <p>
+            Diffutils-2.8.1
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

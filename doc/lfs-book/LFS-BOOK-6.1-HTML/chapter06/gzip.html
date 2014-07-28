@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.46.&nbsp;Gzip-1.3.5
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="grub.html" title="GRUB-0.96">Prev</a>
+          <p>
+            GRUB-0.96
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="hotplug.html" title=
+          "Hotplug-2004_09_23">Next</a>
+          <p>
+            Hotplug-2004_09_23
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.46. Gzip-1.3.5
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Gzip package contains programs for compressing and
+          decompressing files.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">2.2 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Glibc, Grep, Make, and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.46.1. Installation of Gzip
+          </h2>
+        </div>
+        <p>
+          Gzip has 2 known security vulnerabilities. The following patch
+          addresses both of them:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../gzip-1.3.5-security_fixes-1.patch</kbd></pre>
+        <p>
+          Prepare Gzip for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr</kbd></pre>
+        <p>
+          The <span><strong class="command">gzexe</strong></span> script has
+          the location of the <span><strong class=
+          "command">gzip</strong></span> binary hard-wired into it. Because
+          the location of the binary is changed later, the following command
+          ensures that the new location gets placed into the script:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">sed -i 's@"BINDIR"@/bin@g' gzexe.in</kbd></pre>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Move the <span><strong class="command">gzip</strong></span> program
+          to the <tt class="filename">/bin</tt> directory and create some
+          commonly used symlinks to it:
+        </p>
+        <pre class="userinput"><kbd class="command">mv /usr/bin/gzip /bin
+rm /usr/bin/{gunzip,zcat}
+ln -s gzip /bin/gunzip
+ln -s gzip /bin/zcat
+ln -s gzip /bin/compress
+ln -s gunzip /bin/uncompress</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-gzip" name="contents-gzip"></a>
+          <h2 class="sect2">
+            6.46.2. Contents of Gzip
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">compress (link to
+              gzip), gunzip (link to gzip), gzexe, gzip, uncompress (link to
+              gunzip), zcat (link to gzip), zcmp, zdiff, zegrep, zfgrep,
+              zforce, zgrep, zless, zmore, and znew</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3332141" name="id3332141"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="compress" name="compress"></a><span class=
+                  "term"><span><strong class=
+                  "command">compress</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compresses and decompresses files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gunzip" name="gunzip"></a><span class=
+                  "term"><span><strong class=
+                  "command">gunzip</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Decompresses gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gzexe" name="gzexe"></a><span class=
+                  "term"><span><strong class=
+                  "command">gzexe</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates self-decompressing executable files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="gzip" name="gzip"></a><span class=
+                  "term"><span><strong class=
+                  "command">gzip</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Compresses the given files using Lempel-Ziv (LZ77) coding
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="uncompress" name="uncompress"></a><span class=
+                  "term"><span><strong class=
+                  "command">uncompress</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Decompresses compressed files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zcat" name="zcat"></a><span class=
+                  "term"><span><strong class=
+                  "command">zcat</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Uncompresses the given gzipped files to standard output
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zcmp" name="zcmp"></a><span class=
+                  "term"><span><strong class=
+                  "command">zcmp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">cmp</strong></span> on
+                    gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zdiff" name="zdiff"></a><span class=
+                  "term"><span><strong class=
+                  "command">zdiff</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">diff</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zegrep" name="zegrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">zegrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">egrep</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zfgrep" name="zfgrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">zfgrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">fgrep</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zforce" name="zforce"></a><span class=
+                  "term"><span><strong class=
+                  "command">zforce</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Forces a <tt class="filename">.gz</tt> extension on all
+                    given files that are gzipped files, so that
+                    <span><strong class="command">gzip</strong></span> will
+                    not compress them again; this can be useful when file
+                    names were truncated during a file transfer
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zgrep" name="zgrep"></a><span class=
+                  "term"><span><strong class=
+                  "command">zgrep</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">grep</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zless" name="zless"></a><span class=
+                  "term"><span><strong class=
+                  "command">zless</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">less</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="zmore" name="zmore"></a><span class=
+                  "term"><span><strong class=
+                  "command">zmore</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs <span><strong class="command">more</strong></span>
+                    on gzipped files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="znew" name="znew"></a><span class=
+                  "term"><span><strong class=
+                  "command">znew</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Re-compresses files from <span><strong class=
+                    "command">compress</strong></span> format to
+                    <span><strong class="command">gzip</strong></span>
+                    format&mdash;<tt class="filename">.Z</tt> to <tt class=
+                    "filename">.gz</tt>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="grub.html" title="GRUB-0.96">Prev</a>
+          <p>
+            GRUB-0.96
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="hotplug.html" title=
+          "Hotplug-2004_09_23">Next</a>
+          <p>
+            Hotplug-2004_09_23
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

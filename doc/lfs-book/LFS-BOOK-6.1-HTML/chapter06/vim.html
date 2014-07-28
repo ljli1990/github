@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.23.&nbsp;Vim-6.3
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="readline.html" title="Readline-5.0">Prev</a>
+          <p>
+            Readline-5.0
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="m4.html" title="M4-1.4.3">Next</a>
+          <p>
+            M4-1.4.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.23. Vim-6.3
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Vim package contains a powerful text editor.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.4 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">38.0 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Glibc, Grep, Make, Ncurses, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="admonhead">
+            <img alt="[Tip]" src="../images/tip.png" />
+            <h3 class="admontitle">
+              Alternatives to Vim
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              If you prefer another editor&mdash;such as Emacs, Joe, or
+              Nano&mdash;please refer to <a href=
+              "http://www.linuxfromscratch.org/blfs/view/svn/postlfs/editors.html">
+              <i>http://www.linuxfromscratch.org/blfs/view/svn/postlfs/editors.html</i></a>
+              for suggested installation instructions.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.23.1. Installation of Vim
+          </h2>
+        </div>
+        <p>
+          First, unpack both <tt class="filename">vim-6.3.tar.bz2</tt> and
+          (optionally) <tt class="filename">vim-6.3-lang.tar.gz</tt> archives
+          into the same directory. Then, change the default locations of the
+          <tt class="filename">vimrc</tt> and <tt class=
+          "filename">gvimrc</tt> configuration files to <tt class=
+          "filename">/etc</tt>:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">echo '#define SYS_VIMRC_FILE "/etc/vimrc"' &gt;&gt; src/feature.h
+echo '#define SYS_GVIMRC_FILE "/etc/gvimrc"' &gt;&gt; src/feature.h</kbd></pre>
+        <p>
+          Vim has a security vulnerability already addressed upstream. The
+          following patch fixes the problem:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../vim-6.3-security_fix-1.patch</kbd></pre>
+        <p>
+          Now prepare Vim for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --enable-multibyte</kbd></pre>
+        <p>
+          The optional but highly recommended <em class=
+          "parameter"><tt>--enable-multibyte</tt></em> switch includes
+          support for editing files in multibyte character encodings into
+          <span><strong class="command">vim</strong></span>. This is needed
+          if using a locale with a multibyte character set. This switch is
+          also helpful to be able to edit text files initially created in
+          Linux distributions like Fedora Core that use UTF-8 as a default
+          character set.
+        </p>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          test</tt></strong>. However, this test suite outputs a lot of
+          binary data to the screen, which can cause issues with the settings
+          of the current terminal. This can be resolved by redirecting the
+          output to a log file.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Many users are used to using <span><strong class=
+          "command">vi</strong></span> instead of <span><strong class=
+          "command">vim</strong></span>. To allow execution of
+          <span><strong class="command">vim</strong></span> when users
+          habitually enter <span><strong class="command">vi</strong></span>,
+          create a symlink:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">ln -s vim /usr/bin/vi</kbd></pre>
+        <p>
+          If an X Window System is going to be installed on the LFS system,
+          it may be necessary to recompile Vim after installing X. Vim comes
+          with a GUI version of the editor that requires X and some
+          additional libraries to be installed. For more information on this
+          process, refer to the Vim documentation and the Vim installation
+          page in the BLFS book at <a href=
+          "http://www.linuxfromscratch.org/blfs/view/svn/postlfs/editors.html#postlfs-editors-vim">
+          <i>http://www.linuxfromscratch.org/blfs/view/svn/postlfs/editors.html#postlfs-editors-vim</i></a>.
+        </p>
+      </div>
+      <div class="configuration" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="conf-vim" name="conf-vim"></a>
+          <h2 class="sect2">
+            6.23.2. Configuring Vim
+          </h2>
+        </div>
+        <p>
+          By default, <span><strong class="command">vim</strong></span> runs
+          in vi-incompatible mode. This may be new to users who have used
+          other editors in the past. The &ldquo;<span class=
+          "quote">nocompatible</span>&rdquo; setting is included below to
+          highlight the fact that a new behavior is being used. It also
+          reminds those who would change to &ldquo;<span class=
+          "quote">compatible</span>&rdquo; mode that it should be the first
+          setting in the configuration file. This is necessary because it
+          changes other settings, and overrides must come after this setting.
+          Create a default <span><strong class="command">vim</strong></span>
+          configuration file by running the following:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cat &gt; /etc/vimrc &lt;&lt; "EOF"
+<tt class="literal">" Begin /etc/vimrc
+
+set nocompatible
+set backspace=2
+syntax on
+if (&amp;term == "iterm") || (&amp;term == "putty")
+  set background=dark
+endif
+
+" End /etc/vimrc</tt>
+EOF</kbd></pre>
+        <p>
+          The <em class="parameter"><tt>set nocompatible</tt></em> makes
+          <span><strong class="command">vim</strong></span> behave in a more
+          useful way (the default) than the vi-compatible manner. Remove the
+          &ldquo;<span class="quote">no</span>&rdquo; to keep the old
+          <span><strong class="command">vi</strong></span> behavior. The
+          <em class="parameter"><tt>set backspace=2</tt></em> allows
+          backspacing over line breaks, autoindents, and the start of insert.
+          The <em class="parameter"><tt>syntax on</tt></em> enables vim's
+          syntax highlighting. Finally, the <span class=
+          "emphasis"><em>if</em></span> statement with the <em class=
+          "parameter"><tt>set background=dark</tt></em> corrects
+          <span><strong class="command">vim</strong></span>'s guess about the
+          background color of some terminal emulators. This gives the
+          highlighting a better color scheme for use on the black background
+          of these programs.
+        </p>
+        <p>
+          Documentation for other available options can be obtained by
+          running the following command:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">vim -c ':options'</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-vim" name="contents-vim"></a>
+          <h2 class="sect2">
+            6.23.3. Contents of Vim
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">efm_filter.pl,
+              efm_perl.pl, ex (link to vim), less.sh, mve.awk, pltags.pl,
+              ref, rview (link to vim), rvim (link to vim), shtags.pl,
+              tcltags, vi (link to vim), view (link to vim), vim, vim132,
+              vim2html.pl, vimdiff (link to vim), vimm, vimspell.sh,
+              vimtutor, and xxd</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3322515" name="id3322515"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="efm_filter.pl" name="efm_filter.pl"></a><span class=
+                  "term"><span><strong class=
+                  "command">efm_filter.pl</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A filter for creating an error file that can be read by
+                    <span><strong class="command">vim</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="efm_perl.pl" name="efm_perl.pl"></a><span class=
+                  "term"><span><strong class=
+                  "command">efm_perl.pl</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Reformats the error messages of the Perl interpreter for
+                    use with the &ldquo;<span class=
+                    "quote">quickfix</span>&rdquo; mode of
+                    <span><strong class="command">vim</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ex" name="ex"></a><span class=
+                  "term"><span><strong class=
+                  "command">ex</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Starts <span><strong class="command">vim</strong></span>
+                    in ex mode
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="less.sh" name="less.sh"></a><span class=
+                  "term"><span><strong class=
+                  "command">less.sh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A script that starts <span><strong class=
+                    "command">vim</strong></span> with less.vim
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="mve.awk" name="mve.awk"></a><span class=
+                  "term"><span><strong class=
+                  "command">mve.awk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Processes <span><strong class=
+                    "command">vim</strong></span> errors
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="pltags.pl" name="pltags.pl"></a><span class=
+                  "term"><span><strong class=
+                  "command">pltags.pl</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates a tags file for Perl code for use by
+                    <span><strong class="command">vim</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ref" name="ref"></a><span class=
+                  "term"><span><strong class=
+                  "command">ref</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Checks the spelling of arguments
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rview" name="rview"></a><span class=
+                  "term"><span><strong class=
+                  "command">rview</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is a restricted version of <span><strong class=
+                    "command">view</strong></span>; no shell commands can be
+                    started and <span><strong class=
+                    "command">view</strong></span> cannot be suspended
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rvim" name="rvim"></a><span class=
+                  "term"><span><strong class=
+                  "command">rvim</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is a restricted version of <span><strong class=
+                    "command">vim</strong></span>; no shell commands can be
+                    started and <span><strong class=
+                    "command">vim</strong></span> cannot be suspended
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="shtags.pl" name="shtags.pl"></a><span class=
+                  "term"><span><strong class=
+                  "command">shtags.pl</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Generates a tags file for Perl scripts
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="tcltags" name="tcltags"></a><span class=
+                  "term"><span><strong class=
+                  "command">tcltags</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Generates a tags file for TCL code
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="view" name="view"></a><span class=
+                  "term"><span><strong class=
+                  "command">view</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Starts <span><strong class="command">vim</strong></span>
+                    in read-only mode
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vi" name="vi"></a><span class=
+                  "term"><span><strong class=
+                  "command">vi</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is the editor
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vim" name="vim"></a><span class=
+                  "term"><span><strong class=
+                  "command">vim</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is the editor
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vim132" name="vim132"></a><span class=
+                  "term"><span><strong class=
+                  "command">vim132</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Starts <span><strong class="command">vim</strong></span>
+                    with the terminal in 132-column mode
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vim2html.pl" name="vim2html.pl"></a><span class=
+                  "term"><span><strong class=
+                  "command">vim2html.pl</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Converts Vim documentation to HypterText Markup Language
+                    (HTML)
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vimdiff" name="vimdiff"></a><span class=
+                  "term"><span><strong class=
+                  "command">vimdiff</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Edits two or three versions of a file with
+                    <span><strong class="command">vim</strong></span> and
+                    show differences
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vimm" name="vimm"></a><span class=
+                  "term"><span><strong class=
+                  "command">vimm</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Enables the DEC locator input model on a remote terminal
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vimspell.sh" name="vimspell.sh"></a><span class=
+                  "term"><span><strong class=
+                  "command">vimspell.sh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Spell checks a file and generates the syntax statements
+                    necessary to highlight in <span><strong class=
+                    "command">vim</strong></span>. This script requires the
+                    old Unix <span><strong class=
+                    "command">spell</strong></span> command, which is
+                    provided neither in LFS nor in BLFS
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="vimtutor" name="vimtutor"></a><span class=
+                  "term"><span><strong class=
+                  "command">vimtutor</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Teaches the basic keys and commands of
+                    <span><strong class="command">vim</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="xxd" name="xxd"></a><span class=
+                  "term"><span><strong class=
+                  "command">xxd</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Creates a hex dump of the given file; it can also do the
+                    reverse, so it can be used for binary patching
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="readline.html" title="Readline-5.0">Prev</a>
+          <p>
+            Readline-5.0
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="m4.html" title="M4-1.4.3">Next</a>
+          <p>
+            M4-1.4.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

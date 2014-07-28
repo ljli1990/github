@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.23.&nbsp;Ncurses-5.4
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="gettext.html" title=
+          "Gettext-0.14.3">Prev</a>
+          <p>
+            Gettext-0.14.3
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="patch.html" title="Patch-2.5.4">Next</a>
+          <p>
+            Patch-2.5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.23. Ncurses-5.4
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Ncurses package contains libraries for terminal-independent
+          handling of character screens.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.7 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">27.5 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, Make, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.23.1. Installation of Ncurses
+          </h2>
+        </div>
+        <p>
+          Prepare Ncurses for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/tools --with-shared \
+    --without-debug --without-ada --enable-overwrite</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--without-ada</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This ensures that Ncurses does not build support for the Ada
+                compiler which may be present on the host but will not be
+                available once we enter the <span><strong class=
+                "command">chroot</strong></span> environment.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-overwrite</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This tells Ncurses to install its header files into
+                <tt class="filename">/tools/include</tt>, instead of
+                <tt class="filename">/tools/include/ncurses</tt>, to ensure
+                that other packages can find the Ncurses headers
+                successfully.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          This package does not come with a test suite.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/ncurses.html#contents-ncurses" title=
+          "6.21.2.&nbsp;Contents of Ncurses">Section&nbsp;6.21.2,
+          &ldquo;Contents of Ncurses.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gettext.html" title=
+          "Gettext-0.14.3">Prev</a>
+          <p>
+            Gettext-0.14.3
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="patch.html" title="Patch-2.5.4">Next</a>
+          <p>
+            Patch-2.5.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.2.&nbsp;Mounting Virtual Kernel File Systems
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="chapter06.html" title=
+          "Installing Basic System Software">Prev</a>
+          <p>
+            Installing Basic System Software
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="chroot.html" title=
+          "Entering the Chroot Environment">Next</a>
+          <p>
+            Entering the Chroot Environment
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.2. Mounting Virtual Kernel File Systems
+        </h1>
+      </div>
+      <p>
+        Various file systems exported by the kernel are used to communicate
+        to and from the kernel itself. These file systems are virtual in that
+        no disk space is used for them. The content of the file systems
+        resides in memory.
+      </p>
+      <p>
+        Begin by creating directories onto which the file systems will be
+        mounted:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">mkdir -p $LFS/{proc,sys}</kbd></pre>
+      <p>
+        Now mount the file systems:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">mount -t proc proc $LFS/proc
+mount -t sysfs sysfs $LFS/sys</kbd></pre>
+      <p>
+        Remember that if for any reason you stop working on the LFS system
+        and start again later, it is important to check that these file
+        systems are mounted again before entering the chroot environment.
+      </p>
+      <p>
+        Additional file systems will soon be mounted from within the chroot
+        environment. To keep the host up to date, perform a
+        &ldquo;<span class="quote">fake mount</span>&rdquo; for each of these
+        now:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">mount -f -t tmpfs tmpfs $LFS/dev
+mount -f -t tmpfs tmpfs $LFS/dev/shm
+mount -f -t devpts -o gid=4,mode=620 devpts $LFS/dev/pts</kbd></pre>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="chapter06.html" title=
+          "Installing Basic System Software">Prev</a>
+          <p>
+            Installing Basic System Software
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="chroot.html" title=
+          "Entering the Chroot Environment">Next</a>
+          <p>
+            Entering the Chroot Environment
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

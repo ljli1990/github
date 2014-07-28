@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.14.&nbsp;Coreutils-5.2.1
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="gawk.html" title="Gawk-3.1.4">Prev</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="bzip2.html" title="Bzip2-1.0.3">Next</a>
+          <p>
+            Bzip2-1.0.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.14. Coreutils-5.2.1
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Coreutils package contains utilities for showing and setting
+          the basic system characteristics.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.9 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">53.3 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Gettext, Glibc, Grep, Make, Perl,
+              and Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.14.1. Installation of Coreutils
+          </h2>
+        </div>
+        <p>
+          Prepare Coreutils for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">DEFAULT_POSIX2_VERSION=199209 ./configure --prefix=/tools</kbd></pre>
+        <p>
+          This package has an issue when compiled against versions of Glibc
+          later than 2.3.2. Some of the Coreutils utilities (such as
+          <span><strong class="command">head</strong></span>,
+          <span><strong class="command">tail</strong></span>, and
+          <span><strong class="command">sort</strong></span>) will reject
+          their traditional syntax, a syntax that has been in use for
+          approximately 30 years. This old syntax is so pervasive that
+          compatibility should be preserved until the many places where it is
+          used can be updated. Backwards compatibility is achieved by setting
+          the <tt class="envar">DEFAULT_POSIX2_VERSION</tt> environment
+          variable to &ldquo;<span class="quote">199209</span>&rdquo; in the
+          above command. If you do not want Coreutils to be backwards
+          compatible with the traditional syntax, then omit setting the
+          <tt class="envar">DEFAULT_POSIX2_VERSION</tt> environment variable.
+          It is important to remember that doing so will have consequences,
+          including the need to patch the many packages that still use the
+          old syntax. Therefore, it is recommended that the instructions be
+          followed exactly as given above.
+        </p>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          RUN_EXPENSIVE_TESTS=yes check</tt></strong>. The <em class=
+          "parameter"><tt>RUN_EXPENSIVE_TESTS=yes</tt></em> parameter tells
+          the test suite to run several additional tests that are considered
+          relatively expensive (in terms of CPU power and memory usage) on
+          some platforms, but generally are not a problem on Linux.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/coreutils.html#contents-coreutils" title=
+          "6.15.2.&nbsp;Contents of Coreutils">Section&nbsp;6.15.2,
+          &ldquo;Contents of Coreutils.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gawk.html" title="Gawk-3.1.4">Prev</a>
+          <p>
+            Gawk-3.1.4
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="bzip2.html" title="Bzip2-1.0.3">Next</a>
+          <p>
+            Bzip2-1.0.3
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

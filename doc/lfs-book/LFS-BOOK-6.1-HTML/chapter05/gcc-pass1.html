@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.4.&nbsp;GCC-3.4.3 - Pass 1
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="binutils-pass1.html" title=
+          "Binutils-2.15.94.0.2.2 - Pass 1">Prev</a>
+          <p>
+            Binutils-2.15.94.0.2.2 - Pass 1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="linux-libc-headers.html" title=
+          "Linux-Libc-Headers-2.6.11.2">Next</a>
+          <p>
+            Linux-Libc-Headers-2.6.11.2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.4. GCC-3.4.3 - Pass 1
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The GCC package contains the GNU compiler collection, which
+          includes the C and C++ compilers.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">4.4 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">219 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, Findutils, Gawk, Gettext, Glibc, Grep,
+              Make, Perl, Sed, and Texinfo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.4.1. Installation of GCC
+          </h2>
+        </div>
+        <p>
+          This package is known to have issues when its default optimization
+          flags (including the <em class="parameter"><tt>-march</tt></em> and
+          <em class="parameter"><tt>-mcpu</tt></em> options) are changed. If
+          any environment variables that override default optimizations have
+          been defined, such as <tt class="envar">CFLAGS</tt> and <tt class=
+          "envar">CXXFLAGS</tt>, unset them when building GCC.
+        </p>
+        <p>
+          The GCC documentation recommends building GCC outside of the source
+          directory in a dedicated build directory:
+        </p>
+        <pre class="userinput"><kbd class="command">mkdir ../gcc-build
+cd ../gcc-build</kbd></pre>
+        <p>
+          Prepare GCC for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">../gcc-3.4.3/configure --prefix=/tools \
+    --libexecdir=/tools/lib --with-local-prefix=/tools \
+    --disable-nls --enable-shared --enable-languages=c</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-local-prefix=/tools</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                The purpose of this switch is to remove <tt class=
+                "filename">/usr/local/include</tt> from <span><strong class=
+                "command">gcc</strong></span>'s include search path. This is
+                not absolutely essential, however, it helps to minimize the
+                influence of the host system.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-shared</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This switch allows the building of <tt class=
+                "filename">libgcc_s.so.1</tt> and <tt class=
+                "filename">libgcc_eh.a</tt>. Having <tt class=
+                "filename">libgcc_eh.a</tt> available ensures that the
+                configure script for Glibc (the next package we compile)
+                produces the proper results.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--enable-languages=c</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option ensures that only the C compiler is built.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Continue with compiling the package:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">make bootstrap</kbd></pre>
+        <p>
+          The meaning of the make parameters:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>bootstrap</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This target does not just compile GCC, but compiles it
+                several times. It uses the programs compiled in a first round
+                to compile itself a second time, and then again a third time.
+                It then compares these second and third compiles to make sure
+                it can reproduce itself flawlessly. This also implies that it
+                was compiled correctly.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compilation is now complete. At this point, the test suite would
+          normally be run, but, as mentioned before, the test suite framework
+          is not in place yet. The benefits of running the tests at this
+          point are minimal since the programs from this first pass will soon
+          be replaced.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          As a finishing touch, create a symlink. Many programs and scripts
+          run <span><strong class="command">cc</strong></span> instead of
+          <span><strong class="command">gcc</strong></span>, which is used to
+          keep programs generic and therefore usable on all kinds of UNIX
+          systems where the GNU C compiler is not always installed. Running
+          <span><strong class="command">cc</strong></span> leaves the system
+          administrator free to decide which C compiler to install.
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">ln -s gcc /tools/bin/cc</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/gcc.html#contents-gcc" title=
+          "6.14.2.&nbsp;Contents of GCC">Section&nbsp;6.14.2, &ldquo;Contents
+          of GCC.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="binutils-pass1.html" title=
+          "Binutils-2.15.94.0.2.2 - Pass 1">Prev</a>
+          <p>
+            Binutils-2.15.94.0.2.2 - Pass 1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="linux-libc-headers.html" title=
+          "Linux-Libc-Headers-2.6.11.2">Next</a>
+          <p>
+            Linux-Libc-Headers-2.6.11.2
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

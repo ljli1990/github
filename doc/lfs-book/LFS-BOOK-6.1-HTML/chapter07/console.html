@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.6.&nbsp;Configuring the Linux Console
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="setclock.html" title=
+          "Configuring the setclock Script">Prev</a>
+          <p>
+            Configuring the setclock Script
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="sysklogd.html" title=
+          "Configuring the sysklogd script">Next</a>
+          <p>
+            Configuring the sysklogd script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.6. Configuring the Linux Console
+        </h1>
+      </div>
+      <p>
+        This section discusses how to configure the <span><strong class=
+        "command">console</strong></span> bootscript that sets up the
+        keyboard map and the console font. If non-ASCII characters (e.g., the
+        British pound sign and Euro character) will not be used and the
+        keyboard is a U.S. one, skip this section. Without the configuration
+        file, the <span><strong class="command">console</strong></span>
+        bootscript will do nothing.
+      </p>
+      <p>
+        The <span><strong class="command">console</strong></span> script
+        reads the <tt class="filename">/etc/sysconfig/console</tt> file for
+        configuration information. Decide which keymap and screen font will
+        be used. Various language-specific HOWTO's can also help with this
+        (see <a href=
+        "http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"><i>http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html</i></a>.
+        A pre-made <tt class="filename">/etc/sysconfig/console</tt> file with
+        known settings for several countries was installed with the
+        LFS-Bootscripts package, so the relevant section can be uncommented
+        if the country is supported. If still in doubt, look in the
+        <tt class="filename">/usr/share/kbd</tt> directory for valid keymaps
+        and screen fonts. Read <tt class="filename">loadkeys(1)</tt> and
+        <tt class="filename">setfont(8)</tt> to determine the correct
+        arguments for these programs. Once decided, create the configuration
+        file with the following command:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt;/etc/sysconfig/console &lt;&lt;"EOF"
+<tt class="literal">KEYMAP="<em class=
+"replaceable"><tt>[arguments for loadkeys]</tt></em>"
+FONT="<em class="replaceable"><tt>[arguments for setfont]</tt></em>"</tt>
+EOF</kbd></pre>
+      <p>
+        For example, for Spanish users who also want to use the Euro
+        character (accessible by pressing AltGr+E), the following settings
+        are correct:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt;/etc/sysconfig/console &lt;&lt;"EOF"
+<tt class="literal">KEYMAP="es euro2"
+FONT="lat9-16 -u iso01"</tt>
+EOF</kbd></pre>
+      <div class="note">
+        <div class="admonhead">
+          <img alt="[Note]" src="../images/note.png" />
+          <h3 class="admontitle">
+            Note
+          </h3>
+        </div>
+        <div class="admonbody">
+          <p>
+            The <tt class="envar">FONT</tt> line above is correct only for
+            the ISO 8859-15 character set. If using ISO 8859-1 and,
+            therefore, a pound sign instead of Euro, the correct <tt class=
+            "envar">FONT</tt> line would be:
+          </p>
+          <pre class="userinput"><kbd class=
+          "command">FONT="lat1-16"</kbd></pre>
+        </div>
+      </div>
+      <p>
+        If the <tt class="envar">KEYMAP</tt> or <tt class="envar">FONT</tt>
+        variable is not set, the <span><strong class=
+        "command">console</strong></span> initscript will not run the
+        corresponding program.
+      </p>
+      <p>
+        In some keymaps, the Backspace and Delete keys send characters
+        different from ones in the default keymap built into the kernel. This
+        confuses some applications. For example, Emacs displays its help
+        (instead of erasing the character before the cursor) when Backspace
+        is pressed. To check if the keymap in use is affected (this works
+        only for i386 keymaps):
+      </p>
+      <pre class="userinput"><kbd class="command">zgrep '\W14\W' <em class=
+      "replaceable"><tt>[/path/to/your/keymap]</tt></em></kbd></pre>
+      <p>
+        If the keycode 14 is Backspace instead of Delete, create the
+        following keymap snippet to fix this issue:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">mkdir -p /etc/kbd &amp;&amp; cat &gt; /etc/kbd/bs-sends-del &lt;&lt;"EOF"
+<tt class=
+"literal">                  keycode  14 = Delete Delete Delete Delete
+              alt keycode  14 = Meta_Delete
+        altgr alt keycode  14 = Meta_Delete
+                  keycode 111 = Remove
+    altgr control keycode 111 = Boot
+      control alt keycode 111 = Boot
+altgr control alt keycode 111 = Boot</tt>
+EOF</kbd></pre>
+      <p>
+        Tell the <span><strong class="command">console</strong></span> script
+        to load this snippet after the main keymap:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt;&gt;/etc/sysconfig/console &lt;&lt;"EOF"
+<tt class="literal">KEYMAP_CORRECTIONS="/etc/kbd/bs-sends-del"</tt>
+EOF</kbd></pre>
+      <p>
+        To compile the keymap directly into the kernel instead of setting it
+        every time from the <span><strong class=
+        "command">console</strong></span> bootscript, follow the instructions
+        given in <a href="../chapter08/kernel.html" title=
+        "8.3.&nbsp;Linux-2.6.11.12">Section 8.3,
+        &ldquo;Linux-2.6.11.12.&rdquo;</a> Doing this ensures that the
+        keyboard will always work as expected, even when booting into
+        maintenance mode (by passing <em class=
+        "parameter"><tt>init=/bin/sh</tt></em> to the kernel), because the
+        <span><strong class="command">console</strong></span> bootscript will
+        not be run in that situation. Additionally, the kernel will not set
+        the screen font automatically. This should not pose many problems
+        because ASCII characters will be handled correctly, and it is
+        unlikely that a user would need to rely on non-ASCII characters while
+        in maintenance mode.
+      </p>
+      <p>
+        Since the kernel will set up the keymap, it is possible to omit the
+        <tt class="envar">KEYMAP</tt> variable from the <tt class=
+        "filename">/etc/sysconfig/console</tt> configuration file. It can
+        also be left in place, if desired, without consequence. Keeping it
+        could be beneficial if running several different kernels where it is
+        difficult to ensure that the keymap is compiled into every one of
+        them.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="setclock.html" title=
+          "Configuring the setclock Script">Prev</a>
+          <p>
+            Configuring the setclock Script
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="sysklogd.html" title=
+          "Configuring the sysklogd script">Next</a>
+          <p>
+            Configuring the sysklogd script
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

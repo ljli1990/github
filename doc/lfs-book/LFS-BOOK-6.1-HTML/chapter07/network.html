@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      7.12.&nbsp;Configuring the network Script
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="hosts.html" title=
+          "Creating the /etc/hosts File">Prev</a>
+          <p>
+            Creating the /etc/hosts File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../chapter08/chapter08.html" title=
+          "Making the LFS System Bootable">Next</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          7.12. Configuring the network Script
+        </h1>
+      </div>
+      <p>
+        This section only applies if a network card is to be configured.
+      </p>
+      <p>
+        If a network card will not be used, there is likely no need to create
+        any configuration files relating to network cards. If that is the
+        case, remove the <tt class="filename">network</tt> symlinks from all
+        run-level directories (<tt class="filename">/etc/rc.d/rc*.d</tt>).
+      </p>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            7.12.1. Creating Network Interface Configuration Files
+          </h2>
+        </div>
+        <p>
+          Which interfaces are brought up and down by the network script
+          depends on the files and directories in the <tt class=
+          "filename">/etc/sysconfig/network-devices</tt> hierarchy. This
+          directory should contain a sub-directory for each interface to be
+          configured, such as <tt class="filename">ifconfig.xyz</tt>, where
+          &ldquo;<span class="quote">xyz</span>&rdquo; is a network interface
+          name. Inside this directory would be files defining the attributes
+          to this interface, such as its IP address(es), subnet masks, and so
+          forth.
+        </p>
+        <p>
+          The following command creates a sample <tt class=
+          "filename">ipv4</tt> file for the <span class=
+          "emphasis"><em>eth0</em></span> device:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cd /etc/sysconfig/network-devices &amp;&amp;
+mkdir ifconfig.eth0 &amp;&amp;
+cat &gt; ifconfig.eth0/ipv4 &lt;&lt; "EOF"
+<tt class="literal">ONBOOT=yes
+SERVICE=ipv4-static
+IP=192.168.1.1
+GATEWAY=192.168.1.2
+PREFIX=24
+BROADCAST=192.168.1.255</tt>
+EOF</kbd></pre>
+        <p>
+          The values of these variables must be changed in every file to
+          match the proper setup. If the <tt class="envar">ONBOOT</tt>
+          variable is set to &ldquo;<span class="quote">yes</span>&rdquo; the
+          network script will bring up the Network Interface Card (NIC)
+          during booting of the system. If set to anything but
+          &ldquo;<span class="quote">yes</span>&rdquo; the NIC will be
+          ignored by the network script and not be brought up.
+        </p>
+        <p>
+          The <tt class="envar">SERVICE</tt> variable defines the method used
+          for obtaining the IP address. The LFS-Bootscripts package has a
+          modular IP assignment format, and creating additional files in the
+          <tt class="filename">/etc/sysconfig/network-devices/services</tt>
+          directory allows other IP assignment methods. This is commonly used
+          for Dynamic Host Configuration Protocol (DHCP), which is addressed
+          in the BLFS book.
+        </p>
+        <p>
+          The <tt class="envar">GATEWAY</tt> variable should contain the
+          default gateway IP address, if one is present. If not, then comment
+          out the variable entirely.
+        </p>
+        <p>
+          The <tt class="envar">PREFIX</tt> variable needs to contain the
+          number of bits used in the subnet. Each octet in an IP address is 8
+          bits. If the subnet's netmask is 255.255.255.0, then it is using
+          the first three octets (24 bits) to specify the network number. If
+          the netmask is 255.255.255.240, it would be using the first 28
+          bits. Prefixes longer than 24 bits are commonly used by DSL and
+          cable-based Internet Service Providers (ISPs). In this example
+          (PREFIX=24), the netmask is 255.255.255.0. Adjust the <tt class=
+          "envar">PREFIX</tt> variable according to your specific subnet.
+        </p>
+      </div>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="resolv.conf" name="resolv.conf"></a>
+          <h2 class="sect2">
+            7.12.2. Creating the /etc/resolv.conf File
+          </h2>
+        </div>
+        <p>
+          If the system is going to be connected to the Internet, it will
+          need some means of Domain Name Service (DNS) name resolution to
+          resolve Internet domain names to IP addresses, and vice versa. This
+          is best achieved by placing the IP address of the DNS server,
+          available from the ISP or network administrator, into <tt class=
+          "filename">/etc/resolv.conf</tt>. Create the file by running the
+          following:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cat &gt; /etc/resolv.conf &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/resolv.conf
+
+domain {<em class="replaceable"><tt>[Your Domain Name]</tt></em>}
+nameserver <em class=
+"replaceable"><tt>[IP address of your primary nameserver]</tt></em>
+nameserver <em class=
+"replaceable"><tt>[IP address of your secondary nameserver]</tt></em>
+
+# End /etc/resolv.conf</tt>
+EOF</kbd></pre>
+        <p>
+          Replace <em class="replaceable"><tt>[IP address of the
+          nameserver]</tt></em> with the IP address of the DNS most
+          appropriate for the setup. There will often be more than one entry
+          (requirements demand secondary servers for fallback capability). If
+          you only need or want one DNS server, remove the second
+          <span class="emphasis"><em>nameserver</em></span> line from the
+          file. The IP address may also be a router on the local network.
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="hosts.html" title=
+          "Creating the /etc/hosts File">Prev</a>
+          <p>
+            Creating the /etc/hosts File
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="../chapter08/chapter08.html" title=
+          "Making the LFS System Bootable">Next</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter07.html" title=
+          "Chapter&nbsp;7.&nbsp;Setting Up System Bootscripts">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

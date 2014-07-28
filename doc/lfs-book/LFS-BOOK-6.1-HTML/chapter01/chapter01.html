@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      Chapter&nbsp;1.&nbsp;Introduction
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Part&nbsp;I.&nbsp;Introduction
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="../part1.html" title="Introduction">Prev</a>
+          <p>
+            Introduction
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="changelog.html" title="Changelog">Next</a>
+          <p>
+            Changelog
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part1.html" title=
+          "Part&nbsp;I.&nbsp;Introduction">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="chapter">
+          1. Introduction
+        </h1>
+      </div>
+      <div class="sect1" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="ch-scatter-how" name="ch-scatter-how"></a>
+          <h2 class="sect1">
+            1.1. How to Build an LFS System
+          </h2>
+        </div>
+        <p>
+          The LFS system will be built by using a previously installed Linux
+          distribution (such as Debian, Mandrake, Red Hat, or SuSE). This
+          existing Linux system (the host) will be used as a starting point
+          to provide necessary programs, including a compiler, linker, and
+          shell, to build the new system. Select the &ldquo;<span class=
+          "quote">development</span>&rdquo; option during the distribution
+          installation to be able to access these tools.
+        </p>
+        <p>
+          As an alternative to installing an entire separate distribution
+          onto your machine, you may wish to use the Linux From Scratch
+          LiveCD. The CD works well as a host system, providing all the tools
+          you need to successfully follow the instructions in this book.
+          Additionally, it contains all the source packages, patches and a
+          copy of this book. So once you have the CD, no network connection
+          or additional downloads are necessary. For more information about
+          the LFS LiveCD or to download a copy, visit <a href=
+          "http://www.linuxfromscratch.org/livecd/"><i>http://www.linuxfromscratch.org/livecd/</i></a>.
+        </p>
+        <p>
+          <a href="../chapter02/chapter02.html">Chapter 2</a> of this book
+          describes how to create a new Linux native partition and file
+          system, the place where the new LFS system will be compiled and
+          installed. <a href="../chapter03/chapter03.html">Chapter 3</a>
+          explains which packages and patches need to be downloaded to build
+          an LFS system and how to store them on the new file system.
+          <a href="../chapter04/chapter04.html">Chapter 4</a> discusses the
+          setup for an appropriate working environment. Please read <a href=
+          "../chapter04/chapter04.html">Chapter 4</a> carefully as it
+          explains several important issues the developer should be aware of
+          before beginning to work through <a href=
+          "../chapter05/chapter05.html">Chapter 5</a> and beyond.
+        </p>
+        <p>
+          <a href="../chapter05/chapter05.html">Chapter 5</a> explains the
+          installation of a number of packages that will form the basic
+          development suite (or toolchain) which is used to build the actual
+          system in <a href="../chapter06/chapter06.html">Chapter 6</a>. Some
+          of these packages are needed to resolve circular
+          dependencies&mdash;for example, to compile a compiler, you need a
+          compiler.
+        </p>
+        <p>
+          <a href="../chapter05/chapter05.html">Chapter 5</a> also shows the
+          user how to build a first pass of the toolchain, including Binutils
+          and GCC (first pass basically means these two core packages will be
+          re-installed a second time). The next step is to build Glibc, the C
+          library. Glibc will be compiled by the toolchain programs built in
+          the first pass. Then, a second pass of the toolchain will be built.
+          This time, the toolchain will be dynamically linked against the
+          newly built Glibc. The remaining <a href=
+          "../chapter05/chapter05.html">Chapter 5</a> packages are built
+          using this second pass toolchain. When this is done, the LFS
+          installation process will no longer depend on the host
+          distribution, with the exception of the running kernel.
+        </p>
+        <p>
+          While this may initially seem like a lot of work to isolate the new
+          system from the host distribution, a full technical explanation is
+          provided at the beginning of <a href=
+          "../chapter05/chapter05.html">Chapter 5</a>.
+        </p>
+        <p>
+          In <a href="../chapter06/chapter06.html">Chapter 6</a>, the full
+          LFS system is built. The <span><strong class=
+          "command">chroot</strong></span> (change root) program is used to
+          enter a virtual environment and start a new shell whose root
+          directory will be set to the LFS partition. This is very similar to
+          rebooting and instructing the kernel to mount the LFS partition as
+          the root partition. The system does not actually reboot, but
+          instead <span><strong class="command">chroot</strong></span>'s
+          because creating a bootable system requires additional work which
+          is not necessary just yet. The major advantage is that
+          &ldquo;<span class="quote">chrooting</span>&rdquo; allows the
+          builder to continue using the host while LFS is being built. While
+          waiting for package compilation to complete, a user can switch to a
+          different virtual console (VC) or X desktop and continue using the
+          computer as normal.
+        </p>
+        <p>
+          To finish the installation, the LFS-Bootscripts are set up in
+          <a href="../chapter07/chapter07.html">Chapter 7</a>, and the kernel
+          and boot loader are set up in <a href=
+          "../chapter08/chapter08.html">Chapter 8</a>. <a href=
+          "../chapter09/chapter09.html">Chapter 9</a> contains information on
+          furthering the LFS experience beyond this book. After the steps in
+          this book have been implemented, the computer will be ready to
+          reboot into the new LFS system.
+        </p>
+        <p>
+          This is the process in a nutshell. Detailed information on each
+          step is discussed in the following chapters and package
+          descriptions. Items that may seem complicated will be clarified,
+          and everything will fall into place as the reader embarks on the
+          LFS adventure.
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="../part1.html" title="Introduction">Prev</a>
+          <p>
+            Introduction
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="changelog.html" title="Changelog">Next</a>
+          <p>
+            Changelog
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="../part1.html" title=
+          "Part&nbsp;I.&nbsp;Introduction">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

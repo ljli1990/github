@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      5.5.&nbsp;Linux-Libc-Headers-2.6.11.2
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;5.&nbsp;Constructing a Temporary System
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="gcc-pass1.html" title=
+          "GCC-3.4.3 - Pass 1">Prev</a>
+          <p>
+            GCC-3.4.3 - Pass 1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="glibc.html" title="Glibc-2.3.4">Next</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          5.5. Linux-Libc-Headers-2.6.11.2
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Linux-Libc-Headers package contains the &ldquo;<span class=
+          "quote">sanitized</span>&rdquo; kernel headers.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.1 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">26.9 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Coreutils</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            5.5.1. Installation of Linux-Libc-Headers
+          </h2>
+        </div>
+        <p>
+          For years it has been common practice to use &ldquo;<span class=
+          "quote">raw</span>&rdquo; kernel headers (straight from a kernel
+          tarball) in <tt class="filename">/usr/include</tt>, but over the
+          last few years, the kernel developers have taken a strong stance
+          that this should not be done. This gave birth to the
+          Linux-Libc-Headers Project, which was designed to maintain an
+          Application Programming Interface (API) stable version of the Linux
+          headers.
+        </p>
+        <p>
+          Install the header files:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">cp -R include/asm-i386 /tools/include/asm
+cp -R include/linux /tools/include</kbd></pre>
+        <p>
+          If your architecture is not i386 (compatible), adjust the first
+          command accordingly.
+        </p>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <p>
+          Details on this package are located in <a href=
+          "../chapter06/linux-libc-headers.html#contents-linux-libc-headers"
+          title=
+          "6.9.2.&nbsp;Contents of Linux-Libc-Headers">Section&nbsp;6.9.2,
+          &ldquo;Contents of Linux-Libc-Headers.&rdquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gcc-pass1.html" title=
+          "GCC-3.4.3 - Pass 1">Prev</a>
+          <p>
+            GCC-3.4.3 - Pass 1
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="glibc.html" title="Glibc-2.3.4">Next</a>
+          <p>
+            Glibc-2.3.4
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter05.html" title=
+          "Chapter&nbsp;5.&nbsp;Constructing a Temporary System">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

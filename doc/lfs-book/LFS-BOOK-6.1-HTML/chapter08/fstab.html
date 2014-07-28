@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      8.2.&nbsp;Creating the /etc/fstab File
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;8.&nbsp;Making the LFS System Bootable
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="chapter08.html" title=
+          "Making the LFS System Bootable">Prev</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="kernel.html" title=
+          "Linux-2.6.11.12">Next</a>
+          <p>
+            Linux-2.6.11.12
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          8.2. Creating the /etc/fstab File
+        </h1>
+      </div>
+      <p>
+        The <tt class="filename">/etc/fstab</tt> file is used by some
+        programs to determine where file systems are to be mounted by
+        default, in which order, and which must be checked (for integrity
+        errors) prior to mounting. Create a new file systems table like this:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">cat &gt; /etc/fstab &lt;&lt; "EOF"
+<tt class="literal"># Begin /etc/fstab
+
+# file system  mount-point  type   options         dump  fsck
+#                                                        order
+
+/dev/<em class="replaceable"><tt>[xxx]</tt></em>     /            <em class=
+"replaceable"><tt>[fff]</tt></em>  defaults        1     1
+/dev/<em class=
+"replaceable"><tt>[yyy]</tt></em>     swap         swap   pri=1           0     0
+proc           /proc        proc   defaults        0     0
+sysfs          /sys         sysfs  defaults        0     0
+devpts         /dev/pts     devpts gid=4,mode=620  0     0
+shm            /dev/shm     tmpfs  defaults        0     0
+# End /etc/fstab</tt>
+EOF</kbd></pre>
+      <p>
+        Replace <em class="replaceable"><tt>[xxx]</tt></em>, <em class=
+        "replaceable"><tt>[yyy]</tt></em>, and <em class=
+        "replaceable"><tt>[fff]</tt></em> with the values appropriate for the
+        system, for example, <tt class="filename">hda2</tt>, <tt class=
+        "filename">hda5</tt>, and <tt class="systemitem">ext2</tt>. For
+        details on the six fields in this file, see <span><strong class=
+        "command">man 5 fstab</strong></span>.
+      </p>
+      <p>
+        When using a journalling file system, the <em class="parameter"><tt>1
+        1</tt></em> at the end of the line should be replaced with <em class=
+        "parameter"><tt>0 0</tt></em> because such a partition does not need
+        to be dumped or checked.
+      </p>
+      <p>
+        The <tt class="filename">/dev/shm</tt> mount point for <tt class=
+        "systemitem">tmpfs</tt> is included to allow enabling POSIX-shared
+        memory. The kernel must have the required support built into it for
+        this to work (more about this is in the next section). Please note
+        that very little software currently uses POSIX-shared memory.
+        Therefore, consider the <tt class="filename">/dev/shm</tt> mount
+        point optional. For more information, see <tt class=
+        "filename">Documentation/filesystems/tmpfs.txt</tt> in the kernel
+        source tree.
+      </p>
+      <p>
+        There are other lines which may be added to the <tt class=
+        "filename">/etc/fstab</tt> file. One example is a line for USB
+        devices:
+      </p>
+      <pre class="screen">
+      usbfs        /proc/bus/usb usbfs   devgid=14,devmode=0660 0 0 </pre>
+      <p>
+        This option will only work if &ldquo;<span class="quote">Support for
+        Host-side USB</span>&rdquo; and &ldquo;<span class="quote">USB device
+        filesystem</span>&rdquo; are configured in the kernel. If
+        &ldquo;<span class="quote">Support for Host-side USB</span>&rdquo; is
+        compiled as a module, then <tt class="filename">usbcore</tt> must be
+        listed in <tt class="filename">/etc/sysconfig/modules</tt>.
+      </p>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="chapter08.html" title=
+          "Making the LFS System Bootable">Prev</a>
+          <p>
+            Making the LFS System Bootable
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="kernel.html" title=
+          "Linux-2.6.11.12">Next</a>
+          <p>
+            Linux-2.6.11.12
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter08.html" title=
+          "Chapter&nbsp;8.&nbsp;Making the LFS System Bootable">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

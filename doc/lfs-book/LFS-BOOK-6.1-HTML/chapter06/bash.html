@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.37.&nbsp;Bash-3.0
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="automake.html" title=
+          "Automake-1.9.5">Prev</a>
+          <p>
+            Automake-1.9.5
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="file.html" title="File-4.13">Next</a>
+          <p>
+            File-4.13
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.37. Bash-3.0
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Bash package contains the Bourne-Again SHell.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">1.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">20.6 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Binutils, Coreutils,
+              Diffutils, Gawk, GCC, Glibc, Grep, Make, Ncurses, and
+              Sed.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.37.1. Installation of Bash
+          </h2>
+        </div>
+        <p>
+          The following patch fixes various issues, including a problem where
+          Bash will sometimes only show 33 characters on a line, then wrap to
+          the next:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../bash-3.0-fixes-3.patch</kbd></pre>
+        <p>
+          Bash also has issues when compiled against newer versions of Glibc.
+          The following patch resolves this problem:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../bash-3.0-avoid_WCONTINUED-1.patch</kbd></pre>
+        <p>
+          Prepare Bash for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --bindir=/bin \
+    --without-bash-malloc --with-installed-readline</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--with-installed-readline</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This options tells Bash to use the <tt class=
+                "filename">readline</tt> library that is already installed on
+                the system rather than using its own readline version.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          To test the results, issue: <strong class="userinput"><tt>make
+          tests</tt></strong>.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Run the newly compiled <span><strong class=
+          "command">bash</strong></span> program (replacing the one that is
+          currently being executed):
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">exec /bin/bash --login +h</kbd></pre>
+        <div class="note">
+          <div class="admonhead">
+            <img alt="[Note]" src="../images/note.png" />
+            <h3 class="admontitle">
+              Note
+            </h3>
+          </div>
+          <div class="admonbody">
+            <p>
+              The parameters used make the <span><strong class=
+              "command">bash</strong></span> process an interactive login
+              shell and continue to disable hashing so that new programs are
+              found as they become available.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-bash" name="contents-bash"></a>
+          <h2 class="sect2">
+            6.37.2. Contents of Bash
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">bash, bashbug, and
+              sh (link to bash)</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3328650" name="id3328650"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="bash" name="bash"></a><span class=
+                  "term"><span><strong class=
+                  "command">bash</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A widely-used command interpreter; it performs many types
+                    of expansions and substitutions on a given command line
+                    before executing it, thus making this interpreter a
+                    powerful tool
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="bashbug" name="bashbug"></a><span class=
+                  "term"><span><strong class=
+                  "command">bashbug</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A shell script to help the user compose and mail standard
+                    formatted bug reports concerning <span><strong class=
+                    "command">bash</strong></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="sh" name="sh"></a><span class=
+                  "term"><span><strong class=
+                  "command">sh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A symlink to the <span><strong class=
+                    "command">bash</strong></span> program; when invoked as
+                    <span><strong class="command">sh</strong></span>,
+                    <span><strong class="command">bash</strong></span> tries
+                    to mimic the startup behavior of historical versions of
+                    <span><strong class="command">sh</strong></span> as
+                    closely as possible, while conforming to the POSIX
+                    standard as well
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="automake.html" title=
+          "Automake-1.9.5">Prev</a>
+          <p>
+            Automake-1.9.5
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="file.html" title="File-4.13">Next</a>
+          <p>
+            File-4.13
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

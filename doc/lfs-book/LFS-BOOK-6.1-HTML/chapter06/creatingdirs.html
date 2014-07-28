@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.5.&nbsp;Creating Directories
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="changingowner.html" title=
+          "Changing Ownership">Prev</a>
+          <p>
+            Changing Ownership
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="createfiles.html" title=
+          "Creating Essential Symlinks">Next</a>
+          <p>
+            Creating Essential Symlinks
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="sect1" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.5. Creating Directories
+        </h1>
+      </div>
+      <p>
+        It is time to create some structure in the LFS file system. Create a
+        standard directory tree by issuing the following commands:
+      </p>
+      <pre class="userinput"><kbd class=
+      "command">install -d /{bin,boot,dev,etc/opt,home,lib,mnt}
+install -d /{sbin,srv,usr/local,var,opt}
+install -d /root -m 0750
+install -d /tmp /var/tmp -m 1777
+install -d /media/{floppy,cdrom}
+install -d /usr/{bin,include,lib,sbin,share,src}
+ln -s share/{man,doc,info} /usr
+install -d /usr/share/{doc,info,locale,man}
+install -d /usr/share/{misc,terminfo,zoneinfo}
+install -d /usr/share/man/man{1,2,3,4,5,6,7,8}
+install -d /usr/local/{bin,etc,include,lib,sbin,share,src}
+ln -s share/{man,doc,info} /usr/local
+install -d /usr/local/share/{doc,info,locale,man}
+install -d /usr/local/share/{misc,terminfo,zoneinfo}
+install -d /usr/local/share/man/man{1,2,3,4,5,6,7,8}
+install -d /var/{lock,log,mail,run,spool}
+install -d /var/{opt,cache,lib/{misc,locate},local}
+install -d /opt/{bin,doc,include,info}
+install -d /opt/{lib,man/man{1,2,3,4,5,6,7,8}}</kbd></pre>
+      <p>
+        Directories are, by default, created with permission mode 755, but
+        this is not desirable for all directories. In the commands above, two
+        changes are made&mdash;one to the home directory of user <span class=
+        "emphasis"><em>root</em></span>, and another to the directories for
+        temporary files.
+      </p>
+      <p>
+        The first mode change ensures that not just anybody can enter the
+        <tt class="filename">/root</tt> directory&mdash;the same as a normal
+        user would do with his or her home directory. The second mode change
+        makes sure that any user can write to the <tt class=
+        "filename">/tmp</tt> and <tt class="filename">/var/tmp</tt>
+        directories, but cannot remove another user's files from them. The
+        latter is prohibited by the so-called &ldquo;<span class=
+        "quote">sticky bit,</span>&rdquo; the highest bit (1) in the 1777 bit
+        mask.
+      </p>
+      <div class="sect2" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.5.1. FHS Compliance Note
+          </h2>
+        </div>
+        <p>
+          The directory tree is based on the Filesystem Hierarchy Standard
+          (FHS) (available at <a href=
+          "http://www.pathname.com/fhs/"><i>http://www.pathname.com/fhs/</i></a>).
+          In addition to the tree created above, this standard stipulates the
+          existence of <tt class="filename">/usr/local/games</tt> and
+          <tt class="filename">/usr/share/games</tt>. The FHS is not precise
+          as to the structure of the <tt class=
+          "filename">/usr/local/share</tt> subdirectory, so we create only
+          the directories that are needed. However, feel free to create these
+          directories if you prefer to conform more strictly to the FHS.
+        </p>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="changingowner.html" title=
+          "Changing Ownership">Prev</a>
+          <p>
+            Changing Ownership
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="createfiles.html" title=
+          "Creating Essential Symlinks">Next</a>
+          <p>
+            Creating Essential Symlinks
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.31.&nbsp;Inetutils-1.4.2
+    </title>
+    <link rel="stylesheet" href="../stylesheets/lfs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.68.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+  </head>
+  <body id="lfs" class="6.1">
+    <div class="navheader">
+      <div class="headertitles">
+        <h4>
+          Linux From Scratch - Version 6.1
+        </h4>
+        <h3>
+          Chapter&nbsp;6.&nbsp;Installing Basic System Software
+        </h3>
+      </div>
+      <ul class="headerlinks">
+        <li class="prev">
+          <a accesskey="p" href="gettext.html" title=
+          "Gettext-0.14.3">Prev</a>
+          <p>
+            Gettext-0.14.3
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iproute2.html" title=
+          "IPRoute2-2.6.11-050330">Next</a>
+          <p>
+            IPRoute2-2.6.11-050330
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <h1 class="sect1">
+          6.31. Inetutils-1.4.2
+        </h1>
+      </div>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          The Inetutils package contains programs for basic networking.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Approximate build
+              time:</span></strong> <span class="seg">0.2 SBU</span>
+            </div>
+            <div class="seg">
+              <strong><span class="segtitle">Required disk
+              space:</span></strong> <span class="seg">8.7 MB</span>
+            </div>
+          </div>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installation depends
+              on:</span></strong> <span class="seg">Bash, Binutils,
+              Coreutils, Diffutils, GCC, Glibc, Grep, Make, Ncurses, and
+              Sed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <h2 class="sect2">
+            6.31.1. Installation of Inetutils
+          </h2>
+        </div>
+        <p>
+          Inetutils has issues with the Linux 2.6 kernel series. Fix these
+          issues by applying the following patch:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../inetutils-1.4.2-kernel_headers-1.patch</kbd></pre>
+        <p>
+          All programs that come with Inetutils will not be installed.
+          However, the Inetutils build system will insist on installing all
+          the man pages anyway. The following patch will correct this
+          situation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">patch -Np1 -i ../inetutils-1.4.2-no_server_man_pages-1.patch</kbd></pre>
+        <p>
+          Prepare Inetutils for compilation:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">./configure --prefix=/usr --libexecdir=/usr/sbin \
+    --sysconfdir=/etc --localstatedir=/var \
+    --disable-logger --disable-syslogd \
+    --disable-whois --disable-servers</kbd></pre>
+        <p>
+          The meaning of the configure options:
+        </p>
+        <div class="variablelist">
+          <dl>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-logger</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option prevents Inetutils from installing the
+                <span><strong class="command">logger</strong></span> program,
+                which is used by scripts to pass messages to the System Log
+                Daemon. Do not install it because Util-linux installs a
+                better version later.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-syslogd</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option prevents Inetutils from installing the System Log
+                Daemon, which is installed with the Sysklogd package.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-whois</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This option disables the building of the Inetutils
+                <span><strong class="command">whois</strong></span> client,
+                which is out of date. Instructions for a better
+                <span><strong class="command">whois</strong></span> client
+                are in the BLFS book.
+              </p>
+            </dd>
+            <dt>
+              <span class="term"><em class=
+              "parameter"><tt>--disable-servers</tt></em></span>
+            </dt>
+            <dd>
+              <p>
+                This disables the installation of the various network servers
+                included as part of the Inetutils package. These servers are
+                deemed not appropriate in a basic LFS system. Some are
+                insecure by nature and are only considered safe on trusted
+                networks. More information can be found at <a href=
+                "http://www.linuxfromscratch.org/blfs/view/svn/basicnet/inetutils.html">
+                <i>http://www.linuxfromscratch.org/blfs/view/svn/basicnet/inetutils.html</i></a>.
+                Note that better replacements are available for many of these
+                servers.
+              </p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make</kbd></pre>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput"><kbd class="command">make install</kbd></pre>
+        <p>
+          Move the <span><strong class="command">ping</strong></span> program
+          to its FHS-compliant place:
+        </p>
+        <pre class="userinput"><kbd class=
+        "command">mv /usr/bin/ping /bin</kbd></pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <a id="contents-inetutils" name="contents-inetutils"></a>
+          <h2 class="sect2">
+            6.31.2. Contents of Inetutils
+          </h2>
+        </div>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong><span class="segtitle">Installed
+              programs:</span></strong> <span class="seg">ftp, ping, rcp,
+              rlogin, rsh, talk, telnet, and tftp</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            <a id="id3325786" name="id3325786"></a>Short Descriptions
+          </h3>
+          <table border="0">
+            <col align="left" valign="top" />
+            <tbody>
+              <tr>
+                <td>
+                  <a id="ftp" name="ftp"></a><span class=
+                  "term"><span><strong class=
+                  "command">ftp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is the file transfer protocol program
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="ping" name="ping"></a><span class=
+                  "term"><span><strong class=
+                  "command">ping</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Sends echo-request packets and reports how long the
+                    replies take
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rcp" name="rcp"></a><span class=
+                  "term"><span><strong class=
+                  "command">rcp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Performs remote file copy
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rlogin" name="rlogin"></a><span class=
+                  "term"><span><strong class=
+                  "command">rlogin</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Performs remote login
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="rsh" name="rsh"></a><span class=
+                  "term"><span><strong class=
+                  "command">rsh</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Runs a remote shell
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="talk" name="talk"></a><span class=
+                  "term"><span><strong class=
+                  "command">talk</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    Is used to chat with another user
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="telnet" name="telnet"></a><span class=
+                  "term"><span><strong class=
+                  "command">telnet</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    An interface to the TELNET protocol
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a id="tftp" name="tftp"></a><span class=
+                  "term"><span><strong class=
+                  "command">tftp</strong></span></span>
+                </td>
+                <td>
+                  <p>
+                    A trivial file transfer program
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gettext.html" title=
+          "Gettext-0.14.3">Prev</a>
+          <p>
+            Gettext-0.14.3
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iproute2.html" title=
+          "IPRoute2-2.6.11-050330">Next</a>
+          <p>
+            IPRoute2-2.6.11-050330
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>.
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 6.1">Home</a>.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
