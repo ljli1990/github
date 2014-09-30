@@ -1,0 +1,84 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEBFLAGS	Makefile	/^  DEBFLAGS = -O -g -DSCULLC_DEBUG # "-O" is needed to expand inlines$/;"	m
+DEBFLAGS	Makefile	/^  DEBFLAGS = -O2$/;"	m
+KERNELDIR	Makefile	/^KERNELDIR ?= \/lib\/modules\/$(shell uname -r)\/build$/;"	m
+PDEBUG	scullc.h	23;"	d
+PDEBUG	scullc.h	27;"	d
+PDEBUG	scullc.h	30;"	d
+PDEBUG	scullc.h	33;"	d
+PDEBUGG	scullc.h	36;"	d
+PDEBUGG	scullc.h	37;"	d
+PWD	Makefile	/^PWD       := $(shell pwd)$/;"	m
+SCULLC_DEVS	scullc.h	41;"	d
+SCULLC_IOCGQSET	scullc.h	114;"	d
+SCULLC_IOCGQUANTUM	scullc.h	108;"	d
+SCULLC_IOCHQSET	scullc.h	117;"	d
+SCULLC_IOCHQUANTUM	scullc.h	111;"	d
+SCULLC_IOCQQSET	scullc.h	115;"	d
+SCULLC_IOCQQUANTUM	scullc.h	109;"	d
+SCULLC_IOCRESET	scullc.h	96;"	d
+SCULLC_IOCSQSET	scullc.h	112;"	d
+SCULLC_IOCSQUANTUM	scullc.h	106;"	d
+SCULLC_IOCTQSET	scullc.h	113;"	d
+SCULLC_IOCTQUANTUM	scullc.h	107;"	d
+SCULLC_IOCXQSET	scullc.h	116;"	d
+SCULLC_IOCXQUANTUM	scullc.h	110;"	d
+SCULLC_IOC_MAGIC	scullc.h	94;"	d
+SCULLC_IOC_MAXNR	scullc.h	119;"	d
+SCULLC_MAJOR	scullc.h	39;"	d
+SCULLC_QSET	scullc.h	53;"	d
+SCULLC_QUANTUM	scullc.h	52;"	d
+SCULLC_USE_PROC	scullc.h	86;"	d
+TARGET	Makefile	/^TARGET = scullc$/;"	m
+async_work	main.c	/^struct async_work {$/;"	s	file:
+cdev	scullc.h	/^	struct cdev cdev;$/;"	m	struct:scullc_dev	typeref:struct:scullc_dev::cdev
+data	scullc.h	/^	void **data;$/;"	m	struct:scullc_dev
+iocb	main.c	/^	struct kiocb *iocb;$/;"	m	struct:async_work	typeref:struct:async_work::kiocb	file:
+kmem_cache_t	main.c	/^typedef struct kmem_cache kmem_cache_t;$/;"	t	typeref:struct:kmem_cache	file:
+next	scullc.h	/^	struct scullc_dev *next;  \/* next listitem *\/$/;"	m	struct:scullc_dev	typeref:struct:scullc_dev::scullc_dev
+obj-m	Makefile	/^obj-m	:= scullc.o$/;"	m
+qset	scullc.h	/^	int qset;                 \/* the current array size *\/$/;"	m	struct:scullc_dev
+quantum	scullc.h	/^	int quantum;              \/* the current allocation size *\/$/;"	m	struct:scullc_dev
+result	main.c	/^	int result;$/;"	m	struct:async_work	file:
+scullc-objs	Makefile	/^scullc-objs := main.o$/;"	m
+scullc_aio_read	main.c	/^static ssize_t scullc_aio_read(struct kiocb *iocb, char __user *buf, size_t count,$/;"	f	file:
+scullc_aio_write	main.c	/^static ssize_t scullc_aio_write(struct kiocb *iocb, const char __user *buf,$/;"	f	file:
+scullc_cache	main.c	/^kmem_cache_t *scullc_cache;$/;"	v
+scullc_cleanup	main.c	/^module_exit(scullc_cleanup);$/;"	v
+scullc_cleanup	main.c	/^void scullc_cleanup(void)$/;"	f
+scullc_defer_op	main.c	/^static int scullc_defer_op(int write, struct kiocb *iocb, char __user *buf,$/;"	f	file:
+scullc_dev	scullc.h	/^struct scullc_dev {$/;"	s
+scullc_devices	main.c	/^struct scullc_dev *scullc_devices; \/* allocated in scullc_init *\/$/;"	v	typeref:struct:scullc_dev
+scullc_devs	main.c	/^int scullc_devs =    SCULLC_DEVS;	\/* number of bare scullc devices *\/$/;"	v
+scullc_do_deferred_op	main.c	/^static void scullc_do_deferred_op(struct work_struct *workp)$/;"	f	file:
+scullc_follow	main.c	/^struct scullc_dev *scullc_follow(struct scullc_dev *dev, int n)$/;"	f
+scullc_fops	main.c	/^struct file_operations scullc_fops = {$/;"	v	typeref:struct:file_operations
+scullc_init	main.c	/^int scullc_init(void)$/;"	f
+scullc_init	main.c	/^module_init(scullc_init);$/;"	v
+scullc_ioctl	main.c	/^int scullc_ioctl (struct inode *inode, struct file *filp,$/;"	f
+scullc_llseek	main.c	/^loff_t scullc_llseek (struct file *filp, loff_t off, int whence)$/;"	f
+scullc_major	main.c	/^int scullc_major =   SCULLC_MAJOR;$/;"	v
+scullc_mmap	mmap.c	/^int scullc_mmap(struct file *filp, struct vm_area_struct *vma)$/;"	f
+scullc_open	main.c	/^int scullc_open (struct inode *inode, struct file *filp)$/;"	f
+scullc_proc_offset	main.c	/^void scullc_proc_offset(char *buf, char **start, off_t *offset, int *len)$/;"	f
+scullc_qset	main.c	/^int scullc_qset =    SCULLC_QSET;$/;"	v
+scullc_quantum	main.c	/^int scullc_quantum = SCULLC_QUANTUM;$/;"	v
+scullc_read	main.c	/^ssize_t scullc_read (struct file *filp, char __user *buf, size_t count,$/;"	f
+scullc_read_procmem	main.c	/^int scullc_read_procmem(char *buf, char **start, off_t offset,$/;"	f
+scullc_release	main.c	/^int scullc_release (struct inode *inode, struct file *filp)$/;"	f
+scullc_setup_cdev	main.c	/^static void scullc_setup_cdev(struct scullc_dev *dev, int index)$/;"	f	file:
+scullc_trim	main.c	/^int scullc_trim(struct scullc_dev *dev)$/;"	f
+scullc_vm_ops	mmap.c	/^struct vm_operations_struct scullc_vm_ops = {$/;"	v	typeref:struct:vm_operations_struct
+scullc_vma_close	mmap.c	/^void scullc_vma_close(struct vm_area_struct *vma)$/;"	f
+scullc_vma_nopage	mmap.c	/^struct page *scullc_vma_nopage(struct vm_area_struct *vma,$/;"	f
+scullc_vma_open	mmap.c	/^void scullc_vma_open(struct vm_area_struct *vma)$/;"	f
+scullc_write	main.c	/^ssize_t scullc_write (struct file *filp, const char __user *buf, size_t count,$/;"	f
+sem	scullc.h	/^	struct semaphore sem;     \/* Mutual exclusion *\/$/;"	m	struct:scullc_dev	typeref:struct:scullc_dev::semaphore
+size	scullc.h	/^	size_t size;              \/* 32-bit will suffice *\/$/;"	m	struct:scullc_dev
+vmas	scullc.h	/^	int vmas;                 \/* active mappings *\/$/;"	m	struct:scullc_dev
+work	main.c	/^	struct delayed_work work;$/;"	m	struct:async_work	typeref:struct:async_work::delayed_work	file:

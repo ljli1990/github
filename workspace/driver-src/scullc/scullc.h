@@ -15,7 +15,6 @@
 
 #include <linux/ioctl.h>
 #include <linux/cdev.h>
-
 /*
  * Macros to help debugging
  */
@@ -118,5 +117,4 @@ struct scullc_dev *scullc_follow(struct scullc_dev *dev, int n);
 
 #define SCULLC_IOC_MAXNR 12
 
-
-
+typedef struct kmem_cache kmem_cache_t
