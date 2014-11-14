@@ -1,8 +1,16 @@
 # If KERNELRELEASE is defined, we've been invoked from the
 # kernel build system and can use its language.
 
-# module name
-OBJ = TEMPLATE
+#module name
+#OBJ = TEMPLATE
+
+
+DIR=$(abspath .)
+
+#auto get the module name by dir
+OBJ=$(notdir $(DIR))
+
+#$(info "dir="$(DIR1))
 
 # module execute objs
 $(OBJ)-objs = test.o 
@@ -22,6 +30,8 @@ uninstall:
 	sudo rmmod $(OBJ)
 clean:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
+check:
+	@sudo lsmod |grep $(OBJ) ||echo no module $(OBJ)
 endif
 
 #multi files
