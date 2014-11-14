@@ -23,7 +23,7 @@ uninstall:
 clean:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
 check:
-	@sudo lsmod |grep $(OBJ)
+	@sudo lsmod |grep $(OBJ) ||echo no module $(OBJ)
 endif
 
 #multi files
