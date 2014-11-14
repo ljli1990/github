@@ -5,12 +5,12 @@
 #OBJ = TEMPLATE
 
 
-DIR=$(abspath .)
+PWD?=$(shell PWD)
 
 #auto get the module name by dir
-OBJ=$(notdir $(DIR))
+OBJ?=$(notdir $(PWD))
 
-#$(info "dir="$(DIR1))
+$(info "module="$(OBJ))
 
 # module execute objs
 $(OBJ)-objs = test.o 
@@ -21,7 +21,6 @@ ifneq ($(KERNELRELEASE),)
 # line; invoke the kernel build system.
 else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
-	PWD := $(shell pwd)
 default:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 install:
