@@ -27,7 +27,7 @@ static unsigned long pagemem = 0;
 static void * kmallocmem = NULL;
 //kmem_cache_t 
 static void * vmallocmem = NULL;
-
+static struct page * page = NULL;
 
 static __init int test_init(void)
 {
@@ -50,6 +50,14 @@ static __init int test_init(void)
 		goto vmalloc_fail;
 	printk(KERN_INFO "vmallocmem = 0x%p\n",vmallocmem);
 
+	page = alloc_page(GFP_KERNEL);
+	if (!page)
+	{
+		goto page_fail;
+	}
+	printk(KERN_INFO "page = 0x%p\n",page);
+
+
 	return 0;
 
 gfp_fail:
@@ -58,7 +66,8 @@ kmalloc_fail:
 	kfree(kmallocmem);
 vmalloc_fail:
 	vfree(vmallocmem);
-
+page_fail:
+  __free_page(page);
 	
 	return 0;
 }
