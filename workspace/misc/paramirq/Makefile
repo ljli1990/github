@@ -32,9 +32,9 @@ else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 default:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-install:
-	sudo insmod $(OBJ).ko
-uninstall:
+insmod:
+	sudo insmod $(OBJ).ko irq=1 devname=myirq
+rmmod:
 	sudo rmmod $(OBJ)
 clean:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean

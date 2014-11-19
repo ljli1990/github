@@ -45,7 +45,7 @@ static irqreturn_t myirq_handler(int irq,void* dev)
 	return IRQ_HANDLED;
 }
 
-static int __init myirq_init()
+static __init int myirq_init(void)
 {
 	printk("Module is working..\n");
 	if(request_irq(irq,myirq_handler,IRQF_SHARED,devname,&mydev)!=0)
@@ -57,7 +57,7 @@ static int __init myirq_init()
 	return 0;
 }
 
-static void __exit myirq_exit()
+static __exit void myirq_exit(void)
 {
 	printk("Module is leaving..\n");
 	free_irq(irq,&mydev);
