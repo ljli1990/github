@@ -69,5 +69,5 @@ static void __exit myirq_exit()
 module_init(myirq_init);
 module_exit(myirq_exit);
 MODULE_LICENSE("GPL");
-
-
+//refer to
+//http://edsionte.com/techblog/archives/1521

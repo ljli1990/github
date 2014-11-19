@@ -10,13 +10,22 @@ PWD?=$(shell PWD)
 #auto get the module name by dir
 OBJ?=$(notdir $(PWD))
 
-$(info "module="$(OBJ))
+C_SOURCES = $(shell find $(PWD) -name "*.c")
+C_FILES = $(notdir $(C_SOURCES))
+C_OBJECTS = $(patsubst %.c, %.o, $(C_FILES))
+#S_SOURCES = $(shell find . -name "*.s")
+#S_OBJECTS = $(patsubst %.s, %.o, $(S_SOURCES))
 
 # module execute objs
-$(OBJ)-objs = test.o 
+#$(OBJ)-objs = $(OBJ) 
+
+#multi files
+obj-m := $(OBJ).o
+module-objs := $(C_OBJECTS)
+
 
 ifneq ($(KERNELRELEASE),)
-	obj-m := $(OBJ).o
+	obj-m :=  $(C_OBJECTS) 
 # Otherwise we were called directly from the command
 # line; invoke the kernel build system.
 else
@@ -33,7 +42,3 @@ check:
 	@sudo lsmod |grep $(OBJ) ||echo no module $(OBJ)
 endif
 
-#multi files
-#obj-m := module.o
-#module-objs := file1.o file2.o
-#
