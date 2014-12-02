@@ -7,7 +7,6 @@ MODULE_AUTHOR("ming.li");
 //MODULE_VERSION(version_string);
 //MODULE_DEVICE_TABLE(table_info);
 //MODULE_ALIAS(alternate_name);
-
 MODULE_LICENSE("Dual BSD/GPL");
 
 //#include <linux/moduleparam.h>
@@ -80,10 +79,7 @@ static ssize_t proc_read (struct file * file, char __user * buf, size_t size, lo
 	{
 		printk(KERN_DEBUG "CMD = %s, will goto exit",proc_buf);
 		goto EXIT;
-	}else if (!strncmp(CMD_THREAD,proc_buf,strlen(CMD_THREAD))) {
-		thread_cmd();
 	}
-
 	do_gettimeofday(&tv);
 
 	count = sprintf(tmp,"[%ld.%ld] %s",tv.tv_sec, tv.tv_usec,proc_buf);
@@ -109,6 +105,10 @@ static ssize_t proc_write (struct file *file, const char __user *buf, size_t siz
 	proc_buf[size] = '\0';
 	*foff = size;
 	up(&sem);
+
+	if (!strncmp(CMD_THREAD,proc_buf,strlen(CMD_THREAD))) {
+		thread_cmd();
+	}
 
 	return size;
 }
@@ -184,14 +184,14 @@ static void thread_cmd(void)
 
 static void do_work(void *data)
 {
-	printk (KERN_DEBUG "[%s] [%s] ...",MODULE_TAG,__FUNCTION__);
+	printk (KERN_DEBUG "[%s] [%s] [%ld]",MODULE_TAG,__FUNCTION__,(long)data);
 
 	msleep(100);
 }
 
 static int test_thread(void *data)
 {
-	printk (KERN_DEBUG "[%s] [%s] ...",MODULE_TAG,__FUNCTION__);
+	printk (KERN_DEBUG "[%s] [%s] [%ld]",MODULE_TAG,__FUNCTION__,(long)data);
 
 	while(1)
 	{
