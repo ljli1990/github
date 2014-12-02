@@ -33,7 +33,7 @@
 #include <asm/uaccess.h>	/* copy_*_user */
 
 #include "scull.h"		/* local definitions */
-
+#include <linux/spinlock.h>
 /*
  * Our parameters which can be set at load time.
  */
@@ -55,6 +55,7 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 struct scull_dev *scull_devices;	/* allocated in scull_init_module */
 
+static spinlock_t s_lock;
 
 /*
  * Empty out the scull device; must be called with the device
@@ -299,6 +300,8 @@ ssize_t scull_read(struct file *filp, char __user *buf, size_t count,
 	int item, s_pos, q_pos, rest;
 	ssize_t retval = 0;
 
+	printk(KERN_DEBUG "aaaaaaaaaaaa");
+	spin_lock(&s_lock);
 	if (down_interruptible(&dev->sem))
 		return -ERESTARTSYS;
 	if (*f_pos >= dev->size)
@@ -329,6 +332,7 @@ ssize_t scull_read(struct file *filp, char __user *buf, size_t count,
 	retval = count;
 
   out:
+	spin_unlock(&s_lock);
 	up(&dev->sem);
 	return retval;
 }
@@ -620,6 +624,7 @@ int scull_init_module(void)
 	int result, i;
 	dev_t dev = 0;
 
+	spin_lock_init(&s_lock);
 /*
  * Get a range of minor numbers to work with, asking for a dynamic
  * major unless directed otherwise at load time.
