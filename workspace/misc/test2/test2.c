@@ -34,7 +34,7 @@ static void thread_cmd(void);
 #include <linux/proc_fs.h>
 
 static struct proc_dir_entry *test = NULL;
-static const char *proc_entry_name = "test";
+static const char *proc_entry_name = "test2";
 static mode_t proc_mod = 0666;
 static char * proc_buf = NULL;
 static const char *MODULE_TAG = "MING_TEST";
@@ -201,17 +201,10 @@ static void do_work(void *data)
 			
 			printk (KERN_DEBUG "[%ld] got lock a",(long)data);
 			
-			printk (KERN_DEBUG "[%ld] getting lock b",(long)data);
-			
-			mutex_lock(&lock_b);
-			
-			printk (KERN_DEBUG "[%ld] got lock b",(long)data);
-			
-			msleep(100);
-			
-			printk (KERN_DEBUG "[%ld] unlock b",(long)data);
-			
-			mutex_unlock(&lock_b);
+		    while(!kthread_should_stop())
+			{
+				msleep(100);
+			}
 			
 			printk (KERN_DEBUG "[%ld] unlock a",(long)data);
 			
@@ -220,29 +213,22 @@ static void do_work(void *data)
 			break;
 		case thread_id_1:
 			
-			printk (KERN_DEBUG "[%ld] getting lock b",(long)data);
-			
-			mutex_lock(&lock_b);
-			
-			printk (KERN_DEBUG "[%ld] got lock b",(long)data);
 			
 			printk (KERN_DEBUG "[%ld] getting lock a",(long)data);
 			
 			mutex_lock(&lock_a);
 			
 			printk (KERN_DEBUG "[%ld] got lock a",(long)data);
-			
-			msleep(100);
-			
+		
+			while(!kthread_should_stop())
+			{
+				msleep(100);
+			}
 			
 			printk (KERN_DEBUG "[%ld] unlock a",(long)data);
 			
 			mutex_unlock(&lock_a);
 			
-			printk (KERN_DEBUG "[%ld] unlock b",(long)data);
-			
-			mutex_unlock(&lock_b);
-
 			break;
 		default:
 			printk(KERN_ERR "err thread id");
